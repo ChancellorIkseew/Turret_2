@@ -16,6 +16,9 @@ public:
     void render() {
         SDL_RenderPresent(renderer);
     }
-    //
-    SDL_Renderer* getRenderer() { return renderer; };
+private:
+    MainWindow(const MainWindow&) = delete;
+    MainWindow(MainWindow&&) = delete;
+    MainWindow& operator=(const MainWindow&) = delete;
+    MainWindow& operator=(MainWindow&&) = delete;
 };
