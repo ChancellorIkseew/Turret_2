@@ -4,7 +4,7 @@
 //
 #include "render/sprite.hpp"
 #include "window/window.hpp"
-#include "window/input/input_handler.h"
+#include "window/input/input.hpp"
 
 void openMainWindow(MainWindow& mainWindow);
 
@@ -38,13 +38,13 @@ void openMainWindow(MainWindow& mainWindow) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT)
                 quit = true;
-            InputHandler::updateInput(event);
+            Input::update(event);
         }
 
-        if (InputHandler::active(t1::BindName::LMB))
+        if (Input::active(BindName::LMB))
             std::cout << "mouse\n";
 
-        if (InputHandler::active(t1::BindName::Move_up))
+        if (Input::active(BindName::Move_up))
             std::cout << "WWW\n";
 
         mainWindow.clear();

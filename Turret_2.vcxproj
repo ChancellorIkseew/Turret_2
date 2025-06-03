@@ -21,14 +21,14 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\window\input\default_bindings.cpp" />
-    <ClCompile Include="src\window\input\input_handler.cpp" />
+    <ClCompile Include="src\window\input\input.cpp" />
     <ClCompile Include="src\window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\render\sprite.hpp" />
     <ClInclude Include="src\render\texture.hpp" />
-    <ClInclude Include="src\window\input\input_handler.h" />
-    <ClInclude Include="src\window\input\t1_input.h" />
+    <ClInclude Include="src\window\input\input.hpp" />
+    <ClInclude Include="src\window\input\binding.hpp" />
     <ClInclude Include="src\window\window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

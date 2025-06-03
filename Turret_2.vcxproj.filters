@@ -21,7 +21,7 @@
     <ClCompile Include="src\window\window.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\window\input\input_handler.cpp">
+    <ClCompile Include="src\window\input\input.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\window\input\default_bindings.cpp">
@@ -38,10 +38,10 @@
     <ClInclude Include="src\render\texture.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\window\input\input_handler.h">
+    <ClInclude Include="src\window\input\input.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\window\input\t1_input.h">
+    <ClInclude Include="src\window\input\binding.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,8 +1,7 @@
-#include "input_handler.h"
+#include "input.hpp"
 #include <SDL3/SDL.h>
 
-using namespace t1;
-std::unordered_map<BindName, Binding> InputHandler::bindings
+std::unordered_map<BindName, Binding> Input::bindings
 {
 	{BindName::LMB, Binding(SDL_BUTTON_LEFT, InputType::mouse)},
 	{BindName::RMB, Binding(SDL_BUTTON_RIGHT, InputType::mouse)},
