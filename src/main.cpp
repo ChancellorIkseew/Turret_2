@@ -21,9 +21,6 @@ int main(int argc, char* argv[]) {
 }
 
 void openMainWindow(MainWindow& mainWindow) {
-    const int FPS = 60;
-    const Uint32 frameDelay = 1000 / FPS;
-
     SDL_Event e;
     bool quit = false;
 
@@ -36,7 +33,6 @@ void openMainWindow(MainWindow& mainWindow) {
     sprite2.setRotation(70);
 
     while (!quit) {
-        Uint32 frameStart = SDL_GetTicks();
 
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_EVENT_QUIT) {
@@ -48,10 +44,5 @@ void openMainWindow(MainWindow& mainWindow) {
         sprite.drawFast();
         sprite2.draw();
         mainWindow.render();
-
-        Uint32 frameTime = SDL_GetTicks() - frameStart;
-
-        if (frameDelay > frameTime)
-            SDL_Delay(frameDelay - frameTime);
     }
 }

@@ -7,7 +7,7 @@ MainWindow::MainWindow(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))
         throw std::runtime_error("Could not init SDL");
 
-    window = SDL_CreateWindow(title.c_str(), 720, 480, 0);
+    window = SDL_CreateWindow(title.c_str(), 720, 480, SDL_WINDOW_RESIZABLE);
     if (!window) {
         const std::string eror = SDL_GetError();
         SDL_Quit();
