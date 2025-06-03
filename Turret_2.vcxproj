@@ -20,10 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\window\sprite.cpp" />
+    <ClCompile Include="src\window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\sprite.hpp" />
-    <ClInclude Include="src\window.hpp" />
+    <ClInclude Include="src\window\sprite.hpp" />
+    <ClInclude Include="src\window\window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
