@@ -4,6 +4,7 @@
 //
 #include "render/sprite.hpp"
 #include "window/window.hpp"
+#include "window/input/input_handler.h"
 
 void openMainWindow(MainWindow& mainWindow);
 
@@ -21,7 +22,7 @@ int main(int argc, char* argv[]) {
 }
 
 void openMainWindow(MainWindow& mainWindow) {
-    SDL_Event e;
+    SDL_Event event;
     bool quit = false;
 
     Texture texture("res/images/icon.bmp");
@@ -34,11 +35,17 @@ void openMainWindow(MainWindow& mainWindow) {
 
     while (!quit) {
 
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_EVENT_QUIT)
                 quit = true;
-            }
+            InputHandler::updateInput(event);
         }
+
+        if (InputHandler::active(t1::BindName::LMB))
+            std::cout << "mouse\n";
+
+        if (InputHandler::active(t1::BindName::Move_up))
+            std::cout << "WWW\n";
 
         mainWindow.clear();
         sprite.drawFast();
