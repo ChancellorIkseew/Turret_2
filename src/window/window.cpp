@@ -1,8 +1,7 @@
 #include "window.hpp"
 //
-#include "sprite.hpp"
-#include "texture.hpp"
 #include <stdexcept>
+#include "render/sprite.hpp"
 
 MainWindow::MainWindow(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))

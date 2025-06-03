@@ -18,9 +18,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\window\sprite.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\window\window.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -29,10 +26,10 @@
     <ClInclude Include="src\window\window.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\window\sprite.hpp">
+    <ClInclude Include="src\render\sprite.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\window\texture.hpp">
+    <ClInclude Include="src\render\texture.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

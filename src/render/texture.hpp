@@ -15,7 +15,7 @@ public:
 		SDL_DestroyTexture(texture);
 	}
 	//
-	SDL_Texture* rawSDL() { return texture; }
+	SDL_Texture* rawSDL() const { return texture; }
 private:
 	friend MainWindow;
 	static void setRenderer(SDL_Renderer* renderer) {

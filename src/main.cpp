@@ -2,8 +2,8 @@
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
 //
+#include "render/sprite.hpp"
 #include "window/window.hpp"
-#include "window/sprite.hpp"
 
 void openMainWindow(MainWindow& mainWindow);
 
