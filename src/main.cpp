@@ -27,8 +27,11 @@ void openMainWindow(MainWindow& mainWindow) {
     SDL_Event e;
     bool quit = false;
 
-    Sprite sprite(mainWindow.getRenderer(), "str");
-
+    Texture texture("res/images/icon.bmp");
+    Sprite sprite(texture);
+    sprite.setPosition(000, 0);
+    Sprite sprite2(texture);
+    sprite2.setPosition(100, 0);
 
     while (!quit) {
         Uint32 frameStart = SDL_GetTicks();
@@ -40,7 +43,8 @@ void openMainWindow(MainWindow& mainWindow) {
         }
 
         mainWindow.clear();
-        sprite.draw();
+        sprite.drawFast();
+        sprite2.draw();
         mainWindow.render();
 
         Uint32 frameTime = SDL_GetTicks() - frameStart;

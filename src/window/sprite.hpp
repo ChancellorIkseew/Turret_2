@@ -2,45 +2,36 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
-#include "window.hpp"
+#include "texture.hpp"
 
 class Sprite {
-    SDL_Renderer* renderer;
-    SDL_Texture* texture = nullptr;
+    static inline SDL_Renderer* renderer;
+    Texture texture;
     SDL_FRect rect;
     int width_ = 0;
     int height_ = 0;
+    SDL_FPoint centre = SDL_FPoint(50, 50);
+    double angle = 45;
 public:
-    Sprite(SDL_Renderer* renderer, const std::string& filePath) : renderer(renderer) {
-        SDL_Surface* healthbar_sur = IMG_Load("res/images/icon.bmp");
-        texture = SDL_CreateTextureFromSurface(renderer, healthbar_sur);
-        SDL_DestroySurface(healthbar_sur); // Free surface after creating texture
-
-        rect = SDL_FRect(100, 100, 200, 200);
+    Sprite(const Texture& texture) : texture(texture) {
+        rect = SDL_FRect(100, 100, 100, 100);
     }
 
-    ~Sprite() {
-        SDL_DestroyTexture(texture);
-    }
-
-    SDL_Texture* getTexture() const {
-        return texture;
-    }
-
-    int GetWidth() const {
-        return width_;
-    }
-
-    int GetHeight() const {
-        return height_;
+    void drawFast() {
+        SDL_RenderTexture(renderer, texture.rawSDL(), nullptr, &rect);
     }
 
     void draw() {
-        SDL_RenderTexture(renderer, texture, nullptr, &rect);
+        SDL_RenderTextureRotated(renderer, texture.rawSDL(),
+            nullptr, &rect, angle, &centre, SDL_FlipMode::SDL_FLIP_NONE);
     }
 
-    void Draw(float x, float y, float w, float h)
-    {
+    void setPosition(float x, float y) {
+        rect.x = x;
+        rect.y = y;
+    }
 
-    } 
+    static void setRenderer(SDL_Renderer* renderer) {
+        Sprite::renderer = renderer;
+    }
 };

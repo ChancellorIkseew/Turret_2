@@ -1,5 +1,7 @@
 #include "window.hpp"
 //
+#include "sprite.hpp"
+#include "texture.hpp"
 #include <stdexcept>
 
 MainWindow::MainWindow(const std::string& title) {
@@ -20,6 +22,9 @@ MainWindow::MainWindow(const std::string& title) {
         SDL_Quit();
         throw std::runtime_error("SDL_CreateRenderer Error: " + eror);
     }
+
+    Texture::setRenderer(renderer);
+    Sprite::setRenderer(renderer);
 }
 
 MainWindow::~MainWindow() {

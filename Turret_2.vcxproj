@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\window\sprite.hpp" />
+    <ClInclude Include="src\window\texture.hpp" />
     <ClInclude Include="src\window\window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
