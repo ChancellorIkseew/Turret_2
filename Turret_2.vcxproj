@@ -25,6 +25,7 @@
     <ClCompile Include="src\window\input\default_bindings.cpp" />
     <ClCompile Include="src\window\input\input.cpp" />
     <ClCompile Include="src\window\window.cpp" />
+    <ClCompile Include="src\world\camera.cpp" />
     <ClCompile Include="src\world\world.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +38,7 @@
     <ClInclude Include="src\window\input\input.hpp" />
     <ClInclude Include="src\window\input\binding.hpp" />
     <ClInclude Include="src\window\window.hpp" />
+    <ClInclude Include="src\world\camera.hpp" />
     <ClInclude Include="src\world\world.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

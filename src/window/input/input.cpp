@@ -2,15 +2,24 @@
 //
 #include <atomic>
 
-constexpr char32_t NON_USABLE_SYMBOL = static_cast<char32_t>(0);
-static std::atomic<char32_t> symbolJustEntered = NON_USABLE_SYMBOL;
-static std::atomic<SDL_Point> mouseCoord = SDL_Point(0, 0);
-static std::atomic<SDL_FPoint> mouseMapCoord = SDL_FPoint(0.0f, 0.0f);
+//constexpr char32_t NON_USABLE_SYMBOL = static_cast<char32_t>(0);
+//static std::atomic<char32_t> symbolJustEntered = NON_USABLE_SYMBOL;
+static std::atomic<PixelCoord> mouseCoord;
+static std::atomic<PixelCoord> mouseMapCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
 
 void Input::update(const SDL_Event& event) {
-	//if (event.type == SDL_EVENT_MOUSE_WHEEL)
-		//mouseWheelScroll.store(static_cast<t1::MouseWheelScroll>(event.wheel.y), std::memory_order_relaxed);
+	if (event.type == SDL_EVENT_MOUSE_WHEEL) {
+		MouseWheelScroll scroll = MouseWheelScroll::none;
+		if (event.wheel.y > 0)
+			scroll = MouseWheelScroll::up;
+		else if (event.wheel.y < 0)
+			scroll = MouseWheelScroll::down;
+		mouseWheelScroll.store(scroll, std::memory_order_relaxed);
+	}
+
+	if (event.type == SDL_EVENT_MOUSE_MOTION)
+		mouseCoord.store(PixelCoord(event.motion.x, event.motion.y));
 
 	InputType inputType = InputType::keyboard;
 	int code = -1;
@@ -35,15 +44,23 @@ void Input::update(const SDL_Event& event) {
 	}
 }
 
-
 bool Input::active(const BindName bindName) {
 	return bindings.contains(bindName) && bindings.at(bindName).active;
 }
-
 bool Input::jactive(const BindName bindName) {
 	const auto& found = bindings.find(bindName);
 	if (found == bindings.end() || !found->second.justTriggered)
 		return false;
 	found->second.justTriggered = false;
 	return true;
+}
+
+PixelCoord Input::getMouseCoord() {
+	return mouseCoord.load(std::memory_order_relaxed);
+}
+PixelCoord Input::getMouseMapCoord() {
+	return mouseCoord.load(std::memory_order_relaxed);
+}
+MouseWheelScroll Input::getMouseWheelScroll() {
+	return mouseWheelScroll.load(std::memory_order_relaxed);
 }
