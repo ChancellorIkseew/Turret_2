@@ -4,11 +4,7 @@
 
 constexpr float MINIMAL_FLOAT = std::numeric_limits<float>::lowest();
 
-struct PixelCoord
-{
-private:
-	static inline constexpr float epsilon = 0.0001f;
-public:
+struct PixelCoord {
 	float x = 0.0f, y = 0.0f;
 	
 	PixelCoord(const int x, const int y) : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
@@ -44,6 +40,8 @@ public:
 		const float floatValue = static_cast<float>(value);
 		return PixelCoord(x / floatValue, y / floatValue);
 	}
+private:
+	static inline constexpr float epsilon = 0.0001f;
 };
 
 constexpr PixelCoord INCORRECT_PIXEL_COORD(MINIMAL_FLOAT, MINIMAL_FLOAT);

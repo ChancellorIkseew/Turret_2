@@ -3,8 +3,7 @@
 
 constexpr int MINIMAL_INT = std::numeric_limits<int>::lowest();
 
-struct TileCoord
-{
+struct TileCoord {
 	int x = 0, y = 0;
 	
 	constexpr TileCoord(const int x, const int y) : x(x), y(y) {}
