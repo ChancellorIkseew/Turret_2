@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\engine_draw.cpp" />
+    <ClCompile Include="src\engine\engine_poll_input.cpp" />
+    <ClCompile Include="src\engine\engine_simulate.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\window\input\default_bindings.cpp" />
     <ClCompile Include="src\window\input\input.cpp" />
     <ClCompile Include="src\window\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\engine.hpp" />
     <ClInclude Include="src\render\sprite.hpp" />
     <ClInclude Include="src\render\texture.hpp" />
     <ClInclude Include="src\window\input\input.hpp" />

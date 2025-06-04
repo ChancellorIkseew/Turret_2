@@ -6,11 +6,14 @@ class MainWindow {
     SDL_Window* window;
     SDL_Renderer* renderer;
     Uint64 FPS = 60, requiredDelay = 16, frameStart = 0;
+    bool open = true;
 public:
     MainWindow(const std::string& title);
     ~MainWindow();
     //
     Uint64 getTime() const { return SDL_GetTicks(); }
+    bool isOpen() const { return open; }
+    void close() { open = false; }
     //
     void clear() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

@@ -1,5 +1,4 @@
 #include "input.hpp"
-#include <SDL3/SDL.h>
 
 std::unordered_map<BindName, Binding> Input::bindings {
 	{BindName::LMB, Binding(SDL_BUTTON_LEFT, InputType::mouse)},
