@@ -4,7 +4,7 @@
 #include "texture.hpp"
 
 class Sprite {
-    static inline SDL_Renderer* renderer;
+    static inline SDL_Renderer* renderer = nullptr;
     Texture texture;
     SDL_FRect rect = SDL_FRect(0.0f, 0.0f, 0.0f, 0.0f);
     SDL_FPoint origin = SDL_FPoint(0.0f, 0.0f);

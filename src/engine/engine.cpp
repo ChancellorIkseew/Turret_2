@@ -2,8 +2,10 @@
 //
 #include "render/sprite.hpp"
 #include "window/input/input.hpp"
+#include "world/world.hpp"
 
 void Engine::run() {
+    /*
     Texture texture("res/images/icon.bmp");
     Sprite sprite(texture);
     sprite.setPosition(000, 0);
@@ -11,8 +13,9 @@ void Engine::run() {
     sprite2.setPosition(100, 0);
     sprite2.setOrigin(50.0f, 50.0f);
     sprite2.setRotation(70);
-
+    */
     SDL_Event event;
+    world->print();
 
 	while (mainWindow.isOpen()) {
         while (SDL_PollEvent(&event)) {
@@ -22,8 +25,9 @@ void Engine::run() {
         }
 
         mainWindow.clear();
-        sprite.drawFast();
-        sprite2.draw();
+        //sprite.drawFast();
+        //sprite2.draw();
+        world->draw();
         mainWindow.render();
 	}
 }

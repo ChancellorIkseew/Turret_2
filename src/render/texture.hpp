@@ -5,7 +5,7 @@
 class MainWindow;
 
 class Texture {
-	static inline SDL_Renderer* renderer;
+	static inline SDL_Renderer* renderer = nullptr;
 	SDL_Texture* texture = nullptr;
 public:
 	Texture(std::filesystem::path path) {
