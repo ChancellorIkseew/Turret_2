@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include <string>
+#include "coords/pixel_coord.hpp"
 
 class MainWindow {
     SDL_Window* window;
@@ -11,9 +12,14 @@ public:
     MainWindow(const std::string& title);
     ~MainWindow();
     //
-    Uint64 getTime() const { return SDL_GetTicks(); }
     bool isOpen() const { return open; }
     void close() { open = false; }
+    Uint64 getTime() const { return SDL_GetTicks(); }
+    PixelCoord getSize() const {
+        int x = 0, y = 0;
+        SDL_GetWindowSize(window, &x, &y);
+        return PixelCoord(x, y);
+    }
     //
     void clear() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -25,7 +31,7 @@ public:
     }
     void setFPS(const Uint64 FPS) {
         this->FPS = FPS;
-        requiredDelay = FPS / 1000;
+        requiredDelay = 1000U / FPS;
     }
 private:
     void makeDelay() {
