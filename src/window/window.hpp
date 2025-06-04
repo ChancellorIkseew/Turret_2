@@ -12,6 +12,7 @@ public:
     MainWindow(const std::string& title);
     ~MainWindow();
     //
+    void setFPS(const Uint64 FPS);
     bool isOpen() const { return open; }
     void close() { open = false; }
     Uint64 getTime() const { return SDL_GetTicks(); }
@@ -29,16 +30,14 @@ public:
         SDL_RenderPresent(renderer);
         makeDelay();
     }
-    void setFPS(const Uint64 FPS) {
-        this->FPS = FPS;
-        requiredDelay = 1000U / FPS;
+    void setRenderScale(const float scale) {
+        SDL_SetRenderScale(renderer, scale, scale);
     }
 private:
     void makeDelay() {
         const Uint64 frameTime = getTime() - frameStart;
         if (frameTime < requiredDelay)
             SDL_Delay(requiredDelay - frameTime);
-        //std::cout << requiredDelay - frameTime << '\n';
         frameStart = getTime();
     }
 private:

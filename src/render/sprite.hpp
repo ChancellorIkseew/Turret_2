@@ -14,6 +14,7 @@ public:
         rect = SDL_FRect(100, 100, 100, 100);
     }
     //
+    ///@brief Draw on position without angle and translation by camera.
     void drawFast() {
         SDL_RenderTexture(renderer, texture.rawSDL(), nullptr, &rect);
     }

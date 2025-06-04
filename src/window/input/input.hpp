@@ -14,10 +14,8 @@ public:
 	///@brief Check only short press/click.
 	static bool jactive(const BindName bindName);
 
-	///@brief Coordinate in SFML window.
+	///@brief Coordinate in window.
 	static PixelCoord getMouseCoord();
-	///@brief Pixel coordinate on map.
-	static PixelCoord getMouseMapCoord();
 	///@brief (none/up/down)
 	static MouseWheelScroll getMouseWheelScroll();
 	

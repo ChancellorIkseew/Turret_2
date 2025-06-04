@@ -1,7 +1,6 @@
 #pragma once
 #include "window/window.hpp"
 #include "world/world.hpp"
-//class World;
 
 class Engine {
 	MainWindow mainWindow;

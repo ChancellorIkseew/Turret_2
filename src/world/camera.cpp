@@ -21,16 +21,15 @@ void Camera::interact(const MainWindow& mainWindow) {
 	updateMapRegion(mainWindow);
 }
 
-
 void Camera::moveByMouse() {
 	if (Input::jactive(BindName::MidMB)) {
-		movingStartMouseCoord = Input::getMouseMapCoord();
+		movingStartMouseCoord = fromScreenToMap(Input::getMouseCoord());
 		return;
 	}
 
 	if (Input::active(BindName::MidMB)) {
-		const PixelCoord delta = movingStartMouseCoord - Input::getMouseMapCoord();
-		//cameraView.move(delta);
+		const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(Input::getMouseCoord());
+		cameraCoord = cameraCoord + delta;
 	}
 }
 
@@ -46,19 +45,18 @@ void Camera::moveByWASD() {
 	if (Input::active(BindName::Move_right))
 		delta.x += 1.0f;
 
-	//if (delta != PixelCoord(0.0f, 0.0f))
-		//cameraView.move(delta * MOTION_SPEED_MODIFIER * mapScale);
+	if (delta != PixelCoord(0.0f, 0.0f))
+		cameraCoord = cameraCoord + (delta * MOTION_SPEED_MODIFIER * mapScale);
 }
 
-
-void Camera::avoidEscapeFromMap()
-{
-	//sf::Vector2f viewCenter = cameraView.getCenter();
-	//viewCenter.x = std::clamp(viewCenter.x, 0.0f, pixelMapSize.x);
-	//viewCenter.y = std::clamp(viewCenter.y, 0.0f, pixelMapSize.y);
-	//cameraView.setCenter(viewCenter);
+void Camera::avoidEscapeFromMap() {
+	/*
+	sf::Vector2f viewCenter = cameraView.getCenter();
+	viewCenter.x = std::clamp(viewCenter.x, 0.0f, pixelMapSize.x);
+	viewCenter.y = std::clamp(viewCenter.y, 0.0f, pixelMapSize.y);
+	cameraView.setCenter(viewCenter);
+	*/
 }
-
 
 void Camera::scale() {
 	switch (Input::getMouseWheelScroll())
@@ -79,23 +77,17 @@ void Camera::scale() {
 
 
 void Camera::resize(const MainWindow& mainWindow) {
-	if (windowSize.x == mainWindow.getSize().x)
+	if (windowSize == mainWindow.getSize())
 		return;
 	windowSize = mainWindow.getSize();
-	//cameraView.setSize(windowSize * mapScale);
-	//cameraView.setCenter(windowSize * mapScale / 2.0f);
 }
 
 
 void Camera::updateMapRegion(const MainWindow& mainWindow) {
-	/*
-	PixelCoord startPixel = window.mapPixelToCoords(sf::Vector2i(0, 0));
-	startTile = TileCoord(t1::tile(startPixel.x), t1::tile(startPixel.y));
+	endTile = t1::tile(fromScreenToMap(mainWindow.getSize()));
+	startTile = t1::tile(fromScreenToMap(PixelCoord(0.0f, 0.0f)));
 	buildingsStartTile = startTile - MAX_MAP_STRUCTURE_SIZE;
 	// Correction is needed to correct big_buildings drawing.
-
-	PixelCoord endPixel = window.mapPixelToCoords(sf::Vector2i(window.getSize().x, window.getSize().y));
-	endTile = TileCoord(t1::tile(endPixel.x) + 1, t1::tile(endPixel.y) + 1);
 
 	if (startTile.x < 0)
 		startTile.x = 0;
@@ -111,5 +103,11 @@ void Camera::updateMapRegion(const MainWindow& mainWindow) {
 		endTile.x = tileMapSize.x;
 	if (endTile.y > tileMapSize.y)
 		endTile.y = tileMapSize.y;
-	*/
+}
+
+PixelCoord Camera::fromMapToScreen(const PixelCoord mapCoord) const {
+	return (mapCoord - cameraCoord) / mapScale;
+}
+PixelCoord Camera::fromScreenToMap(const PixelCoord screenCoord) const {
+	return screenCoord * mapScale + cameraCoord;
 }

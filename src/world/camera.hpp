@@ -6,7 +6,7 @@
 class Camera
 {
 private:
-	//sf::View cameraView = sf::View(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.0f, 0.0f));
+	PixelCoord cameraCoord;
 	PixelCoord windowSize;
 	PixelCoord movingStartMouseCoord;
 	PixelCoord pixelMapSize;
@@ -26,7 +26,6 @@ private:
 	TileCoord buildingsStartTile;
 	TileCoord startTile;
 	TileCoord endTile;
-
 public:
 	Camera(const TileCoord mapSize);
 	~Camera() = default;
@@ -37,12 +36,15 @@ public:
 	TileCoord getBuildingsStartTile() const { return buildingsStartTile; }
 	TileCoord getStartTile() const { return startTile; }
 	TileCoord getEndTile() const { return endTile; }
-	//const sf::View& getView() const { return cameraView; }
+	PixelCoord getPosition() const { return cameraCoord; }
 	float getMapScale() const { return mapScale; }
+
+
+	PixelCoord fromMapToScreen(const PixelCoord screenCoord) const;
+	PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
 
 	inline bool contains(const TileCoord tile) const {
 		return	tile.x >= startTile.x && tile.x <= endTile.x &&
 				tile.y >= startTile.y && tile.y <= endTile.y;
 	}
-
 };

@@ -2,10 +2,10 @@
 //
 #include "render/sprite.hpp"
 #include "window/input/input.hpp"
-#include "world/world.hpp"
+#include "world/camera.hpp"
 
 void Engine::run() {
-    /*
+    
     Texture texture("res/images/icon.bmp");
     Sprite sprite(texture);
     sprite.setPosition(000, 0);
@@ -13,7 +13,8 @@ void Engine::run() {
     sprite2.setPosition(100, 0);
     sprite2.setOrigin(50.0f, 50.0f);
     sprite2.setRotation(70);
-    */
+    
+    Camera camera(TileCoord(10, 10));
     SDL_Event event;
     world->print();
 
@@ -23,11 +24,13 @@ void Engine::run() {
                 mainWindow.close();
             Input::update(event);
         }
-
+        camera.interact(mainWindow);
+        
         mainWindow.clear();
-        //sprite.drawFast();
-        //sprite2.draw();
-        world->draw();
+        mainWindow.setRenderScale(camera.getMapScale());
+        world->draw(camera);
+        mainWindow.setRenderScale(1.0f);
+        sprite.drawFast();
         mainWindow.render();
 	}
 }

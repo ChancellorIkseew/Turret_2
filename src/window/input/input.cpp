@@ -2,8 +2,6 @@
 //
 #include <atomic>
 
-//constexpr char32_t NON_USABLE_SYMBOL = static_cast<char32_t>(0);
-//static std::atomic<char32_t> symbolJustEntered = NON_USABLE_SYMBOL;
 static std::atomic<PixelCoord> mouseCoord;
 static std::atomic<PixelCoord> mouseMapCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
@@ -11,9 +9,9 @@ static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
 void Input::update(const SDL_Event& event) {
 	if (event.type == SDL_EVENT_MOUSE_WHEEL) {
 		MouseWheelScroll scroll = MouseWheelScroll::none;
-		if (event.wheel.y > 0)
+		if (event.wheel.y < 0.0f)
 			scroll = MouseWheelScroll::up;
-		else if (event.wheel.y < 0)
+		else if (event.wheel.y > 0.0f)
 			scroll = MouseWheelScroll::down;
 		mouseWheelScroll.store(scroll, std::memory_order_relaxed);
 	}
@@ -56,9 +54,6 @@ bool Input::jactive(const BindName bindName) {
 }
 
 PixelCoord Input::getMouseCoord() {
-	return mouseCoord.load(std::memory_order_relaxed);
-}
-PixelCoord Input::getMouseMapCoord() {
 	return mouseCoord.load(std::memory_order_relaxed);
 }
 MouseWheelScroll Input::getMouseWheelScroll() {
