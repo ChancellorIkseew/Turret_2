@@ -6,45 +6,45 @@
 class Camera
 {
 private:
-	PixelCoord cameraCoord;
-	PixelCoord windowSize;
-	PixelCoord movingStartMouseCoord;
-	PixelCoord pixelMapSize;
-	TileCoord tileMapSize;
+    PixelCoord cameraCoord;
+    PixelCoord windowSize;
+    PixelCoord movingStartMouseCoord;
+    PixelCoord pixelMapSize;
+    TileCoord tileMapSize;
 
-	float mapScale;
+    float mapScale;
 
-	bool isMooving = false;
+    bool isMooving = false;
 
-	void moveByMouse();
-	void moveByWASD();
-	void avoidEscapeFromMap();
-	void scale();
-	void resize(const MainWindow& window);
-	void updateMapRegion(const MainWindow& window);
+    void moveByMouse();
+    void moveByWASD();
+    void avoidEscapeFromMap();
+    void scale();
+    void resize(const MainWindow& window);
+    void updateMapRegion(const MainWindow& window);
 
-	TileCoord buildingsStartTile;
-	TileCoord startTile;
-	TileCoord endTile;
+    TileCoord buildingsStartTile;
+    TileCoord startTile;
+    TileCoord endTile;
 public:
-	Camera(const TileCoord mapSize);
-	~Camera() = default;
+    Camera(const TileCoord mapSize);
+    ~Camera() = default;
 
-	void interact(const MainWindow& window);
+    void interact(const MainWindow& window);
 
-	///@brief applies correction for building max size
-	TileCoord getBuildingsStartTile() const { return buildingsStartTile; }
-	TileCoord getStartTile() const { return startTile; }
-	TileCoord getEndTile() const { return endTile; }
-	PixelCoord getPosition() const { return cameraCoord; }
-	float getMapScale() const { return mapScale; }
+    ///@brief applies correction for building max size
+    TileCoord getBuildingsStartTile() const { return buildingsStartTile; }
+    TileCoord getStartTile() const { return startTile; }
+    TileCoord getEndTile() const { return endTile; }
+    PixelCoord getPosition() const { return cameraCoord; }
+    float getMapScale() const { return mapScale; }
 
 
-	PixelCoord fromMapToScreen(const PixelCoord screenCoord) const;
-	PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
+    PixelCoord fromMapToScreen(const PixelCoord screenCoord) const;
+    PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
 
-	inline bool contains(const TileCoord tile) const {
-		return	tile.x >= startTile.x && tile.x <= endTile.x &&
-				tile.y >= startTile.y && tile.y <= endTile.y;
-	}
+    inline bool contains(const TileCoord tile) const {
+        return    tile.x >= startTile.x && tile.x <= endTile.x &&
+                tile.y >= startTile.y && tile.y <= endTile.y;
+    }
 };

@@ -18,7 +18,7 @@ void Engine::run() {
     SDL_Event event;
     world->print();
 
-	while (mainWindow.isOpen()) {
+    while (mainWindow.isOpen()) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT)
                 mainWindow.close();
@@ -32,5 +32,5 @@ void Engine::run() {
         mainWindow.setRenderScale(1.0f);
         sprite.drawFast();
         mainWindow.render();
-	}
+    }
 }

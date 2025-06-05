@@ -5,20 +5,20 @@
 class MainWindow;
 
 class Texture {
-	static inline SDL_Renderer* renderer = nullptr;
-	SDL_Texture* texture = nullptr;
+    static inline SDL_Renderer* renderer = nullptr;
+    SDL_Texture* texture = nullptr;
 public:
-	Texture(std::filesystem::path path) {
-		texture = IMG_LoadTexture(renderer, path.string().c_str());
-	}
-	~Texture() {
-		SDL_DestroyTexture(texture);
-	}
-	//
-	SDL_Texture* rawSDL() const { return texture; }
+    Texture(std::filesystem::path path) {
+        texture = IMG_LoadTexture(renderer, path.string().c_str());
+    }
+    ~Texture() {
+        SDL_DestroyTexture(texture);
+    }
+    //
+    SDL_Texture* rawSDL() const { return texture; }
 private:
-	friend MainWindow;
-	static void setRenderer(SDL_Renderer* renderer) {
-		Texture::renderer = renderer;
-	}
+    friend MainWindow;
+    static void setRenderer(SDL_Renderer* renderer) {
+        Texture::renderer = renderer;
+    }
 };

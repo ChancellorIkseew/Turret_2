@@ -3,11 +3,11 @@
 #include "world/world.hpp"
 
 class Engine {
-	MainWindow mainWindow;
-	std::unique_ptr<World> world;
+    MainWindow mainWindow;
+    std::unique_ptr<World> world;
 public:
-	Engine(const std::string& windowTitle) : mainWindow(windowTitle) {
-		world = std::make_unique<World>();
-	}
-	void run();
+    Engine(const std::string& windowTitle) : mainWindow(windowTitle) {
+        world = std::make_unique<World>();
+    }
+    void run();
 };
