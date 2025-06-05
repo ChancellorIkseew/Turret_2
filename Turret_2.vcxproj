@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\coords\transforms.cpp" />
+    <ClCompile Include="src\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\window\input\default_bindings.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="src\coords\pixel_coord.hpp" />
     <ClInclude Include="src\coords\tile_coord.hpp" />
     <ClInclude Include="src\coords\transforms.hpp" />
+    <ClInclude Include="src\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
     <ClInclude Include="src\render\sprite.hpp" />
     <ClInclude Include="src\render\texture.hpp" />
