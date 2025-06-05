@@ -29,7 +29,7 @@ def process_directory(directory):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("usage: python code_analyzer.py <directory_to_chekc>")
+        print("usage: python code_analyzer.py <directory_to_check>")
         sys.exit(1)
     
     target_dir = sys.argv[1]
