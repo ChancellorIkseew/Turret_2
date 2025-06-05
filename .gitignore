@@ -4,3 +4,5 @@ build/
 libs/
 obj/
 saves/
+
+latest_log.txt
