@@ -5,7 +5,7 @@
 constexpr int _TILE_ = 32;
 constexpr int _HALF_TILE_ = 16;
 
-constexpr float PI = 3.14159265359f;
+constexpr float PI = 3.1415927f;
 
 namespace t1
 {
@@ -23,8 +23,6 @@ namespace t1
     int pow2i(const int value);
     float pow2f(const float value);
     bool areCloser(const PixelCoord first, const PixelCoord second, const float distance);
-    PixelCoord correction(const PixelCoord center, const PixelCoord point, const float angleRad);
-    int spiralRangeToTileRange(const int spiralRange);
 
     float radToDegree(const float radian);
 };
