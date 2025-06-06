@@ -41,8 +41,13 @@ void MainWindow::setFPS(const Uint64 FPS) {
 void MainWindow::pollEvents() {
     Input::reset();
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_EVENT_QUIT)
+        switch (event.type) {
+        case SDL_EVENT_QUIT:
             close();
-        Input::update(event);
+            break;
+        default:
+            Input::update(event);
+            break;
+        }
     }
 }
