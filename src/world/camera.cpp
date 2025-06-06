@@ -14,13 +14,13 @@ constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
 Camera::Camera(const TileCoord mapSize) : mapScale(MIN_MAP_SCALE),
     tileMapSize(mapSize), pixelMapSize(t1::pixel(mapSize)) { }
 
-void Camera::interact(const MainWindow& mainWindow) {
+void Camera::interact(const PixelCoord windowSize) {
     scale();
     moveByMouse();
     moveByWASD();
     avoidEscapeFromMap();
-    resize(mainWindow);
-    updateMapRegion(mainWindow);
+    resize(windowSize);
+    updateMapRegion(windowSize);
 }
 
 void Camera::moveByMouse() {
@@ -70,12 +70,12 @@ void Camera::scale() {
     mapScale = std::clamp(mapScale, MIN_MAP_SCALE, MAX_MAP_SCALE);
 }
 
-void Camera::resize(const MainWindow& mainWindow) {
-    cameraUpperLeftCorner = cameraCentre - mainWindow.getSize() / 2.0f / mapScale;
+void Camera::resize(const PixelCoord windowSize) {
+    cameraUpperLeftCorner = cameraCentre - windowSize / 2.0f / mapScale;
 }
 
-void Camera::updateMapRegion(const MainWindow& mainWindow) {
-    endTile = t1::tile(fromScreenToMap(mainWindow.getSize())) + TileCoord(1, 1);
+void Camera::updateMapRegion(const PixelCoord windowSize) {
+    endTile = t1::tile(fromScreenToMap(windowSize)) + TileCoord(1, 1);
     startTile = t1::tile(fromScreenToMap(PixelCoord(0.0f, 0.0f)));
     buildingsStartTile = startTile - MAX_MAP_STRUCTURE_SIZE;
     // Correction is needed to correct big_buildings drawing.

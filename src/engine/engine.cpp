@@ -20,7 +20,7 @@ void Engine::run() {
 
     while (mainWindow.isOpen()) {
         mainWindow.pollEvents();
-        camera.interact(mainWindow);
+        camera.interact(mainWindow.getSize());
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         world->draw(camera);
