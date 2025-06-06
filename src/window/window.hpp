@@ -6,6 +6,7 @@
 class MainWindow {
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Event event = SDL_Event(0);
     Uint64 FPS = 60, requiredDelay = 16, frameStart = 0;
     bool open = true;
 public:
@@ -22,6 +23,7 @@ public:
         return PixelCoord(x, y);
     }
     //
+    void pollEvents();
     void clear() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);

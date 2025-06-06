@@ -1,6 +1,7 @@
 #include "window.hpp"
 //
 #include <stdexcept>
+#include "input/input.hpp"
 #include "render/sprite.hpp"
 
 MainWindow::MainWindow(const std::string& title) {
@@ -35,4 +36,13 @@ MainWindow::~MainWindow() {
 void MainWindow::setFPS(const Uint64 FPS) {
     this->FPS = FPS;
     requiredDelay = 1000U / FPS;
+}
+
+void MainWindow::pollEvents() {
+    Input::reset();
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_EVENT_QUIT)
+            close();
+        Input::update(event);
+    }
 }

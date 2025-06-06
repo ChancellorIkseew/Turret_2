@@ -1,15 +1,14 @@
 #pragma once
-#include <unordered_map>
 #include <SDL3/SDL_events.h>
+#include <unordered_map>
 #include "binding.hpp"
 #include "coords/pixel_coord.hpp"
+
+class MainWindow;
 
 class Input {
     static std::unordered_map<BindName, Binding> bindings;
 public:
-    static void update(const SDL_Event& event);
-    static void reset();
-
     ///@brief Check any press/click.
     static bool active(const BindName bindName);
     ///@brief Check only short press/click.
@@ -21,4 +20,8 @@ public:
     static MouseWheelScroll getMouseWheelScroll();
     
     //static void rebind(const BindName keyName, const SDL_Event& event);
+private:
+    friend MainWindow;
+    static void update(const SDL_Event& event);
+    static void reset();
 };

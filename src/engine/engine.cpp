@@ -15,16 +15,10 @@ void Engine::run() {
     sprite2.setRotation(70);
     
     Camera camera(TileCoord(10, 10));
-    SDL_Event event;
     world->print();
 
     while (mainWindow.isOpen()) {
-        Input::reset();
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT)
-                mainWindow.close();
-            Input::update(event);
-        }
+        mainWindow.pollEvents();
         camera.interact(mainWindow);
         
         if (Input::jactive(BindName::LMB))
