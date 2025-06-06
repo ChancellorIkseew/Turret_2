@@ -19,6 +19,7 @@ void Engine::run() {
     world->print();
 
     while (mainWindow.isOpen()) {
+        Input::reset();
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT)
                 mainWindow.close();
@@ -26,6 +27,11 @@ void Engine::run() {
         }
         camera.interact(mainWindow);
         
+        if (Input::jactive(BindName::LMB))
+            std::cout << "justTr\n";
+        if (Input::active(BindName::LMB))
+            std::cout << "active\n";
+
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         world->draw(camera);

@@ -3,7 +3,6 @@
 #include <atomic>
 
 static std::atomic<PixelCoord> mouseCoord;
-static std::atomic<PixelCoord> mouseMapCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
 
 void Input::update(const SDL_Event& event) {
@@ -22,13 +21,13 @@ void Input::update(const SDL_Event& event) {
     InputType inputType = InputType::keyboard;
     int code = -1;
     bool pressed = false;
-
+    
     if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
         code = event.key.scancode;
         pressed = event.key.down;
     } else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
-        pressed = event.button.down;
         code = event.button.button;
+        pressed = event.button.down;
         inputType = InputType::mouse;
     } else {
         return;
@@ -37,8 +36,14 @@ void Input::update(const SDL_Event& event) {
     for (auto& [bindName, binding] : bindings) {
         if (inputType != binding.inputType || code != binding.code)
             continue;
-        binding.justTriggered = !binding.active;
+        binding.justTriggered = !binding.active && pressed;
         binding.active = pressed;
+    }
+}
+
+void Input::reset() {
+    for (auto& [bindName, binding] : bindings) {
+        binding.justTriggered = false;
     }
 }
 
@@ -46,11 +51,7 @@ bool Input::active(const BindName bindName) {
     return bindings.contains(bindName) && bindings.at(bindName).active;
 }
 bool Input::jactive(const BindName bindName) {
-    const auto& found = bindings.find(bindName);
-    if (found == bindings.end() || !found->second.justTriggered)
-        return false;
-    found->second.justTriggered = false;
-    return true;
+    return bindings.contains(bindName) && bindings.at(bindName).justTriggered;
 }
 
 PixelCoord Input::getMouseCoord() {

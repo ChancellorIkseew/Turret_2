@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include "coords/pixel_coord.hpp"
 #include "texture.hpp"
 
 class Sprite {
@@ -26,6 +27,9 @@ public:
     void setPosition(const float x, const float y) {
         rect.x = x;
         rect.y = y;
+    }
+    void setPosition(const PixelCoord pos) {
+        setPosition(pos.x, pos.y);
     }
     void setRotation(const double angleDegree) {
         angle = angleDegree;

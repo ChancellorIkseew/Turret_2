@@ -35,7 +35,7 @@ public:
             for (int y = 0; y < 10; ++y) {
                 if (terrain[x][y] != 0)
                     continue;
-                sprite.setPosition(x * 100 + camera.getPosition().x, y * 100 + camera.getPosition().y);
+                sprite.setPosition(PixelCoord(x, y) * 100 - camera.getPosition());
                 sprite.drawFast();
             }
         }

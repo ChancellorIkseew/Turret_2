@@ -8,6 +8,7 @@ class Input {
     static std::unordered_map<BindName, Binding> bindings;
 public:
     static void update(const SDL_Event& event);
+    static void reset();
 
     ///@brief Check any press/click.
     static bool active(const BindName bindName);
