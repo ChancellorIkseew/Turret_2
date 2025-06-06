@@ -11,7 +11,7 @@ constexpr float SCALE_FACTOR = 1.2f;
 constexpr float MOTION_SPEED_MODIFIER = 20.0f;
 constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
 
-Camera::Camera(const TileCoord mapSize) : mapScale(1.0f),
+Camera::Camera(const TileCoord mapSize) : mapScale(MIN_MAP_SCALE),
     tileMapSize(mapSize), pixelMapSize(t1::pixel(mapSize)) { }
 
 void Camera::interact(const MainWindow& mainWindow) {
@@ -45,7 +45,7 @@ void Camera::moveByWASD() {
         delta.x += 1.0f;
 
     if (delta != PixelCoord(0.0f, 0.0f))
-        cameraCentre = cameraCentre + (delta * MOTION_SPEED_MODIFIER * mapScale);
+        cameraCentre = cameraCentre + (delta * MOTION_SPEED_MODIFIER / mapScale);
 }
 
 void Camera::avoidEscapeFromMap() {
@@ -71,8 +71,7 @@ void Camera::scale() {
 }
 
 void Camera::resize(const MainWindow& mainWindow) {
-    cameraCoord = cameraCentre - mainWindow.getSize() / 2 / mapScale;
-    //std::cout << cameraCoord.x << " " << cameraCoord.y << '\n';
+    cameraUpperLeftCorner = cameraCentre - mainWindow.getSize() / 2.0f / mapScale;
 }
 
 void Camera::updateMapRegion(const MainWindow& mainWindow) {
@@ -98,8 +97,8 @@ void Camera::updateMapRegion(const MainWindow& mainWindow) {
 }
 
 PixelCoord Camera::fromMapToScreen(const PixelCoord mapCoord) const {
-    return (mapCoord - cameraCoord) / mapScale;
+    return (mapCoord - cameraUpperLeftCorner) * mapScale;
 }
 PixelCoord Camera::fromScreenToMap(const PixelCoord screenCoord) const {
-    return screenCoord * mapScale + cameraCoord;
+    return cameraUpperLeftCorner + screenCoord / mapScale;
 }

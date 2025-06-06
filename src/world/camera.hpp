@@ -5,23 +5,12 @@
 class MainWindow;
 
 class Camera {
-private:
-    PixelCoord cameraCoord, cameraCentre;
+    PixelCoord cameraUpperLeftCorner, cameraCentre;
     PixelCoord movingStartMouseCoord;
-    PixelCoord pixelMapSize;
-    TileCoord tileMapSize;
-
+    const PixelCoord pixelMapSize;
+    const TileCoord tileMapSize;
     float mapScale;
-
     bool isMooving = false;
-
-    void moveByMouse();
-    void moveByWASD();
-    void avoidEscapeFromMap();
-    void scale();
-    void resize(const MainWindow& window);
-    void updateMapRegion(const MainWindow& window);
-
     TileCoord buildingsStartTile;
     TileCoord startTile;
     TileCoord endTile;
@@ -35,9 +24,8 @@ public:
     TileCoord getBuildingsStartTile() const { return buildingsStartTile; }
     TileCoord getStartTile() const { return startTile; }
     TileCoord getEndTile() const { return endTile; }
-    PixelCoord getPosition() const { return cameraCoord; }
+    PixelCoord getPosition() const { return cameraUpperLeftCorner; }
     float getMapScale() const { return mapScale; }
-
 
     PixelCoord fromMapToScreen(const PixelCoord screenCoord) const;
     PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
@@ -46,4 +34,11 @@ public:
         return    tile.x >= startTile.x && tile.x <= endTile.x &&
                 tile.y >= startTile.y && tile.y <= endTile.y;
     }
+private:
+    void moveByMouse();
+    void moveByWASD();
+    void avoidEscapeFromMap();
+    void scale();
+    void resize(const MainWindow& window);
+    void updateMapRegion(const MainWindow& window);
 };
