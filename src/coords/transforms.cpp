@@ -2,19 +2,19 @@
 
 // pixel_to_tile
 int t1::tile(const float pixelCoord) {
-    return int(static_cast<int>(pixelCoord) / _TILE_);
+    return static_cast<int>(pixelCoord) / _TILE_;
 }
 int t1::tile(const int pixelCoord) {
-    return int(pixelCoord / _TILE_);
+    return pixelCoord / _TILE_;
 }
 TileCoord t1::tile(const float pixelCoordX, const float pixelCoordY) {
-    return { tile(pixelCoordX) , tile(pixelCoordY) };
+    return TileCoord(tile(pixelCoordX) , tile(pixelCoordY));
 }
 TileCoord t1::tile(const int pixelCoordX, const int pixelCoordY) {
-    return { tile(pixelCoordX) , tile(pixelCoordY) };
+    return TileCoord(tile(pixelCoordX) , tile(pixelCoordY));
 }
 TileCoord t1::tile(const PixelCoord pixelCoord) {
-    return { tile(pixelCoord.x) , tile(pixelCoord.y) };
+    return TileCoord(tile(pixelCoord.x) , tile(pixelCoord.y));
 }
 
 // tile_to_pixel
@@ -25,10 +25,10 @@ float t1::pixelF(const int tileCoord) {
     return static_cast<float>(tileCoord * _TILE_ + _HALF_TILE_);
 }
 PixelCoord t1::pixel(const int tileCoordX, const int tileCoordY) {
-    return { pixelF(tileCoordX),  pixelF(tileCoordY) };
+    return PixelCoord(pixelF(tileCoordX),  pixelF(tileCoordY));
 }
 PixelCoord t1::pixel(const TileCoord tileCoord) {
-    return { pixelF(tileCoord.x), pixelF(tileCoord.y) };
+    return PixelCoord(pixelF(tileCoord.x), pixelF(tileCoord.y));
 }
 
 // simple math
