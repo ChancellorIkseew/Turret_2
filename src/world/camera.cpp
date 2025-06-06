@@ -1,35 +1,34 @@
 #include "camera.hpp"
 //
+#include <algorithm>
 #include "coords/transforms.hpp"
 #include "window/input/input.hpp"
+#include "window/window.hpp"
+#include <iostream>
 
 constexpr float MIN_MAP_SCALE = 0.5f, MAX_MAP_SCALE = 5.0f;
 constexpr float SCALE_FACTOR = 1.2f;
 constexpr float MOTION_SPEED_MODIFIER = 20.0f;
 constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
 
-Camera::Camera(const TileCoord mapSize) :
-    windowSize(1024, 720), mapScale(MIN_MAP_SCALE), startTile(0, 0), endTile(0, 0),
+Camera::Camera(const TileCoord mapSize) : mapScale(1.0f),
     tileMapSize(mapSize), pixelMapSize(t1::pixel(mapSize)) { }
 
 void Camera::interact(const MainWindow& mainWindow) {
-    resize(mainWindow);
     scale();
     moveByMouse();
     moveByWASD();
     avoidEscapeFromMap();
+    resize(mainWindow);
     updateMapRegion(mainWindow);
 }
 
 void Camera::moveByMouse() {
-    if (Input::jactive(BindName::MidMB)) {
+    if (Input::jactive(BindName::MidMB))
         movingStartMouseCoord = fromScreenToMap(Input::getMouseCoord());
-        return;
-    }
-
-    if (Input::active(BindName::MidMB)) {
+    else if (Input::active(BindName::MidMB)) {
         const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(Input::getMouseCoord());
-        cameraCoord = cameraCoord + delta;
+        cameraCentre = cameraCentre + delta;
     }
 }
 
@@ -46,16 +45,12 @@ void Camera::moveByWASD() {
         delta.x += 1.0f;
 
     if (delta != PixelCoord(0.0f, 0.0f))
-        cameraCoord = cameraCoord + (delta * MOTION_SPEED_MODIFIER * mapScale);
+        cameraCentre = cameraCentre + (delta * MOTION_SPEED_MODIFIER * mapScale);
 }
 
 void Camera::avoidEscapeFromMap() {
-    /*
-    sf::Vector2f viewCenter = cameraView.getCenter();
-    viewCenter.x = std::clamp(viewCenter.x, 0.0f, pixelMapSize.x);
-    viewCenter.y = std::clamp(viewCenter.y, 0.0f, pixelMapSize.y);
-    cameraView.setCenter(viewCenter);
-    */
+    cameraCentre.x = std::clamp(cameraCentre.x, 0.0f, pixelMapSize.x);
+    cameraCentre.y = std::clamp(cameraCentre.y, 0.0f, pixelMapSize.y);
 }
 
 void Camera::scale() {
@@ -72,19 +67,16 @@ void Camera::scale() {
             mapScale *= SCALE_FACTOR;
         break;
     }
-    //cameraView.setSize(windowSize * mapScale);
+    mapScale = std::clamp(mapScale, MIN_MAP_SCALE, MAX_MAP_SCALE);
 }
-
 
 void Camera::resize(const MainWindow& mainWindow) {
-    if (windowSize == mainWindow.getSize())
-        return;
-    windowSize = mainWindow.getSize();
+    cameraCoord = cameraCentre - mainWindow.getSize() / 2 / mapScale;
+    //std::cout << cameraCoord.x << " " << cameraCoord.y << '\n';
 }
 
-
 void Camera::updateMapRegion(const MainWindow& mainWindow) {
-    endTile = t1::tile(fromScreenToMap(mainWindow.getSize()));
+    endTile = t1::tile(fromScreenToMap(mainWindow.getSize())) + TileCoord(1, 1);
     startTile = t1::tile(fromScreenToMap(PixelCoord(0.0f, 0.0f)));
     buildingsStartTile = startTile - MAX_MAP_STRUCTURE_SIZE;
     // Correction is needed to correct big_buildings drawing.

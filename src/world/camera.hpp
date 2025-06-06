@@ -1,13 +1,12 @@
 #pragma once
 #include "coords/pixel_coord.hpp"
 #include "coords/tile_coord.hpp"
-#include "window/window.hpp"
 
-class Camera
-{
+class MainWindow;
+
+class Camera {
 private:
-    PixelCoord cameraCoord;
-    PixelCoord windowSize;
+    PixelCoord cameraCoord, cameraCentre;
     PixelCoord movingStartMouseCoord;
     PixelCoord pixelMapSize;
     TileCoord tileMapSize;

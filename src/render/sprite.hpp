@@ -12,7 +12,7 @@ class Sprite {
     double angle = 0.0;
 public:
     Sprite(const Texture& texture) : texture(texture) {
-        rect = SDL_FRect(100, 100, 100, 100);
+        rect = SDL_FRect(0, 0, 32, 32);
     }
     //
     ///@brief Draw on position without angle and translation by camera.

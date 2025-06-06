@@ -14,22 +14,18 @@ void Engine::run() {
     sprite2.setOrigin(50.0f, 50.0f);
     sprite2.setRotation(70);
     
-    Camera camera(TileCoord(10, 10));
+    TileCoord mapSize(100, 100);
+    Camera camera(mapSize);
     world->print();
 
     while (mainWindow.isOpen()) {
         mainWindow.pollEvents();
         camera.interact(mainWindow);
-        
-        if (Input::jactive(BindName::LMB))
-            std::cout << "justTr\n";
-        if (Input::active(BindName::LMB))
-            std::cout << "active\n";
-
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         world->draw(camera);
         mainWindow.setRenderScale(1.0f);
+        //gui->draw(); todo: implement
         sprite.drawFast();
         mainWindow.render();
     }
