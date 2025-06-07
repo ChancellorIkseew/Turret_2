@@ -4,7 +4,6 @@
 
 constexpr int _TILE_ = 32;
 constexpr int _HALF_TILE_ = 16;
-
 constexpr float PI = 3.1415927f;
 
 namespace t1

@@ -7,13 +7,13 @@ class MainWindow {
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Event event = SDL_Event(0);
-    Uint64 FPS = 60, requiredDelay = 16, frameStart = 0;
+    Uint32 FPS = 60, requiredDelay = 16, frameStart = 0;
     bool open = true;
 public:
     MainWindow(const std::string& title);
     ~MainWindow();
     //
-    void setFPS(const Uint64 FPS);
+    void setFPS(const Uint32 FPS);
     bool isOpen() const { return open; }
     void close() { open = false; }
     Uint64 getTime() const { return SDL_GetTicks(); }
@@ -38,10 +38,10 @@ public:
     }
 private:
     void makeDelay() {
-        const Uint64 frameTime = getTime() - frameStart;
+        const Uint32 frameTime = Uint32(getTime()) - frameStart;
         if (frameTime < requiredDelay)
             SDL_Delay(requiredDelay - frameTime);
-        frameStart = getTime();
+        frameStart = Uint32(getTime());
     }
 private:
     MainWindow(const MainWindow&) = delete;

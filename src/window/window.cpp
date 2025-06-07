@@ -33,7 +33,7 @@ MainWindow::~MainWindow() {
     SDL_Quit();
 }
 
-void MainWindow::setFPS(const Uint64 FPS) {
+void MainWindow::setFPS(const Uint32 FPS) {
     this->FPS = FPS;
     requiredDelay = 1000U / FPS;
 }
