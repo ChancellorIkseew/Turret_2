@@ -15,7 +15,7 @@ void Engine::run() {
     sprite2.setRotation(70);
     MobType standard("res/images/cannoner_bot.png");
     Mob mob(standard);
-    mob.setPixelCoord(PixelCoord(20, 20));
+    mob.setPixelCoord(PixelCoord(32, 32));
     mob.setAngleDeg(45.0f);
 
     TileCoord mapSize(100, 100);

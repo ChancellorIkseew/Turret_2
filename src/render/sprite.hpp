@@ -21,8 +21,8 @@ public:
     }
     void draw() {
         SDL_FRect translatedRect = rect;
-        translatedRect.x -= translation.x;
-        translatedRect.y -= translation.y;
+        translatedRect.x -= translation.x + origin.x;
+        translatedRect.y -= translation.y + origin.y;
         SDL_RenderTextureRotated(renderer, texture.rawSDL(),
             nullptr, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
     }
