@@ -1,5 +1,6 @@
 #include "engine.hpp"
 //
+#include "game/mob_type.hpp"
 #include "render/sprite.hpp"
 #include "window/input/input.hpp"
 #include "world/camera.hpp"
@@ -13,7 +14,10 @@ void Engine::run() {
     sprite2.setPosition(100, 0);
     sprite2.setOrigin(50.0f, 50.0f);
     sprite2.setRotation(70);
-    
+    MobType standard("res/images/cannoner_bot.png");
+    Mob mob(standard);
+    mob.setPixelCoord(PixelCoord(20, 20));
+
     TileCoord mapSize(100, 100);
     Camera camera(mapSize);
     world->print();
@@ -24,6 +28,7 @@ void Engine::run() {
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         world->draw(camera);
+        mob.draw();
         mainWindow.setRenderScale(1.0f);
         //gui->draw(); todo: implement
         sprite.drawFast();

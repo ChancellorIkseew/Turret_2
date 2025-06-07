@@ -23,6 +23,7 @@
     <ClCompile Include="src\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\render\texture.cpp" />
     <ClCompile Include="src\window\input\default_bindings.cpp" />
     <ClCompile Include="src\window\input\input.cpp" />
     <ClCompile Include="src\window\window.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\coords\transforms.hpp" />
     <ClInclude Include="src\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
+    <ClInclude Include="src\game\mob_type.hpp" />
     <ClInclude Include="src\render\sprite.hpp" />
     <ClInclude Include="src\render\texture.hpp" />
     <ClInclude Include="src\window\input\input.hpp" />

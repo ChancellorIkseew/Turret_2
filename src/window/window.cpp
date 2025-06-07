@@ -10,17 +10,17 @@ MainWindow::MainWindow(const std::string& title) {
 
     window = SDL_CreateWindow(title.c_str(), 720, 480, SDL_WINDOW_RESIZABLE);
     if (!window) {
-        const std::string eror = SDL_GetError();
+        const std::string error = SDL_GetError();
         SDL_Quit();
-        throw std::runtime_error("SDL_CreateWindow Error: " + eror);
+        throw std::runtime_error("SDL_CreateWindow Error: " + error);
     }
 
     renderer = SDL_CreateRenderer(window, nullptr);
     if (!renderer) {
-        const std::string eror = SDL_GetError();
+        const std::string error = SDL_GetError();
         SDL_DestroyWindow(window);
         SDL_Quit();
-        throw std::runtime_error("SDL_CreateRenderer Error: " + eror);
+        throw std::runtime_error("SDL_CreateRenderer Error: " + error);
     }
 
     Texture::setRenderer(renderer);
