@@ -6,6 +6,7 @@
 
 class Sprite {
     static inline SDL_Renderer* renderer = nullptr;
+    static inline PixelCoord translation;
     Texture texture;
     SDL_FRect rect = SDL_FRect(0.0f, 0.0f, 0.0f, 0.0f);
     SDL_FPoint origin = SDL_FPoint(0.0f, 0.0f);
@@ -20,8 +21,11 @@ public:
         SDL_RenderTexture(renderer, texture.rawSDL(), nullptr, &rect);
     }
     void draw() {
+        SDL_FRect translatedRect = rect;
+        translatedRect.x -= translation.x;
+        translatedRect.y -= translation.y;
         SDL_RenderTextureRotated(renderer, texture.rawSDL(),
-            nullptr, &rect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
+            nullptr, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     //
     void setPosition(const float x, const float y) {
@@ -41,5 +45,8 @@ private:
     friend MainWindow;
     static void setRenderer(SDL_Renderer* renderer) {
         Sprite::renderer = renderer;
+    }
+    static void setTranslation(const PixelCoord translation) {
+        Sprite::translation = translation;
     }
 };

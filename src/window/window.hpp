@@ -24,6 +24,10 @@ public:
     }
     //
     void pollEvents();
+    void setRenderTranslation(const PixelCoord translation);
+    void setRenderScale(const float scale) {
+        SDL_SetRenderScale(renderer, scale, scale);
+    }
     void clear() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -31,9 +35,6 @@ public:
     void render() {
         SDL_RenderPresent(renderer);
         makeDelay();
-    }
-    void setRenderScale(const float scale) {
-        SDL_SetRenderScale(renderer, scale, scale);
     }
 private:
     void makeDelay() {

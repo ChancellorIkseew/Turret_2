@@ -6,7 +6,6 @@
 #include "world/camera.hpp"
 
 void Engine::run() {
-    
     Texture texture("res/images/icon.bmp");
     Sprite sprite(texture);
     sprite.setPosition(000, 0);
@@ -17,6 +16,7 @@ void Engine::run() {
     MobType standard("res/images/cannoner_bot.png");
     Mob mob(standard);
     mob.setPixelCoord(PixelCoord(20, 20));
+    mob.setAngleDeg(45.0f);
 
     TileCoord mapSize(100, 100);
     Camera camera(mapSize);
@@ -27,6 +27,7 @@ void Engine::run() {
         camera.interact(mainWindow.getSize());
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
+        mainWindow.setRenderTranslation(camera.getPosition());
         world->draw(camera);
         mob.draw();
         mainWindow.setRenderScale(1.0f);

@@ -38,6 +38,10 @@ void MainWindow::setFPS(const Uint64 FPS) {
     requiredDelay = 1000U / FPS;
 }
 
+void MainWindow::setRenderTranslation(const PixelCoord translation) {
+    Sprite::setTranslation(translation);
+}
+
 void MainWindow::pollEvents() {
     Input::reset();
     while (SDL_PollEvent(&event)) {

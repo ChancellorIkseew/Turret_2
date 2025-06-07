@@ -10,10 +10,13 @@ struct MobType {
 class Mob {
     Sprite sprite;
     PixelCoord coord;
+    float angleDeg = 0.0f;
 public:
     Mob(const MobType& type) : sprite(type.texture) { }
 
     void draw() {
+        sprite.setOrigin(16, 16);
+        sprite.setRotation(angleDeg);
         sprite.setPosition(coord);
         sprite.draw();
     }
@@ -21,6 +24,7 @@ public:
     void setPixelCoord(const PixelCoord coord) {
         this->coord = coord;
     }
+    void setAngleDeg(float angleDeg) {
+        this->angleDeg = angleDeg;
+    }
 };
-
-
