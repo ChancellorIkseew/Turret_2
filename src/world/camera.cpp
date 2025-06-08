@@ -4,11 +4,10 @@
 #include "coords/transforms.hpp"
 #include "window/input/input.hpp"
 #include "window/window.hpp"
-#include <iostream>
 
 constexpr float MIN_MAP_SCALE = 0.5f, MAX_MAP_SCALE = 5.0f;
 constexpr float SCALE_FACTOR = 1.2f;
-constexpr float MOTION_SPEED_MODIFIER = 20.0f;
+constexpr float MOTION_SPEED = 20.0f;
 constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
 
 Camera::Camera(const TileCoord mapSize) : mapScale(MIN_MAP_SCALE),
@@ -45,7 +44,7 @@ void Camera::moveByWASD() {
         delta.x += 1.0f;
 
     if (delta != PixelCoord(0.0f, 0.0f))
-        cameraCentre = cameraCentre + (delta * MOTION_SPEED_MODIFIER / mapScale);
+        cameraCentre = cameraCentre + (delta * MOTION_SPEED / mapScale);
 }
 
 void Camera::avoidEscapeFromMap() {

@@ -8,13 +8,11 @@ class Camera {
     const PixelCoord pixelMapSize;
     const TileCoord tileMapSize;
     float mapScale;
-    bool isMooving = false;
     TileCoord buildingsStartTile;
     TileCoord startTile;
     TileCoord endTile;
 public:
     Camera(const TileCoord mapSize);
-    ~Camera() = default;
 
     void interact(const PixelCoord windowSize);
 
