@@ -34,6 +34,10 @@ public:
     void setPosition(const PixelCoord pos) {
         setPosition(pos.x, pos.y);
     }
+    void setSize(const PixelCoord size) {
+        rect.w = size.x;
+        rect.h = size.y;
+    }
     void setRotation(const double angleDegree) {
         angle = angleDegree;
     }

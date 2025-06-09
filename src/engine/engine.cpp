@@ -4,6 +4,7 @@
 #include "render/sprite.hpp"
 #include "window/input/input.hpp"
 #include "world/camera.hpp"
+#include "gui.hpp"
 
 void Engine::run() {
     Texture texture("res/images/icon.bmp");
@@ -18,6 +19,8 @@ void Engine::run() {
     mob.setPixelCoord(PixelCoord(32, 32));
     mob.setAngleDeg(45.0f);
 
+ 
+    GUI gui;
     TileCoord mapSize(100, 100);
     Camera camera(mapSize);
     world->print();
@@ -31,7 +34,8 @@ void Engine::run() {
         world->draw(camera);
         mob.draw();
         mainWindow.setRenderScale(1.0f);
-        //gui->draw(); todo: implement
+        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
+        gui.draw();
         sprite.drawFast();
         mainWindow.render();
     }

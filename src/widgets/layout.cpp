@@ -1,0 +1,26 @@
+#include "layout.hpp"
+
+void Layout::addNode(Node* node) {
+    contents.emplace_back(node);
+    node->getPosition();
+    node->getSize();
+}
+
+void Layout::arrange() {
+    float maxWidth = margin * 2.0f;
+    PixelCoord position = PixelCoord(margin, margin) + getPosition();
+    for (const auto& it : contents) {
+        it->setPosition(position);
+        position.y += margin + it->getSize().y;
+        if (it->getSize().x > maxWidth)
+            maxWidth = it->getSize().x;
+    }
+    setSize(PixelCoord(maxWidth + margin * 2.0f, position.y - getPosition().y));
+}
+
+void Layout::draw() {
+    Node::draw();
+    for (const auto& it : contents) {
+        it->draw();
+    }
+}

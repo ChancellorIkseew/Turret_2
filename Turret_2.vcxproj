@@ -22,8 +22,11 @@
     <ClCompile Include="src\coords\transforms.cpp" />
     <ClCompile Include="src\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
+    <ClCompile Include="src\engine\gui.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\render\texture.cpp" />
+    <ClCompile Include="src\widgets\layout.cpp" />
+    <ClCompile Include="src\widgets\ui_node.cpp" />
     <ClCompile Include="src\window\input\default_bindings.cpp" />
     <ClCompile Include="src\window\input\input.cpp" />
     <ClCompile Include="src\window\window.cpp" />
@@ -36,9 +39,13 @@
     <ClInclude Include="src\coords\transforms.hpp" />
     <ClInclude Include="src\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
+    <ClInclude Include="src\engine\gui.hpp" />
     <ClInclude Include="src\game\mob_type.hpp" />
     <ClInclude Include="src\render\sprite.hpp" />
     <ClInclude Include="src\render\texture.hpp" />
+    <ClInclude Include="src\widgets\layout.hpp" />
+    <ClInclude Include="src\widgets\ui_defs.hpp" />
+    <ClInclude Include="src\widgets\ui_node.hpp" />
     <ClInclude Include="src\window\input\input.hpp" />
     <ClInclude Include="src\window\input\binding.hpp" />
     <ClInclude Include="src\window\window.hpp" />
