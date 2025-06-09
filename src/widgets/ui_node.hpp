@@ -9,10 +9,12 @@ class Node {
     Sprite sprite;
     PixelCoord position;
     PixelCoord size;
-    Align align;
 public:
-    Node(const PixelCoord size, const PixelCoord position, const Align align) :
-        size(size), position(position), align(align), texture("res/images/fill.png"), sprite(texture) { }
+    Node(const PixelCoord size, const PixelCoord position) :
+        size(size), position(position), texture("res/images/fill.png"), sprite(texture) { }
+    Node(const PixelCoord size) :
+        size(size), texture("res/images/fill.png"), sprite(texture) { }
+    Node() : texture("res/images/fill.png"), sprite(texture) { }
     //
     virtual void draw();
     //
@@ -20,4 +22,15 @@ public:
     PixelCoord getSize() const { return size; }
     void setPosition(const PixelCoord position) { this->position = position; }
     void setSize(const PixelCoord size) { this->size = size; }
+
+    inline bool contains(const PixelCoord mouse) {
+        const PixelCoord end = position + size;
+        return mouse.x >= position.x && mouse.x <= position.x &&
+               mouse.y >= end.y && mouse.y <= end.y;
+    }
+private:
+    Node(const Node& other) = delete;
+    Node(Node&& other) = delete;
+    Node& operator=(const Node&) = delete;
+    Node& operator=(Node&&) = delete;
 };

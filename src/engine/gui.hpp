@@ -1,8 +1,10 @@
 #pragma once
-#include "widgets/layout.hpp"
+#include <memory>
+#include <vector>
+#include "widgets/container.hpp"
 
 class GUI {
-    Layout layout;
+    std::vector<std::unique_ptr<Container>> containers;
 public:
     GUI();
     void draw();

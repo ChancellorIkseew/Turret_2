@@ -1,9 +1,8 @@
 #include "layout.hpp"
 
 void Layout::addNode(Node* node) {
-    contents.emplace_back(node);
-    node->getPosition();
-    node->getSize();
+    if (node)
+        contents.emplace_back(node);
 }
 
 void Layout::arrange() {

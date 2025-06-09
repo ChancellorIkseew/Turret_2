@@ -7,10 +7,9 @@ class Layout : public Node {
     std::vector<std::unique_ptr<Node>> contents;
     const float margin = 5.0f;
 public:
-    Layout(const PixelCoord size, const PixelCoord position, const Align align) :
-        Node(size, position, align) { }
+    Layout() : Node() { }
     //
     void addNode(Node* node);
     void arrange();
-    void draw() override final;
+    void draw() override;
 };

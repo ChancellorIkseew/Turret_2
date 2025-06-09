@@ -27,8 +27,8 @@ public:
     PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
 
     inline bool contains(const TileCoord tile) const {
-        return    tile.x >= startTile.x && tile.x <= endTile.x &&
-                tile.y >= startTile.y && tile.y <= endTile.y;
+        return tile.x >= startTile.x && tile.x <= endTile.x &&
+               tile.y >= startTile.y && tile.y <= endTile.y;
     }
 private:
     void moveByMouse();
