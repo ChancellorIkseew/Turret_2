@@ -2,6 +2,9 @@
 #include <memory>
 #include "widgets/container.hpp"
 
+class MainWindow;
+class World;
+
 namespace frontend {
-    std::unique_ptr<Container> initMenu();
+    std::unique_ptr<Container> initMenu(MainWindow& mainWindow);
 }

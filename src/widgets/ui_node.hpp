@@ -17,17 +17,13 @@ public:
     Node() : texture("res/images/fill.png"), sprite(texture) { }
     //
     virtual void draw();
+    virtual void callback() = 0;
     //
     PixelCoord getPosition() const { return position; }
     PixelCoord getSize() const { return size; }
     void setPosition(const PixelCoord position) { this->position = position; }
     void setSize(const PixelCoord size) { this->size = size; }
-
-    inline bool contains(const PixelCoord mouse) {
-        const PixelCoord end = position + size;
-        return mouse.x >= position.x && mouse.x <= position.x &&
-               mouse.y >= end.y && mouse.y <= end.y;
-    }
+    bool containsMouse() const;
 private:
     Node(const Node& other) = delete;
     Node(Node&& other) = delete;

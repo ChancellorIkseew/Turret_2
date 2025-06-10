@@ -20,7 +20,7 @@ void Engine::run() {
     mob.setAngleDeg(45.0f);
 
  
-    GUI gui(mainWindow.getSize());
+    GUI gui(mainWindow);
     TileCoord mapSize(100, 100);
     Camera camera(mapSize);
     world->print();

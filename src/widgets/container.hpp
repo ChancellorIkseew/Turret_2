@@ -13,6 +13,10 @@ public:
         if (visible)
             Layout::draw();
     }
+    void callback() override final {
+        if (visible)
+            Layout::callback();
+    }
     //
     bool isVisible() const { return visible; }
     void setVisible(const bool flag) { visible = flag; }

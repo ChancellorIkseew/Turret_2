@@ -12,4 +12,11 @@ public:
     void addNode(Node* node);
     void arrange();
     void draw() override;
+    void callback() override {
+        if (!containsMouse())
+            return;
+        for (auto& it : contents) {
+            it->callback();
+        }
+    }
 };

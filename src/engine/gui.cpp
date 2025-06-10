@@ -4,9 +4,9 @@
 #include "window/input/input.hpp"
 #include "window/window.hpp"
 
-GUI::GUI(const PixelCoord windowSize) {
-    containers.push_back(frontend::initMenu());
-    relocateContainers(windowSize);
+GUI::GUI(MainWindow& mainWindow) {
+    containers.push_back(frontend::initMenu(mainWindow));
+    relocateContainers(mainWindow.getSize());
 }
 
 void GUI::draw(const MainWindow& mainWindow) {
@@ -16,6 +16,7 @@ void GUI::draw(const MainWindow& mainWindow) {
         relocateContainers(mainWindow.getSize());
     for (const auto& it : containers) {
         it->draw();
+        it->callback();
     }
 }
 
