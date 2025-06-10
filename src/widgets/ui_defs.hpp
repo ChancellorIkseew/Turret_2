@@ -12,6 +12,10 @@ enum class Align : AlignType {
     right  = 0b00010000
 };
 
+static inline Align operator|(const Align a, const Align b) {
+    return static_cast<Align>(static_cast<AlignType>(a) | static_cast<AlignType>(b));
+}
+
 enum class SizePolicy {
     fixed,
     minimized

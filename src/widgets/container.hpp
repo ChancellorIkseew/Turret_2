@@ -8,6 +8,7 @@ class Container : public Layout {
 public:
     Container(const Align align) : Layout(), align(align) { }
     //
+    void aplyAlignment(const PixelCoord windowSize);
     void draw() override final {
         if (visible)
             Layout::draw();

@@ -8,7 +8,7 @@ class MainWindow {
     SDL_Renderer* renderer;
     SDL_Event event = SDL_Event(0);
     Uint32 FPS = 60, requiredDelay = 16, frameStart = 0;
-    bool open = true;
+    bool open = true, resized = false;
 public:
     MainWindow(const std::string& title);
     ~MainWindow();
@@ -16,6 +16,7 @@ public:
     void setFPS(const Uint32 FPS);
     bool isOpen() const { return open; }
     void close() { open = false; }
+    bool justResized() const { return resized; }
     Uint64 getTime() const { return SDL_GetTicks(); }
     PixelCoord getSize() const {
         int x = 0, y = 0;

@@ -44,10 +44,14 @@ void MainWindow::setRenderTranslation(const PixelCoord translation) {
 
 void MainWindow::pollEvents() {
     Input::reset();
+    resized = false;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
         case SDL_EVENT_QUIT:
             close();
+            break;
+        case SDL_EVENT_WINDOW_RESIZED:
+            resized = true;
             break;
         default:
             Input::update(event);

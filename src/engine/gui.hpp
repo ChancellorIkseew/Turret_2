@@ -3,9 +3,14 @@
 #include <vector>
 #include "widgets/container.hpp"
 
+class MainWindow;
+
 class GUI {
     std::vector<std::unique_ptr<Container>> containers;
 public:
-    GUI();
-    void draw();
+    GUI(const PixelCoord windowSize);
+    void draw(const MainWindow& mainWindow);
+private:
+    void relocateContainers(const PixelCoord windowSize);
+    void hideGUI();
 };
