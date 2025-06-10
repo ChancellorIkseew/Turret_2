@@ -1,5 +1,5 @@
-﻿#include "engine/engine.hpp"
-#include "debug/logger.hpp"
+﻿#include "debug/logger.hpp"
+#include "engine/engine.hpp"
 
 static debug::Logger logger("main");
 

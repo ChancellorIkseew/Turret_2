@@ -6,6 +6,7 @@
 
 GUI::GUI(MainWindow& mainWindow) {
     containers.push_back(frontend::initMenu(mainWindow));
+    containers.push_back(frontend::initSettings());
     relocateContainers(mainWindow.getSize());
 }
 
