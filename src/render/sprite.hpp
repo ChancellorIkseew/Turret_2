@@ -18,7 +18,7 @@ public:
     }
     //
     ///@brief Draw on position without angle and translation by camera.
-    void drawFast() const {
+    __forceinline void drawFast() const {
         SDL_RenderTexture(renderer, Atlas::rawSDL(), &textureRect, &rect);
     }
     void draw() {
@@ -29,11 +29,11 @@ public:
             &textureRect, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     //
-    void setPosition(const float x, const float y) {
+    __forceinline void setPosition(const float x, const float y) {
         rect.x = x;
         rect.y = y;
     }
-    void setPosition(const PixelCoord pos) {
+    __forceinline void setPosition(const PixelCoord pos) {
         setPosition(pos.x, pos.y);
     }
     void setSize(const PixelCoord size) {
