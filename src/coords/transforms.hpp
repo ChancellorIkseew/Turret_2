@@ -21,6 +21,7 @@ namespace t1
 
     int pow2i(const int value);
     float pow2f(const float value);
+    int ceilUpPow2(int value); // Not const int because of "|, --, ++".
     bool areCloser(const PixelCoord first, const PixelCoord second, const float distance);
 
     float radToDegree(const float radian);
