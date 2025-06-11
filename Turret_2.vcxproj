@@ -24,8 +24,9 @@
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\gui.cpp" />
     <ClCompile Include="src\frontend\menu.cpp" />
+    <ClCompile Include="src\frontend\settings.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\render\texture.cpp" />
+    <ClCompile Include="src\render\atlas.cpp" />
     <ClCompile Include="src\widgets\button.cpp" />
     <ClCompile Include="src\widgets\container.cpp" />
     <ClCompile Include="src\widgets\layout.cpp" />
@@ -45,8 +46,8 @@
     <ClInclude Include="src\engine\gui.hpp" />
     <ClInclude Include="src\frontend\frontend.hpp" />
     <ClInclude Include="src\game\mob_type.hpp" />
+    <ClInclude Include="src\render\atlas.hpp" />
     <ClInclude Include="src\render\sprite.hpp" />
-    <ClInclude Include="src\render\texture.hpp" />
     <ClInclude Include="src\widgets\button.hpp" />
     <ClInclude Include="src\widgets\container.hpp" />
     <ClInclude Include="src\widgets\layout.hpp" />

@@ -3,7 +3,7 @@
 #include "world/camera.hpp"
 #include <iostream>
 
-World::World() : texture("res/images/icon.bmp"), sprite(texture) {
+World::World() : sprite("icon") {
     for (int x = 0; x < 100; ++x) {
         std::vector<int> line;
         for (int y = 0; y < 100; ++y) {

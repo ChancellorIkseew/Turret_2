@@ -1,6 +1,6 @@
 #pragma once
-#include "ui_node.hpp"
 #include "layout.hpp"
+#include "ui_defs.hpp"
 
 class Container : public Layout {
     bool visible = true;

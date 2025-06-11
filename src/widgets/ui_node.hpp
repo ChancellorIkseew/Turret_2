@@ -1,20 +1,17 @@
 #pragma once
-#include "coords/pixel_coord.hpp"
-#include "ui_defs.hpp"
 #include <SDL3/SDL.h>
+#include "coords/pixel_coord.hpp"
 #include "render/sprite.hpp"
 
 class Node {
-    Texture texture;
     Sprite sprite;
     PixelCoord position;
     PixelCoord size;
 public:
     Node(const PixelCoord size, const PixelCoord position) :
-        size(size), position(position), texture("res/images/fill.png"), sprite(texture) { }
-    Node(const PixelCoord size) :
-        size(size), texture("res/images/fill.png"), sprite(texture) { }
-    Node() : texture("res/images/fill.png"), sprite(texture) { }
+        size(size), position(position), sprite("fill") { }
+    Node(const PixelCoord size) : size(size), sprite("fill") { }
+    Node() : sprite("fill") { }
     //
     virtual void draw();
     virtual void callback() = 0;

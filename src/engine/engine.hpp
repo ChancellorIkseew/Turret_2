@@ -6,8 +6,6 @@ class Engine {
     MainWindow mainWindow;
     std::unique_ptr<World> world;
 public:
-    Engine(const std::string& windowTitle) : mainWindow(windowTitle) {
-        world = std::make_unique<World>();
-    }
+    Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
     void run();
 };

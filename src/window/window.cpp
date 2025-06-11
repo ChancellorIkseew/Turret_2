@@ -2,6 +2,7 @@
 //
 #include <stdexcept>
 #include "input/input.hpp"
+#include "render/atlas.hpp"
 #include "render/sprite.hpp"
 
 MainWindow::MainWindow(const std::string& title) {
@@ -23,8 +24,8 @@ MainWindow::MainWindow(const std::string& title) {
         throw std::runtime_error("SDL_CreateRenderer Error: " + error);
     }
 
-    Texture::setRenderer(renderer);
     Sprite::setRenderer(renderer);
+    Atlas::setRenderer(renderer);
 }
 
 MainWindow::~MainWindow() {

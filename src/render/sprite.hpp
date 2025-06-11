@@ -1,30 +1,32 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include "atlas.hpp"
 #include "coords/pixel_coord.hpp"
-#include "texture.hpp"
+
+class MainWindow;
 
 class Sprite {
     static inline SDL_Renderer* renderer = nullptr;
     static inline PixelCoord translation;
-    Texture texture;
+    SDL_FRect textureRect;
     SDL_FRect rect = SDL_FRect(0.0f, 0.0f, 0.0f, 0.0f);
     SDL_FPoint origin = SDL_FPoint(0.0f, 0.0f);
     double angle = 0.0;
 public:
-    Sprite(const Texture& texture) : texture(texture) {
+    Sprite(const std::string& name) : textureRect(Atlas::at(name)) {
         rect = SDL_FRect(0, 0, 32, 32);
     }
     //
     ///@brief Draw on position without angle and translation by camera.
-    void drawFast() {
-        SDL_RenderTexture(renderer, texture.rawSDL(), nullptr, &rect);
+    void drawFast() const {
+        SDL_RenderTexture(renderer, Atlas::rawSDL(), &textureRect, &rect);
     }
     void draw() {
         SDL_FRect translatedRect = rect;
         translatedRect.x -= translation.x + origin.x;
         translatedRect.y -= translation.y + origin.y;
-        SDL_RenderTextureRotated(renderer, texture.rawSDL(),
-            nullptr, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
+        SDL_RenderTextureRotated(renderer, Atlas::rawSDL(),
+            &textureRect, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     //
     void setPosition(const float x, const float y) {

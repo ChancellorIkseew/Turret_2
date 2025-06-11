@@ -6,7 +6,6 @@ class Camera;
 
 class World {
     std::vector<std::vector<int>> terrain;
-    Texture texture;
     Sprite sprite;
 public:
     World();
