@@ -3,6 +3,7 @@
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
 #include "debug/logger.hpp"
+#include "packer/packer.hpp"
 
 namespace fs = std::filesystem;
 constexpr Uint32 TRANSPARENT = 0U;
@@ -33,12 +34,10 @@ void Atlas::addTexture(const fs::path& path) {
 }
 
 void Atlas::build() {
+    packer::arrangeRects(atlas);
     SDL_Surface* comonSurface = SDL_CreateSurface(256, 256, SDL_PIXELFORMAT_RGBA8888);
     SDL_FillSurfaceRect(comonSurface, nullptr, TRANSPARENT);
-    int x = 0;
     for (auto& [name, rect] : atlas) {
-        rect.x += x;
-        x += 45;
         SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
     }
     comonTexture = SDL_CreateTextureFromSurface(renderer, comonSurface);
