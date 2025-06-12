@@ -22,6 +22,8 @@ std::unordered_map<BindName, Binding> Input::bindings {
     {BindName::Cancel, Binding(SDL_SCANCODE_ESCAPE, InputType::keyboard)},
     {BindName::Escape, Binding(SDL_SCANCODE_ESCAPE, InputType::keyboard)},
     {BindName::Hide_GUI, Binding(SDL_SCANCODE_F1, InputType::keyboard)},
+    {BindName::Screenshot, Binding(SDL_SCANCODE_F2, InputType::keyboard)},
     {BindName::Show_FPS, Binding(SDL_SCANCODE_F3, InputType::keyboard)},
+    {BindName::Show_atlas, Binding(SDL_SCANCODE_F4, InputType::keyboard)},
     {BindName::Console_cheat, Binding(SDL_SCANCODE_RALT, InputType::keyboard)}
 };

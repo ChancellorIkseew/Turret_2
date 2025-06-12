@@ -21,7 +21,9 @@ enum class BindName {
     Cancel,
     Escape,
     Hide_GUI,
+    Screenshot,
     Show_FPS,
+    Show_atlas,
     Console_cheat
 };
 

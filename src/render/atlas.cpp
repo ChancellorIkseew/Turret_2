@@ -7,6 +7,7 @@
 
 namespace fs = std::filesystem;
 constexpr Uint32 TRANSPARENT = 0U;
+static SDL_Point size;
 static std::unordered_map <std::string, SDL_Rect> atlas;
 static std::unordered_map <std::string, SDL_Surface*> temporarySurfaces;
 static debug::Logger logger("texture_atlas");
@@ -34,8 +35,8 @@ void Atlas::addTexture(const fs::path& path) {
 }
 
 void Atlas::build() {
-    packer::arrangeRects(atlas);
-    SDL_Surface* comonSurface = SDL_CreateSurface(256, 256, SDL_PIXELFORMAT_RGBA8888);
+    size = packer::arrangeRects(atlas);
+    SDL_Surface* comonSurface = SDL_CreateSurface(size.x, size.y, SDL_PIXELFORMAT_RGBA8888);
     SDL_FillSurfaceRect(comonSurface, nullptr, TRANSPARENT);
     for (auto& [name, rect] : atlas) {
         SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
@@ -63,4 +64,9 @@ void Atlas::clear() {
     atlas.clear();
     clearTemporary();
     SDL_DestroyTexture(comonTexture);
+}
+
+void Atlas::testDraw() {
+    SDL_FRect rect(0, 0, static_cast<float>(size.x), static_cast<float>(size.y));
+    SDL_RenderTexture(renderer, Atlas::rawSDL(), nullptr, &rect);
 }

@@ -4,5 +4,5 @@
 #include <unordered_map>
 
 namespace packer {
-    void arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas);
+    SDL_Point arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas);
 }

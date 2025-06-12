@@ -10,6 +10,7 @@ public:
     static void clear();
     static void build();
     static void addTexture(const std::filesystem::path& path);
+    static void testDraw();
     static SDL_Texture* rawSDL() { return comonTexture; }
     static SDL_FRect at(const std::string& name);
     static void setRenderer(SDL_Renderer* renderer) {

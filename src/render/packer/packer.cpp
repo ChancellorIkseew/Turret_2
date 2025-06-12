@@ -20,19 +20,19 @@ static SDL_Point calculateSize(const int square, const int maxWidth, const int m
     return SDL_Point(w, h);
 }
 
-void packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas) {
+SDL_Point packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas) {
     std::vector<stbrp_rect> rects(atlas.size());
     int square = 0, maxWidth = 0, maxHeight = 0;
     int i = 0;
     for (const auto& [name, rect] : atlas) {
         rects[i].id = i;
-        rects[i].w = rect.w;
-        rects[i].h = rect.h;
-        if (rect.w > maxWidth)
+        rects[i].w = rect.w + 1;
+        rects[i].h = rect.h + 1;
+        if (rect.w + 1 > maxWidth)
             maxWidth = rect.w;
-        if (rect.h > maxHeight)
+        if (rect.h + 1 > maxHeight)
             maxHeight = rect.h;
-        square += rect.w * rect.h;
+        square += (rect.w + 1) * (rect.h + 1);
         ++i;
     }
     SDL_Point size = calculateSize(square, maxWidth, maxHeight);
@@ -54,8 +54,11 @@ void packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas) {
     for (auto& [name, rect] : atlas) {
         rect.x = rects[i].x;
         rect.y = rects[i].y;
-        logger.info() << "Texture rendered: \"" << name << "\" position: " << rect.x << " " << rect.y;
+#ifndef NDEBUG
+        logger.info() << "Texture placed: \"" << name << "\" position: " << rect.x << " " << rect.y;
+#endif
         ++i;
     }
-    logger.info() << "Atlas created. Size: " << size.x << " " << size.y;
+    logger.info() << "Atlas packed. Size: " << size.x << " " << size.y;
+    return size;
  }

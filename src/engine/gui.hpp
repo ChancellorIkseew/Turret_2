@@ -7,10 +7,10 @@ class MainWindow;
 
 class GUI {
     std::vector<std::unique_ptr<Container>> containers;
+    bool showGUI = true, showAtlas = false;
 public:
     GUI(MainWindow& mainWindow);
     void draw(const MainWindow& mainWindow);
 private:
     void relocateContainers(const PixelCoord windowSize);
-    void hideGUI();
 };
