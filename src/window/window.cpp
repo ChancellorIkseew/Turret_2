@@ -4,6 +4,7 @@
 #include "input/input.hpp"
 #include "render/atlas.hpp"
 #include "render/sprite.hpp"
+#include "render/text.hpp"
 
 MainWindow::MainWindow(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))
@@ -26,6 +27,7 @@ MainWindow::MainWindow(const std::string& title) {
 
     Sprite::setRenderer(renderer);
     Atlas::setRenderer(renderer);
+    text::setRenderer(renderer);
 }
 
 MainWindow::~MainWindow() {

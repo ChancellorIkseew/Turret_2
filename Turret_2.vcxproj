@@ -27,6 +27,7 @@
     <ClCompile Include="src\frontend\settings.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\render\atlas.cpp" />
+    <ClCompile Include="src\render\text.cpp" />
     <ClCompile Include="src\render\packer\packer.cpp" />
     <ClCompile Include="src\widgets\button.cpp" />
     <ClCompile Include="src\widgets\container.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="src\frontend\frontend.hpp" />
     <ClInclude Include="src\game\mob_type.hpp" />
     <ClInclude Include="src\render\atlas.hpp" />
+    <ClInclude Include="src\render\text.hpp" />
     <ClInclude Include="src\render\packer\packer.hpp" />
     <ClInclude Include="src\render\sprite.hpp" />
     <ClInclude Include="src\widgets\button.hpp" />

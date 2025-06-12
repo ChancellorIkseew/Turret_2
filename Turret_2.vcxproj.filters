@@ -69,6 +69,9 @@
     <ClCompile Include="src\render\packer\packer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\text.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\window\window.hpp">
@@ -132,6 +135,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\render\packer\packer.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\text.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
