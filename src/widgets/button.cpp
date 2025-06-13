@@ -10,5 +10,11 @@ void Button::callback() {
 
 void Button::draw() {
     Node::draw();
-    text::drawString(name, getPosition().x, getPosition().y);
+    label.draw();
+}
+
+void Button::setPosition(const PixelCoord position) {
+    Node::setPosition(position);
+    PixelCoord margin = (getSize() - label.getSize()) / 2;
+    label.setPosition(getPosition() + margin);
 }

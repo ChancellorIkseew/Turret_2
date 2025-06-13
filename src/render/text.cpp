@@ -15,7 +15,7 @@ static void drawGlyph(const uint32_t symbol, const SDL_FRect* destRect) {
     SDL_RenderTexture(text::renderer, Atlas::rawSDL(), &glyphRect, destRect);
 }
 
-void text::drawString(const std::u32string& text, float x, float y) {
+void text::drawString(const std::u32string& text, const float x, const float y) {
     SDL_FRect destRect(x, y, GLYPH_SIZE, GLYPH_SIZE);
     for (const auto it : text) {
         if (it != ' ')

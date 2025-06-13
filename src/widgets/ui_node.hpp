@@ -1,5 +1,4 @@
 #pragma once
-#include <SDL3/SDL.h>
 #include "coords/pixel_coord.hpp"
 #include "render/sprite.hpp"
 
@@ -18,7 +17,7 @@ public:
     //
     PixelCoord getPosition() const { return position; }
     PixelCoord getSize() const { return size; }
-    void setPosition(const PixelCoord position) { this->position = position; }
+    virtual void setPosition(const PixelCoord position) { this->position = position; }
     void setSize(const PixelCoord size) { this->size = size; }
     bool containsMouse() const;
 private:

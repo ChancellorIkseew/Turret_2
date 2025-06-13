@@ -1,16 +1,18 @@
 #pragma once
 #include <functional>
+#include "label.hpp"
 #include "ui_node.hpp"
 
 class Button : public Node {
     std::function<void()> action;
-    std::u32string name;
+    Label label;
 public:
     Button(const int sizeX, const int sizeY, std::u32string name) :
-        Node(PixelCoord(sizeX, sizeY)), name(std::move(name)) { }
+        Node(PixelCoord(sizeX, sizeY)), label(name) { }
     //
     void draw() override final;
     void callback() override final;
+    void setPosition(const PixelCoord position) override final;
     void addCallback(std::function<void()> action) {
         this->action = action;
     }

@@ -25,12 +25,14 @@
     <ClCompile Include="src\engine\gui.cpp" />
     <ClCompile Include="src\frontend\menu.cpp" />
     <ClCompile Include="src\frontend\settings.cpp" />
+    <ClCompile Include="src\frontend\timer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\render\atlas.cpp" />
     <ClCompile Include="src\render\text.cpp" />
     <ClCompile Include="src\render\packer\packer.cpp" />
     <ClCompile Include="src\widgets\button.cpp" />
     <ClCompile Include="src\widgets\container.cpp" />
+    <ClCompile Include="src\widgets\label.cpp" />
     <ClCompile Include="src\widgets\layout.cpp" />
     <ClCompile Include="src\widgets\ui_node.cpp" />
     <ClCompile Include="src\window\input\default_bindings.cpp" />
@@ -54,6 +56,7 @@
     <ClInclude Include="src\render\sprite.hpp" />
     <ClInclude Include="src\widgets\button.hpp" />
     <ClInclude Include="src\widgets\container.hpp" />
+    <ClInclude Include="src\widgets\label.hpp" />
     <ClInclude Include="src\widgets\layout.hpp" />
     <ClInclude Include="src\widgets\ui_defs.hpp" />
     <ClInclude Include="src\widgets\ui_node.hpp" />
