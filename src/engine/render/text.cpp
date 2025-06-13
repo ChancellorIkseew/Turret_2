@@ -16,7 +16,7 @@ static __forceinline void drawGlyph(const uint32_t symbol, const SDL_FRect* dest
 }
 
 void text::drawString(const std::u32string& text, const float x, const float y) {
-    SDL_FRect destRect(x, y, GLYPH_SIZE, GLYPH_SIZE);
+    SDL_FRect destRect(ceilf(x), ceilf(y), GLYPH_SIZE, GLYPH_SIZE);
     for (const auto it : text) {
         if (it != ' ')
             drawGlyph(it, &destRect);
@@ -32,4 +32,3 @@ void text::setFont(const std::string& name) {
 void text::setRenderer(SDL_Renderer* renderer) {
     text::renderer = renderer;
 }
-
