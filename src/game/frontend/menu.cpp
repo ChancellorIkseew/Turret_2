@@ -4,7 +4,7 @@
 #include "engine/window/window.hpp"
 
 std::unique_ptr<Container> frontend::initMenu(MainWindow& mainWindow) {
-    auto menu = std::make_unique<Container>(Align::centre);
+    auto menu = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
     auto exit = std::make_unique<Button>(200, 50, U"Exit game");
     auto btn2 = std::make_unique<Button>(200, 50, U"Settings");

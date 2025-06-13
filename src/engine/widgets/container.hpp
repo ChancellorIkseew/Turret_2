@@ -6,7 +6,8 @@ class Container : public Layout {
     bool visible = true;
     Align align = Align::none;
 public:
-    Container(const Align align) : Layout(), align(align) { }
+    Container(const Align align, const Orientation orientation) :
+        Layout(orientation), align(align) { }
     //
     void aplyAlignment(const PixelCoord windowSize);
     void draw() override final {

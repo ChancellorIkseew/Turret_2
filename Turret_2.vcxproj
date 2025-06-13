@@ -62,6 +62,7 @@
     <ClCompile Include="src\game\frontend\menu.cpp" />
     <ClCompile Include="src\game\frontend\settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
+    <ClCompile Include="src\game\frontend\editor.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
     <ClCompile Include="src\game\world\world.cpp" />
     <ClCompile Include="src\main.cpp" />
