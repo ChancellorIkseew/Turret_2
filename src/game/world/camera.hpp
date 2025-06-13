@@ -1,6 +1,6 @@
 #pragma once
-#include "coords/pixel_coord.hpp"
-#include "coords/tile_coord.hpp"
+#include "engine/coords/pixel_coord.hpp"
+#include "engine/coords/tile_coord.hpp"
 
 class Camera {
     PixelCoord cameraUpperLeftCorner, cameraCentre;

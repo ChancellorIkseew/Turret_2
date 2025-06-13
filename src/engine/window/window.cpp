@@ -1,10 +1,10 @@
 #include "window.hpp"
 //
 #include <stdexcept>
+#include "engine/render/atlas.hpp"
+#include "engine/render/sprite.hpp"
+#include "engine/render/text.hpp"
 #include "input/input.hpp"
-#include "render/atlas.hpp"
-#include "render/sprite.hpp"
-#include "render/text.hpp"
 
 MainWindow::MainWindow(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))

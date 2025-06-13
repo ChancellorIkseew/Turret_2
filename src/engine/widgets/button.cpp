@@ -1,7 +1,7 @@
 #include "button.hpp"
 //
-#include "render/text.hpp"
-#include "window/input/input.hpp"
+#include "engine/render/text.hpp"
+#include "engine/window/input/input.hpp"
 
 void Button::callback() {
     if (action && containsMouse() && Input::jactive(BindName::LMB))

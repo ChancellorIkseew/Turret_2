@@ -1,4 +1,4 @@
-﻿#include "debug/logger.hpp"
+﻿#include "engine/debug/logger.hpp"
 #include "engine/engine.hpp"
 
 static debug::Logger logger("main");

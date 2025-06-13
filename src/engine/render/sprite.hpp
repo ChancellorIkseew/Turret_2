@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include "atlas.hpp"
-#include "coords/pixel_coord.hpp"
+#include "engine/coords/pixel_coord.hpp"
 
 class MainWindow;
 

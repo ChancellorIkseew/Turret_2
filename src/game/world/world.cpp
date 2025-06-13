@@ -1,6 +1,6 @@
 #include "world.hpp"
 //
-#include "world/camera.hpp"
+#include "camera.hpp"
 #include <iostream>
 
 World::World() : sprite("icon") {

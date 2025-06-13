@@ -19,52 +19,52 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\coords\transforms.cpp" />
-    <ClCompile Include="src\debug\logger.cpp" />
-    <ClCompile Include="src\engine\engine.cpp" />
-    <ClCompile Include="src\engine\gui.cpp" />
-    <ClCompile Include="src\frontend\menu.cpp" />
-    <ClCompile Include="src\frontend\settings.cpp" />
-    <ClCompile Include="src\frontend\timer.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\render\atlas.cpp" />
-    <ClCompile Include="src\render\text.cpp" />
-    <ClCompile Include="src\render\packer\packer.cpp" />
-    <ClCompile Include="src\widgets\button.cpp" />
-    <ClCompile Include="src\widgets\container.cpp" />
-    <ClCompile Include="src\widgets\label.cpp" />
-    <ClCompile Include="src\widgets\layout.cpp" />
-    <ClCompile Include="src\widgets\ui_node.cpp" />
-    <ClCompile Include="src\window\input\default_bindings.cpp" />
-    <ClCompile Include="src\window\input\input.cpp" />
-    <ClCompile Include="src\window\window.cpp" />
-    <ClCompile Include="src\world\camera.cpp" />
-    <ClCompile Include="src\world\world.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\coords\pixel_coord.hpp" />
-    <ClInclude Include="src\coords\tile_coord.hpp" />
-    <ClInclude Include="src\coords\transforms.hpp" />
-    <ClInclude Include="src\debug\logger.hpp" />
+    <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
+    <ClInclude Include="src\engine\coords\tile_coord.hpp" />
+    <ClInclude Include="src\engine\coords\transforms.hpp" />
+    <ClInclude Include="src\engine\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
     <ClInclude Include="src\engine\gui.hpp" />
-    <ClInclude Include="src\frontend\frontend.hpp" />
-    <ClInclude Include="src\game\mob_type.hpp" />
-    <ClInclude Include="src\render\atlas.hpp" />
-    <ClInclude Include="src\render\text.hpp" />
-    <ClInclude Include="src\render\packer\packer.hpp" />
-    <ClInclude Include="src\render\sprite.hpp" />
-    <ClInclude Include="src\widgets\button.hpp" />
-    <ClInclude Include="src\widgets\container.hpp" />
-    <ClInclude Include="src\widgets\label.hpp" />
-    <ClInclude Include="src\widgets\layout.hpp" />
-    <ClInclude Include="src\widgets\ui_defs.hpp" />
-    <ClInclude Include="src\widgets\ui_node.hpp" />
-    <ClInclude Include="src\window\input\input.hpp" />
-    <ClInclude Include="src\window\input\binding.hpp" />
-    <ClInclude Include="src\window\window.hpp" />
-    <ClInclude Include="src\world\camera.hpp" />
-    <ClInclude Include="src\world\world.hpp" />
+    <ClInclude Include="src\engine\render\atlas.hpp" />
+    <ClInclude Include="src\engine\render\packer\packer.hpp" />
+    <ClInclude Include="src\engine\render\sprite.hpp" />
+    <ClInclude Include="src\engine\render\text.hpp" />
+    <ClInclude Include="src\engine\widgets\button.hpp" />
+    <ClInclude Include="src\engine\widgets\container.hpp" />
+    <ClInclude Include="src\engine\widgets\label.hpp" />
+    <ClInclude Include="src\engine\widgets\layout.hpp" />
+    <ClInclude Include="src\engine\widgets\ui_defs.hpp" />
+    <ClInclude Include="src\engine\widgets\ui_node.hpp" />
+    <ClInclude Include="src\engine\window\input\binding.hpp" />
+    <ClInclude Include="src\engine\window\input\input.hpp" />
+    <ClInclude Include="src\engine\window\window.hpp" />
+    <ClInclude Include="src\game\frontend\frontend.hpp" />
+    <ClInclude Include="src\game\mob\mob_type.hpp" />
+    <ClInclude Include="src\game\world\camera.hpp" />
+    <ClInclude Include="src\game\world\world.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\engine\coords\transforms.cpp" />
+    <ClCompile Include="src\engine\debug\logger.cpp" />
+    <ClCompile Include="src\engine\engine.cpp" />
+    <ClCompile Include="src\engine\gui.cpp" />
+    <ClCompile Include="src\engine\render\atlas.cpp" />
+    <ClCompile Include="src\engine\render\packer\packer.cpp" />
+    <ClCompile Include="src\engine\render\text.cpp" />
+    <ClCompile Include="src\engine\widgets\button.cpp" />
+    <ClCompile Include="src\engine\widgets\container.cpp" />
+    <ClCompile Include="src\engine\widgets\label.cpp" />
+    <ClCompile Include="src\engine\widgets\layout.cpp" />
+    <ClCompile Include="src\engine\widgets\ui_node.cpp" />
+    <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
+    <ClCompile Include="src\engine\window\input\input.cpp" />
+    <ClCompile Include="src\engine\window\window.cpp" />
+    <ClCompile Include="src\game\frontend\menu.cpp" />
+    <ClCompile Include="src\game\frontend\settings.cpp" />
+    <ClCompile Include="src\game\frontend\timer.cpp" />
+    <ClCompile Include="src\game\world\camera.cpp" />
+    <ClCompile Include="src\game\world\world.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

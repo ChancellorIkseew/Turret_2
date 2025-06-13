@@ -1,11 +1,11 @@
 #include "engine.hpp"
 //
 #include "gui.hpp"
-#include "game/mob_type.hpp"
-#include "render/atlas.hpp"
-#include "render/sprite.hpp"
-#include "window/input/input.hpp"
-#include "world/camera.hpp"
+#include "game/mob/mob_type.hpp"
+#include "engine/render/atlas.hpp"
+#include "engine/render/sprite.hpp"
+#include "engine/window/input/input.hpp"
+#include "game/world/camera.hpp"
 
 void Engine::run() {
     Atlas::addTexture("res/fonts/font_0.png");

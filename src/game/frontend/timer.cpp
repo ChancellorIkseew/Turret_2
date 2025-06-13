@@ -1,7 +1,7 @@
 #include "frontend.hpp"
 //
-#include "widgets/button.hpp"
-#include "widgets/label.hpp"
+#include "engine/widgets/button.hpp"
+#include "engine/widgets/label.hpp"
 
 std::unique_ptr<Container> frontend::initTimer() {
     auto timer = std::make_unique<Container>(Align::left | Align::up);

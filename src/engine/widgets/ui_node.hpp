@@ -1,6 +1,6 @@
 #pragma once
-#include "coords/pixel_coord.hpp"
-#include "render/sprite.hpp"
+#include "engine/coords/pixel_coord.hpp"
+#include "engine/render/sprite.hpp"
 
 class Node {
     Sprite sprite;

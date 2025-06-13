@@ -1,7 +1,7 @@
 #include "frontend.hpp"
 //
-#include "widgets/button.hpp"
-#include "window/window.hpp"
+#include "engine/widgets/button.hpp"
+#include "engine/window/window.hpp"
 
 std::unique_ptr<Container> frontend::initMenu(MainWindow& mainWindow) {
     auto menu = std::make_unique<Container>(Align::centre);

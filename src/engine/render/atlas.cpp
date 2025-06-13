@@ -2,7 +2,7 @@
 //
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
-#include "debug/logger.hpp"
+#include "engine/debug/logger.hpp"
 #include "packer/packer.hpp"
 
 namespace fs = std::filesystem;

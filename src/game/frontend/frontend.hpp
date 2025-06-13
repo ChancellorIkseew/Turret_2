@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "widgets/container.hpp"
+#include "engine/widgets/container.hpp"
 
 class MainWindow;
 class World;

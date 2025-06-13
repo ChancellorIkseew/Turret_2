@@ -2,8 +2,8 @@
 //
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <STB/stb_rect.h>
-#include "coords/transforms.hpp"
-#include "debug/logger.hpp"
+#include "engine/coords/transforms.hpp"
+#include "engine/debug/logger.hpp"
 
 constexpr int MAX_PACK_ATTEMPTS = 5;
 static debug::Logger logger("atlas_packer");

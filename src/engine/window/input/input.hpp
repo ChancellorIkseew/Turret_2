@@ -2,7 +2,7 @@
 #include <SDL3/SDL_events.h>
 #include <unordered_map>
 #include "binding.hpp"
-#include "coords/pixel_coord.hpp"
+#include "engine/coords/pixel_coord.hpp"
 
 class MainWindow;
 

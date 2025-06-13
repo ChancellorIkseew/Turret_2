@@ -1,9 +1,9 @@
 #include "gui.hpp"
 //
-#include "frontend/frontend.hpp"
-#include "render/atlas.hpp"
-#include "window/input/input.hpp"
-#include "window/window.hpp"
+#include "game/frontend/frontend.hpp"
+#include "engine/render/atlas.hpp"
+#include "engine/window/input/input.hpp"
+#include "engine/window/window.hpp"
 
 GUI::GUI(MainWindow& mainWindow) {
     containers.push_back(frontend::initMenu(mainWindow));

@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "render/sprite.hpp"
+#include "engine/render/sprite.hpp"
 
 class Camera;
 

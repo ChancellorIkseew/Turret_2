@@ -1,6 +1,6 @@
 #pragma once
-#include "window/window.hpp"
-#include "world/world.hpp"
+#include "engine/window/window.hpp"
+#include "game/world/world.hpp"
 
 class Engine {
     MainWindow mainWindow;
