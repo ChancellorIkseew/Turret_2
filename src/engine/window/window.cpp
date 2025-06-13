@@ -41,6 +41,11 @@ void MainWindow::setFPS(const Uint32 FPS) {
     requiredDelay = 1000U / FPS;
 }
 
+void MainWindow::setFullscreen(const bool flag) {
+    fullscreen = flag;
+    SDL_SetWindowFullscreen(window, flag);
+}
+
 void MainWindow::setRenderTranslation(const PixelCoord translation) {
     Sprite::setTranslation(translation);
 }
