@@ -12,6 +12,10 @@ public:
     void addNode(Node* node);
     void arrange();
     void draw() override;
+    void setPosition(const PixelCoord position) override final {
+        Node::setPosition(position);
+        arrange();
+    }
     void callback() override {
         if (!containsMouse())
             return;

@@ -1,19 +1,23 @@
 #include "frontend.hpp"
 //
 #include "engine/widgets/button.hpp"
+#include "engine/widgets/layout.hpp"
 
 std::unique_ptr<Container> frontend::initSettings() {
     auto settings = std::make_unique<Container>(Align::right | Align::up);
 
-    auto exit = std::make_unique<Button>(200, 50, U"Exit game");
-    auto btn2 = std::make_unique<Button>(200, 50, U"Settings");
-    auto btn3 = std::make_unique<Button>(200, 50, U"Exit to menu");
-    auto btn4 = std::make_unique<Button>(200, 50, U"Save game");
+    auto graphics = std::make_unique<Layout>();
 
-    settings->addNode(exit.release());
-    settings->addNode(btn2.release());
-    settings->addNode(btn3.release());
-    settings->addNode(btn4.release());
+    auto fps = std::make_unique<Label>(U"FPS");
+    auto fullscreen = std::make_unique<Label>(U"Fullscreen");
+
+
+    graphics->addNode(fps.release());
+    graphics->addNode(fullscreen.release());
+    graphics->arrange();
+
+
+    settings->addNode(graphics.release());
     settings->arrange();
     return settings;
 }

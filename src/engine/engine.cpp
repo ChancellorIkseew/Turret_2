@@ -15,8 +15,7 @@ void Engine::run() {
     Atlas::build();
 
     world = std::make_unique<World>();
-    MobType standard;
-    Mob mob(standard);
+    Mob mob(CANNON_BOSS);
     mob.setPixelCoord(PixelCoord(32, 32));
     mob.setAngleDeg(45.0f);
  
