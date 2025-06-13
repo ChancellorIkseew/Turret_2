@@ -8,7 +8,7 @@ constexpr float GLYPH_SIZE = 16.0f;
 static SDL_FPoint start;
 namespace text { static SDL_Renderer* renderer; }
 
-static void drawGlyph(const uint32_t symbol, const SDL_FRect* destRect) {
+static __forceinline void drawGlyph(const uint32_t symbol, const SDL_FRect* destRect) {
     SDL_FRect glyphRect(start.x, start.y, GLYPH_SIZE, GLYPH_SIZE);
     glyphRect.x += static_cast<float>(symbol % SYMBOLS_PER_LINE * GLYPH_SIZE);
     glyphRect.y += static_cast<float>(symbol / SYMBOLS_PER_LINE * GLYPH_SIZE);
