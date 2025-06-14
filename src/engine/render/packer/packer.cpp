@@ -40,8 +40,8 @@ SDL_Point packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas)
     std::vector<stbrp_node> nodes(atlas.size());
     stbrp_context context;
     for (i = 1;; ++i) {
-        stbrp_init_target(&context, size.x, size.y, nodes.data(), static_cast<int>(atlas.size()));
-        int result = stbrp_pack_rects(&context, rects.data(), static_cast<int>(nodes.size()));
+        stbrp_init_target(&context, size.x, size.y, nodes.data(), static_cast<int>(nodes.size()));
+        int result = stbrp_pack_rects(&context, rects.data(), static_cast<int>(rects.size()));
         if (result != 0)
             break;
         if (i >= MAX_PACK_ATTEMPTS) {
