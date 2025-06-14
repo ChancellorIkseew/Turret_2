@@ -3,15 +3,22 @@
 #include <typeinfo>
 #include "atlas.hpp"
 
+constexpr uint32_t CYRILIC_BEGIN = 1024U;
 constexpr uint32_t SYMBOLS_PER_LINE = 16U;
 constexpr float GLYPH_SIZE = 16.0f;
-static SDL_FPoint start;
+static SDL_FPoint startLatin;
+static SDL_FPoint startCyrilic;
 namespace text { static SDL_Renderer* renderer; }
 
-static __forceinline void drawGlyph(const uint32_t symbol, const SDL_FRect* destRect) {
-    SDL_FRect glyphRect(start.x, start.y, GLYPH_SIZE, GLYPH_SIZE);
-    glyphRect.x += static_cast<float>(symbol % SYMBOLS_PER_LINE * GLYPH_SIZE);
-    glyphRect.y += static_cast<float>(symbol / SYMBOLS_PER_LINE * GLYPH_SIZE);
+static __forceinline void drawGlyph(uint32_t symbol, const SDL_FRect* destRect) {
+    SDL_FRect glyphRect = SDL_FRect(startLatin.x, startLatin.y, GLYPH_SIZE, GLYPH_SIZE);
+    if (symbol >= CYRILIC_BEGIN) {
+        glyphRect.x = startCyrilic.x;
+        glyphRect.y = startCyrilic.y;
+        symbol -= CYRILIC_BEGIN;
+    }
+    glyphRect.x += static_cast<float>(symbol % SYMBOLS_PER_LINE) * GLYPH_SIZE;
+    glyphRect.y += static_cast<float>(symbol / SYMBOLS_PER_LINE) * GLYPH_SIZE;
     SDL_RenderTexture(text::renderer, Atlas::rawSDL(), &glyphRect, destRect);
 }
 
@@ -24,9 +31,11 @@ void text::drawString(const std::u32string& text, const float x, const float y) 
     }
 }
 
-void text::setFont(const std::string& name) {
-    start.x = Atlas::at(name).x;
-    start.y = Atlas::at(name).y;
+void text::setFont(const std::string& latin, const std::string& cyrilic) {
+    startLatin.x = Atlas::at(latin).x;
+    startLatin.y = Atlas::at(latin).y;
+    startCyrilic.x = Atlas::at(cyrilic).x;
+    startCyrilic.y = Atlas::at(cyrilic).y;
 }
 
 void text::setRenderer(SDL_Renderer* renderer) {

@@ -9,7 +9,7 @@ std::unique_ptr<Container> frontend::initMenu(MainWindow& mainWindow) {
     auto exit = std::make_unique<Button>(200, 50, U"Exit game");
     auto btn2 = std::make_unique<Button>(200, 50, U"Settings");
     auto btn3 = std::make_unique<Button>(200, 50, U"Exit to menu");
-    auto btn4 = std::make_unique<Button>(200, 50, U"Save game");
+    auto btn4 = std::make_unique<Button>(200, 50, U"Проверка");
 
     exit->addCallback([&]() { mainWindow.close(); });
 

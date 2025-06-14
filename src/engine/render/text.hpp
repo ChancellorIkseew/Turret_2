@@ -9,5 +9,5 @@ namespace text {
         drawString(text, pos.x, pos.y);
     }
     void setRenderer(SDL_Renderer* renderer);
-    void setFont(const std::string& name);
+    void setFont(const std::string& latin, const std::string& cyrilic);
 }

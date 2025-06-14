@@ -4,15 +4,18 @@
 #include "game/mob/mob_type.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
+#include "engine/render/text.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/world/camera.hpp"
 
 void Engine::run() {
-    Atlas::addTexture("res/fonts/font_0.png");
+    Atlas::addTexture("res/fonts/vc_latin.png");
+    Atlas::addTexture("res/fonts/vc_cyrilic.png");
     Atlas::addTexture("res/images/icon.bmp");
     Atlas::addTexture("res/images/cannoner_bot.png");
     Atlas::addTexture("res/images/fill.png");
     Atlas::build();
+    text::setFont("vc_latin", "vc_cyrilic");
 
     world = std::make_unique<World>();
     Mob mob(CANNON_BOSS);
