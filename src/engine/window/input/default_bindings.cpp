@@ -4,6 +4,10 @@ std::unordered_map<BindName, Binding> Input::bindings {
     {BindName::LMB, Binding(SDL_BUTTON_LEFT, InputType::mouse)},
     {BindName::RMB, Binding(SDL_BUTTON_RIGHT, InputType::mouse)},
     {BindName::MidMB, Binding(SDL_BUTTON_MIDDLE, InputType::mouse)},
+    {BindName::Arrow_left, Binding(SDL_SCANCODE_LEFT, InputType::keyboard)},
+    {BindName::Arrow_right, Binding(SDL_SCANCODE_RIGHT, InputType::keyboard)},
+    {BindName::Backspace, Binding(SDL_SCANCODE_BACKSPACE, InputType::keyboard)},
+    {BindName::Delete, Binding(SDL_SCANCODE_DELETE, InputType::keyboard)},
 
     {BindName::Build, Binding(SDL_BUTTON_LEFT, InputType::mouse)},
     {BindName::Rotate_building, Binding(SDL_SCANCODE_R, InputType::keyboard)},

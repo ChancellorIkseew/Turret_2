@@ -4,6 +4,10 @@ enum class BindName {
     LMB,
     RMB,
     MidMB,
+    Arrow_left,
+    Arrow_right,
+    Backspace,
+    Delete,
 
     Build,
     Demolish,
