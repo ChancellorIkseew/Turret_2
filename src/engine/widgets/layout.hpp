@@ -11,6 +11,7 @@ class Layout : public Node {
 public:
     Layout(const Orientation orientation) :
         Node(), orientation(orientation) { }
+    virtual ~Layout() override = default;
     //
     void addNode(Node* node);
     void arrange();

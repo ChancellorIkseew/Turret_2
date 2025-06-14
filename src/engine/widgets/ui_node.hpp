@@ -11,6 +11,7 @@ public:
         size(size), position(position), sprite("fill") { }
     Node(const PixelCoord size) : size(size), sprite("fill") { }
     Node() : sprite("fill") { }
+    virtual ~Node() = default;
     //
     virtual void draw();
     virtual void callback() = 0;
