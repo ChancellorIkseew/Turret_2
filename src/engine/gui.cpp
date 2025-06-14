@@ -2,6 +2,7 @@
 //
 #include "game/frontend/frontend.hpp"
 #include "engine/render/atlas.hpp"
+#include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
 
@@ -29,6 +30,7 @@ void GUI::draw(const MainWindow& mainWindow) {
     }
     if (showAtlas)
         Atlas::testDraw();
+    FormEditor::editForm();
 }
 
 void GUI::relocateContainers(const PixelCoord windowSize) {

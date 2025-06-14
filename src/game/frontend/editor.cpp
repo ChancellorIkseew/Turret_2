@@ -1,6 +1,7 @@
 #include "frontend.hpp"
 //
 #include "engine/widgets/button.hpp"
+#include "engine/widgets/form.hpp"
 #include "engine/widgets/label.hpp"
 
 std::unique_ptr<Container> frontend::initEditor() {
@@ -9,7 +10,7 @@ std::unique_ptr<Container> frontend::initEditor() {
     auto deposite = std::make_unique<Layout>(Orientation::vertical);
 
     auto startWave = std::make_unique<Label>(U"frequancy");
-    auto timeToWave = std::make_unique<Label>(U"text");
+    auto timeToWave = std::make_unique<Form>();
 
     frequancy->addNode(startWave.release());
     frequancy->addNode(timeToWave.release());

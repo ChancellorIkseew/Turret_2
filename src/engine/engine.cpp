@@ -18,7 +18,7 @@ void Engine::run() {
     Mob mob(CANNON_BOSS);
     mob.setPixelCoord(PixelCoord(32, 32));
     mob.setAngleDeg(45.0f);
- 
+
     GUI gui(mainWindow);
     TileCoord mapSize(100, 100);
     Camera camera(mapSize);
