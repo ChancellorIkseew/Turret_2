@@ -70,7 +70,7 @@ PixelCoord Input::getMouseCoord() {
     return mouseCoord.load(std::memory_order_relaxed);
 }
 MouseWheelScroll Input::getMouseWheelScroll() {
-    return mouseWheelScroll.load(std::memory_order_relaxed);
+    return mouseWheelScroll.exchange(MouseWheelScroll::none, std::memory_order_relaxed);
 }
 
 uint32_t Input::getLastSymbolEntered() {
