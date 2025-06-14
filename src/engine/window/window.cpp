@@ -25,6 +25,7 @@ MainWindow::MainWindow(const std::string& title) {
         throw std::runtime_error("SDL_CreateRenderer Error: " + error);
     }
 
+    Input::init(window);
     Sprite::setRenderer(renderer);
     Atlas::setRenderer(renderer);
     text::setRenderer(renderer);

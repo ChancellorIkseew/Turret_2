@@ -1,9 +1,15 @@
 #include "input.hpp"
 //
 #include <atomic>
+#include "utf8/utf8.hpp"
 
+static SDL_Window* window;
+constexpr uint32_t NON_USABLE_SYMBOL = 0U;
+static std::atomic<uint32_t> symbolJustEntered = NON_USABLE_SYMBOL;
 static std::atomic<PixelCoord> mouseCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
+
+void Input::init(SDL_Window* mainWindow) { window = mainWindow; }
 
 void Input::update(const SDL_Event& event) {
     if (event.type == SDL_EVENT_MOUSE_WHEEL) {
@@ -13,10 +19,16 @@ void Input::update(const SDL_Event& event) {
         else if (event.wheel.y > 0.0f)
             scroll = MouseWheelScroll::down;
         mouseWheelScroll.store(scroll, std::memory_order_relaxed);
+        return;
     }
-
-    if (event.type == SDL_EVENT_MOUSE_MOTION)
+    if (event.type == SDL_EVENT_MOUSE_MOTION) {
         mouseCoord.store(PixelCoord(event.motion.x, event.motion.y));
+        return;
+    }
+    if (event.type == SDL_EVENT_TEXT_INPUT) {
+        symbolJustEntered.store(utf8::fromConstCharToUtf8(event.text.text), std::memory_order_relaxed);
+        return;
+    }
 
     InputType inputType = InputType::keyboard;
     int code = -1;
@@ -59,4 +71,14 @@ PixelCoord Input::getMouseCoord() {
 }
 MouseWheelScroll Input::getMouseWheelScroll() {
     return mouseWheelScroll.load(std::memory_order_relaxed);
+}
+
+uint32_t Input::getLastSymbolEntered() {
+    return symbolJustEntered.exchange(NON_USABLE_SYMBOL, std::memory_order_relaxed);
+}
+void Input::enanleTextEnter(const bool flag) {
+    if (flag)
+        SDL_StartTextInput(window);
+    else
+        SDL_StopTextInput(window);
 }
