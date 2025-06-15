@@ -23,7 +23,7 @@ namespace debug {
     class Logger {
         const std::string name;
     public:
-        Logger(std::string&& name) : name(name) { }
+        Logger(std::string name) : name(std::move(name)) { }
         void log(LogLevel level, const std::string& message) const;
         //
         static void init(const std::string& filename);

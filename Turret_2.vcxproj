@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\config.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
     <ClInclude Include="src\engine\coords\transforms.hpp" />

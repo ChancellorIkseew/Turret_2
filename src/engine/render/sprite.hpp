@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL_render.h>
 #include "atlas.hpp"
+#include "config.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
 class MainWindow;
@@ -18,7 +19,7 @@ public:
     }
     //
     ///@brief Draw on position without angle and translation by camera.
-    __forceinline void drawFast() const {
+    t1_finline void drawFast() const {
         SDL_RenderTexture(renderer, Atlas::rawSDL(), &textureRect, &rect);
     }
     void draw() {
@@ -29,29 +30,29 @@ public:
             &textureRect, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     //
-    __forceinline void setPosition(const float x, const float y) {
+    t1_finline void setPosition(const float x, const float y) noexcept {
         rect.x = x;
         rect.y = y;
     }
-    __forceinline void setPosition(const PixelCoord pos) {
+    t1_finline void setPosition(const PixelCoord pos) noexcept {
         setPosition(pos.x, pos.y);
     }
-    void setSize(const PixelCoord size) {
+    t1_finline void setSize(const PixelCoord size) noexcept {
         rect.w = size.x;
         rect.h = size.y;
     }
-    void setRotation(const double angleDegree) {
+    t1_finline void setRotation(const double angleDegree) noexcept {
         angle = angleDegree;
     }
-    void setOrigin(const float x, const float y) {
+    t1_finline void setOrigin(const float x, const float y) noexcept {
         origin = SDL_FPoint(x, y);
     }
 private:
     friend MainWindow;
-    static void setRenderer(SDL_Renderer* renderer) {
+    static void setRenderer(SDL_Renderer* renderer) noexcept {
         Sprite::renderer = renderer;
     }
-    static void setTranslation(const PixelCoord translation) {
+    static void setTranslation(const PixelCoord translation) noexcept {
         Sprite::translation = translation;
     }
 };

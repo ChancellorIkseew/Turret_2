@@ -2,6 +2,7 @@
 //
 #include <typeinfo>
 #include "atlas.hpp"
+#include "config.hpp"
 
 constexpr uint32_t CYRILIC_BEGIN = 1024U;
 constexpr uint32_t SYMBOLS_PER_LINE = 16U;
@@ -10,7 +11,7 @@ static SDL_FPoint startLatin;
 static SDL_FPoint startCyrilic;
 namespace text { static SDL_Renderer* renderer; }
 
-static __forceinline void drawGlyph(uint32_t symbol, const SDL_FRect* destRect) {
+static t1_finline void drawGlyph(uint32_t symbol, const SDL_FRect* destRect) noexcept {
     SDL_FRect glyphRect = SDL_FRect(startLatin.x, startLatin.y, GLYPH_SIZE, GLYPH_SIZE);
     if (symbol >= CYRILIC_BEGIN) {
         glyphRect.x = startCyrilic.x;

@@ -9,7 +9,7 @@ struct MobType {
     const Sint32 maxHealth;
 };
 
-constexpr MobType CANNON_BOSS("cannon_boss", PixelCoord(22.5f, 22.5f), PixelCoord(40.0f, 40.0f), 0.1f, 270);
+static MobType CANNON_BOSS("cannon_boss", PixelCoord(22.5f, 22.5f), PixelCoord(40.0f, 40.0f), 0.1f, 270);
 
 class Mob {
     Sprite sprite;
