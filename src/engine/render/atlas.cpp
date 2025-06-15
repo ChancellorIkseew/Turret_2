@@ -24,14 +24,18 @@ void Atlas::addTexture(const fs::path& path) {
         logger.error() << "Image file does not exist: " << path;
         return;
     }
+    std::string name = path.filename().stem().string();
+    if (atlas.contains(name)) {
+        logger.warning() << "Texture with name \" " << name << "\" already exists.";
+        return;
+    }
     SDL_Surface* surface = IMG_Load(path.string().c_str());
     if (!surface) {
         logger.error() << "Texture was not created. File: " << path << " " << SDL_GetError();
         return;
     }
-    std::string name = path.filename().stem().string();
-    atlas.try_emplace(name, SDL_Rect(0, 0, surface->w, surface->h));
-    temporarySurfaces.try_emplace(name, surface);
+    atlas.emplace(name, SDL_Rect(0, 0, surface->w, surface->h));
+    temporarySurfaces.emplace(name, surface);
 }
 
 void Atlas::build() {

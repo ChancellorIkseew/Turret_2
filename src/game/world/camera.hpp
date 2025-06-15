@@ -27,7 +27,7 @@ public:
     PixelCoord fromMapToScreen(const PixelCoord screenCoord) const;
     PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
 
-    t1_finline bool contains(const TileCoord tile) const {
+    t1_finline bool contains(const TileCoord tile) const noexcept {
         return tile.x >= startTile.x && tile.x <= endTile.x &&
                tile.y >= startTile.y && tile.y <= endTile.y;
     }
