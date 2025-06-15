@@ -28,6 +28,7 @@ enum class BindName {
     Screenshot,
     Show_FPS,
     Show_atlas,
+    Fullscreen,
     Console_cheat
 };
 

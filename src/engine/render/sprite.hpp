@@ -6,6 +6,11 @@
 
 class MainWindow;
 
+struct Texture {
+    const SDL_FRect rect;
+    Texture(const std::string& name) : rect(Atlas::at(name)) { }
+};
+
 class Sprite {
     static inline SDL_Renderer* renderer = nullptr;
     static inline PixelCoord translation;
@@ -46,6 +51,9 @@ public:
     }
     t1_finline void setOrigin(const float x, const float y) noexcept {
         origin = SDL_FPoint(x, y);
+    }
+    t1_finline void setTexture(const Texture& texture) noexcept {
+        textureRect = texture.rect;
     }
 private:
     friend MainWindow;

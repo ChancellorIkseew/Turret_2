@@ -11,6 +11,7 @@ class GUI {
 public:
     GUI(MainWindow& mainWindow);
     void draw(const MainWindow& mainWindow);
+    void acceptHotkeys(MainWindow& mainWindow);
 private:
     void relocateContainers(const PixelCoord windowSize);
 };

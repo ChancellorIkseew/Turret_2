@@ -15,10 +15,6 @@ GUI::GUI(MainWindow& mainWindow) {
 }
 
 void GUI::draw(const MainWindow& mainWindow) {
-    if (Input::jactive(BindName::Hide_GUI))
-        showGUI = !showGUI;
-    if (Input::jactive(BindName::Show_atlas))
-        showAtlas = !showAtlas;
     if (mainWindow.justResized())
         relocateContainers(mainWindow.getSize());
     //
@@ -31,6 +27,15 @@ void GUI::draw(const MainWindow& mainWindow) {
     if (showAtlas)
         Atlas::testDraw();
     FormEditor::editForm();
+}
+
+void GUI::acceptHotkeys(MainWindow& mainWindow) {
+    if (Input::jactive(BindName::Hide_GUI))
+        showGUI = !showGUI;
+    if (Input::jactive(BindName::Show_atlas))
+        showAtlas = !showAtlas;
+    if (Input::jactive(BindName::Fullscreen))
+        mainWindow.setFullscreen(!mainWindow.isFullscreen());
 }
 
 void GUI::relocateContainers(const PixelCoord windowSize) {
