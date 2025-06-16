@@ -27,7 +27,7 @@ void Engine::run() {
     mob.setAngleDeg(45.0f);
 
     GUI gui(mainWindow);
-    TileCoord mapSize(100, 100);
+    TileCoord mapSize(200, 200);
     world = std::make_unique<World>(mapSize);
     Camera camera(mapSize);
     world->print();

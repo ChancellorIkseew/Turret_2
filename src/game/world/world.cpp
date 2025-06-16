@@ -1,24 +1,20 @@
 #include "world.hpp"
 //
-#include "camera.hpp"
 #include <iostream>
+#include "camera.hpp"
+#include "game/generation/generation.hpp"
 
-World::World() : sprite("icon") {
-    for (int x = 0; x < 100; ++x) {
-        std::vector<int> line;
-        for (int y = 0; y < 100; ++y) {
-            line.push_back(0);
-        }
-        terrain.push_back(line);
+World::World(const TileCoord mapSize) : sprite("icon"), terrain(mapSize.x)  {
+    for (auto& line : terrain) {
+        line.resize(mapSize.y);
     }
-    terrain[1][2] = 1;
-    terrain[8][6] = 1;
+    gen::generate(terrain, mapSize);
 }
 
 void World::print() {
-    for (const auto& line : terrain) {
-        for (const int& y : line) {
-            std::cout << y;
+    for (int y = 0; y < terrain.size(); ++y) {
+        for (int x = 0; x < terrain[0].size(); ++x) {
+            std::cout << static_cast<int>(terrain[x][y].tileType);
         }
         std::cout << '\n';
     }
@@ -29,8 +25,11 @@ void World::draw(const Camera& camera) {
     const TileCoord end = camera.getEndTile();
     for (int x = start.x; x < end.x; ++x) {
         for (int y = start.y; y < end.y; ++y) {
-            if (x == y)
-                continue;
+            switch (terrain[x][y].tileType) {
+            case TileType::SAND: sprite.setTexture(Texture("sand")); break;
+            case TileType::GRASS: sprite.setTexture(Texture("grass")); break;
+            case TileType::WATER_SHALLOW: sprite.setTexture(Texture("water")); break;
+            }
             sprite.setPosition(PixelCoord(x, y) * 32 - camera.getPosition());
             sprite.drawFast();
         }

@@ -26,10 +26,12 @@
     <ClInclude Include="src\engine\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
     <ClInclude Include="src\engine\gui.hpp" />
+    <ClInclude Include="src\engine\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\sprite.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
+    <ClInclude Include="src\engine\util\local_time.hpp" />
     <ClInclude Include="src\engine\widgets\button.hpp" />
     <ClInclude Include="src\engine\widgets\container.hpp" />
     <ClInclude Include="src\engine\widgets\form.hpp" />
@@ -43,6 +45,7 @@
     <ClInclude Include="src\engine\window\input\utf8\utf8.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
+    <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\mob\mob_type.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
@@ -52,9 +55,11 @@
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\gui.cpp" />
+    <ClCompile Include="src\engine\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
+    <ClCompile Include="src\engine\util\local_time.cpp" />
     <ClCompile Include="src\engine\widgets\button.cpp" />
     <ClCompile Include="src\engine\widgets\container.cpp" />
     <ClCompile Include="src\engine\widgets\form.cpp" />
@@ -70,6 +75,7 @@
     <ClCompile Include="src\game\frontend\settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
     <ClCompile Include="src\game\frontend\editor.cpp" />
+    <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
     <ClCompile Include="src\game\world\world.cpp" />
     <ClCompile Include="src\main.cpp" />
