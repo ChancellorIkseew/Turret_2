@@ -46,6 +46,7 @@ void Atlas::build() {
         SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
     }
     comonTexture = SDL_CreateTextureFromSurface(renderer, comonSurface);
+    SDL_SetTextureScaleMode(comonTexture, SDL_SCALEMODE_NEAREST);
     SDL_DestroySurface(comonSurface);
     clearTemporary();
 }

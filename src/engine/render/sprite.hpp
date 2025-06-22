@@ -22,6 +22,7 @@ public:
     Sprite(const std::string& name) : textureRect(Atlas::at(name)) {
         rect = SDL_FRect(0, 0, 32, 32);
     }
+    Sprite() = default;
     //
     ///@brief Draw on position without angle and translation by camera.
     t1_finline void drawFast() const {
@@ -39,10 +40,10 @@ public:
         rect.x = x;
         rect.y = y;
     }
-    t1_finline void setPosition(const PixelCoord pos) noexcept {
+    t1_finline void setPosition(const PixelCoord& pos) noexcept {
         setPosition(pos.x, pos.y);
     }
-    t1_finline void setSize(const PixelCoord size) noexcept {
+    t1_finline void setSize(const PixelCoord& size) noexcept {
         rect.w = size.x;
         rect.h = size.y;
     }

@@ -7,14 +7,9 @@
 #include "engine/util/local_time.hpp"
 
 static TileType calculateTileType(float height) {
-    //if (height < -0.45f) return TileType::WATER_DEEP;
-    if (height < -0.5f)  return TileType::WATER_SHALLOW;
-    if (height < -0.1f)  return TileType::GRASS;
-    //if (height < 0.5f)   return TileType::GRASS;
-    return TileType::SAND;
-    //if (height < 0.4f)   return TileType::FOREST;
-    //if (height < 0.7f)   return TileType::MOUNTAIN_BASE;
-    //return TileType::MOUNTAIN_PEAK;
+    if (height < -0.5f)  return TileType::ROCK;
+    if (height < -0.1f)  return TileType::ICE;
+    return TileType::SNOW;
 }
 
 void gen::generate(std::vector<std::vector<MapTile>>& map, const TileCoord mapSize) {

@@ -28,6 +28,7 @@
     <ClInclude Include="src\engine\gui.hpp" />
     <ClInclude Include="src\engine\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
+    <ClInclude Include="src\engine\render\border_blur.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\sprite.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
@@ -48,7 +49,9 @@
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\mob\mob_type.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
+    <ClInclude Include="src\game\world\map_drawer.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
+    <ClInclude Include="src\sp_test.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp" />
@@ -57,6 +60,7 @@
     <ClCompile Include="src\engine\gui.cpp" />
     <ClCompile Include="src\engine\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
+    <ClCompile Include="src\engine\render\border_blur.cpp" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
     <ClCompile Include="src\engine\util\local_time.cpp" />
@@ -77,6 +81,7 @@
     <ClCompile Include="src\game\frontend\editor.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
+    <ClCompile Include="src\game\world\map_drawer.cpp" />
     <ClCompile Include="src\game\world\world.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -176,7 +181,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/libs/include;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -214,7 +219,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/src;$(SolutionDir)/libs/include;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

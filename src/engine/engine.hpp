@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "engine/window/window.hpp"
 #include "game/world/world.hpp"
 
