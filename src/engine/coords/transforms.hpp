@@ -2,8 +2,8 @@
 #include "tile_coord.hpp"
 #include "pixel_coord.hpp"
 
-constexpr int _TILE_ = 32;
-constexpr int _HALF_TILE_ = 16;
+constexpr int TILE = 32;
+constexpr int HALF_TILE = 16;
 constexpr float PI = 3.1415927f;
 
 namespace t1
@@ -18,6 +18,11 @@ namespace t1
     float pixelF(const int tileCoord);
     PixelCoord pixel(const int tileCoordX, const int tileCoordY);
     PixelCoord pixel(const TileCoord tileCoord);
+
+    int tileCentre(const int tileCoord);
+    float tileCentreF(const int tileCoord);
+    PixelCoord tileCentre(const int tileCoordX, const int tileCoordY);
+    PixelCoord tileCentre(const TileCoord tileCoord);
 
     int pow2i(const int value);
     float pow2f(const float value);

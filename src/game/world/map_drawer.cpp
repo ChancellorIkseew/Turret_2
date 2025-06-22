@@ -21,7 +21,7 @@ void MapDrawer::cacheLayers() {
     //
     for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
         for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
-            layers.at(map[x][y].tileType).emplace_back(x * _TILE_, y * _TILE_);
+            layers.at(map[x][y].tileType).push_back(t1::pixel(x, y));
         }
     } 
 }
