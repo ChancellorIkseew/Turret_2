@@ -47,7 +47,9 @@
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
+    <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\mob\mob_type.hpp" />
+    <ClInclude Include="src\game\weather\weather.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
     <ClInclude Include="src\game\world\map_drawer.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
@@ -80,6 +82,8 @@
     <ClCompile Include="src\game\frontend\timer.cpp" />
     <ClCompile Include="src\game\frontend\editor.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
+    <ClCompile Include="src\game\generation\perlin_noise.cpp" />
+    <ClCompile Include="src\game\weather\weather.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
     <ClCompile Include="src\game\world\map_drawer.cpp" />
     <ClCompile Include="src\game\world\world.cpp" />

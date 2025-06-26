@@ -8,8 +8,11 @@ constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
 MapDrawer::MapDrawer(const Camera& camera, const WorldMap& map) :
     camera(camera), map(map) {
-    layers.emplace(TileType::ICE, std::vector<PixelCoord>());
+    layers.emplace(TileType::MAGMA, std::vector<PixelCoord>());
     layers.emplace(TileType::ROCK, std::vector<PixelCoord>());
+    layers.emplace(TileType::SOIL, std::vector<PixelCoord>());
+    layers.emplace(TileType::WATER, std::vector<PixelCoord>());
+    layers.emplace(TileType::ICE, std::vector<PixelCoord>());
     layers.emplace(TileType::SNOW, std::vector<PixelCoord>());
     sprite.setSize(PixelCoord(40, 40));
 }
@@ -38,9 +41,12 @@ void MapDrawer::draw() {
     //
     for (const auto& [tileType, layer] : layers) {
         switch (tileType) {
+        case TileType::MAGMA: sprite.setTexture(Texture("magma")); break;
+        case TileType::ROCK: sprite.setTexture(Texture("stone")); break;
+        case TileType::SOIL: sprite.setTexture(Texture("soil")); break;
+        case TileType::WATER: sprite.setTexture(Texture("water")); break;
         case TileType::ICE: sprite.setTexture(Texture("ice")); break;
         case TileType::SNOW: sprite.setTexture(Texture("snow")); break;
-        case TileType::ROCK: sprite.setTexture(Texture("stone")); break;
         }
         for (const auto& pixelCoord : layer) {
             sprite.setPosition(pixelCoord - viewCorrection);
