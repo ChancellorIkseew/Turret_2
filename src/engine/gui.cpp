@@ -1,18 +1,9 @@
 #include "gui.hpp"
 //
-#include "game/frontend/frontend.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
-
-GUI::GUI(MainWindow& mainWindow) {
-    containers.push_back(frontend::initMenu(mainWindow));
-    containers.push_back(frontend::initSettings());
-    containers.push_back(frontend::initTimer());
-    containers.push_back(frontend::initEditor());
-    relocateContainers(mainWindow.getSize());
-}
 
 void GUI::draw(const MainWindow& mainWindow) {
     if (mainWindow.justResized())
@@ -42,4 +33,12 @@ void GUI::relocateContainers(const PixelCoord windowSize) {
     for (const auto& it : containers) {
         it->aplyAlignment(windowSize);
     }
+}
+
+bool GUI::isMouseFree() {
+    for (const auto& it : containers) {
+        if (it->containsMouse())
+            return false;
+    }
+    return true;
 }

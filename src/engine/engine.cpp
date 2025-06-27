@@ -1,6 +1,8 @@
 #include "engine.hpp"
 //
-#include "gui.hpp"
+#include "gameplay_gui.hpp"
+#include "editor_gui.hpp"
+#include "menu_gui.hpp"
 #include "game/mob/mob_type.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
@@ -24,6 +26,7 @@ void Engine::run() {
     Atlas::addTexture("res/images/stone.png");
     Atlas::addTexture("res/images/water.png");
     //
+    Atlas::addTexture("res/images/ice_block.png");
     Atlas::addTexture("res/images/round_shadow.png");
     Atlas::addTexture("res/images/plant.png");
     Atlas::addTexture("res/images/cannoner_bot.png");
@@ -32,31 +35,41 @@ void Engine::run() {
     Atlas::build();
     text::setFont("vc_latin", "vc_cyrilic");
 
+    while (mainWindow.isOpen()) {
+        switch (state) {
+        case EngineState::main_menu:  menu();     break;
+        case EngineState::gameplay:   gameplay(); break;
+        case EngineState::map_editor: editor();   break;
+        case EngineState::exit:       mainWindow.close();
+        }
+    }
+    Atlas::clear();
+}
+
+void Engine::gameplay() {
     Mob mob(CANNON_BOSS);
     mob.setPixelCoord(PixelCoord(32, 32));
     mob.setAngleDeg(45.0f);
 
-    GUI gui(mainWindow);
+    GameplayGUI gui(mainWindow, state);
     TileCoord mapSize(200, 200);
+    std::unique_ptr<World> world;
     world = std::make_unique<World>(mapSize);
     Camera camera(mapSize);
     MapDrawer mapDrawer(camera, world->getMap());
 
-    SDL_SetTextureBlendMode(Atlas::rawSDL(), SDL_BLENDMODE_BLEND);
-
     Weather weather;
     weather.init();
     weather.addFlake();
-    
-    while (mainWindow.isOpen()) {
+
+    while (mainWindow.isOpen() && state == EngineState::gameplay) {
         mainWindow.pollEvents();
         camera.interact(mainWindow.getSize());
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
         mapDrawer.draw();
-        
-        //SDL_SetTextureBlendMode(Atlas::rawSDL(), SDL_BLENDMODE_BLEND);
+
         mob.draw();
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
@@ -65,5 +78,57 @@ void Engine::run() {
         gui.acceptHotkeys(mainWindow);
         mainWindow.render();
     }
-    Atlas::clear();
+}
+
+#include "game/events/events.hpp"
+
+void Engine::editor() {
+    TileType tileType = TileType::SNOW;
+    EditorGUI gui(mainWindow, state, tileType);
+    TileCoord mapSize(200, 200);
+    std::unique_ptr<World> world;
+    world = std::make_unique<World>(mapSize);
+    Camera camera(mapSize);
+    MapDrawer mapDrawer(camera, world->getMap());
+
+    while (mainWindow.isOpen() && state == EngineState::map_editor) {
+        mainWindow.pollEvents();
+        camera.interact(mainWindow.getSize());
+        mainWindow.clear();
+        mainWindow.setRenderScale(camera.getMapScale());
+        mainWindow.setRenderTranslation(camera.getPosition());
+        mapDrawer.draw();
+        Events::clear();
+
+        mainWindow.setRenderScale(1.0f);
+        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
+        gui.acceptHotkeys(mainWindow);
+        gui.editMap(*world, camera, tileType);
+        gui.draw(mainWindow);
+        mainWindow.render();
+    }
+}
+
+void Engine::menu() {
+    MenuGUI gui(mainWindow, state);
+    TileCoord mapSize(200, 200);
+    std::unique_ptr<World> world;
+    world = std::make_unique<World>(mapSize);
+    Camera camera(mapSize);
+    MapDrawer mapDrawer(camera, world->getMap());
+
+    while (mainWindow.isOpen() && state == EngineState::main_menu) {
+        mainWindow.pollEvents();
+        camera.interact(mainWindow.getSize());
+        mainWindow.clear();
+        mainWindow.setRenderScale(camera.getMapScale());
+        mainWindow.setRenderTranslation(camera.getPosition());
+        mapDrawer.draw();
+
+        mainWindow.setRenderScale(1.0f);
+        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
+        gui.draw(mainWindow);
+        gui.acceptHotkeys(mainWindow);
+        mainWindow.render();
+    }
 }

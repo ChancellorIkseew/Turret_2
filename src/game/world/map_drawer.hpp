@@ -17,4 +17,5 @@ public:
     MapDrawer(const Camera& camera, const WorldMap& map);
     void cacheLayers();
     void draw();
+    void drawStructures();
 };

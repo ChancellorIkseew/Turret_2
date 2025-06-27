@@ -8,6 +8,8 @@ World::World(const TileCoord mapSize) : terrain(mapSize.x)  {
         line.resize(mapSize.y);
     }
     gen::generate(terrain, mapSize);
+
+    terrain[10][10].block = new Block("round_shadow", "ice_block", TileCoord(10, 10));
 }
 
 void World::print() {
@@ -17,4 +19,8 @@ void World::print() {
         }
         std::cout << '\n';
     }
+}
+
+void World::placeTile(const TileCoord tile, const TileType tileType) {
+    terrain[tile.x][tile.y].tileType = tileType;
 }

@@ -18,7 +18,7 @@ void gen::generate(std::vector<std::vector<MapTile>>& map, const TileCoord mapSi
 
     float min = 1.0f, max = 0.0f;
     for (int x = 0; x < mapSize.x; ++x) {
-        for (int y = 0; y < mapSize.x; ++y) {
+        for (int y = 0; y < mapSize.y; ++y) {
             map[x][y].tileType = calculateTileType(noise.createTile(x, y + 1, 40.0f));
             min = std::min(noise.createTile(x, y + 1, 40.0f), min);
             max = std::max(noise.createTile(x, y + 1, 40.0f), max);

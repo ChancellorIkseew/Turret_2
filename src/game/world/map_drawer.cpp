@@ -3,6 +3,7 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/render/atlas.hpp"
 #include "camera.hpp"
+#include "game/events/events.hpp"
 
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
@@ -26,13 +27,13 @@ void MapDrawer::cacheLayers() {
         for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
             layers.at(map[x][y].tileType).push_back(t1::pixel(x, y));
         }
-    } 
+    }
 }
 
 void MapDrawer::draw() {
     const TileCoord start = camera.getStartTile();
     const TileCoord end = camera.getEndTile();
-    if (cashedStart != start || cashedEnd != end) {
+    if (cashedStart != start || cashedEnd != end || Events::active(Event::terrain_changed)) {
         cashedStart = start;
         cashedEnd = end;
         cacheLayers();
@@ -51,6 +52,19 @@ void MapDrawer::draw() {
         for (const auto& pixelCoord : layer) {
             sprite.setPosition(pixelCoord - viewCorrection);
             sprite.drawFast();
+        }
+    }
+
+    drawStructures();
+}
+
+void MapDrawer::drawStructures() {
+    const TileCoord start = camera.getStartTile();
+    const TileCoord end = camera.getEndTile();
+    for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
+        for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
+            if (map[x][y].block)
+                map[x][y].block->draw();
         }
     }
 }

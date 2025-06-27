@@ -9,6 +9,8 @@ class Button : public Node {
 public:
     Button(const int sizeX, const int sizeY, std::u32string name) :
         Node(PixelCoord(sizeX, sizeY)), label(name) { }
+    Button(const PixelCoord size, std::u32string name) :
+        Node(size), label(name) { }
     //
     void draw() override final;
     void callback() override final;
