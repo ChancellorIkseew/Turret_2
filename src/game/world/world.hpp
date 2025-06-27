@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "config.hpp"
 #include "engine/coords/tile_coord.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/coords/transforms.hpp"
@@ -42,10 +43,19 @@ public:
 
 class World {
     std::vector<std::vector<MapTile>> terrain;
+    const TileCoord mapSize;
 public:
     World(const TileCoord mapSize);
     void print();
     const std::vector<std::vector<MapTile>>& getMap() const { return terrain; }
     void placeTile(const TileCoord tile, const TileType tileType);
     void placeRes();
+
+    t1_finline bool tileExists(const int tileX, const int tileY) const {
+        return tileX >= 0 && tileX < mapSize.x &&
+               tileY >= 0 && tileY < mapSize.y;
+    }
+    t1_finline bool tileExists(const TileCoord tile) const {
+        return tileExists(tile.x, tile.y);
+    }
 };

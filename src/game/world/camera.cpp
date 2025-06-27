@@ -52,8 +52,7 @@ void Camera::avoidEscapeFromMap() {
 }
 
 void Camera::scale() {
-    switch (Input::getMouseWheelScroll())
-    {
+    switch (Input::getMouseWheelScroll()) {
     case MouseWheelScroll::none:
         return;
     case MouseWheelScroll::up:

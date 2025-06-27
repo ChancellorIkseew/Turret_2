@@ -3,7 +3,7 @@
 #include <iostream>
 #include "game/generation/generation.hpp"
 
-World::World(const TileCoord mapSize) : terrain(mapSize.x)  {
+World::World(const TileCoord mapSize) : terrain(mapSize.x), mapSize(mapSize)  {
     for (auto& line : terrain) {
         line.resize(mapSize.y);
     }
@@ -22,5 +22,6 @@ void World::print() {
 }
 
 void World::placeTile(const TileCoord tile, const TileType tileType) {
-    terrain[tile.x][tile.y].tileType = tileType;
+    if (tileExists(tile))
+        terrain[tile.x][tile.y].tileType = tileType;
 }
