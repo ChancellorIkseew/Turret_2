@@ -22,7 +22,7 @@ void FormEditor::editForm() {
     if (Input::jactive(BindName::Delete))
         text = text.substr(0, text.length() - 1);
     //
-    uint32_t sym = Input::getLastSymbolEntered();
-    if (sym != 0)
-        text += sym;
+    std::optional<uint32_t> sym = Input::getLastSymbolEntered();
+    if (sym.has_value())
+        text += sym.value();
 }

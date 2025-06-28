@@ -14,7 +14,7 @@ std::unique_ptr<Container> frontend::initMainMenu(EngineState& state) {
 
     startGame->addCallback([&]() { state = EngineState::gameplay; });
     editor->addCallback([&]() { state = EngineState::map_editor; });
-    //settings->addCallback([&]() { mainWindow.close(); });
+    //settings->addCallback([&]() {  });
     exit->addCallback([&]() { state = EngineState::exit; });
 
     menu->addNode(startGame.release());

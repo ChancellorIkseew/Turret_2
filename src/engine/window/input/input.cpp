@@ -4,8 +4,7 @@
 #include "utf8/utf8.hpp"
 
 static SDL_Window* window;
-constexpr uint32_t NON_USABLE_SYMBOL = 0U;
-static std::atomic<uint32_t> symbolJustEntered = NON_USABLE_SYMBOL;
+static std::atomic<std::optional<uint32_t>> symbolJustEntered;
 static std::atomic<PixelCoord> mouseCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
 
@@ -73,8 +72,8 @@ MouseWheelScroll Input::getMouseWheelScroll() {
     return mouseWheelScroll.exchange(MouseWheelScroll::none, std::memory_order_relaxed);
 }
 
-uint32_t Input::getLastSymbolEntered() {
-    return symbolJustEntered.exchange(NON_USABLE_SYMBOL, std::memory_order_relaxed);
+std::optional<uint32_t> Input::getLastSymbolEntered() {
+    return symbolJustEntered.exchange(std::nullopt, std::memory_order_relaxed);
 }
 void Input::enanleTextEnter(const bool flag) {
     if (flag)

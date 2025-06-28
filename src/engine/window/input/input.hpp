@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL_events.h>
+#include <optional>
 #include <unordered_map>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
@@ -20,7 +21,7 @@ public:
     static MouseWheelScroll getMouseWheelScroll();
 
     ///@brief Last symbol entered in any text field.
-    static uint32_t getLastSymbolEntered();
+    static std::optional<uint32_t> getLastSymbolEntered();
     ///@brief Start/stop checking.
     static void enanleTextEnter(const bool flag);
 
