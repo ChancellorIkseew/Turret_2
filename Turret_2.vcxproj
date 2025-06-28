@@ -30,6 +30,7 @@
     <ClInclude Include="src\engine\gameplay_gui.hpp" />
     <ClInclude Include="src\engine\gui.hpp" />
     <ClInclude Include="src\engine\menu_gui.hpp" />
+    <ClInclude Include="src\engine\parser\list_parser.hpp" />
     <ClInclude Include="src\engine\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\gui.cpp" />
+    <ClCompile Include="src\engine\parser\list_parser.cpp" />
     <ClCompile Include="src\engine\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />

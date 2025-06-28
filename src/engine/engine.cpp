@@ -7,31 +7,21 @@
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/render/text.hpp"
+#include "engine/parser/list_parser.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/map_drawer.hpp"
 #include "game/weather/weather.hpp"
 
+static std::filesystem::path images("res/images");
+
 void Engine::run() {
+    list::Data textureNames = list::read("res/textures.list").value();
+    for (const auto& name : textureNames) {
+        Atlas::addTexture(images / name);
+    }
+
     Atlas::addTexture("res/fonts/vc_latin.png");
     Atlas::addTexture("res/fonts/vc_cyrilic.png");
-    //
-    //Atlas::addTexture("res/images/icon.bmp");
-    Atlas::addTexture("res/images/ice.png");
-    //Atlas::addTexture("res/images/grass.png");
-    Atlas::addTexture("res/images/magma.png");
-    Atlas::addTexture("res/images/plate.png");
-    Atlas::addTexture("res/images/rock.png");
-    Atlas::addTexture("res/images/snow.png");
-    Atlas::addTexture("res/images/soil.png");
-    Atlas::addTexture("res/images/stone.png");
-    Atlas::addTexture("res/images/water.png");
-    //
-    Atlas::addTexture("res/images/ice_block.png");
-    Atlas::addTexture("res/images/round_shadow.png");
-    Atlas::addTexture("res/images/plant.png");
-    Atlas::addTexture("res/images/cannoner_bot.png");
-    Atlas::addTexture("res/images/fill.png");
-    Atlas::addTexture("res/images/snowflake_1.png");
     Atlas::build();
     text::setFont("vc_latin", "vc_cyrilic");
 
