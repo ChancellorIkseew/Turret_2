@@ -138,6 +138,9 @@
     <ClInclude Include="src\engine\parser\list_parser.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\widgets\image_button.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp">
@@ -243,6 +246,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\parser\list_parser.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\widgets\image_button.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

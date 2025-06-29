@@ -9,6 +9,8 @@ class Node {
 public:
     Node(const PixelCoord size, const PixelCoord position) :
         size(size), position(position), sprite("fill") { }
+    Node(const PixelCoord size, std::string& textureName) :
+        size(size), sprite(textureName) { }
     Node(const PixelCoord size) : size(size), sprite("fill") { }
     Node() : sprite("fill") { }
     virtual ~Node() = default;

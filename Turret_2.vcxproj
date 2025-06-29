@@ -41,6 +41,7 @@
     <ClInclude Include="src\engine\widgets\container.hpp" />
     <ClInclude Include="src\engine\widgets\form.hpp" />
     <ClInclude Include="src\engine\widgets\form_editor\form_editor.hpp" />
+    <ClInclude Include="src\engine\widgets\image_button.hpp" />
     <ClInclude Include="src\engine\widgets\label.hpp" />
     <ClInclude Include="src\engine\widgets\layout.hpp" />
     <ClInclude Include="src\engine\widgets\ui_defs.hpp" />
@@ -76,6 +77,7 @@
     <ClCompile Include="src\engine\widgets\container.cpp" />
     <ClCompile Include="src\engine\widgets\form.cpp" />
     <ClCompile Include="src\engine\widgets\form_editor\form_editor.cpp" />
+    <ClCompile Include="src\engine\widgets\image_button.cpp" />
     <ClCompile Include="src\engine\widgets\label.cpp" />
     <ClCompile Include="src\engine\widgets\layout.cpp" />
     <ClCompile Include="src\engine\widgets\ui_node.cpp" />

@@ -15,7 +15,7 @@ public:
 
     void draw(const MainWindow& mainWindow);
     void acceptHotkeys(MainWindow& mainWindow);
+    bool isMouseFree() const;
 protected:
     void relocateContainers(const PixelCoord windowSize);
-    bool isMouseFree();
 };

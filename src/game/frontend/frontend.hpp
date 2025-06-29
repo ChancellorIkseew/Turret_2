@@ -4,7 +4,8 @@
 
 enum class EngineState : uint8_t;
 enum class TileType : uint8_t;
-class MainWindow;
+class Camera;
+class GUI;
 class World;
 
 namespace frontend {

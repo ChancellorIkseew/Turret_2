@@ -27,7 +27,7 @@ void Engine::run() {
 
     while (mainWindow.isOpen()) {
         switch (state) {
-        case EngineState::main_menu:  menu();     break;
+        case EngineState::main_menu:  createScene(EngineState::main_menu);     break;
         case EngineState::gameplay:   gameplay(); break;
         case EngineState::map_editor: editor();   break;
         case EngineState::exit:       mainWindow.close();
@@ -73,13 +73,12 @@ void Engine::gameplay() {
 #include "game/events/events.hpp"
 
 void Engine::editor() {
-    TileType tileType = TileType::SNOW;
-    EditorGUI gui(mainWindow, state, tileType);
     TileCoord mapSize(200, 200);
     std::unique_ptr<World> world;
     world = std::make_unique<World>(mapSize);
     Camera camera(mapSize);
     MapDrawer mapDrawer(camera, world->getMap());
+    EditorGUI gui(mainWindow, state);
 
     while (mainWindow.isOpen() && state == EngineState::map_editor) {
         mainWindow.pollEvents();
@@ -93,13 +92,13 @@ void Engine::editor() {
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
         gui.acceptHotkeys(mainWindow);
-        gui.editMap(*world, camera, tileType);
+        gui.editMap(*world, camera);
         gui.draw(mainWindow);
         mainWindow.render();
     }
 }
 
-void Engine::menu() {
+void Engine::createScene(const EngineState requiredState) {
     MenuGUI gui(mainWindow, state);
     TileCoord mapSize(200, 200);
     std::unique_ptr<World> world;
@@ -107,7 +106,7 @@ void Engine::menu() {
     Camera camera(mapSize);
     MapDrawer mapDrawer(camera, world->getMap());
 
-    while (mainWindow.isOpen() && state == EngineState::main_menu) {
+    while (mainWindow.isOpen() && state == requiredState) {
         mainWindow.pollEvents();
         camera.interact(mainWindow.getSize());
         mainWindow.clear();

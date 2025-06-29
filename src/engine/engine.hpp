@@ -12,5 +12,5 @@ public:
     void run();
     void gameplay();
     void editor();
-    void menu();
+    void createScene(const EngineState requiredState);
 };

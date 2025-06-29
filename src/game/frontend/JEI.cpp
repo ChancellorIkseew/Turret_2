@@ -1,6 +1,6 @@
 #include "frontend.hpp"
 //
-#include "engine/widgets/button.hpp"
+#include "engine/widgets/image_button.hpp"
 #include "game/world/world.hpp"
 
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
@@ -10,15 +10,13 @@ std::unique_ptr<Container> frontend::initJEI(TileType& tileType) {
     auto line1 = std::make_unique<Layout>(Orientation::horizontal);
     auto line2 = std::make_unique<Layout>(Orientation::horizontal);
 
-    auto btn1 = std::make_unique<Button>(BTN_SIZE, U"1");
-    auto btn2 = std::make_unique<Button>(BTN_SIZE, U"2");
-    auto btn3 = std::make_unique<Button>(BTN_SIZE, U"3");
-    auto btn4 = std::make_unique<Button>(BTN_SIZE, U"4");
+    auto btn1 = std::make_unique<ImageButton>(BTN_SIZE, "snow");
+    auto btn2 = std::make_unique<ImageButton>(BTN_SIZE, "ice");
+    auto btn3 = std::make_unique<ImageButton>(BTN_SIZE, "water");
+    auto btn4 = std::make_unique<ImageButton>(BTN_SIZE, "soil");
 
-    auto btn5 = std::make_unique<Button>(BTN_SIZE, U"5");
-    auto btn6 = std::make_unique<Button>(BTN_SIZE, U"6");
-    auto btn7 = std::make_unique<Button>(BTN_SIZE, U"7");
-    auto btn8 = std::make_unique<Button>(BTN_SIZE, U"8");
+    auto btn5 = std::make_unique<ImageButton>(BTN_SIZE, "stone");
+    auto btn6 = std::make_unique<ImageButton>(BTN_SIZE, "magma");
 
     btn1->addCallback([&]() {tileType = TileType::SNOW; });
     btn2->addCallback([&]() {tileType = TileType::ICE; });
@@ -34,8 +32,6 @@ std::unique_ptr<Container> frontend::initJEI(TileType& tileType) {
 
     line2->addNode(btn5.release());
     line2->addNode(btn6.release());
-    line2->addNode(btn7.release());
-    line2->addNode(btn8.release());
 
     jei->addNode(line1.release());
     jei->addNode(line2.release());

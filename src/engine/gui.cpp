@@ -35,7 +35,7 @@ void GUI::relocateContainers(const PixelCoord windowSize) {
     }
 }
 
-bool GUI::isMouseFree() {
+bool GUI::isMouseFree() const {
     for (const auto& it : containers) {
         if (it->containsMouse())
             return false;
