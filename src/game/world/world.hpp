@@ -7,7 +7,7 @@
 
 class Block;
 
-enum class TileType : uint8_t {
+enum TileType : uint8_t {
     SNOW = 0,
     ICE = 1,
     WATER = 2,
@@ -16,10 +16,16 @@ enum class TileType : uint8_t {
     MAGMA = 5
 };
 
+enum OreType : uint8_t {
+    NONE = 0,
+    IRON = 1,
+    COPPER = 2
+};
+
 struct MapTile {
-    TileType tileType;
-    uint8_t resType;
-    Block* block;
+    uint8_t floor = 0;
+    uint8_t overlay = 0;
+    Block* block = nullptr;
 };
 
 class Block {
@@ -41,6 +47,17 @@ public:
 };
 
 
+enum class TileComponent : uint8_t {
+    floor,
+    overlay,
+    block
+};
+
+struct TileData {
+    TileComponent component = TileComponent::floor;
+    uint8_t id = 0U;
+};
+
 class World {
     std::vector<std::vector<MapTile>> terrain;
     const TileCoord mapSize;
@@ -48,8 +65,9 @@ public:
     World(const TileCoord mapSize);
     void print();
     const std::vector<std::vector<MapTile>>& getMap() const { return terrain; }
-    void placeTile(const TileCoord tile, const TileType tileType);
-    void placeRes();
+    void placeFloor(const TileCoord tile, const uint8_t floorID);
+    void placeOverlay(const TileCoord tile, const uint8_t overlayID);
+    void placeBlock();
 
     t1_finline bool tileExists(const int tileX, const int tileY) const {
         return tileX >= 0 && tileX < mapSize.x &&

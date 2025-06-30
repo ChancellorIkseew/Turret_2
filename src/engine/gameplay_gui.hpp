@@ -11,13 +11,23 @@
 enum class EngineState : uint8_t;
 
 class GameplayGUI : public GUI {
+    Container* menu;
 public:
     GameplayGUI(MainWindow& mainWindow, EngineState& state) : GUI() {
-        containers.push_back(frontend::initMenu(state));
+        auto c = frontend::initMenu(state);
+        menu = c.get();
+        menu->setVisible(false);
+        containers.push_back(std::move(c));
         containers.push_back(frontend::initSettings());
         containers.push_back(frontend::initTimer());
         containers.push_back(frontend::initEditor());
         relocateContainers(mainWindow.getSize());
     }
     ~GameplayGUI() final = default;
+
+    void acceptHotkeys(MainWindow& mainWindow) final {
+        GUI::acceptHotkeys(mainWindow);
+        if (Input::jactive(BindName::Escape))
+            menu->setVisible(!menu->isVisible());
+    }
 };

@@ -11,11 +11,11 @@
 enum class EngineState : uint8_t;
 
 class EditorGUI : public GUI {
-    TileType tileType = TileType::SNOW;
+    TileData tileData;
 public:
     EditorGUI(MainWindow& mainWindow, EngineState& state) : GUI() {
         containers.push_back(frontend::initMenu(state));
-        containers.push_back(frontend::initJEI(tileType));
+        containers.push_back(frontend::initJEI(tileData));
         relocateContainers(mainWindow.getSize());
     }
     ~EditorGUI() final = default;
@@ -24,7 +24,15 @@ public:
         if (!Input::active(BindName::Build) || !isMouseFree())
             return;
         const TileCoord tile = t1::tile(camera.fromScreenToMap(Input::getMouseCoord()));
-        world.placeTile(tile, tileType);
+        switch (tileData.component) {
+        case TileComponent::floor:   world.placeFloor(tile, tileData.id);   break;
+        case TileComponent::overlay: world.placeOverlay(tile, tileData.id); break;
+        case TileComponent::block: break;
+        }
         Events::pushEvent(Event::terrain_changed);
+    }
+    
+    void callback() final {
+
     }
 };

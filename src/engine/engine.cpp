@@ -3,6 +3,7 @@
 #include "gameplay_gui.hpp"
 #include "editor_gui.hpp"
 #include "menu_gui.hpp"
+#include "game/events/events.hpp"
 #include "game/mob/mob_type.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
@@ -27,82 +28,32 @@ void Engine::run() {
 
     while (mainWindow.isOpen()) {
         switch (state) {
-        case EngineState::main_menu:  createScene(EngineState::main_menu);     break;
-        case EngineState::gameplay:   gameplay(); break;
-        case EngineState::map_editor: editor();   break;
-        case EngineState::exit:       mainWindow.close();
+        case EngineState::exit: mainWindow.close(); break;
+        default:                createScene(state); break;
         }
     }
     Atlas::clear();
 }
 
-void Engine::gameplay() {
-    Mob mob(CANNON_BOSS);
-    mob.setPixelCoord(PixelCoord(32, 32));
-    mob.setAngleDeg(45.0f);
-
-    GameplayGUI gui(mainWindow, state);
-    TileCoord mapSize(200, 200);
-    std::unique_ptr<World> world;
-    world = std::make_unique<World>(mapSize);
-    Camera camera(mapSize);
-    MapDrawer mapDrawer(camera, world->getMap());
-
-    Weather weather;
-    weather.init();
-    weather.addFlake();
-
-    while (mainWindow.isOpen() && state == EngineState::gameplay) {
-        mainWindow.pollEvents();
-        camera.interact(mainWindow.getSize());
-        mainWindow.clear();
-        mainWindow.setRenderScale(camera.getMapScale());
-        mainWindow.setRenderTranslation(camera.getPosition());
-        mapDrawer.draw();
-
-        mob.draw();
-        mainWindow.setRenderScale(1.0f);
-        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        weather.draw();
-        gui.draw(mainWindow);
-        gui.acceptHotkeys(mainWindow);
-        mainWindow.render();
-    }
-}
-
-#include "game/events/events.hpp"
-
-void Engine::editor() {
-    TileCoord mapSize(200, 200);
-    std::unique_ptr<World> world;
-    world = std::make_unique<World>(mapSize);
-    Camera camera(mapSize);
-    MapDrawer mapDrawer(camera, world->getMap());
-    EditorGUI gui(mainWindow, state);
-
-    while (mainWindow.isOpen() && state == EngineState::map_editor) {
-        mainWindow.pollEvents();
-        camera.interact(mainWindow.getSize());
-        mainWindow.clear();
-        mainWindow.setRenderScale(camera.getMapScale());
-        mainWindow.setRenderTranslation(camera.getPosition());
-        mapDrawer.draw();
-        Events::clear();
-
-        mainWindow.setRenderScale(1.0f);
-        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        gui.acceptHotkeys(mainWindow);
-        gui.editMap(*world, camera);
-        gui.draw(mainWindow);
-        mainWindow.render();
-    }
-}
-
 void Engine::createScene(const EngineState requiredState) {
-    MenuGUI gui(mainWindow, state);
-    TileCoord mapSize(200, 200);
+    std::unique_ptr<GUI> gui;
     std::unique_ptr<World> world;
+    
+    TileCoord mapSize(200, 200);
     world = std::make_unique<World>(mapSize);
+
+    switch (requiredState) {
+    case EngineState::main_menu:
+        gui = std::make_unique<MenuGUI>(mainWindow, state);
+        break;
+    case EngineState::gameplay:
+        gui = std::make_unique<GameplayGUI>(mainWindow, state);
+        break;
+    case EngineState::map_editor:
+        gui = std::make_unique<EditorGUI>(mainWindow, state);
+        break;
+    }
+
     Camera camera(mapSize);
     MapDrawer mapDrawer(camera, world->getMap());
 
@@ -113,11 +64,12 @@ void Engine::createScene(const EngineState requiredState) {
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
         mapDrawer.draw();
+        Events::clear(); // for editor
 
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        gui.draw(mainWindow);
-        gui.acceptHotkeys(mainWindow);
+        gui->draw(mainWindow);
+        gui->acceptHotkeys(mainWindow);
         mainWindow.render();
     }
 }

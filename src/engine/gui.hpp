@@ -14,8 +14,9 @@ public:
     virtual ~GUI() = default;
 
     void draw(const MainWindow& mainWindow);
-    void acceptHotkeys(MainWindow& mainWindow);
+    virtual void acceptHotkeys(MainWindow& mainWindow);
     bool isMouseFree() const;
+    virtual void callback() { }
 protected:
     void relocateContainers(const PixelCoord windowSize);
 };

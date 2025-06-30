@@ -10,7 +10,5 @@ class Engine {
 public:
     Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
     void run();
-    void gameplay();
-    void editor();
     void createScene(const EngineState requiredState);
 };
