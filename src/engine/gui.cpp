@@ -5,9 +5,9 @@
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
 
-void GUI::draw(const MainWindow& mainWindow) {
+void GUI::draw() {
     if (mainWindow.justResized())
-        relocateContainers(mainWindow.getSize());
+        relocateContainers();
     //
     if (showGUI) {
         for (const auto& it : containers) {
@@ -17,21 +17,21 @@ void GUI::draw(const MainWindow& mainWindow) {
     }
     if (showAtlas)
         Atlas::testDraw();
-    FormEditor::editForm();
 }
 
-void GUI::acceptHotkeys(MainWindow& mainWindow) {
+void GUI::acceptHotkeys() {
     if (Input::jactive(BindName::Hide_GUI))
         showGUI = !showGUI;
     if (Input::jactive(BindName::Show_atlas))
         showAtlas = !showAtlas;
     if (Input::jactive(BindName::Fullscreen))
         mainWindow.setFullscreen(!mainWindow.isFullscreen());
+    FormEditor::editForm();
 }
 
-void GUI::relocateContainers(const PixelCoord windowSize) {
+void GUI::relocateContainers() {
     for (const auto& it : containers) {
-        it->aplyAlignment(windowSize);
+        it->aplyAlignment(mainWindow.getSize());
     }
 }
 

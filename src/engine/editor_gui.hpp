@@ -1,27 +1,33 @@
 #pragma once
 #include "gui.hpp"
 //
+#include "engine/engine_state.hpp"
 #include "engine/window/input/input.hpp"
-#include "engine/window/window.hpp"
 #include "game/frontend/frontend.hpp"
 #include "game/events/events.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/world.hpp"
 
-enum class EngineState : uint8_t;
-
 class EditorGUI : public GUI {
+    const Camera& camera;
+    World& world;
     TileData tileData;
 public:
-    EditorGUI(MainWindow& mainWindow, EngineState& state) : GUI() {
+    EditorGUI(MainWindow& mainWindow, EngineState& state, World& world, Camera& camera) :
+        GUI(mainWindow), world(world), camera(camera) {
         containers.push_back(frontend::initMenu(state));
         containers.push_back(frontend::initJEI(tileData));
-        relocateContainers(mainWindow.getSize());
+        GUI::relocateContainers();
     }
     ~EditorGUI() final = default;
 
-    void editMap(World& world, const Camera& camera) const {
-        if (!Input::active(BindName::Build) || !isMouseFree())
+    void callback() final {
+        GUI::acceptHotkeys();
+        editMap();
+    }
+private:
+    void editMap() const {
+        if (!Input::active(BindName::Build) || !GUI::isMouseFree())
             return;
         const TileCoord tile = t1::tile(camera.fromScreenToMap(Input::getMouseCoord()));
         switch (tileData.component) {
@@ -30,9 +36,5 @@ public:
         case TileComponent::block: break;
         }
         Events::pushEvent(Event::terrain_changed);
-    }
-    
-    void callback() final {
-
     }
 };

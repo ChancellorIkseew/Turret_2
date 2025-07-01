@@ -4,9 +4,6 @@
 
 enum class EngineState : uint8_t;
 struct TileData;
-class Camera;
-class GUI;
-class World;
 
 namespace frontend {
     std::unique_ptr<Container> initMainMenu(EngineState& state);

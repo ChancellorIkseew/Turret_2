@@ -4,14 +4,12 @@
 #include "editor_gui.hpp"
 #include "menu_gui.hpp"
 #include "game/events/events.hpp"
-#include "game/mob/mob_type.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/render/text.hpp"
 #include "engine/parser/list_parser.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/map_drawer.hpp"
-#include "game/weather/weather.hpp"
 
 static std::filesystem::path images("res/images");
 
@@ -41,6 +39,8 @@ void Engine::createScene(const EngineState requiredState) {
     
     TileCoord mapSize(200, 200);
     world = std::make_unique<World>(mapSize);
+    Camera camera(mapSize);
+    MapDrawer mapDrawer(camera, world->getMap());
 
     switch (requiredState) {
     case EngineState::main_menu:
@@ -50,12 +50,9 @@ void Engine::createScene(const EngineState requiredState) {
         gui = std::make_unique<GameplayGUI>(mainWindow, state);
         break;
     case EngineState::map_editor:
-        gui = std::make_unique<EditorGUI>(mainWindow, state);
+        gui = std::make_unique<EditorGUI>(mainWindow, state, *world, camera);
         break;
     }
-
-    Camera camera(mapSize);
-    MapDrawer mapDrawer(camera, world->getMap());
 
     while (mainWindow.isOpen() && state == requiredState) {
         mainWindow.pollEvents();
@@ -68,8 +65,8 @@ void Engine::createScene(const EngineState requiredState) {
 
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        gui->draw(mainWindow);
-        gui->acceptHotkeys(mainWindow);
+        gui->draw();
+        gui->callback();
         mainWindow.render();
     }
 }

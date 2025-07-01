@@ -8,15 +8,16 @@ class MainWindow;
 class GUI {
 protected:
     std::vector<std::unique_ptr<Container>> containers;
+    MainWindow& mainWindow;
     bool showGUI = true, showAtlas = false;
 public:
-    GUI() = default;
+    GUI(MainWindow& mainWindow) : mainWindow(mainWindow) { }
     virtual ~GUI() = default;
 
-    void draw(const MainWindow& mainWindow);
-    virtual void acceptHotkeys(MainWindow& mainWindow);
+    void draw();
     bool isMouseFree() const;
-    virtual void callback() { }
+    virtual void callback() = 0;
 protected:
-    void relocateContainers(const PixelCoord windowSize);
+    void relocateContainers();
+    void acceptHotkeys();
 };

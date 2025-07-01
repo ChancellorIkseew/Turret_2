@@ -1,8 +1,6 @@
 #pragma once
-#include <memory>
 #include "engine_state.hpp"
 #include "engine/window/window.hpp"
-#include "game/world/world.hpp"
 
 class Engine {
     MainWindow mainWindow;

@@ -117,9 +117,6 @@
     <ClInclude Include="src\game\weather\weather.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\scenes\scenes.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\editor_gui.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -234,9 +231,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\weather\weather.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\scenes\scenes.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\frontend\JEI.cpp">
