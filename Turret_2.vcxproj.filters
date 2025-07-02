@@ -105,9 +105,6 @@
     <ClInclude Include="src\engine\util\local_time.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\sp_test.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\world\map_drawer.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
