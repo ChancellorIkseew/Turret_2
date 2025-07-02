@@ -233,7 +233,7 @@
     <ClCompile Include="src\game\weather\weather.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\JEI.cpp">
+    <ClCompile Include="src\game\frontend\jei.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\frontend\main_menu.cpp">

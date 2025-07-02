@@ -84,7 +84,7 @@
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\input\utf8\utf8.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
-    <ClCompile Include="src\game\frontend\JEI.cpp" />
+    <ClCompile Include="src\game\frontend\jei.cpp" />
     <ClCompile Include="src\game\frontend\main_menu.cpp" />
     <ClCompile Include="src\game\frontend\menu.cpp" />
     <ClCompile Include="src\game\frontend\settings.cpp" />
