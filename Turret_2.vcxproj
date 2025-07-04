@@ -59,6 +59,7 @@
     <ClInclude Include="src\game\world\camera.hpp" />
     <ClInclude Include="src\game\world\map_drawer.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
+    <ClInclude Include="src\game\world\world_content.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp" />

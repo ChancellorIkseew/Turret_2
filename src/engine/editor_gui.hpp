@@ -16,7 +16,7 @@ public:
     EditorGUI(MainWindow& mainWindow, EngineState& state, World& world, Camera& camera) :
         GUI(mainWindow), world(world), camera(camera) {
         containers.push_back(frontend::initMenu(state));
-        containers.push_back(frontend::initJEI(tileData));
+        containers.push_back(frontend::initJEI(tileData, world.getContent()));
         GUI::relocateContainers();
     }
     ~EditorGUI() final = default;

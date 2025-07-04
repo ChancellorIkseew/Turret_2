@@ -40,7 +40,7 @@ void Engine::createScene(const EngineState requiredState) {
     TileCoord mapSize(200, 200);
     world = std::make_unique<World>(mapSize);
     Camera camera(mapSize);
-    MapDrawer mapDrawer(camera, world->getMap());
+    MapDrawer mapDrawer(camera, *world);
 
     switch (requiredState) {
     case EngineState::main_menu:

@@ -7,21 +7,18 @@
 
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
-MapDrawer::MapDrawer(const Camera& camera, const WorldMap& map) :
-    camera(camera), map(map) {
-    layers.emplace(TileType::MAGMA, std::vector<PixelCoord>());
-    layers.emplace(TileType::ROCK, std::vector<PixelCoord>());
-    layers.emplace(TileType::SOIL, std::vector<PixelCoord>());
-    layers.emplace(TileType::WATER, std::vector<PixelCoord>());
-    layers.emplace(TileType::ICE, std::vector<PixelCoord>());
-    layers.emplace(TileType::SNOW, std::vector<PixelCoord>());
-    //sprite.setSize(PixelCoord(40, 40));
-    ores.emplace(OreType::IRON, std::vector<PixelCoord>());
-    ores.emplace(OreType::COPPER, std::vector<PixelCoord>());
+MapDrawer::MapDrawer(const Camera& camera, const World& world) :
+    camera(camera), map(world.getMap()), reg(world.getContent()) {
+    for (const auto& [id, _name] : reg.floorTypes) {
+        layers.emplace(id, std::vector<PixelCoord>());
+    }
+    for (const auto& [id, _name] : reg.overlayTypes) {
+        ores.emplace(id, std::vector<PixelCoord>());
+    }
 }
 
 void MapDrawer::cacheLayers() {
-    for (auto& [type, layer] : layers) {
+    for (auto& [_type, layer] : layers) {
         layer.clear();
     }
     //
@@ -45,32 +42,22 @@ void MapDrawer::draw() {
     //
     sprite.setSize(PixelCoord(40, 40));
     for (const auto& [tileType, layer] : layers) {
-        switch (tileType) {
-        case TileType::MAGMA: sprite.setTexture(Texture("magma")); break;
-        case TileType::ROCK:  sprite.setTexture(Texture("stone")); break;
-        case TileType::SOIL:  sprite.setTexture(Texture("soil"));  break;
-        case TileType::WATER: sprite.setTexture(Texture("water")); break;
-        case TileType::ICE:   sprite.setTexture(Texture("ice"));   break;
-        case TileType::SNOW:  sprite.setTexture(Texture("snow"));  break;
-        }
+        sprite.setTexture(reg.floorTypes.at(tileType));
         for (const auto& pixelCoord : layer) {
             sprite.setPosition(pixelCoord - viewCorrection);
             sprite.drawFast();
         }
     }
-
+    //
     sprite.setSize(PixelCoord(32, 32));
-    for (const auto& [oreType, layer] : ores) {
-        switch (oreType) {
-        case OreType::IRON: sprite.setTexture(Texture("iron")); break;
-        case OreType::COPPER: sprite.setTexture(Texture("copper")); break;
-        }
+    for (const auto& [tileType, layer] : ores) {
+        sprite.setTexture(reg.overlayTypes.at(tileType));
         for (const auto& pixelCoord : layer) {
             sprite.setPosition(pixelCoord - camera.getPosition());
             sprite.drawFast();
         }
     }
-
+    //
     drawStructures();
 }
 
@@ -86,7 +73,7 @@ void MapDrawer::drawStructures() {
 }
 
 void MapDrawer::cacheOres() {
-    for (auto& [type, layer] : ores) {
+    for (auto& [_type, layer] : ores) {
         layer.clear();
     }
     //

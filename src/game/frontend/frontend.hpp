@@ -4,6 +4,7 @@
 
 enum class EngineState : uint8_t;
 struct TileData;
+struct ElementRegistry;
 
 namespace frontend {
     std::unique_ptr<Container> initMainMenu(EngineState& state);
@@ -11,5 +12,5 @@ namespace frontend {
     std::unique_ptr<Container> initSettings();
     std::unique_ptr<Container> initTimer();
     std::unique_ptr<Container> initEditor();
-    std::unique_ptr<Container> initJEI(TileData& tileData);
+    std::unique_ptr<Container> initJEI(TileData& tileData, const ElementRegistry& reg);
 }
