@@ -1,12 +1,14 @@
-# tiles
+# floor
 ice.png
 magma.png
 plate.png
-rock.png
 snow.png
 soil.png
 stone.png
 water.png
+#ores
+iron.png
+copper.png
 # other
 ice_block.png
 round_shadow.png

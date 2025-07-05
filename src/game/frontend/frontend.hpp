@@ -3,10 +3,8 @@
 #include "engine/widgets/container.hpp"
 
 enum class EngineState : uint8_t;
-enum class TileType : uint8_t;
-class Camera;
-class GUI;
-class World;
+struct TileData;
+struct ElementRegistry;
 
 namespace frontend {
     std::unique_ptr<Container> initMainMenu(EngineState& state);
@@ -14,5 +12,5 @@ namespace frontend {
     std::unique_ptr<Container> initSettings();
     std::unique_ptr<Container> initTimer();
     std::unique_ptr<Container> initEditor();
-    std::unique_ptr<Container> initJEI(TileType& tileType);
+    std::unique_ptr<Container> initJEI(TileData& tileData, const ElementRegistry& reg);
 }

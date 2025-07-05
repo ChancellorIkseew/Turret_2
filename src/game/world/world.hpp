@@ -1,25 +1,15 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include "config.hpp"
 #include "engine/coords/tile_coord.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/coords/transforms.hpp"
 
-class Block;
-
-enum class TileType : uint8_t {
-    SNOW = 0,
-    ICE = 1,
-    WATER = 2,
-    SOIL = 3,
-    ROCK = 4,
-    MAGMA = 5
-};
-
-struct MapTile {
-    TileType tileType;
-    uint8_t resType;
-    Block* block;
+struct ElementRegistry {
+    std::unordered_map<uint8_t, std::string> floorTypes;
+    std::unordered_map<uint8_t, std::string> overlayTypes;
+    std::unordered_map<uint16_t, std::string> blockTypes;
 };
 
 class Block {
@@ -40,16 +30,23 @@ public:
     }
 };
 
+struct MapTile {
+    uint8_t floor = 0;
+    uint8_t overlay = 0;
+    Block* block = nullptr;
+};
 
 class World {
+    ElementRegistry registry;
     std::vector<std::vector<MapTile>> terrain;
     const TileCoord mapSize;
 public:
     World(const TileCoord mapSize);
     void print();
     const std::vector<std::vector<MapTile>>& getMap() const { return terrain; }
-    void placeTile(const TileCoord tile, const TileType tileType);
-    void placeRes();
+    void placeFloor(const TileCoord tile, const uint8_t floorID);
+    void placeOverlay(const TileCoord tile, const uint8_t overlayID);
+    void placeBlock();
 
     t1_finline bool tileExists(const int tileX, const int tileY) const {
         return tileX >= 0 && tileX < mapSize.x &&
@@ -57,5 +54,9 @@ public:
     }
     t1_finline bool tileExists(const TileCoord tile) const {
         return tileExists(tile.x, tile.y);
+    }
+
+    const ElementRegistry& getContent() const {
+        return registry;
     }
 };

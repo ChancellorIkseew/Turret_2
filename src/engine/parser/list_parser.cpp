@@ -13,11 +13,12 @@ void list::write(fs::path path, const list::Data& data) {
         return;
     }
 
-    std::string fileText;
+    std::stringstream fileText;
     for (const auto& str : data) {
-        fileText += str + "\n";
+        fileText << str << '\n';
     }
-    fout << fileText;
+    fout << fileText.str();
+    logger.info() << "Writen file: " << path;
 }
 
 std::optional<list::Data> list::read(fs::path path) {
@@ -33,6 +34,6 @@ std::optional<list::Data> list::read(fs::path path) {
         if (!line.empty() && line[0] != '#')
             data.push_back(line);
     }
-
+    logger.info() << "Readen file: " << path;
     return data;
 }

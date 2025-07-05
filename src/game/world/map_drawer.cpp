@@ -7,25 +7,24 @@
 
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
-MapDrawer::MapDrawer(const Camera& camera, const WorldMap& map) :
-    camera(camera), map(map) {
-    layers.emplace(TileType::MAGMA, std::vector<PixelCoord>());
-    layers.emplace(TileType::ROCK, std::vector<PixelCoord>());
-    layers.emplace(TileType::SOIL, std::vector<PixelCoord>());
-    layers.emplace(TileType::WATER, std::vector<PixelCoord>());
-    layers.emplace(TileType::ICE, std::vector<PixelCoord>());
-    layers.emplace(TileType::SNOW, std::vector<PixelCoord>());
-    sprite.setSize(PixelCoord(40, 40));
+MapDrawer::MapDrawer(const Camera& camera, const World& world) :
+    camera(camera), map(world.getMap()), reg(world.getContent()) {
+    for (const auto& [id, _name] : reg.floorTypes) {
+        layers.emplace(id, std::vector<PixelCoord>());
+    }
+    for (const auto& [id, _name] : reg.overlayTypes) {
+        ores.emplace(id, std::vector<PixelCoord>());
+    }
 }
 
 void MapDrawer::cacheLayers() {
-    for (auto& [type, layer] : layers) {
+    for (auto& [_type, layer] : layers) {
         layer.clear();
     }
     //
     for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
         for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
-            layers.at(map[x][y].tileType).push_back(t1::pixel(x, y));
+            layers.at(map[x][y].floor).push_back(t1::pixel(x, y));
         }
     }
 }
@@ -37,24 +36,28 @@ void MapDrawer::draw() {
         cashedStart = start;
         cashedEnd = end;
         cacheLayers();
+        cacheOres();
     }
     const PixelCoord viewCorrection = camera.getPosition() + BLENDING_AREA;
     //
+    sprite.setSize(PixelCoord(40, 40));
     for (const auto& [tileType, layer] : layers) {
-        switch (tileType) {
-        case TileType::MAGMA: sprite.setTexture(Texture("magma")); break;
-        case TileType::ROCK: sprite.setTexture(Texture("stone")); break;
-        case TileType::SOIL: sprite.setTexture(Texture("soil")); break;
-        case TileType::WATER: sprite.setTexture(Texture("water")); break;
-        case TileType::ICE: sprite.setTexture(Texture("ice")); break;
-        case TileType::SNOW: sprite.setTexture(Texture("snow")); break;
-        }
+        sprite.setTexture(reg.floorTypes.at(tileType));
         for (const auto& pixelCoord : layer) {
             sprite.setPosition(pixelCoord - viewCorrection);
             sprite.drawFast();
         }
     }
-
+    //
+    sprite.setSize(PixelCoord(32, 32));
+    for (const auto& [tileType, layer] : ores) {
+        sprite.setTexture(reg.overlayTypes.at(tileType));
+        for (const auto& pixelCoord : layer) {
+            sprite.setPosition(pixelCoord - camera.getPosition());
+            sprite.drawFast();
+        }
+    }
+    //
     drawStructures();
 }
 
@@ -65,6 +68,19 @@ void MapDrawer::drawStructures() {
         for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
             if (map[x][y].block)
                 map[x][y].block->draw();
+        }
+    }
+}
+
+void MapDrawer::cacheOres() {
+    for (auto& [_type, layer] : ores) {
+        layer.clear();
+    }
+    //
+    for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
+        for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
+            if (map[x][y].overlay != 0)
+                ores.at(map[x][y].overlay).push_back(t1::pixel(x, y));
         }
     }
 }

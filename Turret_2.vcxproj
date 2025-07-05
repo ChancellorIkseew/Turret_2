@@ -20,16 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp" />
+    <ClInclude Include="src\engine\content\load_content.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
     <ClInclude Include="src\engine\coords\transforms.hpp" />
     <ClInclude Include="src\engine\debug\logger.hpp" />
-    <ClInclude Include="src\engine\editor_gui.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
     <ClInclude Include="src\engine\engine_state.hpp" />
-    <ClInclude Include="src\engine\gameplay_gui.hpp" />
-    <ClInclude Include="src\engine\gui.hpp" />
-    <ClInclude Include="src\engine\menu_gui.hpp" />
+    <ClInclude Include="src\engine\gui\editor_gui.hpp" />
+    <ClInclude Include="src\engine\gui\gameplay_gui.hpp" />
+    <ClInclude Include="src\engine\gui\gui.hpp" />
+    <ClInclude Include="src\engine\gui\gui_util\tile_data.hpp" />
+    <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\parser\list_parser.hpp" />
     <ClInclude Include="src\engine\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
@@ -55,18 +57,18 @@
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\mob\mob_type.hpp" />
-    <ClInclude Include="src\game\scenes\scenes.hpp" />
     <ClInclude Include="src\game\weather\weather.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
     <ClInclude Include="src\game\world\map_drawer.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
-    <ClInclude Include="src\sp_test.hpp" />
+    <ClInclude Include="src\game\world\world_content.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\content\load_textures.cpp" />
     <ClCompile Include="src\engine\coords\transforms.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
-    <ClCompile Include="src\engine\gui.cpp" />
+    <ClCompile Include="src\engine\gui\gui.cpp" />
     <ClCompile Include="src\engine\parser\list_parser.cpp" />
     <ClCompile Include="src\engine\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
@@ -85,7 +87,7 @@
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\input\utf8\utf8.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
-    <ClCompile Include="src\game\frontend\JEI.cpp" />
+    <ClCompile Include="src\game\frontend\jei.cpp" />
     <ClCompile Include="src\game\frontend\main_menu.cpp" />
     <ClCompile Include="src\game\frontend\menu.cpp" />
     <ClCompile Include="src\game\frontend\settings.cpp" />
@@ -93,7 +95,6 @@
     <ClCompile Include="src\game\frontend\editor.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\generation\perlin_noise.cpp" />
-    <ClCompile Include="src\game\scenes\scenes.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
     <ClCompile Include="src\game\world\map_drawer.cpp" />

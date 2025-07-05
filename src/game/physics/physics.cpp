@@ -14,6 +14,11 @@ struct Hitbox {
         return pixel.x >= start.x && pixel.x <= end.x &&
                pixel.y >= start.y && pixel.y <= end.y;
     }
+
+    t1_finline void move(const PixelCoord vector) const noexcept {
+        start = start + vector;
+        end = end + vector;
+    }
 };
 
 

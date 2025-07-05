@@ -1,23 +1,29 @@
 #pragma once
 #include "gui.hpp"
 //
+#include "engine/engine_state.hpp"
 #include "engine/window/input/input.hpp"
-#include "engine/window/window.hpp"
 #include "game/frontend/frontend.hpp"
 #include "game/events/events.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/world.hpp"
 
-enum class EngineState : uint8_t;
-
 class GameplayGUI : public GUI {
+    Container* menu;
 public:
-    GameplayGUI(MainWindow& mainWindow, EngineState& state) : GUI() {
-        containers.push_back(frontend::initMenu(state));
+    GameplayGUI(MainWindow& mainWindow, EngineState& state) : GUI(mainWindow) {
         containers.push_back(frontend::initSettings());
         containers.push_back(frontend::initTimer());
         containers.push_back(frontend::initEditor());
-        relocateContainers(mainWindow.getSize());
+        menu = containers.emplace_back(frontend::initMenu(state)).get();
+        menu->setVisible(false);
+        GUI::relocateContainers();
     }
     ~GameplayGUI() final = default;
+
+    void callback() final {
+        GUI::acceptHotkeys();
+        if (Input::jactive(BindName::Escape))
+            menu->setVisible(!menu->isVisible());
+    }
 };
