@@ -1,6 +1,6 @@
 #include "frontend.hpp"
 //
-#include "engine/tile_data.hpp"
+#include "engine/gui/gui_util/tile_data.hpp"
 #include "engine/widgets/image_button.hpp"
 #include "game/world/world.hpp"
 

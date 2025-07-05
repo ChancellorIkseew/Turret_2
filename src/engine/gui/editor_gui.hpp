@@ -7,7 +7,7 @@
 #include "game/events/events.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/world.hpp"
-#include "tile_data.hpp"
+#include "gui_util/tile_data.hpp"
 
 class EditorGUI : public GUI {
     Container* menu;

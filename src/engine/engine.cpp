@@ -1,8 +1,8 @@
 #include "engine.hpp"
 //
-#include "editor_gui.hpp"
-#include "gameplay_gui.hpp"
-#include "menu_gui.hpp"
+#include "engine/gui/editor_gui.hpp"
+#include "engine/gui/gameplay_gui.hpp"
+#include "engine/gui/menu_gui.hpp"
 //
 #include "engine/content/load_content.hpp"
 #include "engine/render/atlas.hpp"
