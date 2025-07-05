@@ -1,5 +1,4 @@
 [floor]
-0 = "void"
 1 = "snow"
 2 = "ice"
 3 = "water"
@@ -8,6 +7,6 @@
 6 = "magma"
 7 = "plate"
 [overlay]
-0 = "void"
 1 = "iron"
 2 = "copper"
+[block]

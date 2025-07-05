@@ -1,0 +1,10 @@
+[landscape]
+ magma = 0.65
+ stone = 0.625
+ soil = 0.6
+ water = 0.585
+ ice = 0.57
+ snow = 0.0
+[ores]
+ iron = 0.5
+ copper = 0.5

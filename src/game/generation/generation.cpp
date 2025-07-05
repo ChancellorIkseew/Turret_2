@@ -4,6 +4,16 @@
 #include "perlin_noise.hpp"
 #include <iostream>
 
+enum TileType : uint8_t {
+    NONE = 0,
+    SNOW = 1,
+    ICE = 2,
+    WATER = 3,
+    SOIL = 4,
+    ROCK = 5,
+    MAGMA = 6
+};
+
 static uint8_t calculateTileType(float height) {
     if (height > 0.65f)  return TileType::MAGMA;
     if (height > 0.625f) return TileType::ROCK;

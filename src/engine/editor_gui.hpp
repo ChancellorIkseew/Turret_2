@@ -7,6 +7,7 @@
 #include "game/events/events.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/world.hpp"
+#include "tile_data.hpp"
 
 class EditorGUI : public GUI {
     const Camera& camera;

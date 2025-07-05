@@ -1,20 +1,28 @@
 #include "world.hpp"
 //
 #include <iostream>
+#include <TOML/cpptoml.h>
 #include "game/generation/generation.hpp"
 
+template <typename T>
+concept AllowedType = std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t>;
+
+///brief ID = uint8_t | uint16_t
+template <AllowedType ID>
+void loadSection(std::unordered_map<ID, std::string>& umap, const cpptoml::table& section) {
+    for (const auto& [str_id, str_name] : section) {
+        ID id = static_cast<ID>(std::stoul(str_id));
+        std::string name = section.get_as<std::string>(str_id).value_or("");
+        if (!name.empty())
+            umap.try_emplace(id, name);
+    }
+}
+
 static void load(ElementRegistry& reg) {
-    //reg.floorTypes.emplace(0, "void");
-    reg.floorTypes.emplace(1, "snow");
-    reg.floorTypes.emplace(2, "ice");
-    reg.floorTypes.emplace(3, "water");
-    reg.floorTypes.emplace(4, "soil");
-    reg.floorTypes.emplace(5, "stone");
-    reg.floorTypes.emplace(6, "magma");
-    reg.floorTypes.emplace(7, "plate");
-    //
-    reg.overlayTypes.emplace(1, "iron");
-    reg.overlayTypes.emplace(2, "copper");
+    const auto& root = cpptoml::parse_file("res/world_content.toml");
+    loadSection(reg.floorTypes, *root->get_table("floor"));
+    loadSection(reg.overlayTypes, *root->get_table("overlay"));
+    loadSection(reg.blockTypes, *root->get_table("block"));
 }
 
 World::World(const TileCoord mapSize) : terrain(mapSize.x), mapSize(mapSize)  {
@@ -25,7 +33,6 @@ World::World(const TileCoord mapSize) : terrain(mapSize.x), mapSize(mapSize)  {
     gen::generate(terrain, mapSize);
 
     terrain[10][10].block = new Block("round_shadow", "ice_block", TileCoord(10, 10));
-    terrain[12][12].overlay = OreType::COPPER;
 }
 
 void World::print() {

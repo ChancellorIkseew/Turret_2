@@ -12,24 +12,6 @@ struct ElementRegistry {
     std::unordered_map<uint16_t, std::string> blockTypes;
 };
 
-enum TileType : uint8_t {
-    NONEV = 0,
-    SNOW = 1,
-    ICE = 2,
-    WATER = 3,
-    SOIL = 4,
-    ROCK = 5,
-    MAGMA = 6
-};
-
-enum OreType : uint8_t {
-    NONE = 0,
-    IRON = 1,
-    COPPER = 2
-};
-
-
-
 class Block {
     Sprite shadow;
     Sprite base;
@@ -52,17 +34,6 @@ struct MapTile {
     uint8_t floor = 0;
     uint8_t overlay = 0;
     Block* block = nullptr;
-};
-
-enum class TileComponent : uint8_t {
-    floor,
-    overlay,
-    block
-};
-
-struct TileData {
-    TileComponent component = TileComponent::floor;
-    uint8_t id = 0U;
 };
 
 class World {

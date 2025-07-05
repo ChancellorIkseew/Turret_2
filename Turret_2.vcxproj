@@ -36,6 +36,7 @@
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\sprite.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
+    <ClInclude Include="src\engine\tile_data.hpp" />
     <ClInclude Include="src\engine\util\local_time.hpp" />
     <ClInclude Include="src\engine\widgets\button.hpp" />
     <ClInclude Include="src\engine\widgets\container.hpp" />
