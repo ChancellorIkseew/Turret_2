@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp" />
+    <ClInclude Include="src\engine\content\load_content.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
     <ClInclude Include="src\engine\coords\transforms.hpp" />
@@ -63,6 +64,7 @@
     <ClInclude Include="src\game\world\world_content.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\content\load_textures.cpp" />
     <ClCompile Include="src\engine\coords\transforms.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />

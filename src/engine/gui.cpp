@@ -37,7 +37,7 @@ void GUI::relocateContainers() {
 
 bool GUI::isMouseFree() const {
     for (const auto& it : containers) {
-        if (it->containsMouse())
+        if (it->containsMouse() && it->isVisible())
             return false;
     }
     return true;

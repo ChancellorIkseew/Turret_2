@@ -1,29 +1,18 @@
 #include "engine.hpp"
 //
-#include "gameplay_gui.hpp"
 #include "editor_gui.hpp"
+#include "gameplay_gui.hpp"
 #include "menu_gui.hpp"
-#include "game/events/events.hpp"
+//
+#include "engine/content/load_content.hpp"
 #include "engine/render/atlas.hpp"
-#include "engine/render/sprite.hpp"
-#include "engine/render/text.hpp"
-#include "engine/parser/list_parser.hpp"
+//
+#include "game/events/events.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/map_drawer.hpp"
 
-static std::filesystem::path images("res/images");
-
 void Engine::run() {
-    list::Data textureNames = list::read("res/textures.list").value();
-    for (const auto& name : textureNames) {
-        Atlas::addTexture(images / name);
-    }
-
-    Atlas::addTexture("res/fonts/vc_latin.png");
-    Atlas::addTexture("res/fonts/vc_cyrilic.png");
-    Atlas::build();
-    text::setFont("vc_latin", "vc_cyrilic");
-
+    content::loadTextures();
     while (mainWindow.isOpen()) {
         switch (state) {
         case EngineState::exit: mainWindow.close(); break;

@@ -10,13 +10,17 @@
 #include "tile_data.hpp"
 
 class EditorGUI : public GUI {
+    Container* menu;
     const Camera& camera;
     World& world;
     TileData tileData;
 public:
     EditorGUI(MainWindow& mainWindow, EngineState& state, World& world, Camera& camera) :
         GUI(mainWindow), world(world), camera(camera) {
-        containers.push_back(frontend::initMenu(state));
+        auto c = frontend::initMenu(state);
+        menu = c.get();
+        menu->setVisible(false);
+        containers.push_back(std::move(c));
         containers.push_back(frontend::initJEI(tileData, world.getContent()));
         GUI::relocateContainers();
     }
@@ -24,6 +28,8 @@ public:
 
     void callback() final {
         GUI::acceptHotkeys();
+        if (Input::jactive(BindName::Escape))
+            menu->setVisible(!menu->isVisible());
         editMap();
     }
 private:

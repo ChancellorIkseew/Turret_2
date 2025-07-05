@@ -4,7 +4,7 @@
 #include "engine/widgets/image_button.hpp"
 #include "game/world/world.hpp"
 
-constexpr int ROW_SIZE = 4;
+constexpr int ROW_SIZE = 6;
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
 
 std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ElementRegistry& reg) {
@@ -20,7 +20,7 @@ std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ElementRe
             });
         line->addNode(btn.release());
         btns++;
-        if (btns > ROW_SIZE) {
+        if (btns >= ROW_SIZE) {
             jei->addNode(line.release());
             line = std::make_unique<Layout>(Orientation::horizontal);
             btns = 0;
