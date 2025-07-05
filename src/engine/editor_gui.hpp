@@ -17,11 +17,9 @@ class EditorGUI : public GUI {
 public:
     EditorGUI(MainWindow& mainWindow, EngineState& state, World& world, Camera& camera) :
         GUI(mainWindow), world(world), camera(camera) {
-        auto c = frontend::initMenu(state);
-        menu = c.get();
-        menu->setVisible(false);
-        containers.push_back(std::move(c));
         containers.push_back(frontend::initJEI(tileData, world.getContent()));
+        menu = containers.emplace_back(frontend::initMenu(state)).get();
+        menu->setVisible(false);
         GUI::relocateContainers();
     }
     ~EditorGUI() final = default;

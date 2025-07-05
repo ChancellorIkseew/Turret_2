@@ -12,13 +12,11 @@ class GameplayGUI : public GUI {
     Container* menu;
 public:
     GameplayGUI(MainWindow& mainWindow, EngineState& state) : GUI(mainWindow) {
-        auto c = frontend::initMenu(state);
-        menu = c.get();
-        menu->setVisible(false);
-        containers.push_back(std::move(c));
         containers.push_back(frontend::initSettings());
         containers.push_back(frontend::initTimer());
         containers.push_back(frontend::initEditor());
+        menu = containers.emplace_back(frontend::initMenu(state)).get();
+        menu->setVisible(false);
         GUI::relocateContainers();
     }
     ~GameplayGUI() final = default;
