@@ -3,6 +3,7 @@
 build/
 libs/
 obj/
+res/scripts
 saves/
 
 latest_log.txt

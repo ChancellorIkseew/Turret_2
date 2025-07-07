@@ -8,10 +8,14 @@
 #include "engine/render/atlas.hpp"
 //
 #include "game/events/events.hpp"
+#include "game/script_libs/script_libs.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/map_drawer.hpp"
 
 void Engine::run() {
+    script_libs::registerScripts(scriptsHandler);
+    scriptsHandler.load();
+
     content::loadTextures();
     while (mainWindow.isOpen()) {
         switch (state) {
@@ -57,5 +61,6 @@ void Engine::createScene(const EngineState requiredState) {
         gui->draw();
         gui->callback();
         mainWindow.render();
+        scriptsHandler.execute();
     }
 }
