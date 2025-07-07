@@ -16,8 +16,5 @@ std::string t1_time::getTime() {
 }
 
 uint64_t t1_time::getUTC() {
-    time_t tm = std::time(nullptr);
-    using namespace std::chrono;
-    auto ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch()) % 1000;
-    return static_cast<uint64_t>(ms.count());
+    return static_cast<uint64_t>(std::time(nullptr));
 }

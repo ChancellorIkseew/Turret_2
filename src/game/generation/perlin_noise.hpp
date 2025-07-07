@@ -57,7 +57,7 @@ private:
             dy * gradients[permutations[ix + permutations[iy]]].second);
     }
 
-    std::mt19937 rng;
+    std::mt19937_64 rng;
     std::pair<float, float> gradients[256];
     std::array<uint8_t, 256> permutations = {
       151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,
