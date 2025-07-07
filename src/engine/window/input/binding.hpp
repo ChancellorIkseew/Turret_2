@@ -75,10 +75,10 @@ enum class InputType : uint8_t {
     mouse,
 };
 
-enum class MouseWheelScroll : int8_t {
-    none = 0,
-    up = 1,
-    down = -1
+enum class MouseWheelScroll : uint8_t {
+    none,
+    up,
+    down
 };
 
 struct Binding {
@@ -90,5 +90,4 @@ struct Binding {
     constexpr Binding(const int code, const InputType inputType) :
         code(code), inputType(inputType) {}
     Binding() = default;
-    ~Binding() = default;
 };
