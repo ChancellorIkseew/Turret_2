@@ -40,6 +40,7 @@
     <ClInclude Include="src\engine\render\text.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
     <ClInclude Include="src\engine\util\local_time.hpp" />
+    <ClInclude Include="src\engine\util\sleep.hpp" />
     <ClInclude Include="src\engine\widgets\button.hpp" />
     <ClInclude Include="src\engine\widgets\container.hpp" />
     <ClInclude Include="src\engine\widgets\form.hpp" />

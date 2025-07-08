@@ -89,5 +89,11 @@ struct Binding {
 
     constexpr Binding(const int code, const InputType inputType) :
         code(code), inputType(inputType) {}
-    Binding() = default;
+};
+
+struct BindingInfo {
+    int code;
+    InputType inputType;
+    constexpr BindingInfo(const int code, const InputType inputType) :
+        code(code), inputType(inputType) {}
 };

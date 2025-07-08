@@ -21,15 +21,16 @@ public:
     ///@brief (none/up/down)
     static MouseWheelScroll getMouseWheelScroll();
 
-    static std::optional<Binding> getLastKeyPressed();
+    static std::optional<BindingInfo> getLastKeyPressed();
     static void resetLastKeyPressed();
     ///@brief Last symbol entered in any text field.
     static std::optional<uint32_t> getLastSymbolEntered();
     ///@brief Start/stop checking.
     static void enanleTextEnter(const bool flag);
 
-    static void rebind(const BindName bindName, const Binding binding);
+    static void rebind(const BindName bindName, const BindingInfo binding);
     static std::u32string getKeyName(const BindName bindName);
+    static std::u32string getKeyName(const int code);
 private:
     friend MainWindow;
     static void init(SDL_Window* mainWindow);

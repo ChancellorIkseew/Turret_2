@@ -9,6 +9,7 @@ public:
     //
     void setText(const std::u32string& name) {
         this->name = name;
+        setSize(PixelCoord(static_cast<int>(name.length()) * 8, 16));
     }
     void draw() override final;
     virtual void callback() { };

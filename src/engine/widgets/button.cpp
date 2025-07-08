@@ -15,6 +15,15 @@ void Button::draw() {
 
 void Button::setPosition(const PixelCoord position) {
     Node::setPosition(position);
+    centerText();
+}
+
+void Button::setText(const std::u32string& name) {
+    label.setText(name);
+    centerText();
+}
+
+void Button::centerText() {
     PixelCoord margin = (getSize() - label.getSize()) / 2;
     label.setPosition(getPosition() + margin);
 }

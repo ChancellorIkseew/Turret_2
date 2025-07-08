@@ -12,14 +12,17 @@ static std::u32string toU32string(const char* str) {
 }
 
 std::u32string Input::getKeyName(const BindName bindName) {
-    const auto scanceode = static_cast<SDL_Scancode>(bindings.at(bindName).code);
-    return toU32string(SDL_GetScancodeName(scanceode));
+    const auto scancode = static_cast<SDL_Scancode>(bindings.at(bindName).code);
+    return toU32string(SDL_GetScancodeName(scancode));
+}
+std::u32string Input::getKeyName(const int code) {
+    return toU32string(SDL_GetScancodeName(static_cast<SDL_Scancode>(code)));
 }
 
-void Input::rebind(const BindName bindName, const Binding binding) {
+void Input::rebind(const BindName bindName, const BindingInfo binding) {
     if (bindings.contains(bindName))
         bindings.erase(bindName); // Binding has no copy constructor.
-    bindings.emplace(bindName, binding);
+    bindings.emplace(bindName, Binding(binding.code, binding.inputType));
 }
 
 std::unordered_map<BindName, Binding> Input::bindings {

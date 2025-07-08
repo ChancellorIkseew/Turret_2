@@ -4,7 +4,7 @@
 #include "utf8/utf8.hpp"
 
 static SDL_Window* window;
-static std::optional<Binding> lastKeyPressed = std::nullopt;
+static std::atomic<std::optional<BindingInfo>> lastKeyPressed;
 static std::atomic<std::optional<uint32_t>> symbolJustEntered;
 static std::atomic<PixelCoord> mouseCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
@@ -45,7 +45,7 @@ void Input::update(const SDL_Event& event) {
         return;
     }
 
-    lastKeyPressed.emplace(code, inputType);
+    lastKeyPressed.store(BindingInfo(code, inputType), std::memory_order_relaxed);
     for (auto& [bindName, binding] : bindings) {
         if (inputType != binding.inputType || code != binding.code)
             continue;
@@ -74,8 +74,8 @@ MouseWheelScroll Input::getMouseWheelScroll() {
     return mouseWheelScroll.exchange(MouseWheelScroll::none, std::memory_order_relaxed);
 }
 
-std::optional<Binding> Input::getLastKeyPressed() {
-    return lastKeyPressed;
+std::optional<BindingInfo> Input::getLastKeyPressed() {
+    return lastKeyPressed.exchange(std::nullopt , std::memory_order_relaxed);
 }
 void Input::resetLastKeyPressed() {
     lastKeyPressed = std::nullopt;

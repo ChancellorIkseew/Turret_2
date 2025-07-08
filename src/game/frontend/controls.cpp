@@ -4,6 +4,7 @@
 #include "engine/widgets/label.hpp"
 #include "engine/window/input/input.hpp"
 #include <thread>
+#include "engine/util/sleep.hpp"
 
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
@@ -16,6 +17,21 @@ static std::u32string toU32string(const char* str) {
     return result;
 }
 
+static void rebind(Button* ptr, BindName bindName) {
+    std::thread tr([ptr, bindName]() {
+        std::optional<BindingInfo> binding = std::nullopt;
+        util::sleep(160);
+        Input::resetLastKeyPressed();
+        while (!binding.has_value()) {
+            binding = Input::getLastKeyPressed();
+            util::sleep(48);
+        }
+        ptr->setText(U'[' + Input::getKeyName(binding.value().code) + U']');
+        Input::rebind(bindName, binding.value());
+        });
+    tr.detach();
+}
+
 std::unique_ptr<Container> frontend::initControls() {
     auto controls = std::make_unique<Container>(Align::centre, Orientation::horizontal);
     auto names = std::make_unique<Layout>(Orientation::vertical);
@@ -24,19 +40,7 @@ std::unique_ptr<Container> frontend::initControls() {
     for (const auto& [enumName, strName] : bindNames) {
         auto name = std::make_unique<Label>(toU32string(strName));
         auto bind = std::make_unique<Button>(BTN_SIZE, U'[' + Input::getKeyName(enumName) + U']');
-        bind->addCallback([ptr = bind.get(), enumName]() {
-            Input::resetLastKeyPressed();
-            std::thread tr([ptr, enumName]() {
-                std::optional<Binding> binding = std::nullopt;
-                while (!binding.has_value()) {
-                    if (Input::getLastKeyPressed().has_value())
-                        binding.emplace(Input::getLastKeyPressed().value());
-                }
-                ptr->setText(U"100");
-                Input::rebind(enumName, binding.value());
-                });
-            tr.detach();
-            });
+        bind->addCallback(std::bind(rebind, bind.get(), enumName));
         names->addNode(name.release());
         binds->addNode(bind.release());
     }
