@@ -269,5 +269,8 @@
     <ClCompile Include="src\game\script_libs\lib_input.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\frontend\rebind.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

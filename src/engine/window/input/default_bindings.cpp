@@ -1,4 +1,26 @@
 #include "input.hpp"
+//
+#include "SDL3/SDL_keyboard.h"
+
+static std::u32string toU32string(const char* str) {
+    std::u32string result;
+    while (*str != '\0') {
+        result.push_back(static_cast<unsigned char>(*str));
+        ++str;
+    }
+    return result;
+}
+
+std::u32string Input::getKeyName(const BindName bindName) {
+    const auto scanceode = static_cast<SDL_Scancode>(bindings.at(bindName).code);
+    return toU32string(SDL_GetScancodeName(scanceode));
+}
+
+void Input::rebind(const BindName bindName, const Binding binding) {
+    if (bindings.contains(bindName))
+        bindings.erase(bindName); // Binding has no copy constructor.
+    bindings.emplace(bindName, binding);
+}
 
 std::unordered_map<BindName, Binding> Input::bindings {
     {BindName::LMB, Binding(SDL_BUTTON_LEFT, InputType::mouse)},

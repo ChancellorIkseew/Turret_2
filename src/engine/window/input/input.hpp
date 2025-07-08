@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL_events.h>
 #include <optional>
+#include <string>
 #include <unordered_map>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
@@ -20,12 +21,15 @@ public:
     ///@brief (none/up/down)
     static MouseWheelScroll getMouseWheelScroll();
 
+    static std::optional<Binding> getLastKeyPressed();
+    static void resetLastKeyPressed();
     ///@brief Last symbol entered in any text field.
     static std::optional<uint32_t> getLastSymbolEntered();
     ///@brief Start/stop checking.
     static void enanleTextEnter(const bool flag);
 
-    //static void rebind(const BindName keyName, const SDL_Event& event);
+    static void rebind(const BindName bindName, const Binding binding);
+    static std::u32string getKeyName(const BindName bindName);
 private:
     friend MainWindow;
     static void init(SDL_Window* mainWindow);

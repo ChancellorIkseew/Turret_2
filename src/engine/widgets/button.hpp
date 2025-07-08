@@ -12,6 +12,9 @@ public:
     Button(const PixelCoord size, std::u32string name) :
         Node(size), label(name) { }
     //
+    void setText(const std::u32string& name) {
+        label.setText(name);
+    }
     void draw() override final;
     void callback() override final;
     void setPosition(const PixelCoord position) override final;

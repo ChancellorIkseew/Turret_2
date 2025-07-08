@@ -93,6 +93,7 @@
     <ClCompile Include="src\game\frontend\jei.cpp" />
     <ClCompile Include="src\game\frontend\main_menu.cpp" />
     <ClCompile Include="src\game\frontend\menu.cpp" />
+    <ClCompile Include="src\game\frontend\rebind.cpp" />
     <ClCompile Include="src\game\frontend\settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
     <ClCompile Include="src\game\frontend\editor.cpp" />

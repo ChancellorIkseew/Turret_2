@@ -7,6 +7,9 @@ public:
     Label(std::u32string name) : name(std::move(name)),
         Node(PixelCoord(static_cast<int>(name.length()) * 8, 16)) { }
     //
+    void setText(const std::u32string& name) {
+        this->name = name;
+    }
     void draw() override final;
     virtual void callback() { };
 };
