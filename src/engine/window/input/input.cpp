@@ -26,7 +26,7 @@ void Input::update(const SDL_Event& event) {
         return;
     }
     if (event.type == SDL_EVENT_TEXT_INPUT) {
-        symbolJustEntered.store(utf8::fromConstCharToUtf8(event.text.text), std::memory_order_relaxed);
+        symbolJustEntered.store(utf8::fromConstCharToUint32(event.text.text), std::memory_order_relaxed);
         return;
     }
 

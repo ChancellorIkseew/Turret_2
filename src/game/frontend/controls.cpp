@@ -1,21 +1,12 @@
 #include "frontend.hpp"
 //
+#include "engine/util/sleep.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/label.hpp"
 #include "engine/window/input/input.hpp"
-#include <thread>
-#include "engine/util/sleep.hpp"
+#include "engine/window/input/utf8/utf8.hpp"
 
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
-
-static std::u32string toU32string(const char* str) {
-    std::u32string result;
-    while (*str != '\0') {
-        result.push_back(static_cast<unsigned char>(*str));
-        ++str;
-    }
-    return result;
-}
 
 static void rebind(Button* ptr, BindName bindName) {
     std::thread tr([ptr, bindName]() {
@@ -38,7 +29,7 @@ std::unique_ptr<Container> frontend::initControls() {
     auto binds = std::make_unique<Layout>(Orientation::vertical);
 
     for (const auto& [enumName, strName] : bindNames) {
-        auto name = std::make_unique<Label>(toU32string(strName));
+        auto name = std::make_unique<Label>(utf8::fromConstCharToU32String(strName));
         auto bind = std::make_unique<Button>(BTN_SIZE, U'[' + Input::getKeyName(enumName) + U']');
         bind->addCallback(std::bind(rebind, bind.get(), enumName));
         names->addNode(name.release());
