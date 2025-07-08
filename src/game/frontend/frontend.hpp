@@ -9,7 +9,7 @@ struct ElementRegistry;
 namespace frontend {
     std::unique_ptr<Container> initMainMenu(EngineState& state);
     std::unique_ptr<Container> initMenu(EngineState& state);
-    std::unique_ptr<Container> initRebind();
+    std::unique_ptr<Container> initControls();
     std::unique_ptr<Container> initSettings();
     std::unique_ptr<Container> initTimer();
     std::unique_ptr<Container> initEditor();

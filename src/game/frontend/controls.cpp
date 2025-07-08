@@ -16,8 +16,8 @@ static std::u32string toU32string(const char* str) {
     return result;
 }
 
-std::unique_ptr<Container> frontend::initRebind() {
-    auto rebind = std::make_unique<Container>(Align::centre, Orientation::horizontal);
+std::unique_ptr<Container> frontend::initControls() {
+    auto controls = std::make_unique<Container>(Align::centre, Orientation::horizontal);
     auto names = std::make_unique<Layout>(Orientation::vertical);
     auto binds = std::make_unique<Layout>(Orientation::vertical);
 
@@ -41,8 +41,8 @@ std::unique_ptr<Container> frontend::initRebind() {
         binds->addNode(bind.release());
     }
 
-    rebind->addNode(names.release());
-    rebind->addNode(binds.release());
-    rebind->arrange();
-    return rebind;
+    controls->addNode(names.release());
+    controls->addNode(binds.release());
+    controls->arrange();
+    return controls;
 }
