@@ -3,6 +3,7 @@
 #include "engine/util/sleep.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/label.hpp"
+#include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/input/utf8/utf8.hpp"
 
@@ -17,8 +18,8 @@ static void rebind(Button* ptr, BindName bindName) {
             binding = Input::getLastKeyPressed();
             util::sleep(48);
         }
-        ptr->setText(U'[' + Input::getKeyName(binding.value().code) + U']');
-        Input::rebind(bindName, binding.value());
+        ptr->setText(U'[' + Controls::getKeyName(binding.value().code) + U']');
+        Controls::rebind(bindName, binding.value());
         });
     tr.detach();
 }
@@ -30,7 +31,7 @@ std::unique_ptr<Container> frontend::initControls() {
 
     for (const auto& [enumName, strName] : bindNames) {
         auto name = std::make_unique<Label>(utf8::fromConstCharToU32String(strName));
-        auto bind = std::make_unique<Button>(BTN_SIZE, U'[' + Input::getKeyName(enumName) + U']');
+        auto bind = std::make_unique<Button>(BTN_SIZE, U'[' + Controls::getKeyName(enumName) + U']');
         bind->addCallback(std::bind(rebind, bind.get(), enumName));
         names->addNode(name.release());
         binds->addNode(bind.release());

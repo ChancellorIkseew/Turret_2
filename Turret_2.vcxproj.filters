@@ -153,6 +153,9 @@
     <ClInclude Include="src\engine\util\sleep.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\window\input\controls.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp">
@@ -185,7 +188,7 @@
     <ClCompile Include="src\engine\widgets\ui_node.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\window\input\default_bindings.cpp">
+    <ClCompile Include="src\engine\window\input\const_bindings.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\window\input\input.cpp">
@@ -272,7 +275,10 @@
     <ClCompile Include="src\game\script_libs\lib_input.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\controls.cpp">
+    <ClCompile Include="src\game\frontend\fr_controls.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\window\input\controls.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "input.hpp"
 //
 #include <atomic>
+#include "controls.hpp"
 #include "utf8/utf8.hpp"
 
 static SDL_Window* window;
@@ -46,7 +47,7 @@ void Input::update(const SDL_Event& event) {
     }
 
     lastKeyPressed.store(BindingInfo(code, inputType), std::memory_order_relaxed);
-    for (auto& [bindName, binding] : bindings) {
+    for (auto& [bindName, binding] : Controls::bindings) {
         if (inputType != binding.inputType || code != binding.code)
             continue;
         binding.justTriggered = !binding.active && pressed;
@@ -55,16 +56,16 @@ void Input::update(const SDL_Event& event) {
 }
 
 void Input::reset() {
-    for (auto& [bindName, binding] : bindings) {
+    for (auto& [bindName, binding] : Controls::bindings) {
         binding.justTriggered = false;
     }
 }
 
 bool Input::active(const BindName bindName) {
-    return bindings.contains(bindName) && bindings.at(bindName).active;
+    return Controls::bindings.contains(bindName) && Controls::bindings.at(bindName).active;
 }
 bool Input::jactive(const BindName bindName) {
-    return bindings.contains(bindName) && bindings.at(bindName).justTriggered;
+    return Controls::bindings.contains(bindName) && Controls::bindings.at(bindName).justTriggered;
 }
 
 PixelCoord Input::getMouseCoord() {
@@ -75,7 +76,7 @@ MouseWheelScroll Input::getMouseWheelScroll() {
 }
 
 std::optional<BindingInfo> Input::getLastKeyPressed() {
-    return lastKeyPressed.exchange(std::nullopt , std::memory_order_relaxed);
+    return lastKeyPressed.load(std::memory_order_relaxed);
 }
 void Input::resetLastKeyPressed() {
     lastKeyPressed = std::nullopt;
