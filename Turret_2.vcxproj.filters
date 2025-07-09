@@ -188,7 +188,7 @@
     <ClCompile Include="src\engine\widgets\ui_node.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\window\input\const_bindings.cpp">
+    <ClCompile Include="src\engine\window\input\default_bindings.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\window\input\input.cpp">

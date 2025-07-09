@@ -24,7 +24,7 @@ public:
 
     void callback() final {
         GUI::acceptHotkeys();
-        if (Input::jactive(BindName::Escape))
+        if (Input::jactive(Escape))
             menu->setVisible(!menu->isVisible());
     }
 };

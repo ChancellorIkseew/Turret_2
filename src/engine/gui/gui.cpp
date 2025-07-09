@@ -20,11 +20,11 @@ void GUI::draw() {
 }
 
 void GUI::acceptHotkeys() {
-    if (Input::jactive(BindName::Hide_GUI))
+    if (Input::jactive(Hide_GUI))
         showGUI = !showGUI;
-    if (Input::jactive(BindName::Show_atlas))
+    if (Input::jactive(Show_atlas))
         showAtlas = !showAtlas;
-    if (Input::jactive(BindName::Fullscreen))
+    if (Input::jactive(Fullscreen))
         mainWindow.setFullscreen(!mainWindow.isFullscreen());
     FormEditor::editForm();
 }

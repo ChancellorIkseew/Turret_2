@@ -61,10 +61,10 @@ void Input::reset() {
     }
 }
 
-bool Input::active(const BindName bindName) {
+bool Input::active(cString bindName) {
     return Controls::bindings.contains(bindName) && Controls::bindings.at(bindName).active;
 }
-bool Input::jactive(const BindName bindName) {
+bool Input::jactive(cString bindName) {
     return Controls::bindings.contains(bindName) && Controls::bindings.at(bindName).justTriggered;
 }
 

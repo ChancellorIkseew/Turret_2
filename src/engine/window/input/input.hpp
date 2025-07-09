@@ -10,9 +10,9 @@ class MainWindow;
 class Input {
 public:
     ///@brief Check any press/click.
-    static bool active(const BindName bindName);
+    static bool active(const cString bindName);
     ///@brief Check only short press/click.
-    static bool jactive(const BindName bindName);
+    static bool jactive(const cString bindName);
 
     ///@brief Coordinate in window.
     static PixelCoord getMouseCoord();

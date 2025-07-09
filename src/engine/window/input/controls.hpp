@@ -7,12 +7,13 @@ class Input;
 
 class Controls {
     friend Input;
-    static std::unordered_map<BindName, Binding> bindings;
+    static std::unordered_map<std::string, Binding> bindings;
 public:
-    static BindName addBinding(cString code, InputType inputType);
+    static const std::unordered_map<std::string, Binding>& getBindings() { return bindings; }
+    static void addBinding(const std::string& bindName, const std::string& keyName);
     static void writeBindings();
     static void readBindings();
-    static void rebind(const BindName bindName, const BindingInfo binding);
-    static std::u32string getKeyName(const BindName bindName);
+    static void rebind(const std::string& bindName, const BindingInfo binding);
+    static std::u32string getKeyName(const std::string& bindName);
     static std::u32string getKeyName(const int code);
 };

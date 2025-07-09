@@ -9,7 +9,7 @@
 
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
-static void rebind(Button* ptr, BindName bindName) {
+static void rebind(Button* ptr, std::string bindName) {
     std::thread tr([ptr, bindName]() {
         std::optional<BindingInfo> binding = std::nullopt;
         util::sleep(160);
@@ -29,10 +29,12 @@ std::unique_ptr<Container> frontend::initControls() {
     auto names = std::make_unique<Layout>(Orientation::vertical);
     auto binds = std::make_unique<Layout>(Orientation::vertical);
 
-    for (const auto& [enumName, strName] : bindNames) {
-        auto name = std::make_unique<Label>(utf8::fromConstCharToU32String(strName));
-        auto bind = std::make_unique<Button>(BTN_SIZE, U'[' + Controls::getKeyName(enumName) + U']');
-        bind->addCallback(std::bind(rebind, bind.get(), enumName));
+    for (const auto& [bindName, binding] : Controls::getBindings()) {
+        if (!binding.changable)
+            continue;
+        auto name = std::make_unique<Label>(utf8::fromConstCharToU32String(bindName.c_str()));
+        auto bind = std::make_unique<Button>(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']');
+        bind->addCallback(std::bind(rebind, bind.get(), bindName));
         names->addNode(name.release());
         binds->addNode(bind.release());
     }

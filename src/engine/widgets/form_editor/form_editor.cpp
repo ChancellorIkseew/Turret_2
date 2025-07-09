@@ -17,9 +17,9 @@ void FormEditor::editForm() {
         return;
     //
     auto& text = targetForm->getText();
-    if (Input::jactive(BindName::Backspace))
+    if (Input::jactive(Backspace))
         text = text.substr(0, text.length() - 1);
-    if (Input::jactive(BindName::Delete))
+    if (Input::jactive(Delete))
         text = text.substr(0, text.length() - 1);
     //
     std::optional<uint32_t> sym = Input::getLastSymbolEntered();

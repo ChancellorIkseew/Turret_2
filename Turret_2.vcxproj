@@ -89,7 +89,7 @@
     <ClCompile Include="src\engine\widgets\layout.cpp" />
     <ClCompile Include="src\engine\widgets\ui_node.cpp" />
     <ClCompile Include="src\engine\window\input\controls.cpp" />
-    <ClCompile Include="src\engine\window\input\const_bindings.cpp" />
+    <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\input\utf8\utf8.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />

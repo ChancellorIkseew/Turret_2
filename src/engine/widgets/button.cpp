@@ -4,7 +4,7 @@
 #include "engine/window/input/input.hpp"
 
 void Button::callback() {
-    if (action && containsMouse() && Input::jactive(BindName::LMB))
+    if (action && containsMouse() && Input::jactive(LMB))
         action();
 }
 
