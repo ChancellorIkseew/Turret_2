@@ -9,7 +9,7 @@ void FormEditor::setForm(Form* form) {
     if (form == targetForm)
         form = nullptr;
     targetForm = form;
-    Input::enanleTextEnter(form);
+    Input::enableTextEnter(form);
 }
 
 void FormEditor::editForm() {

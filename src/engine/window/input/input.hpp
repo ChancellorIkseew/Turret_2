@@ -21,12 +21,12 @@ public:
 
     ///@brief Int code and input type(keyboard/mouse) of the last key/button press.
     /// Is used for controls rebinding, but can have other usages.
-    static std::optional<BindingInfo> getLastKeyPressed();
+    static std::optional<Binding> getLastKeyPressed();
     static void resetLastKeyPressed();
     ///@brief Last symbol entered in any text field.
     static std::optional<uint32_t> getLastSymbolEntered();
     ///@brief Start/stop checking.
-    static void enanleTextEnter(const bool flag);
+    static void enableTextEnter(const bool flag);
 private:
     friend MainWindow;
     static void init(SDL_Window* mainWindow);

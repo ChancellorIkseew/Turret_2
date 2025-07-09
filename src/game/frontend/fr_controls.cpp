@@ -11,14 +11,14 @@ constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
 static void rebind(Button* ptr, std::string bindName) {
     std::thread tr([ptr, bindName]() {
-        std::optional<BindingInfo> binding = std::nullopt;
+        std::optional<Binding> binding = std::nullopt;
         util::sleep(160);
         Input::resetLastKeyPressed();
         while (!binding.has_value()) {
             binding = Input::getLastKeyPressed();
             util::sleep(48);
         }
-        ptr->setText(U'[' + Controls::getKeyName(binding.value().code) + U']');
+        ptr->setText(U'[' + Controls::getKeyName(bindName) + U']');
         Controls::rebind(bindName, binding.value());
         });
     tr.detach();

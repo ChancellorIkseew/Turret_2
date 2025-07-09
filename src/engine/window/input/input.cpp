@@ -5,7 +5,7 @@
 #include "utf8/utf8.hpp"
 
 static SDL_Window* window;
-static std::atomic<std::optional<BindingInfo>> lastKeyPressed;
+static std::atomic<std::optional<Binding>> lastKeyPressed;
 static std::atomic<std::optional<uint32_t>> symbolJustEntered;
 static std::atomic<PixelCoord> mouseCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
@@ -46,8 +46,8 @@ void Input::update(const SDL_Event& event) {
         return;
     }
 
-    lastKeyPressed.store(BindingInfo(code, inputType), std::memory_order_relaxed);
-    for (auto& [bindName, binding] : Controls::bindings) {
+    lastKeyPressed.store(Binding(code, inputType), std::memory_order_relaxed);
+    for (auto& [bindName, binding] : Controls::getBindings()) {
         if (inputType != binding.inputType || code != binding.code)
             continue;
         binding.justTriggered = !binding.active && pressed;
@@ -56,16 +56,16 @@ void Input::update(const SDL_Event& event) {
 }
 
 void Input::reset() {
-    for (auto& [bindName, binding] : Controls::bindings) {
+    for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
     }
 }
 
 bool Input::active(cString bindName) {
-    return Controls::bindings.contains(bindName) && Controls::bindings.at(bindName).active;
+    return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).active;
 }
 bool Input::jactive(cString bindName) {
-    return Controls::bindings.contains(bindName) && Controls::bindings.at(bindName).justTriggered;
+    return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).justTriggered;
 }
 
 PixelCoord Input::getMouseCoord() {
@@ -75,7 +75,7 @@ MouseWheelScroll Input::getMouseWheelScroll() {
     return mouseWheelScroll.exchange(MouseWheelScroll::none, std::memory_order_relaxed);
 }
 
-std::optional<BindingInfo> Input::getLastKeyPressed() {
+std::optional<Binding> Input::getLastKeyPressed() {
     return lastKeyPressed.load(std::memory_order_relaxed);
 }
 void Input::resetLastKeyPressed() {
@@ -84,7 +84,7 @@ void Input::resetLastKeyPressed() {
 std::optional<uint32_t> Input::getLastSymbolEntered() {
     return symbolJustEntered.exchange(std::nullopt, std::memory_order_relaxed);
 }
-void Input::enanleTextEnter(const bool flag) {
+void Input::enableTextEnter(const bool flag) {
     if (flag)
         SDL_StartTextInput(window);
     else

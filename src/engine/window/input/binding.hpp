@@ -1,7 +1,7 @@
 #pragma once
-#include <array>
 #include <typeinfo>
 
+///@brief For constexpr strings only.
 using cString = const char*;
 
 inline constexpr cString LMB("LMB");
@@ -44,22 +44,13 @@ enum class MouseWheelScroll : uint8_t {
     down
 };
 
-struct BindingInfo {
+struct Binding {
     int code;
     InputType inputType;
-    constexpr BindingInfo(const int code, const InputType inputType) :
-        code(code), inputType(inputType) { }
-};
-
-struct Binding {
-    const int code;
-    const InputType inputType;
-    const bool changable = true;
-    bool active = false;
-    bool justTriggered = false;
+    bool changable = true;
+    mutable bool active = false;
+    mutable bool justTriggered = false;
 
     constexpr Binding(const int code, const InputType inputType, const bool changable = true) :
         code(code), inputType(inputType), changable(changable) { }
-    constexpr Binding(const BindingInfo info) :
-        code(info.code), inputType(info.inputType) { }
 };
