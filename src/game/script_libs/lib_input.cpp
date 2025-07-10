@@ -1,27 +1,22 @@
 #include "script_libs.hpp"
 //
 #include <ANGEL_SCRIPT/angelscript.h>
+#include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 
-static bool active(const int bindName) {
-    return Input::active(static_cast<BindName>(bindName));
+static bool active(const std::string& bindName) {
+    return Input::active(bindName.c_str());
 }
-static bool jactive(const int bindName) {
-    return Input::jactive(static_cast<BindName>(bindName));
+static bool jactive(const std::string& bindName) {
+    return Input::jactive(bindName.c_str());
 }
-
-static void registerBindNames(ScriptsHandler& scriptsHandler) {
-    auto engine = scriptsHandler.getRaw();
-    engine->RegisterEnum("BindName");
-
-    for (const auto& [enumName, stringName] : bindNames) {
-        engine->RegisterEnumValue("BindName", stringName, static_cast<int>(enumName));
-    }
+static void addBinding(const std::string& bindName, const std::string& keyName) {
+    Controls::addBinding(bindName, keyName);
 }
 
 void script_libs::registerInput(ScriptsHandler& scriptsHandler) {
-    registerBindNames(scriptsHandler);
     auto engine = scriptsHandler.getRaw();
-    engine->RegisterGlobalFunction("bool input_active(BindName bindName)", asFunctionPtr(active), asCALL_CDECL);
-    engine->RegisterGlobalFunction("bool input_jactive(BindName bindName)", asFunctionPtr(jactive), asCALL_CDECL);
+    engine->RegisterGlobalFunction("bool input_active(std::string bindName)", asFunctionPtr(active), asCALL_CDECL);
+    engine->RegisterGlobalFunction("bool input_jactive(std::string bindName)", asFunctionPtr(jactive), asCALL_CDECL);
+    //engine->RegisterGlobalFunction("BindName input_addBinding(string bindName, string keyName)", asFunctionPtr(jactive), asCALL_CDECL);
 }

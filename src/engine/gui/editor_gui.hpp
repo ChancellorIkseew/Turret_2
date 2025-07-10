@@ -26,13 +26,13 @@ public:
 
     void callback() final {
         GUI::acceptHotkeys();
-        if (Input::jactive(BindName::Escape))
+        if (Input::jactive(Escape))
             menu->setVisible(!menu->isVisible());
         editMap();
     }
 private:
     void editMap() const {
-        if (!Input::active(BindName::Build) || !GUI::isMouseFree())
+        if (!Input::active(Build) || !GUI::isMouseFree())
             return;
         const TileCoord tile = t1::tile(camera.fromScreenToMap(Input::getMouseCoord()));
         switch (tileData.component) {

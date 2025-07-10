@@ -15,6 +15,7 @@ public:
         containers.push_back(frontend::initSettings());
         containers.push_back(frontend::initTimer());
         containers.push_back(frontend::initEditor());
+        containers.push_back(frontend::initControls());
         menu = containers.emplace_back(frontend::initMenu(state)).get();
         menu->setVisible(false);
         GUI::relocateContainers();
@@ -23,7 +24,7 @@ public:
 
     void callback() final {
         GUI::acceptHotkeys();
-        if (Input::jactive(BindName::Escape))
+        if (Input::jactive(Escape))
             menu->setVisible(!menu->isVisible());
     }
 };

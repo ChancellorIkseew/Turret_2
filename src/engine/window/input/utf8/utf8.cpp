@@ -1,6 +1,6 @@
 #include "utf8.hpp"
 
-uint32_t utf8::fromConstCharToUtf8(const char* s) noexcept {
+uint32_t utf8::fromConstCharToUint32(const char* s) noexcept {
     if (!s || *s == '\0') return 0;
 
     const uint8_t u0 = static_cast<uint8_t>(s[0]);
@@ -30,4 +30,13 @@ uint32_t utf8::fromConstCharToUtf8(const char* s) noexcept {
     }
 
     return cp;
+}
+
+std::u32string utf8::fromConstCharToU32String(const char* cStr) {
+    std::u32string result;
+    while (*cStr != '\0') {
+        result.push_back(static_cast<unsigned char>(*cStr));
+        ++cStr;
+    }
+    return result;
 }

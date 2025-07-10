@@ -4,6 +4,6 @@
 #include "engine/window/input/input.hpp"
 
 void ImageButton::callback() {
-    if (action && containsMouse() && Input::jactive(BindName::LMB))
+    if (action && containsMouse() && Input::jactive(LMB))
         action();
 }

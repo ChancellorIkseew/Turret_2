@@ -11,6 +11,6 @@ void Form::draw() {
 
 void Form::callback() {
     bool editing = false;
-    if (Input::jactive(BindName::LMB))
+    if (Input::jactive(LMB))
         FormEditor::setForm(this);
 }

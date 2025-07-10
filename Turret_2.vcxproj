@@ -40,6 +40,7 @@
     <ClInclude Include="src\engine\render\text.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
     <ClInclude Include="src\engine\util\local_time.hpp" />
+    <ClInclude Include="src\engine\util\sleep.hpp" />
     <ClInclude Include="src\engine\widgets\button.hpp" />
     <ClInclude Include="src\engine\widgets\container.hpp" />
     <ClInclude Include="src\engine\widgets\form.hpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="src\engine\widgets\ui_defs.hpp" />
     <ClInclude Include="src\engine\widgets\ui_node.hpp" />
     <ClInclude Include="src\engine\window\input\binding.hpp" />
+    <ClInclude Include="src\engine\window\input\controls.hpp" />
     <ClInclude Include="src\engine\window\input\input.hpp" />
     <ClInclude Include="src\engine\window\input\utf8\utf8.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
@@ -86,6 +88,7 @@
     <ClCompile Include="src\engine\widgets\label.cpp" />
     <ClCompile Include="src\engine\widgets\layout.cpp" />
     <ClCompile Include="src\engine\widgets\ui_node.cpp" />
+    <ClCompile Include="src\engine\window\input\controls.cpp" />
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\input\utf8\utf8.cpp" />
@@ -93,6 +96,7 @@
     <ClCompile Include="src\game\frontend\jei.cpp" />
     <ClCompile Include="src\game\frontend\main_menu.cpp" />
     <ClCompile Include="src\game\frontend\menu.cpp" />
+    <ClCompile Include="src\game\frontend\fr_controls.cpp" />
     <ClCompile Include="src\game\frontend\settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
     <ClCompile Include="src\game\frontend\editor.cpp" />

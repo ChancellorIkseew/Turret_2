@@ -22,9 +22,9 @@ void Camera::interact(const PixelCoord windowSize) {
 }
 
 void Camera::moveByMouse() {
-    if (Input::jactive(BindName::MidMB))
+    if (Input::jactive(MidMB))
         movingStartMouseCoord = fromScreenToMap(Input::getMouseCoord());
-    else if (Input::active(BindName::MidMB)) {
+    else if (Input::active(MidMB)) {
         const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(Input::getMouseCoord());
         cameraCentre = cameraCentre + delta;
     }
@@ -33,13 +33,13 @@ void Camera::moveByMouse() {
 void Camera::moveByWASD() {
     PixelCoord delta(0.0f, 0.0f);
 
-    if (Input::active(BindName::Move_up))
+    if (Input::active(Move_up))
         delta.y -= 1.0f;
-    if (Input::active(BindName::Move_left))
+    if (Input::active(Move_left))
         delta.x -= 1.0f;
-    if (Input::active(BindName::Move_down))
+    if (Input::active(Move_down))
         delta.y += 1.0f;
-    if (Input::active(BindName::Move_right))
+    if (Input::active(Move_right))
         delta.x += 1.0f;
 
     if (delta != PixelCoord(0.0f, 0.0f))
