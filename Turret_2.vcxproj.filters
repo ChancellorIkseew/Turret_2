@@ -153,7 +153,7 @@
     <ClInclude Include="src\engine\window\input\controls.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\physics\physics.hpp">
+    <ClInclude Include="src\game\physics\shells_system.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\physics\shell.hpp">
@@ -163,6 +163,15 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\physics\mob.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\physics\mob_ai.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\physics\team\team.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\physics\team\teams_pool.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -290,7 +299,10 @@
     <ClCompile Include="src\engine\window\input\controls.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\physics\physics.cpp">
+    <ClCompile Include="src\game\physics\shells_system.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\physics\team\team.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,13 +9,6 @@ struct MobAI {
     virtual void operator()(Mob& mob) = 0;
 };
 
-struct Hoaming : MobAI {
-    ~Hoaming() final = default;
-    void operator()(Mob& mob) final {
-
-    }
-};
-
 struct MobPreset {
     MobAI* AI;
     Sprite sprite;
@@ -32,8 +25,9 @@ struct Mob {
     Health health;
     float angle;
     bool wasted = false;
+    TeamID teamID;
 
-    Mob(const MobPreset& preset, const PixelCoord position, const float angle) :
-        preset(preset), angle(angle), position(position),
+    Mob(const MobPreset& preset, const PixelCoord position, const float angle, const TeamID teamID) :
+        preset(preset), angle(angle), position(position), teamID(teamID),
         hitbox(position, position), health(preset.maxHealth) { }
 };

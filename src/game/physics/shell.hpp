@@ -16,8 +16,9 @@ struct Shell {
     float angle;
     LifeTime restLifeTime;
     bool wasted = false;
+    TeamID teamID;
 
-    Shell(const ShellPreset& preset, const PixelCoord position, const float angle) :
-        preset(preset), angle(angle), restLifeTime(preset.maxLifeTime),
+    Shell(const ShellPreset& preset, const PixelCoord position, const float angle, const TeamID teamID) :
+        preset(preset), angle(angle), restLifeTime(preset.maxLifeTime), teamID(teamID),
         position(position), velocity(/*by angle and speed*/) { }
 };

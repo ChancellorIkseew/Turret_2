@@ -38,7 +38,7 @@ void Controls::writeBindings() {
     if (!fout.is_open()) {
         logger.error() << "Could not open file to write. File: " << controls;
         return;
-    }  
+    }
     auto table = cpptoml::make_table();
     for (const auto& [bindName, binding] : bindings) {
         if (binding.changable)
