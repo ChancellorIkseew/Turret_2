@@ -60,6 +60,7 @@
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\physics\mob.hpp" />
+    <ClInclude Include="src\game\physics\mobs_system.hpp" />
     <ClInclude Include="src\game\physics\mob_ai.hpp" />
     <ClInclude Include="src\game\physics\shells_system.hpp" />
     <ClInclude Include="src\game\physics\physics_base.hpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="src\game\frontend\editor.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\generation\perlin_noise.cpp" />
+    <ClCompile Include="src\game\physics\mobs_system.cpp" />
     <ClCompile Include="src\game\physics\shells_system.cpp" />
     <ClCompile Include="src\game\physics\team\team.cpp" />
     <ClCompile Include="src\game\script_libs\lib_input.cpp" />

@@ -1,5 +1,6 @@
 #include "team.hpp"
 //
+#include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
 
 void Team::spawnShell(const ShellPreset& preset, const PixelCoord position, const float angle) {
@@ -13,5 +14,5 @@ void Team::interact(const World& world) {
 
 void Team::draw(const Camera& camera) const {
     shells::drawShells(shells, camera);
-    //TODO: mobs::drawMobs(mobs, camera);
+    mobs::drawMobs(mobs, camera);
 }

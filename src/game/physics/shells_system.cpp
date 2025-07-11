@@ -42,8 +42,6 @@ void shells::drawShells(const std::list<Shell>& shells, const Camera& camera) {
     for (auto& shell : shells) {
         if (!camera.contains(t1::tile(shell.position)))
             continue;
-        shell.position;
-        shell.angle;
         shellSprite.setPosition(shell.position);
         shellSprite.setRotation(shell.angle);
         shellSprite.draw();
