@@ -17,4 +17,9 @@ public:
     auto cend()   const noexcept { return teams.cend(); }
     auto end()    const noexcept { return teams.end(); }
     auto end()    noexcept { return teams.end(); }
+private:
+    TeamsPool(const TeamsPool&) = delete;
+    TeamsPool(TeamsPool&&) = delete;
+    TeamsPool& operator=(const TeamsPool&) = delete;
+    TeamsPool& operator=(TeamsPool&&) = delete;
 };
