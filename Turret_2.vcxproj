@@ -59,6 +59,7 @@
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
+    <ClInclude Include="src\game\mob\mob_presets.hpp" />
     <ClInclude Include="src\game\physics\mob.hpp" />
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
     <ClInclude Include="src\game\physics\mob_ai.hpp" />

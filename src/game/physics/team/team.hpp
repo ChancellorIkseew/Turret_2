@@ -17,9 +17,10 @@ class Team {
 public:
     Team(const std::u32string& name, const TeamID ID) : name(name), ID(ID) { }
 
-    void interact(const World& world);
+    void interact(World& world);
     void draw(const Camera& camera) const;
 
+    void spawnMob(const MobPreset& preset, const PixelCoord position, const float angle);
     void spawnShell(const ShellPreset& preset, const PixelCoord position, const float angle);
 
     std::list<Mob>& getMobs() { return mobs; }

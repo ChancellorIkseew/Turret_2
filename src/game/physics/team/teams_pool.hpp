@@ -5,10 +5,12 @@ class TeamsPool {
     std::unordered_map<TeamID, Team> teams;
     TeamID nextID = 0;
 public:
+    TeamsPool() = default;
     ///@brief Game can not create more, then 256 teams in one session.
-    void addTeam(const std::u32string& name) {
+    Team& addTeam(const std::u32string& name) {
         teams.try_emplace(nextID, Team(name, nextID));
         ++nextID;
+        return teams.at(nextID - 1);
     }
     //
     auto cbegin() const noexcept { return teams.cbegin(); }

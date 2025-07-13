@@ -8,7 +8,7 @@
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
 MapDrawer::MapDrawer(const Camera& camera, const World& world) :
-    camera(camera), map(world.getMap()), reg(world.getContent()) {
+    camera(camera), map(world.getMap()), reg(world.getContent()), teams(world.getTeams()) {
     for (const auto& [id, _name] : reg.floorTypes) {
         layers.emplace(id, std::vector<PixelCoord>());
     }
@@ -59,6 +59,7 @@ void MapDrawer::draw() {
     }
     //
     drawStructures();
+    drawEntities();
 }
 
 void MapDrawer::drawStructures() {
@@ -82,5 +83,11 @@ void MapDrawer::cacheOres() {
             if (map[x][y].overlay != 0)
                 ores.at(map[x][y].overlay).push_back(t1::pixel(x, y));
         }
+    }
+}
+
+void MapDrawer::drawEntities() {
+    for (const auto& [_teamID, team] : teams) {
+        team.draw(camera);
     }
 }

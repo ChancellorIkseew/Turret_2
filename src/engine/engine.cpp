@@ -12,6 +12,7 @@
 #include "game/script_libs/script_libs.hpp"
 #include "game/world/camera.hpp"
 #include "game/world/map_drawer.hpp"
+#include "game/mob/mob_presets.hpp"
 
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
@@ -36,6 +37,9 @@ void Engine::createScene(const EngineState requiredState) {
     Camera camera(mapSize);
     MapDrawer mapDrawer(camera, *world);
 
+    auto& player = world->getTeams().addTeam(U"player");
+    player.spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
+
     switch (requiredState) {
     case EngineState::main_menu:
         gui = std::make_unique<MenuGUI>(mainWindow, state);
@@ -55,6 +59,7 @@ void Engine::createScene(const EngineState requiredState) {
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
         mapDrawer.draw();
+        //sprite.draw();
         Events::clear(); // for editor
 
         mainWindow.setRenderScale(1.0f);

@@ -25,7 +25,7 @@ static void load(ElementRegistry& reg) {
     loadSection(reg.blockTypes, *root->get_table("block"));
 }
 
-World::World(const TileCoord mapSize) : terrain(mapSize.x), mapSize(mapSize)  {
+World::World(const TileCoord mapSize) : terrain(mapSize.x), mapSize(mapSize) {
     load(registry);
     for (auto& line : terrain) {
         line.resize(mapSize.y);

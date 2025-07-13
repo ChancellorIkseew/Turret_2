@@ -15,6 +15,7 @@ class MapDrawer {
     std::map<uint8_t, std::vector<PixelCoord>> ores;
     TileCoord cashedStart, cashedEnd;
     Sprite sprite;
+    const TeamsPool& teams;
 public:
     MapDrawer(const Camera& camera, const World& world);
     void cacheLayers();
@@ -22,4 +23,5 @@ public:
     void draw();
     //void drawOres();
     void drawStructures();
+    void drawEntities();
 };

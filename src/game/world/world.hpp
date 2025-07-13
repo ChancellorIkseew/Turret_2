@@ -5,6 +5,7 @@
 #include "engine/coords/tile_coord.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/coords/transforms.hpp"
+#include "game/physics/team/teams_pool.hpp"
 
 struct ElementRegistry {
     std::unordered_map<uint8_t, std::string> floorTypes;
@@ -40,6 +41,7 @@ class World {
     ElementRegistry registry;
     std::vector<std::vector<MapTile>> terrain;
     const TileCoord mapSize;
+    TeamsPool teams;
 public:
     World(const TileCoord mapSize);
     void print();
@@ -59,4 +61,7 @@ public:
     const ElementRegistry& getContent() const {
         return registry;
     }
+
+    const TeamsPool& getTeams() const { return teams; }
+    TeamsPool& getTeams() { return teams; }
 };

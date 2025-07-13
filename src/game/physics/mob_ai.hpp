@@ -20,3 +20,16 @@ struct Hoaming : MobAI {
 
     }
 };
+
+struct MovementAI {
+    virtual ~MovementAI() = default;
+    virtual void operator()(Mob& mob) = 0;
+};
+
+struct FolowingAI : MovementAI {
+    Mob* target;
+    ~FolowingAI() final = default;
+    void operator()(Mob& mob) final {
+
+    }
+};
