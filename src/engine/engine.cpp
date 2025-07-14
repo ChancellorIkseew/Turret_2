@@ -11,7 +11,7 @@
 #include "game/events/events.hpp"
 #include "game/script_libs/script_libs.hpp"
 #include "game/world/camera.hpp"
-#include "game/world/map_drawer.hpp"
+#include "game/world_drawer/world_drawer.hpp"
 #include "game/mob/mob_presets.hpp"
 
 void Engine::run() {
@@ -35,7 +35,7 @@ void Engine::createScene(const EngineState requiredState) {
     TileCoord mapSize(200, 200);
     world = std::make_unique<World>(mapSize);
     Camera camera(mapSize);
-    MapDrawer mapDrawer(camera, *world);
+    WorldDrawer worldDrawer(camera, *world);
 
     auto& player = world->getTeams().addTeam(U"player");
     player.spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
@@ -58,8 +58,7 @@ void Engine::createScene(const EngineState requiredState) {
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
-        mapDrawer.draw();
-        //sprite.draw();
+        worldDrawer.draw();
         Events::clear(); // for editor
 
         mainWindow.setRenderScale(1.0f);

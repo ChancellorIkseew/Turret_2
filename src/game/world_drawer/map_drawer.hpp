@@ -1,9 +1,12 @@
 #pragma once
 #include <map>
+#include "engine/coords/tile_coord.hpp"
 #include "engine/render/sprite.hpp"
-#include "world.hpp"
 
+struct MapTile;
+struct ElementRegistry;
 class Camera;
+class World;
 
 class MapDrawer {
     using WorldMap = std::vector<std::vector<MapTile>>;
@@ -15,13 +18,10 @@ class MapDrawer {
     std::map<uint8_t, std::vector<PixelCoord>> ores;
     TileCoord cashedStart, cashedEnd;
     Sprite sprite;
-    const TeamsPool& teams;
 public:
     MapDrawer(const Camera& camera, const World& world);
     void cacheLayers();
     void cacheOres();
     void draw();
-    //void drawOres();
     void drawStructures();
-    void drawEntities();
 };
