@@ -1,15 +1,14 @@
 #include "script_libs.hpp"
 //
 #include <ANGEL_SCRIPT/angelscript.h>
-//#include "scriptstdstring.h"
-#include <iostream>
+#include "engine/debug/logger.hpp"
 
-static void print() {
-    std::cout << "works" << std::endl;
+debug::Logger logger("scripts_lib_util");
+
+static void print(const std::string& str) {
+    logger.info() << str;
 }
 
-void script_libs::registerUtil(ScriptsHandler& scriptsHandler) {
-    auto engine = scriptsHandler.getRaw();
-    //RegisterStdString(engine);
-    engine->RegisterGlobalFunction("void util_print()", asFunctionPtr(print), asCALL_CDECL);
+void script_libs::registerUtil(const ScriptsHandler& scriptsHandler) {
+    scriptsHandler.registerFunction("void util_print(string str)", asFunctionPtr(print));
 }

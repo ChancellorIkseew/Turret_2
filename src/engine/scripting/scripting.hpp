@@ -1,8 +1,7 @@
 #pragma once
+#include <ANGEL_SCRIPT/angelscript.h>
 
-class asIScriptEngine;
-class asIScriptContext;
-class asIScriptFunction;
+using cString = const char*;
 
 class ScriptsHandler {
     asIScriptEngine* engine;
@@ -12,7 +11,7 @@ public:
     ScriptsHandler();
     ~ScriptsHandler();
 
-    asIScriptEngine* getRaw() const { return engine; }
+    void registerFunction(cString declAS, asSFuncPtr functionPtr) const;
     void execute() const;
     void load();
 };

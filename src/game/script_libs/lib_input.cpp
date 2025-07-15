@@ -14,9 +14,8 @@ static void addBinding(const std::string& bindName, const std::string& keyName) 
     Controls::addBinding(bindName, keyName);
 }
 
-void script_libs::registerInput(ScriptsHandler& scriptsHandler) {
-    auto engine = scriptsHandler.getRaw();
-    engine->RegisterGlobalFunction("bool input_active(std::string bindName)", asFunctionPtr(active), asCALL_CDECL);
-    engine->RegisterGlobalFunction("bool input_jactive(std::string bindName)", asFunctionPtr(jactive), asCALL_CDECL);
-    //engine->RegisterGlobalFunction("BindName input_addBinding(string bindName, string keyName)", asFunctionPtr(jactive), asCALL_CDECL);
+void script_libs::registerInput(const ScriptsHandler& scriptsHandler) {
+    scriptsHandler.registerFunction("bool input_active(string bindName)", asFunctionPtr(active));
+    scriptsHandler.registerFunction("bool input_jactive(string bindName)", asFunctionPtr(jactive));
+    scriptsHandler.registerFunction("void input_addBinding(string bindName, string keyName)", asFunctionPtr(addBinding));
 }
