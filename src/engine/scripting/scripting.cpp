@@ -23,12 +23,15 @@ ScriptsHandler::ScriptsHandler() {
 }
 
 ScriptsHandler::~ScriptsHandler() {
-    mainLoop->Release();
+    if (mainLoop)
+        mainLoop->Release();
     context->Release();
     engine->Release();
 }
 
 void ScriptsHandler::execute() const {
+    if (!mainLoop)
+        return;
     context->Prepare(mainLoop);
     context->Execute();
 }
