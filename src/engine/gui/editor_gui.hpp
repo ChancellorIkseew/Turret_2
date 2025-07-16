@@ -12,12 +12,12 @@
 class EditorGUI : public GUI {
     Container* menu;
     const Camera& camera;
-    World& world;
+    WorldMap& map;
     TileData tileData;
 public:
-    EditorGUI(MainWindow& mainWindow, EngineState& state, World& world, Camera& camera) :
-        GUI(mainWindow), world(world), camera(camera) {
-        containers.push_back(frontend::initJEI(tileData, world.getContent()));
+    EditorGUI(MainWindow& mainWindow, EngineState& state, WorldMap& map, Camera& camera) :
+        GUI(mainWindow), map(map), camera(camera) {
+        containers.push_back(frontend::initJEI(tileData, map.getContent()));
         menu = containers.emplace_back(frontend::initMenu(state)).get();
         menu->setVisible(false);
         GUI::relocateContainers();
@@ -36,8 +36,8 @@ private:
             return;
         const TileCoord tile = t1::tile(camera.fromScreenToMap(Input::getMouseCoord()));
         switch (tileData.component) {
-        case TileComponent::floor:   world.placeFloor(tile, tileData.id);   break;
-        case TileComponent::overlay: world.placeOverlay(tile, tileData.id); break;
+        case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
+        case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
         case TileComponent::block: break;
         }
         Events::pushEvent(Event::terrain_changed);

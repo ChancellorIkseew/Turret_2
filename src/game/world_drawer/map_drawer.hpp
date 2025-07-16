@@ -7,10 +7,9 @@ struct MapTile;
 struct ElementRegistry;
 class Camera;
 class World;
+class WorldMap;
 
 class MapDrawer {
-    using WorldMap = std::vector<std::vector<MapTile>>;
-    //
     const Camera& camera;
     const WorldMap& map;
     const ElementRegistry& reg;

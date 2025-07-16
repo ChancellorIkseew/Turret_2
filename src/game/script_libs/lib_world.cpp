@@ -7,17 +7,17 @@
 static debug::Logger logger("scripts_lib_world");
 
 static void placeFloor(int x, int y, uint8_t floorID) {
-    lib_world::world->placeFloor(TileCoord(x, y), floorID);
+    lib_world::world->getMap().placeFloor(TileCoord(x, y), floorID);
 }
 static void placeOverlay(int x, int y, uint8_t overlayID) {
-    lib_world::world->placeOverlay(TileCoord(x, y), overlayID);
+    lib_world::world->getMap().placeOverlay(TileCoord(x, y), overlayID);
 }
 
 static int getWidth() {
-    return lib_world::world->getSize().x;
+    return lib_world::world->getMap().getSize().x;
 }
 static int getHeight() {
-    return lib_world::world->getSize().y;
+    return lib_world::world->getMap().getSize().y;
 }
 
 static void spawnMob(int x, int y, TeamID teamID) {

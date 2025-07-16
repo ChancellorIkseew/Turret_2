@@ -50,7 +50,7 @@ void Engine::createScene(const EngineState requiredState) {
         gui = std::make_unique<GameplayGUI>(mainWindow, state);
         break;
     case EngineState::map_editor:
-        gui = std::make_unique<EditorGUI>(mainWindow, state, *world, camera);
+        gui = std::make_unique<EditorGUI>(mainWindow, state, world->getMap(), camera);
         break;
     }
 
