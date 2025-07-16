@@ -22,6 +22,8 @@ void mobs::drawMobs(const std::list<Mob>& mobs, const Camera& camera) {
     for (auto& mob : mobs) {
         if (!camera.contains(t1::tile(mob.position)))
             continue;
+        mobSprite.setTexture(Texture(mob.preset.textureName));
+        mobSprite.setSize(PixelCoord(45, 45));
         mobSprite.setPosition(mob.position);
         mobSprite.setRotation(mob.angle);
         mobSprite.draw();

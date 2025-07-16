@@ -59,6 +59,7 @@
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
+    <ClInclude Include="src\game\mob\mob_presets.hpp" />
     <ClInclude Include="src\game\physics\mob.hpp" />
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
     <ClInclude Include="src\game\physics\mob_ai.hpp" />
@@ -67,12 +68,16 @@
     <ClInclude Include="src\game\physics\shell.hpp" />
     <ClInclude Include="src\game\physics\team\team.hpp" />
     <ClInclude Include="src\game\physics\team\teams_pool.hpp" />
+    <ClInclude Include="src\game\script_libs\lib_world_init.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\weather\weather.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
-    <ClInclude Include="src\game\world\map_drawer.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
-    <ClInclude Include="src\game\world\world_content.hpp" />
+    <ClInclude Include="src\game\world\map_content.hpp" />
+    <ClInclude Include="src\game\world\world_map.hpp" />
+    <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
+    <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
+    <ClInclude Include="src\game\world_drawer\world_drawer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\content\load_textures.cpp" />
@@ -114,10 +119,13 @@
     <ClCompile Include="src\game\physics\team\team.cpp" />
     <ClCompile Include="src\game\script_libs\lib_input.cpp" />
     <ClCompile Include="src\game\script_libs\lib_util.cpp" />
+    <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
-    <ClCompile Include="src\game\world\map_drawer.cpp" />
-    <ClCompile Include="src\game\world\world.cpp" />
+    <ClCompile Include="src\game\world\map_content.cpp" />
+    <ClCompile Include="src\game\world\world_map.cpp" />
+    <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
+    <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -262,7 +270,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/libs/lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>angelscript.lib;SDL3.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>angelscript64.lib;SDL3.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

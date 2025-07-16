@@ -1,7 +1,6 @@
 #pragma once
 #include <list>
 #include <string>
-#include <unordered_map>
 #include "game/physics/mob.hpp"
 #include "game/physics/shell.hpp"
 #include "game/physics/physics_base.hpp"
@@ -17,9 +16,12 @@ class Team {
 public:
     Team(const std::u32string& name, const TeamID ID) : name(name), ID(ID) { }
 
-    void interact(const World& world);
-    void draw(const Camera& camera) const;
+    void interact(World& world);
+    void drawGroundUnits(const Camera& camera) const;
+    void drawAirUnits(const Camera& camera) const;
+    void drawShells(const Camera& camera) const;
 
+    void spawnMob(const MobPreset& preset, const PixelCoord position, const float angle);
     void spawnShell(const ShellPreset& preset, const PixelCoord position, const float angle);
 
     std::list<Mob>& getMobs() { return mobs; }

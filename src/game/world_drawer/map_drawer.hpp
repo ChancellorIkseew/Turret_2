@@ -1,13 +1,15 @@
 #pragma once
 #include <map>
+#include "engine/coords/tile_coord.hpp"
 #include "engine/render/sprite.hpp"
-#include "world.hpp"
 
+struct MapTile;
+struct ElementRegistry;
 class Camera;
+class World;
+class WorldMap;
 
 class MapDrawer {
-    using WorldMap = std::vector<std::vector<MapTile>>;
-    //
     const Camera& camera;
     const WorldMap& map;
     const ElementRegistry& reg;
@@ -20,6 +22,5 @@ public:
     void cacheLayers();
     void cacheOres();
     void draw();
-    //void drawOres();
     void drawStructures();
 };

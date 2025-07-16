@@ -15,7 +15,7 @@ static inline void tryHitMob(Shell& shell, TeamsPool& teams) {
     for (auto& [teamID, team] : teams) {
         if (shell.teamID == teamID)
             continue;
-        for (auto& mob : team.getMobs()) {
+        for (auto& mob : team->getMobs()) {
             if (!mob.hitbox.contains(shell.position))
                 continue;
             mob.health -= shell.preset.directDamage;

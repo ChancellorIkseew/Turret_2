@@ -11,7 +11,7 @@ struct MobAI {
 
 struct MobPreset {
     MobAI* AI;
-    Sprite sprite;
+    std::string textureName;
     Explosion explosion;
     Health collisionDamage;
     Health maxHealth;

@@ -2,13 +2,14 @@
 //
 #include "engine/coords/transforms.hpp"
 #include "engine/render/atlas.hpp"
-#include "camera.hpp"
 #include "game/events/events.hpp"
+#include "game/world/camera.hpp"
+#include "game/world/world.hpp"
 
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
 MapDrawer::MapDrawer(const Camera& camera, const World& world) :
-    camera(camera), map(world.getMap()), reg(world.getContent()) {
+    camera(camera), map(world.getMap()), reg(world.getMap().getContent()) {
     for (const auto& [id, _name] : reg.floorTypes) {
         layers.emplace(id, std::vector<PixelCoord>());
     }
