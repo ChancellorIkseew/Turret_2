@@ -9,6 +9,7 @@
 #include "engine/render/atlas.hpp"
 //
 #include "game/events/events.hpp"
+#include "game/script_libs/lib_world_init.hpp"
 #include "game/script_libs/script_libs.hpp"
 #include "game/world/camera.hpp"
 #include "game/world_drawer/world_drawer.hpp"
@@ -36,9 +37,10 @@ void Engine::createScene(const EngineState requiredState) {
     world = std::make_unique<World>(mapSize);
     Camera camera(mapSize);
     WorldDrawer worldDrawer(camera, *world);
+    lib_world::init(world.get());
 
-    auto& player = world->getTeams().addTeam(U"player");
-    player.spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
+    Team* player = world->getTeams().addTeam(U"player");
+    player->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
 
     switch (requiredState) {
     case EngineState::main_menu:

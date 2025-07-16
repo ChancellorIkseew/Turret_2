@@ -1,6 +1,5 @@
 #include "script_libs.hpp"
 //
-#include <ANGEL_SCRIPT/angelscript.h>
 #include "engine/debug/logger.hpp"
 
 debug::Logger logger("scripts_lib_util");

@@ -1,6 +1,5 @@
 #include "script_libs.hpp"
 //
-#include <ANGEL_SCRIPT/angelscript.h>
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 

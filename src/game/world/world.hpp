@@ -62,6 +62,7 @@ public:
         return registry;
     }
 
+    TileCoord getSize() const { return mapSize; }
     const TeamsPool& getTeams() const { return teams; }
     TeamsPool& getTeams() { return teams; }
 };

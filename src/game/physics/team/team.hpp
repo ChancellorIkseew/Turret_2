@@ -1,7 +1,6 @@
 #pragma once
 #include <list>
 #include <string>
-#include <unordered_map>
 #include "game/physics/mob.hpp"
 #include "game/physics/shell.hpp"
 #include "game/physics/physics_base.hpp"

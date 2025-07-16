@@ -68,6 +68,7 @@
     <ClInclude Include="src\game\physics\shell.hpp" />
     <ClInclude Include="src\game\physics\team\team.hpp" />
     <ClInclude Include="src\game\physics\team\teams_pool.hpp" />
+    <ClInclude Include="src\game\script_libs\lib_world_init.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\weather\weather.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="src\game\physics\team\team.cpp" />
     <ClCompile Include="src\game\script_libs\lib_input.cpp" />
     <ClCompile Include="src\game\script_libs\lib_util.cpp" />
+    <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
     <ClCompile Include="src\game\world\world.cpp" />
