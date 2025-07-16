@@ -73,7 +73,7 @@
     <ClInclude Include="src\game\weather\weather.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
-    <ClInclude Include="src\game\world\world_content.hpp" />
+    <ClInclude Include="src\game\world\map_content.hpp" />
     <ClInclude Include="src\game\world\world_map.hpp" />
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
@@ -122,6 +122,7 @@
     <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
+    <ClCompile Include="src\game\world\map_content.cpp" />
     <ClCompile Include="src\game\world\world_map.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />

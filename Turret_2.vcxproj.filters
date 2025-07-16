@@ -117,7 +117,7 @@
     <ClInclude Include="src\engine\widgets\image_button.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\world\world_content.hpp">
+    <ClInclude Include="src\game\world\map_content.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\content\load_content.hpp">
@@ -330,6 +330,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\world\world_map.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\world\map_content.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
