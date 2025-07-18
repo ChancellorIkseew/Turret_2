@@ -33,3 +33,20 @@ struct FolowingAI : MovementAI {
 
     }
 };
+
+#include "game/player/player_controller.hpp"
+
+struct PlayerControlled : MobAI {
+    ~PlayerControlled() final = default;
+    void operator()(Mob& mob) final {
+        MobController::getMotionVector();
+        const auto vector = MobController::getMotionVector();
+        if (vector == PixelCoord(0.0f, 0.0f))
+            mob.velocity = PixelCoord(0.0f, 0.0f);
+        else {
+            const float motionAngle = atan2f(vector.x, vector.y);
+            mob.velocity.x = sin(motionAngle) * mob.preset.speed;
+            mob.velocity.y = cos(motionAngle) * mob.preset.speed;
+        }
+    }
+};

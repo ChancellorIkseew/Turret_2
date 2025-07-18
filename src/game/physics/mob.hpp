@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "engine/render/sprite.hpp"
 #include "physics_base.hpp"
 
@@ -10,7 +11,6 @@ struct MobAI {
 };
 
 struct MobPreset {
-    MobAI* AI;
     std::string textureName;
     Explosion explosion;
     Health collisionDamage;
@@ -19,6 +19,7 @@ struct MobPreset {
 };
 
 struct Mob {
+    std::unique_ptr<MobAI> AI;
     const MobPreset& preset;
     Hitbox hitbox;
     PixelCoord position, velocity;
@@ -27,7 +28,7 @@ struct Mob {
     bool wasted = false;
     TeamID teamID;
 
-    Mob(const MobPreset& preset, const PixelCoord position, const float angle, const TeamID teamID) :
+    Mob(std::unique_ptr<MobAI> AI, const MobPreset& preset, const PixelCoord position, const float angle, const TeamID teamID) :
         preset(preset), angle(angle), position(position), teamID(teamID),
-        hitbox(position, position), health(preset.maxHealth) { }
+        hitbox(position, position), health(preset.maxHealth), AI(std::move(AI)) { }
 };

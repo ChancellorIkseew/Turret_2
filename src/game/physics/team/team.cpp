@@ -3,9 +3,10 @@
 #include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
 #include "game/world/world.hpp"
+#include "game/physics/mob_ai.hpp"
 
 void Team::spawnMob(const MobPreset& preset, const PixelCoord position, const float angle) {
-    mobs.emplace_back(preset, position, angle, Team::ID);
+    mobs.emplace_back(std::make_unique<PlayerControlled>(), preset, position, angle, Team::ID);
 }
 void Team::spawnShell(const ShellPreset& preset, const PixelCoord position, const float angle) {
     shells.push_back(Shell(preset, position, angle, Team::ID));

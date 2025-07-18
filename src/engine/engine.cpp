@@ -15,6 +15,8 @@
 #include "game/world_drawer/world_drawer.hpp"
 #include "game/mob/mob_presets.hpp"
 
+#include "game/player/player_controller.hpp"
+
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
@@ -62,6 +64,11 @@ void Engine::createScene(const EngineState requiredState) {
         mainWindow.setRenderTranslation(camera.getPosition());
         worldDrawer.draw();
         Events::clear(); // for editor
+        MobController::interact(*player, camera);
+
+        for (auto& [teamID, team] : world->getTeams()) {
+            team->interact(*world);
+        }
 
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
