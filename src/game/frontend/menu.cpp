@@ -10,6 +10,8 @@ std::unique_ptr<Container> frontend::initMenu(EngineState& state) {
     auto settings = std::make_unique<Button>(200, 50, U"Settings");
     auto exit = std::make_unique<Button>(200, 50, U"Exit to menu");
 
+    auto menuRaw = menu.get();
+    settings->addCallback([menuRaw]() { menuRaw->addChild(frontend::initControls()); });
     exit->addCallback([&]() { state = EngineState::main_menu; });
 
     menu->addNode(save.release());

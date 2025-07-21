@@ -7,7 +7,7 @@
 class Layout : public Node {
     std::vector<std::unique_ptr<Node>> contents;
     const float margin = 5.0f;
-    Orientation orientation = Orientation::vertical;
+    Orientation orientation;
 public:
     Layout(const Orientation orientation) :
         Node(), orientation(orientation) { }
@@ -16,7 +16,7 @@ public:
     void addNode(Node* node);
     void arrange();
     void draw() override;
-    void setPosition(const PixelCoord position) override final {
+    void setPosition(const PixelCoord position) final {
         Node::setPosition(position);
         arrange();
     }

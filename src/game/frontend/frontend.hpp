@@ -14,4 +14,5 @@ namespace frontend {
     std::unique_ptr<Container> initTimer();
     std::unique_ptr<Container> initEditor();
     std::unique_ptr<Container> initJEI(TileData& tileData, const ElementRegistry& reg);
+    std::unique_ptr<Container> initHint(TileData& tileData, const ElementRegistry& reg);
 }

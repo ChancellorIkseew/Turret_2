@@ -18,4 +18,6 @@ void Container::aplyAlignment(const PixelCoord windowSize) {
         setPosition(PixelCoord(getPosition().x, windowSize.y - getSize().y));
     //
     arrange();
+    if (child)
+        child->aplyAlignment(windowSize);
 }
