@@ -23,8 +23,6 @@ ScriptsHandler::ScriptsHandler() {
 }
 
 ScriptsHandler::~ScriptsHandler() {
-    if (mainLoop)
-        mainLoop->Release();
     context->Release();
     engine->Release();
 }

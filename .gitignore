@@ -1,9 +1,13 @@
-# Turret_2
-.vs/
+# project:
 build/
 libs/
 obj/
-res/scripts
+res/scripts/
 saves/
 
+# logs:
 latest_log.txt
+AS_DEBUG/
+
+# IDE:
+.vs/
