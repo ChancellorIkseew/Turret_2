@@ -15,6 +15,6 @@ public:
     ~MenuGUI() final = default;
 
     void callback() final {
-        GUI::acceptHotkeys();
+        GUI::callback();
     }
 };

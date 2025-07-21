@@ -5,33 +5,18 @@
 class Container : public Layout {
     Align align;
     bool visible = true, open = true;
-    std::unique_ptr<Container> child = nullptr;
 public:
     Container(const Align align, const Orientation orientation) :
         Layout(orientation), align(align) { }
     //
     void aplyAlignment(const PixelCoord windowSize);
     void draw() final {
-        if (!visible)
-            return;
-        Layout::draw();
-        if (child)
-            child->draw();
+        if (visible)
+            Layout::draw();
     }
     void callback() final {
-        if (!visible)
-            return;
-        Layout::callback();
-        if (!child)
-            return;
-        child->callback();
-        if (!child->isOpen())
-            child.reset();
-    }
-    void addChild(std::unique_ptr<Container> child) {
-        this->child = std::move(child);
-        if (this->child)
-            this->child->arrange();
+        if (visible)
+            Layout::callback();
     }
     //
     bool isVisible() const { return visible; }

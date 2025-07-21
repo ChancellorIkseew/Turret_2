@@ -12,11 +12,31 @@ void GUI::draw() {
     if (showGUI) {
         for (const auto& it : containers) {
             it->draw();
-            it->callback();
+        }
+        for (const auto& it : overlaped) {
+            it->draw();
         }
     }
     if (showAtlas)
         Atlas::testDraw();
+}
+
+void GUI::callback() {
+    acceptHotkeys();
+    //
+    if (!overlaped.empty()) {
+        overlaped.back()->callback();
+        if (!overlaped.back()->isOpen() || Input::jactive(Escape))
+            overlaped.pop_back();
+        return;
+    }
+    for (const auto& it : containers) {
+        it->callback();
+    }
+}
+
+void GUI::addOverlaped(std::unique_ptr<Container> container) {
+    overlaped.push_back(std::move(container));
 }
 
 void GUI::acceptHotkeys() {
@@ -33,11 +53,14 @@ void GUI::relocateContainers() {
     for (const auto& it : containers) {
         it->aplyAlignment(mainWindow.getSize());
     }
+    for (const auto& it : overlaped) {
+        it->aplyAlignment(mainWindow.getSize());
+    }
 }
 
 bool GUI::isMouseFree() const {
     for (const auto& it : containers) {
-        if (it->containsMouse() && it->isVisible())
+        if (it->isVisible() && it->containsMouse())
             return false;
     }
     return true;

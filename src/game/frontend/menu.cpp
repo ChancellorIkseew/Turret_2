@@ -1,17 +1,17 @@
 #include "frontend.hpp"
 //
-#include "engine/widgets/button.hpp"
 #include "engine/engine_state.hpp"
+#include "engine/gui/gui.hpp"
+#include "engine/widgets/button.hpp"
 
-std::unique_ptr<Container> frontend::initMenu(EngineState& state) {
+std::unique_ptr<Container> frontend::initMenu(EngineState& state, GUI& gui) {
     auto menu = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
     auto save = std::make_unique<Button>(200, 50, U"Save");
     auto settings = std::make_unique<Button>(200, 50, U"Settings");
     auto exit = std::make_unique<Button>(200, 50, U"Exit to menu");
 
-    auto menuRaw = menu.get();
-    settings->addCallback([menuRaw]() { menuRaw->addChild(frontend::initControls()); });
+    settings->addCallback([&]() { gui.addOverlaped(frontend::initControls()); });
     exit->addCallback([&]() { state = EngineState::main_menu; });
 
     menu->addNode(save.release());

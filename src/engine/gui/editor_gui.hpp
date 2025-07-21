@@ -6,28 +6,26 @@
 #include "game/frontend/frontend.hpp"
 #include "game/events/events.hpp"
 #include "game/world/camera.hpp"
-#include "game/world/world.hpp"
+#include "game/world/world_map.hpp"
 #include "gui_util/tile_data.hpp"
 
 class EditorGUI : public GUI {
-    Container* menu;
+    EngineState& state;
     const Camera& camera;
     WorldMap& map;
     TileData tileData;
 public:
     EditorGUI(MainWindow& mainWindow, EngineState& state, WorldMap& map, Camera& camera) :
-        GUI(mainWindow), map(map), camera(camera) {
+        GUI(mainWindow), map(map), camera(camera), state(state) {
         containers.push_back(frontend::initJEI(tileData, map.getContent()));
-        menu = containers.emplace_back(frontend::initMenu(state)).get();
-        menu->setVisible(false);
         GUI::relocateContainers();
     }
     ~EditorGUI() final = default;
 
     void callback() final {
-        GUI::acceptHotkeys();
+        GUI::callback();
         if (Input::jactive(Escape))
-            menu->setVisible(!menu->isVisible());
+            GUI::addOverlaped(frontend::initMenu(state, *this));
         editMap();
     }
 private:
