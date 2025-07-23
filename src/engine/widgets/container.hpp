@@ -8,6 +8,7 @@ class Container : public Layout {
 public:
     Container(const Align align, const Orientation orientation) :
         Layout(orientation), align(align) { }
+    ~Container() final = default;
     //
     void aplyAlignment(const PixelCoord windowSize);
     void draw() final {
