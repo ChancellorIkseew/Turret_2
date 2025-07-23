@@ -13,9 +13,8 @@ void GUI::draw() {
         for (const auto& it : containers) {
             it->draw();
         }
-        for (const auto& it : overlaped) {
-            it->draw();
-        }
+        if (!overlaped.empty())
+            overlaped.back()->draw();
     }
     if (showAtlas)
         Atlas::testDraw();
@@ -28,6 +27,7 @@ void GUI::callback() {
         overlaped.back()->callback();
         if (!overlaped.back()->isOpen() || Input::jactive(Escape))
             overlaped.pop_back();
+        return; // Do not callback other containers.
     }
     for (const auto& it : containers) {
         it->callback();

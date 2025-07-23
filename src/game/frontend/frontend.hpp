@@ -8,7 +8,7 @@ struct ElementRegistry;
 class GUI;
 
 namespace frontend {
-    std::unique_ptr<Container> initMainMenu(EngineState& state);
+    std::unique_ptr<Container> initMainMenu(EngineState& state, GUI& gui);
     std::unique_ptr<Container> initMenu(EngineState& state, GUI& gui);
     std::unique_ptr<Container> initControls();
     std::unique_ptr<Container> initSettings();
