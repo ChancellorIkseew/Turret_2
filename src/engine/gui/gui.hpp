@@ -12,8 +12,6 @@ protected:
     std::deque<std::unique_ptr<Container>> overlaped;
     MainWindow& mainWindow;
     bool showGUI = true, showAtlas = false;
-private:
-    bool elementAdded = false;
 public:
     GUI(MainWindow& mainWindow) : mainWindow(mainWindow) { }
     virtual ~GUI() = default;

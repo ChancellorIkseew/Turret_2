@@ -6,10 +6,8 @@
 #include "engine/window/window.hpp"
 
 void GUI::draw() {
-    if (elementAdded || mainWindow.justResized()) {
+    if (mainWindow.justResized())
         relocateContainers();
-        elementAdded = false;
-    }
     //
     if (showGUI) {
         for (const auto& it : containers) {
@@ -37,8 +35,8 @@ void GUI::callback() {
 }
 
 void GUI::addOverlaped(std::unique_ptr<Container> container) {
+    container->aplyAlignment(mainWindow.getSize());
     overlaped.push_back(std::move(container));
-    elementAdded = true;
 }
 
 void GUI::acceptHotkeys() {
