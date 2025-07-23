@@ -19,8 +19,9 @@ public:
     ~GameplayGUI() final = default;
 
     void callback() final {
-        GUI::callback();
-        if (Input::jactive(Escape))
+        if (Input::jactive(Escape) && overlaped.empty())
             GUI::addOverlaped(frontend::initMenu(state, *this));
+        else
+            GUI::callback();
     }
 };
