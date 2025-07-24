@@ -15,12 +15,12 @@ public:
     //
     void addNode(Node* node);
     void arrange();
-    void draw() override;
+    void draw() final;
     void setPosition(const PixelCoord position) final {
         Node::setPosition(position);
         arrange();
     }
-    void callback() override {
+    void callback() final {
         if (!containsMouse())
             return;
         for (auto& it : contents) {

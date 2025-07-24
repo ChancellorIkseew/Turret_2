@@ -22,7 +22,8 @@ void GUI::draw() {
 
 void GUI::callback() {
     acceptHotkeys();
-    //
+    if (!showGUI)
+        return;
     if (!overlaped.empty()) {
         overlaped.back()->callback();
         if (!overlaped.back()->isOpen() || Input::jactive(Escape))
@@ -59,8 +60,10 @@ void GUI::relocateContainers() {
 }
 
 bool GUI::isMouseFree() const {
+    if (!showGUI)
+        return true;
     for (const auto& it : containers) {
-        if (it->isVisible() && it->containsMouse())
+        if (it->containsMouse())
             return false;
     }
     return true;
