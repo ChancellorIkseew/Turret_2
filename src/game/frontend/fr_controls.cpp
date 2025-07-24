@@ -40,8 +40,7 @@ std::unique_ptr<Container> frontend::initControls() {
     }
 
     auto ok = std::make_unique<Button>(BTN_SIZE, U"OK");
-    auto c = controls.get();
-    ok->addCallback([c]() { c->close(); });
+    ok->addCallback(std::bind(&Container::close, controls.get()));
 
     controls->addNode(names.release());
     controls->addNode(binds.release());

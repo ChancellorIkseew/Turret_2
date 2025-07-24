@@ -62,6 +62,8 @@ void GUI::relocateContainers() {
 bool GUI::isMouseFree() const {
     if (!showGUI)
         return true;
+    if (!overlaped.empty() && overlaped.back()->containsMouse())
+        return false;
     for (const auto& it : containers) {
         if (it->containsMouse())
             return false;
