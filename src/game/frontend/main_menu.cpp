@@ -15,7 +15,7 @@ std::unique_ptr<Container> frontend::initMainMenu(EngineState& state, GUI& gui) 
 
     startGame->addCallback([&]() { state = EngineState::gameplay; });
     editor->addCallback([&]() { state = EngineState::map_editor; });
-    settings->addCallback([&]() { gui.addOverlaped(frontend::initControls()); });
+    settings->addCallback([&]() { gui.addOverlaped(frontend::initSettings(gui)); });
     exit->addCallback([&]() { state = EngineState::exit; });
 
     menu->addNode(startGame.release());
