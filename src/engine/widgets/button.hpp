@@ -11,10 +11,11 @@ public:
         Node(PixelCoord(sizeX, sizeY)), label(name) { }
     Button(const PixelCoord size, std::u32string name) :
         Node(size), label(name) { }
+    ~Button() final = default;
     //
-    void draw() override final;
-    void callback() override final;
-    void setPosition(const PixelCoord position) override final;
+    void draw() final;
+    void callback() final;
+    void setPosition(const PixelCoord position) final;
     void setText(const std::u32string& name);
     void addCallback(std::function<void()> action) {
         this->action = action;

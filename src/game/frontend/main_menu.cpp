@@ -1,10 +1,11 @@
 #include "frontend.hpp"
 //
+#include "engine/engine_state.hpp"
+#include "engine/gui/gui.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/window/window.hpp"
-#include "engine/engine_state.hpp"
 
-std::unique_ptr<Container> frontend::initMainMenu(EngineState& state) {
+std::unique_ptr<Container> frontend::initMainMenu(EngineState& state, GUI& gui) {
     auto menu = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
     auto startGame = std::make_unique<Button>(200, 50, U"Start game");
@@ -14,7 +15,7 @@ std::unique_ptr<Container> frontend::initMainMenu(EngineState& state) {
 
     startGame->addCallback([&]() { state = EngineState::gameplay; });
     editor->addCallback([&]() { state = EngineState::map_editor; });
-    //settings->addCallback([&]() {  });
+    settings->addCallback([&]() { gui.addOverlaped(frontend::initSettings(gui)); });
     exit->addCallback([&]() { state = EngineState::exit; });
 
     menu->addNode(startGame.release());

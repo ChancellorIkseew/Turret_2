@@ -34,6 +34,9 @@ std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ElementRe
         addButton(overlayName, id, TileComponent::overlay);
     }
 
+    tileData.component = TileComponent::floor; // Reset tileData to avoid errors.
+    tileData.id = reg.floorTypes.begin()->first;
+
     if (btns != 0)
         jei->addNode(line.release());
     jei->arrange();

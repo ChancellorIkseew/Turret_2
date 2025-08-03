@@ -9,8 +9,9 @@ public:
         Node(PixelCoord(sizeX, sizeY), textureName) { }
     ImageButton(const PixelCoord size, std::string textureName) :
         Node(size, textureName) { }
+    ~ImageButton() final = default;
     //
-    void callback() override final;
+    void callback() final;
     void addCallback(std::function<void()> action) {
         this->action = action;
     }

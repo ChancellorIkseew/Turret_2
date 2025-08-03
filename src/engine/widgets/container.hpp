@@ -3,22 +3,15 @@
 #include "ui_defs.hpp"
 
 class Container : public Layout {
-    bool visible = true;
-    Align align = Align::none;
+    Align align;
+    bool open = true;
 public:
     Container(const Align align, const Orientation orientation) :
         Layout(orientation), align(align) { }
+    ~Container() final = default;
     //
     void aplyAlignment(const PixelCoord windowSize);
-    void draw() override final {
-        if (visible)
-            Layout::draw();
-    }
-    void callback() override final {
-        if (visible)
-            Layout::callback();
-    }
     //
-    bool isVisible() const { return visible; }
-    void setVisible(const bool flag) { visible = flag; }
+    bool isOpen() const { return open; }
+    void close() { open = false; }
 };

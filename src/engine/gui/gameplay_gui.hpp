@@ -4,27 +4,23 @@
 #include "engine/engine_state.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
-#include "game/events/events.hpp"
-#include "game/world/camera.hpp"
 #include "game/world/world.hpp"
 
 class GameplayGUI : public GUI {
-    Container* menu;
+    EngineState& state;
 public:
-    GameplayGUI(MainWindow& mainWindow, EngineState& state) : GUI(mainWindow) {
-        containers.push_back(frontend::initSettings());
+    GameplayGUI(MainWindow& mainWindow, EngineState& state) :
+        GUI(mainWindow), state(state) {
         containers.push_back(frontend::initTimer());
         containers.push_back(frontend::initEditor());
-        containers.push_back(frontend::initControls());
-        menu = containers.emplace_back(frontend::initMenu(state)).get();
-        menu->setVisible(false);
         GUI::relocateContainers();
     }
     ~GameplayGUI() final = default;
 
     void callback() final {
-        GUI::acceptHotkeys();
-        if (Input::jactive(Escape))
-            menu->setVisible(!menu->isVisible());
+        if (Input::jactive(Escape) && overlaped.empty())
+            GUI::addOverlaped(frontend::initMenu(state, *this));
+        else
+            GUI::callback();
     }
 };
