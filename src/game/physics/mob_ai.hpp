@@ -1,5 +1,6 @@
 #pragma once
 #include "mob.hpp"
+#include <cmath>
 
 struct Rocket : MobAI {
     static constexpr float DETONATION_DISTANCE = 20.0f;

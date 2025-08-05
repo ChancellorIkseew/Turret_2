@@ -1,5 +1,5 @@
 #pragma once
-#include <typeinfo>
+#include <cstdint>
 
 enum class EngineState : uint8_t {
     main_menu,

@@ -1,6 +1,6 @@
 #pragma once
+#include <cstdint>
 #include <string>
-#include <typeinfo>
 
 namespace utf8 {
     uint32_t fromConstCharToUint32(const char* s) noexcept;

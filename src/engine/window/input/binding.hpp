@@ -1,5 +1,5 @@
 #pragma once
-#include <typeinfo>
+#include <cstdint>
 
 ///@brief For constexpr strings only.
 using cString = const char*;

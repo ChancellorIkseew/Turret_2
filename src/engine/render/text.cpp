@@ -1,5 +1,6 @@
 #include "text.hpp"
 //
+#include <cmath>
 #include <typeinfo>
 #include "atlas.hpp"
 #include "config.hpp"

@@ -1,0 +1,35 @@
+cmake_minimum_required(VERSION 3.13)
+project(Turret_2)
+set(CMAKE_CXX_STANDARD 20)
+
+
+set(SOURCE_FILES src/main.cpp)
+file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/
+)
+
+target_link_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/lib
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    SDL3.lib
+    SDL3_image.lib
+    angelscript64.lib
+)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Turret_2")
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/libs/dll"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/res"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/res"
+    COMMENT "Copying DLLs and resources to build directory"
+)

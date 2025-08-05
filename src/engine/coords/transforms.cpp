@@ -1,6 +1,13 @@
 #include "transforms.hpp"
 //
+//#ifdef _WIN32
+//    #include <utility>
+//#elif defined(__linux__) || defined(__unix__)
+//    #include <algorithm>
+//#endif
+#include <algorithm>
 #include <utility>
+
 
 // pixel_to_tile
 int t1::tile(const float pixelCoord) {

@@ -1,5 +1,6 @@
 #include "validator.hpp"
 //
+#include <limits>
 #include <stdexcept>
 
 std::string val::toStdString(const std::u32string& u32str) {
