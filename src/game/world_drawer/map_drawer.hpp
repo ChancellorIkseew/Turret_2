@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <vector>
 #include "engine/coords/tile_coord.hpp"
 #include "engine/render/sprite.hpp"
 
