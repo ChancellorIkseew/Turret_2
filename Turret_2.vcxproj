@@ -32,6 +32,7 @@
     <ClInclude Include="src\engine\gui\gui.hpp" />
     <ClInclude Include="src\engine\gui\gui_util\tile_data.hpp" />
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
+    <ClInclude Include="src\engine\io\folders.hpp" />
     <ClInclude Include="src\engine\parser\list_parser.hpp" />
     <ClInclude Include="src\engine\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
@@ -88,6 +89,7 @@
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\gui\gui.cpp" />
+    <ClCompile Include="src\engine\io\folders.cpp" />
     <ClCompile Include="src\engine\parser\list_parser.cpp" />
     <ClCompile Include="src\engine\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
@@ -117,6 +119,7 @@
     <ClCompile Include="src\game\frontend\settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
     <ClCompile Include="src\game\frontend\editor.cpp" />
+    <ClCompile Include="src\game\frontend\world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\generation\perlin_noise.cpp" />
     <ClCompile Include="src\game\physics\mobs_system.cpp" />

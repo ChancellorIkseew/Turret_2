@@ -16,7 +16,6 @@
 #include "game/mob/mob_presets.hpp"
 
 #include "game/player/player_controller.hpp"
-#include "game/world_saver/world_saver.hpp"
 
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
@@ -78,5 +77,4 @@ void Engine::createScene(const EngineState requiredState) {
         mainWindow.render();
         scriptsHandler.execute();
     }
-    WorldSaver::save(*world);
 }

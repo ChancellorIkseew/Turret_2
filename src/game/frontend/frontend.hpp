@@ -12,6 +12,7 @@ namespace frontend {
     std::unique_ptr<Container> initMenu(EngineState& state, GUI& gui);
     std::unique_ptr<Container> initControls();
     std::unique_ptr<Container> initSaves(EngineState& state);
+    std::unique_ptr<Container> initWorldSaving();
     std::unique_ptr<Container> initSettings(GUI& gui);
     std::unique_ptr<Container> initTimer();
     std::unique_ptr<Container> initEditor();
