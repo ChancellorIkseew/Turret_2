@@ -195,6 +195,12 @@
     <ClInclude Include="src\game\player\player_controller.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\world_saver\map_saver.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\world_saver\world_saver.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp">
@@ -342,6 +348,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\frontend\hint.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\frontend\saves.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\world_saver\map_saver.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

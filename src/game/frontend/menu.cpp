@@ -15,6 +15,7 @@ std::unique_ptr<Container> frontend::initMenu(EngineState& state, GUI& gui) {
     auto exit = std::make_unique<Button>(BTN_SIZE, U"Exit to menu");
 
     back->addCallback(std::bind(&Container::close, menu.get()));
+    //save->addCallback(world.save());
     settings->addCallback([&]() { gui.addOverlaped(frontend::initSettings(gui)); });
     exit->addCallback([&]() { state = EngineState::main_menu; });
 
