@@ -55,5 +55,6 @@ public:
     }
 
     const auto operator[](const int x) const { return terrain[x]; }
+    auto operator[](const int x) { return terrain[x]; }
     TileCoord getSize() const { return mapSize; }
 };

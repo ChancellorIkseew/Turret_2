@@ -15,4 +15,13 @@ public:
             return;
         MapSaver::save(world, path);
     }
+
+    static void load(World& world, const std::string& folder) {
+        if (!io::folders::folderExists(io::folders::SAVES))
+            return;
+        const std::filesystem::path path = io::folders::SAVES / folder;
+        if (!io::folders::folderExists(path))
+            return;
+        MapSaver::load(world, path);
+    }
 };

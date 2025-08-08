@@ -9,6 +9,14 @@ bool io::folders::isPathValid(const fs::path& path) {
     return path.string().find_first_of(" \t\n\r\f\v\"*?<>|") == std::string::npos && !path.empty();
 }
 
+bool io::folders::folderExists(const std::filesystem::path& path) {
+    if (!isPathValid(path)) {
+        logger.error() << "Directory does not exist. Invalid symbols in path. Path: " << path;
+        return false;
+    }
+    return fs::is_directory(path);
+}
+
 bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
     if (!isPathValid(path)) {
         logger.error() << "Failed to create directory. Invalid symbols in path. Path: " << path;
