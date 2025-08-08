@@ -14,10 +14,10 @@ std::unique_ptr<Container> frontend::initMenu(EngineState& state, GUI& gui) {
     auto settings = std::make_unique<Button>(BTN_SIZE, U"Settings");
     auto exit = std::make_unique<Button>(BTN_SIZE, U"Exit to menu");
 
-    back->addCallback(std::bind(&Container::close, menu.get()));
-    save->addCallback([&]() { gui.addOverlaped(frontend::initWorldSaving()); });
-    settings->addCallback([&]() { gui.addOverlaped(frontend::initSettings(gui)); });
-    exit->addCallback([&]() { state = EngineState::main_menu; });
+    back->addCallback([container = menu.get()] { container->close(); });
+    save->addCallback([&] { gui.addOverlaped(frontend::initWorldSaving()); });
+    settings->addCallback([&] { gui.addOverlaped(frontend::initSettings(gui)); });
+    exit->addCallback([&] { state = EngineState::main_menu; });
 
     menu->addNode(back.release());
     menu->addNode(save.release());

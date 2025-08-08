@@ -15,11 +15,11 @@ std::unique_ptr<Container> frontend::initMainMenu(EngineState& state, GUI& gui) 
     auto settings  = std::make_unique<Button>(BTN_SIZE, U"Settings");
     auto exit      = std::make_unique<Button>(BTN_SIZE, U"Exit game");
 
-    startGame->addCallback([&]() { state = EngineState::gameplay; });
-    loadGame->addCallback([&]() { gui.addOverlaped(frontend::initSaves(state)); });
-    editor->addCallback([&]() { state = EngineState::map_editor; });
-    settings->addCallback([&]() { gui.addOverlaped(frontend::initSettings(gui)); });
-    exit->addCallback([&]() { state = EngineState::exit; });
+    startGame->addCallback([&] { state = EngineState::gameplay; });
+    loadGame->addCallback([&] { gui.addOverlaped(frontend::initSaves(state)); });
+    editor->addCallback([&] { state = EngineState::map_editor; });
+    settings->addCallback([&] { gui.addOverlaped(frontend::initSettings(gui)); });
+    exit->addCallback([&] { state = EngineState::exit; });
 
     menu->addNode(startGame.release());
     menu->addNode(loadGame.release());
