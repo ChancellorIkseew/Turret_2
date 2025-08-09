@@ -22,6 +22,5 @@ public:
     bool isMouseFree() const;
 protected:
     void relocateContainers();
-private:
     void acceptHotkeys();
 };

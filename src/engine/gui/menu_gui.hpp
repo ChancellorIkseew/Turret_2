@@ -9,12 +9,17 @@ enum class EngineState : uint8_t;
 class MenuGUI : public GUI {
 public:
     MenuGUI(MainWindow& mainWindow, EngineState& state) : GUI(mainWindow) {
-        containers.push_back(frontend::initMainMenu(state, *this));
+        overlaped.push_back(frontend::initMainMenu(state, *this));
         GUI::relocateContainers();
     }
     ~MenuGUI() final = default;
 
     void callback() final {
-        GUI::callback();
+        GUI::acceptHotkeys();
+        if (!showGUI)
+            return;
+        overlaped.back()->callback();
+        if (overlaped.size() > 1 && (!overlaped.back()->isOpen() || Input::jactive(Escape)))
+            overlaped.pop_back();
     }
 };
