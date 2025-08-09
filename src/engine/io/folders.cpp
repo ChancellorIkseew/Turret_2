@@ -5,16 +5,15 @@
 namespace fs = std::filesystem;
 static debug::Logger logger("io_folders");
 
-bool io::folders::isPathValid(const fs::path& path) {
-    return path.string().find_first_of(" \t\n\r\f\v\"*?<>|") == std::string::npos && !path.empty();
+bool io::folders::isPathValid(const fs::path& path) noexcept {
+    return !path.empty() && path.string().find_first_of(" \t\n\r\f\v\"*?<>|") == std::string::npos;
 }
 
 bool io::folders::folderExists(const std::filesystem::path& path) {
-    if (!isPathValid(path)) {
-        logger.error() << "Directory does not exist. Invalid symbols in path. Path: " << path;
-        return false;
-    }
-    return fs::is_directory(path);
+    bool exists = isPathValid(path) && fs::exists(path) && fs::is_directory(path);
+    if (!exists)
+        logger.error() << "Directory does not exist. Invalid path: " << path;
+    return exists;
 }
 
 bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
@@ -36,4 +35,28 @@ bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
         logger.error() << "Failed to create directory: std::filesystem exception: " << exception.what();
         return false;
     }
+}
+
+io::folders::Contents io::folders::getContents(const std::filesystem::path& path) {
+    Contents contents;
+    if (!folderExists(path))
+        return contents;
+    for (const auto& entry : fs::directory_iterator(path)) {
+        if (entry.is_directory())
+            contents.push_back(entry.path().filename().string());
+    }
+    logger.info() << "Readen directory: " << path;
+    return contents;
+}
+
+void io::folders::deleteFolder(const std::filesystem::path& path) {
+    if (!folderExists(path))
+        return;
+    try {
+        fs::remove_all(path);
+        logger.info() << "Deleted directory: " << path;
+    }
+    catch (const fs::filesystem_error& exception) {
+        logger.error() << "Failed to delete directory: " << path << "std::filesystem exception : " << exception.what();
+    }  
 }
