@@ -16,10 +16,15 @@
 #include "game/mob/mob_presets.hpp"
 
 #include "game/player/player_controller.hpp"
+#include "game/world_saver/world_saver.hpp"
+#include "game/generation/generation.hpp"
 
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
+
+    //bool loadWorld;
+    //std::string worldName;
 
     content::loadTextures();
     while (mainWindow.isOpen()) {
@@ -33,11 +38,17 @@ void Engine::run() {
 
 void Engine::createScene(const EngineState requiredState) {
     std::unique_ptr<GUI> gui;
-    std::unique_ptr<World> world;
+    bool loadWorld = true;
     
-    TileCoord mapSize(200, 200);
-    world = std::make_unique<World>(mapSize);
-    Camera camera(mapSize);
+    WorldProperties properties(TileCoord(200, 200), 0U);
+    auto world = std::make_unique<World>();
+    if (loadWorld)
+        WorldSaver::load(*world, "new_world");
+    else {
+        gen::generate(world->getMap(), properties);
+    }
+
+    Camera camera(world->getMap().getSize());
     WorldDrawer worldDrawer(camera, *world);
     lib_world::init(world.get());
 
@@ -46,7 +57,7 @@ void Engine::createScene(const EngineState requiredState) {
 
     switch (requiredState) {
     case EngineState::main_menu:
-        gui = std::make_unique<MenuGUI>(mainWindow, state);
+        gui = std::make_unique<MenuGUI>(mainWindow, state, properties);
         break;
     case EngineState::gameplay:
         gui = std::make_unique<GameplayGUI>(mainWindow, state);

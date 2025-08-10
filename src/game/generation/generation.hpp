@@ -3,6 +3,15 @@
 #include "engine/coords/tile_coord.hpp"
 #include "game/world/world.hpp"
 
+class WorldMap;
+
+struct WorldProperties {
+    WorldProperties(const TileCoord mapSize, const uint64_t seed) :
+        mapSize(mapSize), seed(seed) { }
+    const TileCoord mapSize;
+    const uint64_t seed;
+};
+
 namespace gen {
-    void generate(std::vector<std::vector<MapTile>>& map, const TileCoord mapSize);
+    void generate(WorldMap& map, const WorldProperties& properties);
 }

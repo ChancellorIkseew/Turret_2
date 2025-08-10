@@ -204,6 +204,9 @@
     <ClInclude Include="src\engine\io\folders.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\frontend\layouts\l_saves.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp">
@@ -263,7 +266,7 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\editor.cpp">
+    <ClCompile Include="src\game\frontend\fr_world_properties.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\widgets\form.cpp">
@@ -353,7 +356,7 @@
     <ClCompile Include="src\game\frontend\hint.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\saves.cpp">
+    <ClCompile Include="src\game\frontend\world_loading.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\world_saver\map_saver.cpp">
@@ -363,6 +366,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\io\folders.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\frontend\layouts\l_saves.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

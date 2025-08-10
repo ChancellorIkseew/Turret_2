@@ -1,12 +1,16 @@
 #include "frontend.hpp"
 //
+#include "engine/engine_state.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/form.hpp"
-#include "game/world_saver/world_saver.hpp"
+#include "engine/window/input/utf8/utf8.hpp"
 #include "game/script_libs/lib_world_init.hpp"
+#include "game/world_saver/world_saver.hpp"
+#include "layouts/l_saves.hpp"
 
-constexpr PixelCoord BTN_SIZE(200.0f, 50.0f);
+constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
+static std::string folder;
 
 static std::string fromU32StringToSTDString(std::u32string& u32str) {
     std::string str;
@@ -17,25 +21,34 @@ static std::string fromU32StringToSTDString(std::u32string& u32str) {
     return str;
 }
 
-static void saveWorld(Form* form) {
+static void saveWorld(Form* form, Layout* saves, Container* saving) {
     std::string folder = fromU32StringToSTDString(form->getText());
-    if (io::folders::isPathValid(folder))
-        WorldSaver::save(*lib_world::world, folder);
+    if (!io::folders::isPathValid(folder))
+        return;
+    WorldSaver::save(*lib_world::world, folder);
+    frontend::update(saves, folder);
+    saving->arrange();
 }
 
 std::unique_ptr<Container> frontend::initWorldSaving() {
-    auto worldSaving = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    folder = ""; // Reset folder name to avoid erors.
+    auto saving = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    auto saves = initSaves(folder);
+    auto lower = std::make_unique<Layout>(Orientation::horizontal);
 
     auto back = std::make_unique<Button>(BTN_SIZE, U"Back");
     auto save = std::make_unique<Button>(BTN_SIZE, U"Save");
     auto worldName = std::make_unique<Form>();
-    
-    back->addCallback(std::bind(&Container::close, worldSaving.get()));
-    save->addCallback(std::bind(saveWorld, worldName.get()));
 
-    worldSaving->addNode(back.release());
-    worldSaving->addNode(worldName.release());
-    worldSaving->addNode(save.release());
-    worldSaving->arrange();
-    return worldSaving;
+    back->addCallback([container = saving.get()] { container->close(); });
+    save->addCallback(std::bind_front(saveWorld, worldName.get(), saves.get(), saving.get()));
+
+    lower->addNode(back.release());
+    lower->addNode(save.release());
+    lower->addNode(worldName.release());
+
+    saving->addNode(saves.release());
+    saving->addNode(lower.release());
+    saving->arrange();
+    return saving;
 }

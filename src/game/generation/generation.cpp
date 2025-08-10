@@ -1,6 +1,7 @@
 #include "generation.hpp"
 //
 #include "engine/util/local_time.hpp"
+#include "game/world/world_map.hpp"
 #include "perlin_noise.hpp"
 #include <iostream>
 
@@ -23,8 +24,11 @@ static uint8_t calculateTileType(float height) {
     return TileType::SNOW;
 }
 
-void gen::generate(std::vector<std::vector<MapTile>>& map, const TileCoord mapSize) {
-    PerlinNoise2D noise(t1_time::getUTC());
+void gen::generate(WorldMap& map, const WorldProperties& properties) {
+    //if (properties.seed == 0U)
+        //properties.seed = t1_time::getUTC();
+    const auto mapSize = properties.mapSize;
+    PerlinNoise2D noise(properties.seed);
 
     float min = 1.0f, max = 0.0f;
     for (int x = 0; x < mapSize.x; ++x) {

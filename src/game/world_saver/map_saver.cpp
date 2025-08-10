@@ -61,4 +61,5 @@ void MapSaver::load(World& world, const std::filesystem::path& path) {
             map[x][y].floor = rawData[y * 200 + x];
         }
     }
+    logger.info() << "World map successfully load.";
 }

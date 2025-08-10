@@ -58,6 +58,7 @@
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
+    <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\mob\mob_presets.hpp" />
@@ -112,13 +113,14 @@
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\frontend\hint.cpp" />
     <ClCompile Include="src\game\frontend\jei.cpp" />
+    <ClCompile Include="src\game\frontend\layouts\l_saves.cpp" />
     <ClCompile Include="src\game\frontend\main_menu.cpp" />
     <ClCompile Include="src\game\frontend\menu.cpp" />
     <ClCompile Include="src\game\frontend\fr_controls.cpp" />
-    <ClCompile Include="src\game\frontend\saves.cpp" />
+    <ClCompile Include="src\game\frontend\world_loading.cpp" />
     <ClCompile Include="src\game\frontend\settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
-    <ClCompile Include="src\game\frontend\editor.cpp" />
+    <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
     <ClCompile Include="src\game\frontend\world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\generation\perlin_noise.cpp" />

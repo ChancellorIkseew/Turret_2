@@ -12,7 +12,6 @@ public:
     GameplayGUI(MainWindow& mainWindow, EngineState& state) :
         GUI(mainWindow), state(state) {
         containers.push_back(frontend::initTimer());
-        containers.push_back(frontend::initEditor());
         GUI::relocateContainers();
     }
     ~GameplayGUI() final = default;
