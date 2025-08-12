@@ -17,7 +17,7 @@ std::unique_ptr<Container> frontend::initMenu(Engine& engine) {
     back->addCallback([container = menu.get()] { container->close(); });
     save->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldSaving()); });
     settings->addCallback([&] { engine.getGUI().addOverlaped(frontend::initSettings(engine)); });
-    exit->addCallback([&] { engine.setState(EngineState::main_menu); });
+    exit->addCallback([&] { engine.openMainMenu(); });
 
     menu->addNode(back.release());
     menu->addNode(save.release());

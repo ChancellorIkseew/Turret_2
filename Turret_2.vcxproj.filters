@@ -108,7 +108,7 @@
     <ClInclude Include="src\game\events\events.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\engine_state.hpp">
+    <ClInclude Include="src\engine\engine_command.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\parser\list_parser.hpp">

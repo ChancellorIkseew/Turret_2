@@ -26,7 +26,7 @@
     <ClInclude Include="src\engine\coords\transforms.hpp" />
     <ClInclude Include="src\engine\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
-    <ClInclude Include="src\engine\engine_state.hpp" />
+    <ClInclude Include="src\engine\engine_command.hpp" />
     <ClInclude Include="src\engine\gui\editor_gui.hpp" />
     <ClInclude Include="src\engine\gui\gameplay_gui.hpp" />
     <ClInclude Include="src\engine\gui\gui.hpp" />

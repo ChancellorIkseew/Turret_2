@@ -1,6 +1,6 @@
 #include "frontend.hpp"
 //
-#include "engine/engine_state.hpp"
+#include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/widgets/button.hpp"
 #include "game/script_libs/lib_world_init.hpp"
@@ -15,7 +15,11 @@ static void deleteFolder(Layout* saves, Container* loading) {
     loading->arrange();
 }
 
-std::unique_ptr<Container> frontend::initWorldLoading(EngineState& state) {
+static void loadWorld(Engine& engine) {
+    engine.loadWorldInGame(folder);
+}
+
+std::unique_ptr<Container> frontend::initWorldLoading(Engine& engine) {
     folder = ""; // Reset folder name to avoid erors.
     auto loading = std::make_unique<Container>(Align::centre, Orientation::vertical);
     auto saves = initSaves(folder);
@@ -26,7 +30,7 @@ std::unique_ptr<Container> frontend::initWorldLoading(EngineState& state) {
     auto deleteWorld = std::make_unique<Button>(BTN_SIZE, U"Delete");
 
     back->addCallback([container = loading.get()] { container->close(); });
-    load->addCallback([&] { state = EngineState::gameplay; });
+    load->addCallback([&] { loadWorld(engine); });
     deleteWorld->addCallback(std::bind_front(deleteFolder, saves.get(), loading.get()));
 
     lower->addNode(back.release());

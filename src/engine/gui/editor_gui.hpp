@@ -1,7 +1,7 @@
 #pragma once
 #include "gui.hpp"
 //
-#include "engine/engine_state.hpp"
+#include "engine/engine.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
 #include "game/events/events.hpp"
@@ -10,13 +10,12 @@
 #include "gui_util/tile_data.hpp"
 
 class EditorGUI : public GUI {
-    EngineState& state;
     const Camera& camera;
     WorldMap& map;
     TileData tileData;
 public:
-    EditorGUI(MainWindow& mainWindow, EngineState& state, WorldMap& map, Camera& camera) :
-        GUI(mainWindow), map(map), camera(camera), state(state) {
+    EditorGUI(Engine& engine, WorldMap& map, Camera& camera) :
+        GUI(engine), map(map), camera(camera) {
         containers.push_back(frontend::initJEI(tileData, map.getContent()));
         GUI::relocateContainers();
     }
@@ -24,7 +23,7 @@ public:
 
     void callback() final {
         if (Input::jactive(Escape) && overlaped.empty())
-            GUI::addOverlaped(frontend::initMenu(state, *this));
+            GUI::addOverlaped(frontend::initMenu(engine));
         else
             GUI::callback();
         editMap();

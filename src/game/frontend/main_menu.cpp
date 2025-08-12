@@ -19,7 +19,7 @@ std::unique_ptr<Container> frontend::initMainMenu(Engine& engine) {
     loadGame->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldLoading(engine)); });
     //editor->addCallback([&] { state = EngineState::map_editor; });
     settings->addCallback([&] { engine.getGUI().addOverlaped(frontend::initSettings(engine)); });
-    exit->addCallback([&] { engine.setState(EngineState::exit); });
+    exit->addCallback([&] { engine.closeGame(); });
 
     menu->addNode(startGame.release());
     menu->addNode(loadGame.release());
