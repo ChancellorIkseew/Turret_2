@@ -1,12 +1,12 @@
 #include "frontend.hpp"
 //
-#include "engine/engine_state.hpp"
+#include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/widgets/button.hpp"
 
 constexpr PixelCoord BTN_SIZE(200.0f, 50.0f);
 
-std::unique_ptr<Container> frontend::initMenu(EngineState& state, GUI& gui) {
+std::unique_ptr<Container> frontend::initMenu(Engine& engine) {
     auto menu = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
     auto back = std::make_unique<Button>(BTN_SIZE, U"Back");
@@ -15,9 +15,9 @@ std::unique_ptr<Container> frontend::initMenu(EngineState& state, GUI& gui) {
     auto exit = std::make_unique<Button>(BTN_SIZE, U"Exit to menu");
 
     back->addCallback([container = menu.get()] { container->close(); });
-    save->addCallback([&] { gui.addOverlaped(frontend::initWorldSaving()); });
-    settings->addCallback([&] { gui.addOverlaped(frontend::initSettings(gui)); });
-    exit->addCallback([&] { state = EngineState::main_menu; });
+    save->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldSaving()); });
+    settings->addCallback([&] { engine.getGUI().addOverlaped(frontend::initSettings(engine)); });
+    exit->addCallback([&] { engine.setState(EngineState::main_menu); });
 
     menu->addNode(back.release());
     menu->addNode(save.release());

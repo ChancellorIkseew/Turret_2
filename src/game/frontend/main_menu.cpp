@@ -1,12 +1,12 @@
 #include "frontend.hpp"
 //
-#include "engine/engine_state.hpp"
+#include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/widgets/button.hpp"
 
 constexpr PixelCoord BTN_SIZE(200.0f, 50.0f);
 
-std::unique_ptr<Container> frontend::initMainMenu(WorldProperties& properties, EngineState& state, GUI& gui) {
+std::unique_ptr<Container> frontend::initMainMenu(Engine& engine) {
     auto menu = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
     auto startGame = std::make_unique<Button>(BTN_SIZE, U"Start game");
@@ -14,12 +14,12 @@ std::unique_ptr<Container> frontend::initMainMenu(WorldProperties& properties, E
     auto editor    = std::make_unique<Button>(BTN_SIZE, U"Editor");
     auto settings  = std::make_unique<Button>(BTN_SIZE, U"Settings");
     auto exit      = std::make_unique<Button>(BTN_SIZE, U"Exit game");
-    //state = EngineState::gameplay;
-    startGame->addCallback([&] { gui.addOverlaped(frontend::initWorldProperties(properties, state)); });
-    loadGame->addCallback([&] { gui.addOverlaped(frontend::initWorldLoading(state)); });
-    editor->addCallback([&] { state = EngineState::map_editor; });
-    settings->addCallback([&] { gui.addOverlaped(frontend::initSettings(gui)); });
-    exit->addCallback([&] { state = EngineState::exit; });
+    
+    startGame->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldProperties(engine)); });
+    loadGame->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldLoading(engine)); });
+    //editor->addCallback([&] { state = EngineState::map_editor; });
+    settings->addCallback([&] { engine.getGUI().addOverlaped(frontend::initSettings(engine)); });
+    exit->addCallback([&] { engine.setState(EngineState::exit); });
 
     menu->addNode(startGame.release());
     menu->addNode(loadGame.release());
