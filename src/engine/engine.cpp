@@ -22,15 +22,13 @@
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
-
-    WorldProperties properties(TileCoord(200, 200), 0U);
-    std::string folder;
-
     content::loadTextures();
+
+    worldProperties = WorldProperties(TileCoord(200, 200), 0U);
     while (mainWindow.isOpen()) {
         switch (command) {
         case EngineCommand::exit: mainWindow.close(); break;
-        default:                createScene(folder, properties); break;
+        default: createScene(worldFolder, worldProperties); break;
         }
     }
     Atlas::clear();
@@ -64,10 +62,11 @@ void Engine::openMainMenu() {
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
     std::unique_ptr<GUI> gui;
+    //std::unique_ptr<World> world;
     auto world = std::make_unique<World>();
 
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
-        WorldSaver::load(*world, "new_world");
+        world = WorldSaver::load("new_world");
     else
         gen::generate(world->getMap(), properties);
 
@@ -95,6 +94,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     _world = world.get();
     _gui = gui.get();
 
+    worldOpen = true;
     while (mainWindow.isOpen() && worldOpen) {
         mainWindow.pollEvents();
         camera.interact(mainWindow.getSize());

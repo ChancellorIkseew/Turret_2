@@ -3,63 +3,67 @@
 #include <ZLIB/zlib.h>
 #include <fstream>
 #include "engine/debug/logger.hpp"
-#include "game/world/world.hpp"
+#include "game/world/world_map.hpp"
 
 constexpr int COMPRESSION_LEVEL = 6;
 static debug::Logger logger("map_saver");
 
-void MapSaver::save(const World& world, const std::filesystem::path& path) {
-    const auto& map = world.getMap();
-    uLong tileCount = static_cast<uLong>(map.getSize().x * map.getSize().y);
+void MapSaver::save(const WorldMap& map, const std::filesystem::path& path) {
+    const auto mapSize = map.getSize();
+    uLong tileCount = static_cast<uLong>(mapSize.x * mapSize.y);
     std::vector<uint8_t> rawData;
     rawData.reserve(tileCount);
-    for (int y = 0; y < map.getSize().y; ++y) {
-        for (int x = 0; x < map.getSize().x; ++x) {
-            rawData.emplace_back(map[y][x].floor);
+    for (int x = 0; x < mapSize.x; ++x) {
+        for (int y = 0; y < mapSize.y; ++y) {
+            rawData.push_back(map[x][y].floor);
         }
     }
 
-    uLongf compressedSize = compressBound(tileCount);
-    std::vector<uint8_t> compressedData(compressedSize);
+    uLongf packedDataSize = compressBound(tileCount);
+    std::vector<uint8_t> packedData(packedDataSize);
 
-    int result = compress2(compressedData.data(), &compressedSize, rawData.data(), static_cast<uLong>(tileCount), COMPRESSION_LEVEL);
+    int result = compress2(packedData.data(), &packedDataSize, rawData.data(), static_cast<uLong>(tileCount), COMPRESSION_LEVEL);
     if (result != Z_OK) {
-        logger.error() << "Data compression failed.";
+        logger.error() << "Data compression failed. Error code: " << result;
         return;
     }
 
     std::ofstream fout(path / "world_map.dat", std::ios::binary);
-    fout.write(reinterpret_cast<const char*>(&compressedSize), sizeof(uLongf));
-    fout.write(reinterpret_cast<const char*>(compressedData.data()), compressedSize);
+    fout.write(reinterpret_cast<const char*>(&mapSize), sizeof(mapSize));
+    fout.write(reinterpret_cast<const char*>(&packedDataSize), sizeof(packedDataSize));
+    fout.write(reinterpret_cast<const char*>(packedData.data()), packedDataSize);
     logger.info() << "World map successfully saved.";
 }
 
-void MapSaver::load(World& world, const std::filesystem::path& path) {
+WorldMap MapSaver::load(const std::filesystem::path& path) {
     std::ifstream fin(path / "world_map.dat", std::ios::binary);
     if (!fin.is_open()) {
         logger.error() << "Failed to open file: " << path / "world_map.dat";
-        return;
+        return WorldMap(TileCoord(0, 0));
     }
 
-    uLongf compressedSize = 0;
-    fin.read(reinterpret_cast<char*>(&compressedSize), sizeof(compressedSize));
+    TileCoord mapSize;
+    uLongf packedDataSize = 0;
+    fin.read(reinterpret_cast<char*>(&mapSize), sizeof(mapSize));
+    fin.read(reinterpret_cast<char*>(&packedDataSize), sizeof(packedDataSize));
 
-    std::vector<uint8_t> compressedData(compressedSize);
-    fin.read(reinterpret_cast<char*>(compressedData.data()), compressedSize);
-
-    std::vector<uint8_t> rawData(200 * 200);
+    std::vector<uint8_t> packedData(packedDataSize);
+    std::vector<uint8_t> rawData(mapSize.x * mapSize.y);
+    fin.read(reinterpret_cast<char*>(packedData.data()), packedDataSize);
     uLongf destLen = static_cast<uLongf>(rawData.size());
-    int result = uncompress(rawData.data(), &destLen, compressedData.data(), compressedSize);
+
+    int result = uncompress(rawData.data(), &destLen, packedData.data(), packedDataSize);
     if (result != Z_OK) {
-        logger.error() << "Data uncompression failed.";
-        return;
+        logger.error() << "Data uncompression failed. Error code: " << result;
+        return WorldMap(TileCoord(0, 0));
     }
 
-    auto& map = world.getMap();
-    for (uint32_t y = 0; y < 200; ++y) {
-        for (uint32_t x = 0; x < 200; ++x) {
-            map[x][y].floor = rawData[y * 200 + x];
+    WorldMap map(mapSize);
+    for (int x = 0; x < mapSize.x; ++x) {
+        for (int y = 0; y < mapSize.y; ++y) {
+            map[x][y].floor = rawData[x * mapSize.y + y];
         }
     }
     logger.info() << "World map successfully load.";
+    return map;
 }

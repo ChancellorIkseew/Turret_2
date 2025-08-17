@@ -1,15 +1,12 @@
 #include "world_map.hpp"
 //
 #include <iostream>
-//#include "game/generation/generation.hpp"
 
 WorldMap::WorldMap(const TileCoord mapSize) : terrain(mapSize.x), mapSize(mapSize) {
     content::load(registry);
     for (auto& line : terrain) {
         line.resize(mapSize.y);
     }
-    //gen::generate(terrain, mapSize);
-
     terrain[10][10].block = new Block("round_shadow", "ice_block", TileCoord(10, 10));
 }
 

@@ -1,10 +1,10 @@
 #pragma once
 #include <filesystem>
 
-class World;
+class WorldMap;
 
 class MapSaver {
 public:
-    static void save(const World& world, const std::filesystem::path& path);
-    static void load(World& world, const std::filesystem::path& path);
+    static void save(const WorldMap& world, const std::filesystem::path& path);
+    static WorldMap load(const std::filesystem::path& path);
 };

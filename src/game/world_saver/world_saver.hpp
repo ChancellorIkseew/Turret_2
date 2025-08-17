@@ -1,27 +1,11 @@
 #pragma once
-#include "engine/io/folders.hpp"
-#include "map_saver.hpp"
+#include <memory>
 #include <string>
 
 class World;
 
 class WorldSaver {
 public:
-    static void save(const World& world, const std::string& folder) {
-        if (!io::folders::createOrCheckFolder(io::folders::SAVES))
-            return;
-        const std::filesystem::path path = io::folders::SAVES / folder;
-        if (!io::folders::createOrCheckFolder(path))
-            return;
-        MapSaver::save(world, path);
-    }
-
-    static void load(World& world, const std::string& folder) {
-        if (!io::folders::folderExists(io::folders::SAVES))
-            return;
-        const std::filesystem::path path = io::folders::SAVES / folder;
-        if (!io::folders::folderExists(path))
-            return;
-        MapSaver::load(world, path);
-    }
+    static void save(const World& world, const std::string& folder);
+    static std::unique_ptr<World> load(const std::string& folder);
 };
