@@ -14,5 +14,6 @@ struct WorldProperties {
 };
 
 namespace gen {
-    void generate(WorldMap& map, const WorldProperties& properties);
+    WorldMap generateMap(const WorldProperties& properties);
+    std::unique_ptr<World> generateWorld(const WorldProperties& properties);
 }

@@ -6,36 +6,42 @@
 #include "engine/widgets/label.hpp"
 #include "game/generation/generation.hpp"
 
-constexpr PixelCoord BTN_SIZE(200.0f, 50.0f);
+constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 
-static void createWorld(WorldProperties& properties, Engine& engine) {
+static void createWorld(Engine& engine) {
+    WorldProperties properties(TileCoord(50, 50), 0);
     engine.createWorldInGame(properties);
 }
 
 std::unique_ptr<Container> frontend::initWorldProperties(Engine& engine) {
-    auto propsForm = std::make_unique<Container>(Align::centre, Orientation::horizontal);
-    auto frequancy = std::make_unique<Layout>(Orientation::vertical);
-    auto deposite = std::make_unique<Layout>(Orientation::vertical);
+    auto propsForm = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    auto parameters = std::make_unique<Layout>(Orientation::horizontal);
+    auto lower = std::make_unique<Layout>(Orientation::horizontal);
+    auto labels = std::make_unique<Layout>(Orientation::vertical);
+    auto forms = std::make_unique<Layout>(Orientation::vertical);
 
-    auto startWave = std::make_unique<Label>(U"frequancy");
-    auto timeToWave = std::make_unique<Form>();
+    auto widthL = std::make_unique<Label>(U"Width");
+    auto heightL = std::make_unique<Label>(U"Height");
+    auto widthF = std::make_unique<Form>();
+    auto heightF = std::make_unique<Form>();
     
+    labels->addNode(widthL.release());
+    labels->addNode(heightL.release());
+    forms->addNode(widthF.release());
+    forms->addNode(heightF.release());
 
-    frequancy->addNode(startWave.release());
-    frequancy->addNode(timeToWave.release());
-
-
-    auto f1 = std::make_unique<Label>(U"deposite");
-    auto f2 = std::make_unique<Label>(U"text");
-
-    deposite->addNode(f1.release());
-    deposite->addNode(f2.release());
-
+    auto back = std::make_unique<Button>(BTN_SIZE, U"Back");
     auto aply = std::make_unique<Button>(BTN_SIZE, U"Aply");
-    //aply->addCallback(std::bind_front(createWorld, properties, engine));
+    back->addCallback([container = propsForm.get()] { container->close(); });
+    aply->addCallback([&] { createWorld(engine); });
 
-    propsForm->addNode(frequancy.release());
-    propsForm->addNode(deposite.release());
+    parameters->addNode(labels.release());
+    parameters->addNode(forms.release());
+    lower->addNode(back.release());
+    lower->addNode(aply.release());
+
+    propsForm->addNode(parameters.release());
+    propsForm->addNode(lower.release());
     propsForm->arrange();
     return propsForm;
 }

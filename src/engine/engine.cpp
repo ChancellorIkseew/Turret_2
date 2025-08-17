@@ -23,13 +23,9 @@ void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
     content::loadTextures();
-
-    worldProperties = WorldProperties(TileCoord(200, 200), 0U);
+    openMainMenu();
     while (mainWindow.isOpen()) {
-        switch (command) {
-        case EngineCommand::exit: mainWindow.close(); break;
-        default: createScene(worldFolder, worldProperties); break;
-        }
+        createScene(worldFolder, worldProperties);
     }
     Atlas::clear();
 }
@@ -57,18 +53,17 @@ void Engine::createWorldInEditor(WorldProperties& properties) {
 void Engine::openMainMenu() {
     closeWorld();
     command = EngineCommand::main_menu;
-    //worldProperties = ;
+    worldProperties = WorldProperties(TileCoord(100, 100), 0U);;
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
     std::unique_ptr<GUI> gui;
-    //std::unique_ptr<World> world;
-    auto world = std::make_unique<World>();
+    std::unique_ptr<World> world;
 
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
-        world = WorldSaver::load("new_world");
+        world = WorldSaver::load(folder);
     else
-        gen::generate(world->getMap(), properties);
+        world = gen::generateWorld(properties);
 
     Camera camera(world->getMap().getSize());
     WorldDrawer worldDrawer(camera, *world);

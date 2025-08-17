@@ -26,7 +26,7 @@ public:
     void createWorldInGame(WorldProperties& properties);
     void createWorldInEditor(WorldProperties& properties);
     void openMainMenu();
-    void closeGame() { command = EngineCommand::exit; }
+    void closeGame() { worldOpen = false; mainWindow.close(); }
     void closeWorld() { worldOpen = false; }
     //
     MainWindow& getMainWindow() { return mainWindow; }
