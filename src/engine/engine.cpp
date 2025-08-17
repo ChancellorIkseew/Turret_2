@@ -16,47 +16,81 @@
 #include "game/mob/mob_presets.hpp"
 
 #include "game/player/player_controller.hpp"
+#include "game/world_saver/world_saver.hpp"
+#include "game/generation/generation.hpp"
 
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
-
     content::loadTextures();
+    openMainMenu();
     while (mainWindow.isOpen()) {
-        switch (state) {
-        case EngineState::exit: mainWindow.close(); break;
-        default:                createScene(state); break;
-        }
+        createScene(worldFolder, worldProperties);
     }
     Atlas::clear();
 }
 
-void Engine::createScene(const EngineState requiredState) {
+void Engine::loadWorldInGame(const std::string& folder) {
+    closeWorld();
+    command = EngineCommand::gameplay_load_world;
+    worldFolder = folder;
+}
+void Engine::loadWorldInEditor(const std::string& folder) {
+    closeWorld();
+    command = EngineCommand::editor_load_world;
+    worldFolder = folder;
+}
+void Engine::createWorldInGame(WorldProperties& properties) {
+    closeWorld();
+    command = EngineCommand::gameplay_new_world;
+    worldProperties = properties;
+}
+void Engine::createWorldInEditor(WorldProperties& properties) {
+    closeWorld();
+    command = EngineCommand::editor_new_world;
+    worldProperties = properties;
+}
+void Engine::openMainMenu() {
+    closeWorld();
+    command = EngineCommand::main_menu;
+    worldProperties = WorldProperties(TileCoord(100, 100), 0U);;
+}
+
+void Engine::createScene(const std::string& folder, WorldProperties& properties) {
     std::unique_ptr<GUI> gui;
     std::unique_ptr<World> world;
-    
-    TileCoord mapSize(200, 200);
-    world = std::make_unique<World>(mapSize);
-    Camera camera(mapSize);
+
+    if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
+        world = WorldSaver::load(folder);
+    else
+        world = gen::generateWorld(properties);
+
+    Camera camera(world->getMap().getSize());
     WorldDrawer worldDrawer(camera, *world);
     lib_world::init(world.get());
 
     Team* player = world->getTeams().addTeam(U"player");
     player->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
 
-    switch (requiredState) {
-    case EngineState::main_menu:
-        gui = std::make_unique<MenuGUI>(mainWindow, state);
+    switch (command) {
+    case EngineCommand::main_menu:
+        gui = std::make_unique<MenuGUI>(*this);
         break;
-    case EngineState::gameplay:
-        gui = std::make_unique<GameplayGUI>(mainWindow, state);
+    case EngineCommand::gameplay_new_world:
+    case EngineCommand::gameplay_load_world:
+        gui = std::make_unique<GameplayGUI>(*this);
         break;
-    case EngineState::map_editor:
-        gui = std::make_unique<EditorGUI>(mainWindow, state, world->getMap(), camera);
+    case EngineCommand::editor_new_world:
+    case EngineCommand::editor_load_world:
+        gui = std::make_unique<EditorGUI>(*this, world->getMap(), camera);
         break;
     }
 
-    while (mainWindow.isOpen() && state == requiredState) {
+    _world = world.get();
+    _gui = gui.get();
+
+    worldOpen = true;
+    while (mainWindow.isOpen() && worldOpen) {
         mainWindow.pollEvents();
         camera.interact(mainWindow.getSize());
         mainWindow.clear();

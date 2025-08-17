@@ -26,12 +26,13 @@
     <ClInclude Include="src\engine\coords\transforms.hpp" />
     <ClInclude Include="src\engine\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
-    <ClInclude Include="src\engine\engine_state.hpp" />
+    <ClInclude Include="src\engine\engine_command.hpp" />
     <ClInclude Include="src\engine\gui\editor_gui.hpp" />
     <ClInclude Include="src\engine\gui\gameplay_gui.hpp" />
     <ClInclude Include="src\engine\gui\gui.hpp" />
     <ClInclude Include="src\engine\gui\gui_util\tile_data.hpp" />
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
+    <ClInclude Include="src\engine\io\folders.hpp" />
     <ClInclude Include="src\engine\parser\list_parser.hpp" />
     <ClInclude Include="src\engine\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
+    <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\mob\mob_presets.hpp" />
@@ -79,6 +81,8 @@
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\world_drawer.hpp" />
+    <ClInclude Include="src\game\world_saver\map_saver.hpp" />
+    <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\content\load_textures.cpp" />
@@ -86,6 +90,7 @@
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\gui\gui.cpp" />
+    <ClCompile Include="src\engine\io\folders.cpp" />
     <ClCompile Include="src\engine\parser\list_parser.cpp" />
     <ClCompile Include="src\engine\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
@@ -108,12 +113,15 @@
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\frontend\hint.cpp" />
     <ClCompile Include="src\game\frontend\jei.cpp" />
+    <ClCompile Include="src\game\frontend\layouts\l_saves.cpp" />
     <ClCompile Include="src\game\frontend\main_menu.cpp" />
     <ClCompile Include="src\game\frontend\menu.cpp" />
     <ClCompile Include="src\game\frontend\fr_controls.cpp" />
+    <ClCompile Include="src\game\frontend\world_loading.cpp" />
     <ClCompile Include="src\game\frontend\settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
-    <ClCompile Include="src\game\frontend\editor.cpp" />
+    <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
+    <ClCompile Include="src\game\frontend\world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\generation\perlin_noise.cpp" />
     <ClCompile Include="src\game\physics\mobs_system.cpp" />
@@ -129,6 +137,8 @@
     <ClCompile Include="src\game\world\world_map.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />
+    <ClCompile Include="src\game\world_saver\map_saver.cpp" />
+    <ClCompile Include="src\game\world_saver\world_saver.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -251,8 +261,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/libs/lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>angelscript64d.lib;SDL3.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/libs/MSVC_lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>angelscript64d.lib;SDL3.lib;SDL3_image.lib;zlib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -272,8 +282,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/libs/lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>angelscript64.lib;SDL3.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/libs/MSVC_lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>angelscript64.lib;SDL3.lib;SDL3_image.lib;zlib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

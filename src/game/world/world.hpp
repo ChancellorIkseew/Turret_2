@@ -6,7 +6,8 @@ class World {
     WorldMap map;
     TeamsPool teams;
 public:
-    World(const TileCoord mapSize) : map(mapSize) { }
+    World() : map(TileCoord(200, 200)) { }
+    World(WorldMap& map) : map(std::move(map)) { }
     void print();
     const WorldMap& getMap() const { return map; }
     WorldMap& getMap() { return map; }

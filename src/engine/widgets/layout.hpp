@@ -16,6 +16,7 @@ public:
     void addNode(Node* node);
     void arrange();
     void draw() final;
+    void clear() { contents.clear(); }
     void setPosition(const PixelCoord position) final {
         Node::setPosition(position);
         arrange();
