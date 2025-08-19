@@ -3,6 +3,8 @@ build/
 obj/
 res/scripts/
 saves/
+controls.tin
+settings.tin
 
 # logs:
 latest_log.txt
