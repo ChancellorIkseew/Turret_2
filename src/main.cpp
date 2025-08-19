@@ -1,5 +1,6 @@
 ﻿#include "engine/debug/logger.hpp"
 #include "engine/engine.hpp"
+#include "engine/window/input/controls.hpp"
 
 static debug::Logger logger("main");
 
@@ -7,6 +8,7 @@ int main(int argc, char* argv[]) {
     debug::Logger::init("latest_log.txt");
 
     try {
+        Controls::readBindings();
         Engine engine("Turret_2.0.0");
         engine.run();
     }

@@ -21,11 +21,11 @@ void tin::write(fs::path path, const tin::Data& data) {
     logger.info() << "Writen file: " << path;
 }
 
-std::optional<tin::Data> tin::read(fs::path path) {
+tin::Data tin::read(fs::path path) {
     std::ifstream fin(path);
     if (!fin.is_open()) {
         logger.error() << "Could not open file to read. File: " << path;
-        return std::nullopt;
+        return tin::Data();
     }
 
     tin::Data data;

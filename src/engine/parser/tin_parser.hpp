@@ -11,6 +11,7 @@ namespace tin {
         std::unordered_map<std::string, std::string> data;
     public:
         Data() = default;
+        bool empty() { return data.empty(); }
         void emplace(std::string key, std::string value) {
             data.emplace(std::move(key), std::move(value));
         }
@@ -83,5 +84,5 @@ namespace tin {
     };
 
     void write(std::filesystem::path path, const Data& data);
-    std::optional<Data> read(std::filesystem::path path);
+    Data read(std::filesystem::path path);
 };

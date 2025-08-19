@@ -1,14 +1,15 @@
 #include "controls.hpp"
 //
 #include <SDL3/SDL_keyboard.h>
-#include <TOML/cpptoml.h>
 #include <array>
 #include <filesystem>
+#include "engine/io/folders.hpp"
 #include "engine/debug/logger.hpp"
+#include "engine/parser/tin_parser.hpp"
 #include "utf8/utf8.hpp"
 
 constexpr std::array<cString, 6> MOUSE_CODES{ "_", LMB, MidMB, RMB, "Mouse_4", "Mouse_5"};
-static std::filesystem::path controls("res/controls.toml");
+static std::filesystem::path controls = "controls.tin";
 static debug::Logger logger("controls");
 
 static cString getKeyNameCStr(const Binding binding) {
@@ -34,35 +35,23 @@ void Controls::rebind(const std::string& bindName, const Binding binding) {
 }
 
 void Controls::writeBindings() {
-    std::ofstream fout(controls);
-    if (!fout.is_open()) {
-        logger.error() << "Could not open file to write. File: " << controls;
-        return;
-    }
-    auto table = cpptoml::make_table();
+    tin::Data data;
     for (const auto& [bindName, binding] : bindings) {
         if (binding.changable)
-            table->insert(bindName, getKeyNameCStr(binding));
+            data.emplace(bindName, getKeyNameCStr(binding));
     }
-    cpptoml::toml_writer writer(fout, " ");
-    writer.visit(*table, false);
-    logger.info() << "Writen file: " << controls;
+    tin::write(controls, data);
 }
 
 void Controls::readBindings() {
-    try {
-        const auto table = cpptoml::parse_file(controls.string());
-        for (const auto& [bindName, _] : *table) {
-            const std::string keyName = table->get_as<std::string>(bindName).value_or("");
-            if (!keyName.empty())
-                rebind(bindName, getBinding(keyName));
-        }
-        logger.info() << "Readen file: " << controls;
-    }
-    catch (cpptoml::parse_exception exception) {
-        logger.error() << exception.what();
-        logger.info() << "Trying to save file with default settings. File: " << controls;
+    tin::Data data = tin::read(controls);
+    if (data.empty()) {
         writeBindings();
+        logger.info() << "Saved file with default settings. File: " << controls;
+        return;
+    }
+    for (const auto& [bindName, keyName] : data) {
+        rebind(bindName, getBinding(keyName));
     }
 }
 
