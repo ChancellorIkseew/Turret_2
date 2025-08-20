@@ -1,6 +1,7 @@
 #include "frontend.hpp"
 //
 #include "engine/io/folders.hpp"
+#include "engine/parser/validator.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/form.hpp"
 #include "engine/window/input/utf8/utf8.hpp"
@@ -11,17 +12,8 @@
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 static std::string folder;
 
-static std::string fromU32StringToSTDString(std::u32string& u32str) {
-    std::string str;
-    str.reserve(u32str.size());
-    for (const auto c : u32str) {
-        str.append(1, static_cast<const char>(c));
-    }
-    return str;
-}
-
 static void saveWorld(Form* form, Layout* saves, Container* saving) {
-    std::string folder = fromU32StringToSTDString(form->getText());
+    std::string folder = validator::toStdString(form->getText());
     if (!io::folders::isPathValid(folder))
         return;
     WorldSaver::save(*lib_world::world, folder);

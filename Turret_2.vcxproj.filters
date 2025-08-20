@@ -207,6 +207,12 @@
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\parser\tin_parser.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\world_saver\properties_saver.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp">
@@ -372,6 +378,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\world_saver\world_saver.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\parser\tin_parser.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\world_saver\properties_saver.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

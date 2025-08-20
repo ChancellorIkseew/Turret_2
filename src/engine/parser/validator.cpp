@@ -80,6 +80,7 @@ std::string validator::toStdString(const std::u32string& u32str) {
     if (u32str.empty())
         return "";
     std::string str;
+    str.reserve(u32str.size());
     for (const auto it : u32str) {
         str.push_back(static_cast<char>(it));
     }
