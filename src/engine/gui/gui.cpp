@@ -1,6 +1,9 @@
 #include "gui.hpp"
 //
+#include "engine/io/folders.hpp"
+#include "engine/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
+#include "engine/settings/settings.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
@@ -20,6 +23,16 @@ void GUI::draw() {
         Atlas::testDraw();
 }
 
+void GUI::translate() {
+    tin::Data data = tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"));
+    for (auto& it : containers) {
+        it->translate(data);
+    }
+    for (auto& it : overlaped) {
+        it->translate(data);
+    }
+}
+
 void GUI::callback() {
     acceptHotkeys();
     if (!showGUI)
@@ -37,6 +50,8 @@ void GUI::callback() {
 
 void GUI::addOverlaped(std::unique_ptr<Container> container) {
     container->aplyAlignment(mainWindow.getSize());
+    tin::Data data = tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"));
+    container->translate(data);
     overlaped.push_back(std::move(container));
 }
 

@@ -34,9 +34,23 @@ uint32_t utf8::fromConstCharToUint32(const char* s) noexcept {
 
 std::u32string utf8::fromConstCharToU32String(const char* cStr) {
     std::u32string result;
-    while (*cStr != '\0') {
-        result.push_back(static_cast<unsigned char>(*cStr));
-        ++cStr;
+    if (!cStr) return result;
+
+    const char* current = cStr;
+    while (*current != '\0') {
+        uint32_t codePoint = fromConstCharToUint32(current);
+        if (codePoint == 0) {
+            current += 1;
+            continue;
+        }
+
+        result.push_back(codePoint);
+        const uint8_t u0 = static_cast<uint8_t>(*current);
+        if (u0 < 0x80)      current += 1; // 1-byte ASCII
+        else if (u0 < 0xE0) current += 2; // 2-byte UTF-8
+        else if (u0 < 0xF0) current += 3; // 3-byte UTF-8
+        else if (u0 < 0xF8) current += 4; // 4-byte UTF-8
+        else current += 1;
     }
     return result;
 }

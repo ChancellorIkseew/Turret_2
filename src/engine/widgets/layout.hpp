@@ -21,6 +21,11 @@ public:
         Node::setPosition(position);
         arrange();
     }
+    void translate(const tin::Data& translations) final {
+        for (auto& it : contents) {
+            it->translate(translations);
+        }
+    }
     void callback() final {
         if (!containsMouse())
             return;

@@ -18,6 +18,7 @@ public:
         GUI(engine), map(map), camera(camera) {
         containers.push_back(frontend::initJEI(tileData, map.getContent()));
         GUI::relocateContainers();
+        GUI::translate();
     }
     ~EditorGUI() final = default;
 

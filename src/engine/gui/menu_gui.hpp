@@ -12,6 +12,7 @@ public:
     MenuGUI(Engine& engine) : GUI(engine) {
         overlaped.push_back(frontend::initMainMenu(engine));
         GUI::relocateContainers();
+        GUI::translate();
     }
     ~MenuGUI() final = default;
 

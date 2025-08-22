@@ -11,7 +11,7 @@ std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     auto settings = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
     auto back = std::make_unique<Button>(BTN_SIZE, U"Back");
-    auto controls = std::make_unique<Button>(BTN_SIZE, U"Contorls");
+    auto controls = std::make_unique<Button>(BTN_SIZE, U"Controls");
     
     back->addCallback([container = settings.get()] { container->close(); });
     controls->addCallback([&] { engine.getGUI().addOverlaped(frontend::initControls()); });

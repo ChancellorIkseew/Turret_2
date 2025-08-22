@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "validator.hpp"
 #include "engine/coords/tile_coord.hpp"
+#include "engine/window/input/utf8/utf8.hpp"
 
 namespace tin {
     class Data {
@@ -61,6 +62,10 @@ namespace tin {
         std::optional<std::string> getString(const char* key) const {
             if (!data.contains(key)) return std::nullopt;
             return data.at(key);
+        }
+        std::optional<std::u32string> getU32String(const char* key) const {
+            if (!data.contains(key)) return std::nullopt;
+            return utf8::fromConstCharToU32String(data.at(key).c_str());
         }
         std::optional<TileCoord> getTileCoord(const char* key) const {
             if (!data.contains(key)) return std::nullopt;

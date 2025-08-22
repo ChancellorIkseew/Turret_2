@@ -19,6 +19,7 @@ public:
     virtual ~GUI() = default;
 
     void draw();
+    void translate();
     virtual void callback();
     void addOverlaped(std::unique_ptr<Container> container);
     bool isMouseFree() const;

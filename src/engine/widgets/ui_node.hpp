@@ -2,6 +2,10 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/render/sprite.hpp"
 
+namespace tin {
+    class Data;
+}
+
 class Node {
     Sprite sprite;
     PixelCoord position;
@@ -16,6 +20,7 @@ public:
     virtual ~Node() = default;
     //
     virtual void draw();
+    virtual void translate(const tin::Data& translations) { }
     virtual void callback() = 0;
     //
     PixelCoord getPosition() const { return position; }

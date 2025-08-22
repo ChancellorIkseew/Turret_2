@@ -11,6 +11,7 @@ public:
     GameplayGUI(Engine& engine) : GUI(engine) {
         containers.push_back(frontend::initTimer());
         GUI::relocateContainers();
+        GUI::translate();
     }
     ~GameplayGUI() final = default;
 

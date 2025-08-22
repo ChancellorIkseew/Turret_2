@@ -41,6 +41,7 @@
     <ClInclude Include="src\engine\render\sprite.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
+    <ClInclude Include="src\engine\settings\settings.hpp" />
     <ClInclude Include="src\engine\util\local_time.hpp" />
     <ClInclude Include="src\engine\util\sleep.hpp" />
     <ClInclude Include="src\engine\widgets\button.hpp" />
@@ -100,6 +101,7 @@
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
     <ClCompile Include="src\engine\scripting\scripting.cpp" />
+    <ClCompile Include="src\engine\settings\settings.cpp" />
     <ClCompile Include="src\engine\util\local_time.cpp" />
     <ClCompile Include="src\engine\widgets\button.cpp" />
     <ClCompile Include="src\engine\widgets\container.cpp" />
@@ -121,7 +123,7 @@
     <ClCompile Include="src\game\frontend\menu.cpp" />
     <ClCompile Include="src\game\frontend\fr_controls.cpp" />
     <ClCompile Include="src\game\frontend\world_loading.cpp" />
-    <ClCompile Include="src\game\frontend\settings.cpp" />
+    <ClCompile Include="src\game\frontend\fr_settings.cpp" />
     <ClCompile Include="src\game\frontend\timer.cpp" />
     <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
     <ClCompile Include="src\game\frontend\world_saving.cpp" />

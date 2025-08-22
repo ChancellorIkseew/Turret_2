@@ -17,6 +17,10 @@ public:
     void callback() final;
     void setPosition(const PixelCoord position) final;
     void setText(const std::u32string& name);
+    void translate(const tin::Data& translations) final {
+        label.translate(translations);
+        centerText();
+    }
     void addCallback(std::function<void()> action) {
         this->action = action;
     }
