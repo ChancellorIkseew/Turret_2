@@ -3,7 +3,7 @@
 #include "engine/widgets/form.hpp"
 #include "engine/window/input/input.hpp"
 
-static Form* targetForm;
+static Form* targetForm = nullptr;
 
 void FormEditor::setForm(Form* form) {
     if (form == targetForm)

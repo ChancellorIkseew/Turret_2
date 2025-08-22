@@ -1,6 +1,6 @@
 #include "text.hpp"
 //
-#include <typeinfo>
+#include <cstdint>
 #include "atlas.hpp"
 #include "config.hpp"
 

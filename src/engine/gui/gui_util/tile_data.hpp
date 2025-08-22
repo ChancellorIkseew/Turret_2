@@ -1,5 +1,5 @@
 #pragma once
-#include <typeinfo>
+#include <cstdint>
 
 enum class TileComponent : uint8_t {
     floor,

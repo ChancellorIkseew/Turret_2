@@ -2,6 +2,7 @@
 //
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <STB/stb_rect.h>
+#include <vector>
 #include "engine/coords/transforms.hpp"
 #include "engine/debug/logger.hpp"
 
