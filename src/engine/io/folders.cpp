@@ -37,12 +37,13 @@ bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
     }
 }
 
-io::folders::Contents io::folders::getContents(const std::filesystem::path& path) {
+io::folders::Contents io::folders::getContents(const std::filesystem::path& path, ContentsType type) {
     Contents contents;
     if (!folderExists(path))
         return contents;
     for (const auto& entry : fs::directory_iterator(path)) {
-        if (entry.is_directory())
+        if (type == ContentsType::folder && entry.is_directory() ||
+            type == ContentsType::file && entry.is_regular_file())
             contents.push_back(entry.path().filename().string());
     }
     logger.info() << "Readen directory: " << path;

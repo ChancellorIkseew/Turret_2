@@ -8,7 +8,7 @@ constexpr PixelCoord BTN_SIZE(190.0f, 30.0f);
 
 void frontend::update(Layout* saves, std::string& folder) {
     saves->clear();
-    auto contents = io::folders::getContents(io::folders::SAVES);
+    auto contents = io::folders::getContents(io::folders::SAVES, io::folders::ContentsType::folder);
     for (const auto& it : contents) {
         auto btn = std::make_unique<Button>(BTN_SIZE, utf8::fromConstCharToU32String(it.c_str()));
         btn->addCallback([&, it] { folder = it; });
