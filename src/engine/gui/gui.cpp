@@ -1,7 +1,7 @@
 #include "gui.hpp"
 //
 #include "engine/io/folders.hpp"
-#include "engine/parser/tin_parser.hpp"
+#include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"

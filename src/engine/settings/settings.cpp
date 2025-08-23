@@ -2,7 +2,7 @@
 //
 #include "engine/debug/logger.hpp"
 #include "engine/engine.hpp"
-#include "engine/parser/tin_parser.hpp"
+#include "engine/io/parser/tin_parser.hpp"
 #include "engine/window/window.hpp"
 
 static debug::Logger logger("settings");

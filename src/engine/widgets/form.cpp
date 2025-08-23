@@ -4,13 +4,16 @@
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 
+Form::~Form() {
+    FormEditor::setForm(nullptr);
+}
+
 void Form::draw() {
     Node::draw();
     text::drawString(text, getPosition());
 }
 
 void Form::callback() {
-    bool editing = false;
-    if (Input::jactive(LMB))
+    if (containsMouse() && Input::jactive(LMB))
         FormEditor::setForm(this);
 }

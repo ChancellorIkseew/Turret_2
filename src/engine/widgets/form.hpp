@@ -6,7 +6,7 @@ class Form : public Node {
     std::u32string text;
 public:
     Form() : Node(PixelCoord(100, 20)) {}
-    ~Form() final = default;
+    ~Form() final;
 
     void draw() final;
     void callback() final;

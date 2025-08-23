@@ -3,9 +3,9 @@
 #include <SDL3/SDL_keyboard.h>
 #include <array>
 #include <filesystem>
-#include "engine/io/folders.hpp"
 #include "engine/debug/logger.hpp"
-#include "engine/parser/tin_parser.hpp"
+#include "engine/io/folders.hpp"
+#include "engine/io/parser/tin_parser.hpp"
 #include "utf8/utf8.hpp"
 
 constexpr std::array<cString, 6> MOUSE_CODES{ "_", LMB, MidMB, RMB, "Mouse_4", "Mouse_5"};

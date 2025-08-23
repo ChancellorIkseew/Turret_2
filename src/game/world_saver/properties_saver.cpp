@@ -1,7 +1,7 @@
 #include "properties_saver.hpp"
 //
 #include "engine/debug/logger.hpp"
-#include "engine/parser/tin_parser.hpp"
+#include "engine/io/parser/tin_parser.hpp"
 #include "game/generation/generation.hpp"
 
 static debug::Logger logger("properties_saver");

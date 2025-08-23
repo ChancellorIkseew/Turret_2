@@ -33,9 +33,9 @@
     <ClInclude Include="src\engine\gui\gui_util\tile_data.hpp" />
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
-    <ClInclude Include="src\engine\parser\list_parser.hpp" />
-    <ClInclude Include="src\engine\parser\tin_parser.hpp" />
-    <ClInclude Include="src\engine\parser\validator.hpp" />
+    <ClInclude Include="src\engine\io\parser\list_parser.hpp" />
+    <ClInclude Include="src\engine\io\parser\tin_parser.hpp" />
+    <ClInclude Include="src\engine\io\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\sprite.hpp" />
@@ -94,9 +94,9 @@
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\gui\gui.cpp" />
     <ClCompile Include="src\engine\io\folders.cpp" />
-    <ClCompile Include="src\engine\parser\list_parser.cpp" />
-    <ClCompile Include="src\engine\parser\tin_parser.cpp" />
-    <ClCompile Include="src\engine\parser\validator.cpp" />
+    <ClCompile Include="src\engine\io\parser\list_parser.cpp" />
+    <ClCompile Include="src\engine\io\parser\tin_parser.cpp" />
+    <ClCompile Include="src\engine\io\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
