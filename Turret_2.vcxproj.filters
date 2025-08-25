@@ -395,5 +395,8 @@
     <ClCompile Include="src\engine\io\parser\validator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\frontend\fr_graphics.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

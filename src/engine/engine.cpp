@@ -4,7 +4,6 @@
 #include "engine/gui/gameplay_gui.hpp"
 #include "engine/gui/menu_gui.hpp"
 //
-#include "engine/window/input/controls.hpp"
 #include "engine/content/load_content.hpp"
 #include "engine/render/atlas.hpp"
 //

@@ -3,7 +3,7 @@
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/io/folders.hpp"
-#include "engine/parser/validator.hpp"
+#include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/window/input/utf8/utf8.hpp"
@@ -13,6 +13,7 @@ constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 static void changeLang(Engine& engine, const std::u32string langName) {
     Settings::gui.lang = validator::toStdString(langName);
     Settings::writeSettings();
+    GUI::loadLangTranslations(Settings::gui.lang);
     engine.getGUI().translate();
 }
 

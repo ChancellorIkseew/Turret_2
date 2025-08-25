@@ -18,4 +18,5 @@ namespace frontend {
     std::unique_ptr<Container> initJEI(TileData& tileData, const ElementRegistry& reg);
     std::unique_ptr<Container> initHint(TileData& tileData, const ElementRegistry& reg);
     std::unique_ptr<Container> initLanguages(Engine& engine);
+    std::unique_ptr<Container> initGraphics(Engine& engine);
 }

@@ -10,6 +10,7 @@ class Settings {
     };
     struct _Display {
         uint32_t FPS = 60U;
+        bool fullscreen = false;
     };
 public:
     static inline _GUI gui;

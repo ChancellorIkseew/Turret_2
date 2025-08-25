@@ -3,10 +3,11 @@
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
-#include "engine/settings/settings.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
+
+static tin::Data langTranslations;
 
 void GUI::draw() {
     if (mainWindow.justResized())
@@ -24,13 +25,16 @@ void GUI::draw() {
 }
 
 void GUI::translate() {
-    tin::Data data = tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"));
     for (auto& it : containers) {
-        it->translate(data);
+        it->translate(langTranslations);
     }
     for (auto& it : overlaped) {
-        it->translate(data);
+        it->translate(langTranslations);
     }
+}
+
+void GUI::loadLangTranslations(const std::string& lang) {
+    langTranslations = tin::read(io::folders::LANG / (lang + ".tin"));
 }
 
 void GUI::callback() {
@@ -50,8 +54,7 @@ void GUI::callback() {
 
 void GUI::addOverlaped(std::unique_ptr<Container> container) {
     container->aplyAlignment(mainWindow.getSize());
-    tin::Data data = tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"));
-    container->translate(data);
+    container->translate(langTranslations);
     overlaped.push_back(std::move(container));
 }
 

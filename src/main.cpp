@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
         Settings::readSettings();
         Controls::readBindings();
         Engine engine("Turret_2.0.0");
-        engine.getMainWindow().setFPS(Settings::display.FPS);
+        Settings::aplySettings(engine);
         engine.run();
     }
     catch (const std::exception& exception) {

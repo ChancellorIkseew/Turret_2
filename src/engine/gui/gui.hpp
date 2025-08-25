@@ -23,6 +23,7 @@ public:
     virtual void callback();
     void addOverlaped(std::unique_ptr<Container> container);
     bool isMouseFree() const;
+    static void loadLangTranslations(const std::string& lang);
 protected:
     void relocateContainers();
     void acceptHotkeys();

@@ -69,9 +69,9 @@ std::optional<float> validator::toFloat(const std::string& str) {
 }
 
 std::optional<bool> validator::toBool(const std::string& str) {
-    if (str == "true")
+    if (str == "true" || str == "1")
         return true;
-    if (str == "false")
+    if (str == "false" || str == "0")
         return false;
     return std::nullopt;
 }
