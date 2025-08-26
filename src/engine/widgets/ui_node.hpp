@@ -27,6 +27,7 @@ public:
     PixelCoord getSize() const { return size; }
     virtual void setPosition(const PixelCoord position) { this->position = position; }
     void setSize(const PixelCoord size) { this->size = size; }
+    void setTexture(std::string& textureName) { sprite = Sprite(textureName); }
     bool containsMouse() const;
 private:
     Node(const Node& other) = delete;

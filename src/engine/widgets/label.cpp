@@ -1,7 +1,7 @@
 #include "label.hpp"
 //
-#include "engine/parser/tin_parser.hpp"
-#include "engine/parser/validator.hpp"
+#include "engine/io/parser/tin_parser.hpp"
+#include "engine/io/parser/validator.hpp"
 #include "engine/render/text.hpp"
 
 void Label::draw() {

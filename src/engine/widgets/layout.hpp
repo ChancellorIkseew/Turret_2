@@ -27,8 +27,6 @@ public:
         }
     }
     void callback() final {
-        if (!containsMouse())
-            return;
         for (auto& it : contents) {
             it->callback();
         }

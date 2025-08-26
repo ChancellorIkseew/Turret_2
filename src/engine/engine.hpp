@@ -28,6 +28,8 @@ public:
     void openMainMenu();
     void closeGame() { worldOpen = false; mainWindow.close(); }
     void closeWorld() { worldOpen = false; }
+    void startSimulation(World& world);
+    void startNet(); 
     //
     MainWindow& getMainWindow() { return mainWindow; }
     World& getWorld() { return *_world; }

@@ -1,16 +1,20 @@
 #pragma once
 #include <functional>
 #include "label.hpp"
+#include "ui_defs.hpp"
 #include "ui_node.hpp"
 
 class Button : public Node {
+    static inline std::string BTN_IDLE = "button_idle";
+    static inline std::string BTN_HOVER = "button_hover";
     std::function<void()> action;
     Label label;
+    ButtonState state = ButtonState::idle;
 public:
     Button(const int sizeX, const int sizeY, std::u32string name) :
-        Node(PixelCoord(sizeX, sizeY)), label(name) { }
+        Node(PixelCoord(sizeX, sizeY), BTN_IDLE), label(name) { }
     Button(const PixelCoord size, std::u32string name) :
-        Node(size), label(name) { }
+        Node(size, BTN_IDLE), label(name) { }
     ~Button() final = default;
     //
     void draw() final;
@@ -25,5 +29,6 @@ public:
         this->action = action;
     }
 private:
+    void setState(const ButtonState newState);
     void centerText();
 };

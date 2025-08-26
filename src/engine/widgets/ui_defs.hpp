@@ -25,3 +25,8 @@ enum class SizePolicy {
     fixed,
     minimized
 };
+
+enum class ButtonState {
+    idle,
+    hover
+};

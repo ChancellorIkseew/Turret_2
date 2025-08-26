@@ -1,11 +1,14 @@
 #include "engine.hpp"
 //
+#include <functional>
+#include <thread>
 #include "engine/gui/editor_gui.hpp"
 #include "engine/gui/gameplay_gui.hpp"
 #include "engine/gui/menu_gui.hpp"
 //
 #include "engine/content/load_content.hpp"
 #include "engine/render/atlas.hpp"
+#include "engine/util/sleep.hpp"
 //
 #include "game/events/events.hpp"
 #include "game/script_libs/lib_world_init.hpp"
@@ -89,6 +92,8 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     _gui = gui.get();
 
     worldOpen = true;
+    std::thread simulation([&] { startSimulation(*world); });
+    //TODO: std::thread network([&] { startNet(); }); 
     while (mainWindow.isOpen() && worldOpen) {
         mainWindow.pollEvents();
         camera.interact(mainWindow.getSize());
@@ -99,15 +104,28 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         Events::clear(); // for editor
         MobController::interact(*player, camera);
 
-        for (auto& [teamID, team] : world->getTeams()) {
-            team->interact(*world);
-        }
-
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
         gui->draw();
         gui->callback();
         mainWindow.render();
         scriptsHandler.execute();
+    }
+    simulation.join();
+    //TODO: network.join();
+}
+
+void Engine::startSimulation(World& world) {
+    while (mainWindow.isOpen() && worldOpen) {
+        for (auto& [teamID, team] : world.getTeams()) {
+            team->interact(world);
+        }
+        util::sleep(48);
+    }
+}
+
+void Engine::startNet() {
+    while (mainWindow.isOpen() && worldOpen) {
+        util::sleep(48);
     }
 }
