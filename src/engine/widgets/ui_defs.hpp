@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <string>
 
 using AlignType = uint8_t;
 
@@ -31,3 +32,7 @@ enum class ButtonState : uint8_t {
     hover,
     checked
 };
+
+constexpr std::string BTN_IDLE = "button_idle";
+constexpr std::string BTN_HOVER = "button_hover";
+constexpr std::string BTN_CHECKED = "button_checked";

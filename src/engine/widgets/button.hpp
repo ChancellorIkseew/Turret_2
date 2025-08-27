@@ -5,8 +5,6 @@
 #include "ui_node.hpp"
 
 class Button : public Node {
-    static inline std::string BTN_IDLE = "button_idle";
-    static inline std::string BTN_HOVER = "button_hover";
     std::function<void()> action;
     Label label;
     ButtonState state = ButtonState::idle;

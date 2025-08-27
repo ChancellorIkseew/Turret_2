@@ -18,5 +18,6 @@ public:
 
     void draw() final;
     void callback() final;
+    const std::u32string& getText() const { return text; }
     std::u32string& getText() { return text; }
 };

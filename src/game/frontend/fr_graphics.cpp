@@ -19,29 +19,20 @@ static void aplySettings(Form* fps, Checkbox* fullscreen, Engine& engine) {
 
 std::unique_ptr<Container> frontend::initGraphics(Engine& engine) {
     auto graphics = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto fps = std::make_unique<Layout>(Orientation::horizontal);
-    auto fullscreen = std::make_unique<Layout>(Orientation::horizontal);
-    auto lower = std::make_unique<Layout>(Orientation::horizontal);
-
-    auto fpsF = std::make_unique<Form>(Settings::display.FPS);
-    auto fullscreenC = std::make_unique<Checkbox>(Settings::display.fullscreen);
-
-    auto back = std::make_unique<Button>(BTN_SIZE, U"Back");
-    auto aply = std::make_unique<Button>(BTN_SIZE, U"Aply");
-    back->addCallback([container = graphics.get()] { container->close(); });
-    aply->addCallback([fps = fpsF.get(), fullscreen = fullscreenC.get(), &engine] { aplySettings(fps, fullscreen, engine); });
+    auto fps = graphics->addNode(new Layout(Orientation::horizontal));
+    auto fullscreen = graphics->addNode(new Layout(Orientation::horizontal));
+    auto lower = graphics->addNode(new Layout(Orientation::horizontal));
 
     fps->addNode(new Label(U"FPS"));
-    fps->addNode(fpsF.release());
     fullscreen->addNode(new Label(U"fullscreen"));
-    fullscreen->addNode(fullscreenC.release());
+    auto fpsF = fps->addNode(new Form(Settings::display.FPS));
+    auto fullscreenC = fullscreen->addNode(new Checkbox(Settings::display.fullscreen));
 
-    lower->addNode(back.release());
-    lower->addNode(aply.release());
+    auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
+    auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
+    back->addCallback([container = graphics.get()] { container->close(); });
+    aply->addCallback([=, &engine] { aplySettings(fpsF, fullscreenC, engine); });
 
-    graphics->addNode(fps.release());
-    graphics->addNode(fullscreen.release());
-    graphics->addNode(lower.release());
     graphics->arrange();
     return graphics;
 }

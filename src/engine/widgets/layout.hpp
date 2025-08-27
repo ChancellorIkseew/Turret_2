@@ -13,7 +13,11 @@ public:
         Node(), orientation(orientation) { }
     virtual ~Layout() override = default;
     //
-    void addNode(Node* node);
+    template<DerivedFromNode T>
+    T* addNode(T* node) {
+        contents.emplace_back(node);
+        return node;
+    }
     void arrange();
     void draw() final;
     void clear() { contents.clear(); }

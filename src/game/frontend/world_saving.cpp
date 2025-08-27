@@ -24,22 +24,16 @@ static void saveWorld(Form* form, Layout* saves, Container* saving) {
 std::unique_ptr<Container> frontend::initWorldSaving() {
     folder = ""; // Reset folder name to avoid erors.
     auto saving = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto saves = initSaves(folder);
-    auto lower = std::make_unique<Layout>(Orientation::horizontal);
+    auto saves = saving->addNode(initSaves(folder).release());
+    auto lower = saving->addNode(new Layout(Orientation::horizontal));
 
-    auto back = std::make_unique<Button>(BTN_SIZE, U"Back");
-    auto save = std::make_unique<Button>(BTN_SIZE, U"Save");
-    auto worldName = std::make_unique<Form>();
+    auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
+    auto save = lower->addNode(new Button(BTN_SIZE, U"Save"));
+    auto worldName = lower->addNode(new Form());
 
     back->addCallback([container = saving.get()] { container->close(); });
-    save->addCallback(std::bind_front(saveWorld, worldName.get(), saves.get(), saving.get()));
+    save->addCallback([=, saving = saving.get()] { saveWorld(worldName, saves, saving); });
 
-    lower->addNode(back.release());
-    lower->addNode(save.release());
-    lower->addNode(worldName.release());
-
-    saving->addNode(saves.release());
-    saving->addNode(lower.release());
     saving->arrange();
     return saving;
 }

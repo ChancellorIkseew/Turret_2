@@ -21,39 +21,23 @@ static void createWorld(Engine& engine, Form* _seed, Form* width, Form* height) 
 
 std::unique_ptr<Container> frontend::initWorldProperties(Engine& engine) {
     auto propsForm = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto parameters = std::make_unique<Layout>(Orientation::horizontal);
-    auto lower = std::make_unique<Layout>(Orientation::horizontal);
-    auto labels = std::make_unique<Layout>(Orientation::vertical);
-    auto forms = std::make_unique<Layout>(Orientation::vertical);
+    auto parameters = propsForm->addNode(new Layout(Orientation::horizontal));
+    auto lower = propsForm->addNode(new Layout(Orientation::horizontal));
+    auto labels = parameters->addNode(new Layout(Orientation::vertical));
+    auto forms = parameters->addNode(new Layout(Orientation::vertical));
 
-    auto seedL = std::make_unique<Label>(U"Seed");
-    auto widthL = std::make_unique<Label>(U"Width");
-    auto heightL = std::make_unique<Label>(U"Height");
-    auto seedF = std::make_unique<Form>();
-    auto widthF = std::make_unique<Form>();
-    auto heightF = std::make_unique<Form>();
+    labels->addNode(new Label(U"Seed"));
+    labels->addNode(new Label(U"Width"));
+    labels->addNode(new Label(U"Height"));
+    auto seedF = forms->addNode(new Form());
+    auto widthF = forms->addNode(new Form());
+    auto heightF = forms->addNode(new Form());
 
-    auto back = std::make_unique<Button>(BTN_SIZE, U"Back");
-    auto aply = std::make_unique<Button>(BTN_SIZE, U"Aply");
+    auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
+    auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
     back->addCallback([container = propsForm.get()] { container->close(); });
-    aply->addCallback([&, width = widthF.get(),
-                          height = heightF.get(),
-                          seed = seedF.get()] { createWorld(engine, seed, width, height); });
+    aply->addCallback([=, &engine] { createWorld(engine, seedF, widthF, heightF); });
 
-    labels->addNode(seedL.release());
-    labels->addNode(widthL.release());
-    labels->addNode(heightL.release());
-    forms->addNode(seedF.release());
-    forms->addNode(widthF.release());
-    forms->addNode(heightF.release());
-
-    parameters->addNode(labels.release());
-    parameters->addNode(forms.release());
-    lower->addNode(back.release());
-    lower->addNode(aply.release());
-
-    propsForm->addNode(parameters.release());
-    propsForm->addNode(lower.release());
     propsForm->arrange();
     return propsForm;
 }

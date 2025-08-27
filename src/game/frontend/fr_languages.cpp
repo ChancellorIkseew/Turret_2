@@ -19,17 +19,15 @@ static void changeLang(Engine& engine, const std::u32string langName) {
 
 std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
     auto languages = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto back = std::make_unique<Button>(PixelCoord(120, 50), U"Back");
+    auto back = languages->addNode(new Button(PixelCoord(120, 50), U"Back"));
     back->addCallback([container = languages.get()] { container->close(); });
-    languages->addNode(back.release());
 
     auto contents = io::folders::getContents(io::folders::LANG, io::folders::ContentsType::file);
     for (const auto& file : contents) {
         const auto fileName = utf8::fromConstCharToU32String(file.c_str());
         auto langName = fileName.substr(0, fileName.length() - 4);
-        auto btn = std::make_unique<Button>(BTN_SIZE, langName);
+        auto btn = languages->addNode(new Button(BTN_SIZE, langName));
         btn->addCallback([&, langName] {changeLang(engine, langName); });
-        languages->addNode(btn.release());
     }
 
     languages->arrange();

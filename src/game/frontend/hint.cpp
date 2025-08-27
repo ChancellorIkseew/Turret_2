@@ -19,7 +19,6 @@ std::unique_ptr<Container> frontend::initHint(TileData& tileData, const ElementR
     }
 
     std::u32string hintStrU32 = utf8::fromConstCharToU32String(reg.floorTypes.at(tileData.id).c_str());
-    auto label = std::make_unique<Label>(hintStrU32);
-    hint->addNode(label.release());
+    hint->addNode(new Label(hintStrU32));
     return hint;
 }

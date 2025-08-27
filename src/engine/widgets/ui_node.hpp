@@ -9,10 +9,10 @@ namespace tin {
 class Node {
     Sprite sprite;
 public:
-    Node(const PixelCoord size, const PixelCoord position) : sprite("fill", size, position) { }
-    Node(const PixelCoord size, std::string& textureName)  : sprite(textureName, size, PixelCoord(0, 0)) { }
-    Node(const PixelCoord size)                            : sprite("fill", size, PixelCoord(0, 0)) { }
-    Node()                                                 : sprite("fill") { }
+    Node(const PixelCoord size, const PixelCoord position)      : sprite("fill", size, position) { }
+    Node(const PixelCoord size, const std::string& textureName) : sprite(textureName, size, PixelCoord(0, 0)) { }
+    Node(const PixelCoord size)                                 : sprite("fill", size, PixelCoord(0, 0)) { }
+    Node()                                                      : sprite("fill") { }
     virtual ~Node() = default;
     //
     virtual void draw();
@@ -23,7 +23,7 @@ public:
     PixelCoord getSize() const { return sprite.getSize(); }
     virtual void setPosition(const PixelCoord position) { sprite.setPosition(position); }
     void setSize(const PixelCoord size) { sprite.setSize(size); }
-    void setTexture(std::string& textureName) { sprite.setTexture(textureName); }
+    void setTexture(const std::string& textureName) { sprite.setTexture(textureName); }
     bool containsMouse() const;
 private:
     Node(const Node& other) = delete;
@@ -31,3 +31,6 @@ private:
     Node& operator=(const Node&) = delete;
     Node& operator=(Node&&) = delete;
 };
+
+template<typename T>
+concept DerivedFromNode = requires(T* ptr) { static_cast<Node*>(ptr); };

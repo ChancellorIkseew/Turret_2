@@ -1,10 +1,5 @@
 #include "layout.hpp"
 
-void Layout::addNode(Node* node) {
-    if (node)
-        contents.emplace_back(node);
-}
-
 void Layout::arrange() {
     if (orientation == Orientation::vertical)
         arrangeVertical();
