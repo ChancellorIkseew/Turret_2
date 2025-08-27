@@ -17,6 +17,7 @@ public:
     //
     void draw() final;
     void callback() final;
+    void setState(const ButtonState newState);
     void setPosition(const PixelCoord position) final;
     void setText(const std::u32string& name);
     void translate(const tin::Data& translations) final {
@@ -27,6 +28,5 @@ public:
         this->action = action;
     }
 private:
-    void setState(const ButtonState newState);
     void centerText();
 };

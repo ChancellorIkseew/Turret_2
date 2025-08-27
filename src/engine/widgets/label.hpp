@@ -10,8 +10,10 @@ public:
     //
     void setText(const std::u32string& name) {
         this->name = name;
-        setSize(PixelCoord(static_cast<int>(name.length()) * 8, 16));
+        visibleName = name;
+        resize();
     }
+    void resize();
     void draw() final;
     void translate(const tin::Data& translations) final;
     void callback() final { };

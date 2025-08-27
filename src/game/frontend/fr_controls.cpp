@@ -9,8 +9,9 @@
 
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
-static void rebind(Button* ptr, std::string bindName) {
-    std::thread tr([ptr, bindName]() {
+static void rebind(Button* btn, std::string bindName) {
+    btn->setState(ButtonState::checked);
+    std::thread tr([=]() {
         std::optional<Binding> binding = std::nullopt;
         util::sleep(160);
         Input::resetLastKeyPressed();
@@ -18,33 +19,29 @@ static void rebind(Button* ptr, std::string bindName) {
             binding = Input::getLastKeyPressed();
             util::sleep(48);
         }
-        ptr->setText(U'[' + Controls::getKeyName(bindName) + U']');
         Controls::rebind(bindName, binding.value());
+        btn->setText(U'[' + Controls::getKeyName(bindName) + U']');
+        btn->setState(ButtonState::idle);
         });
     tr.detach();
 }
 
 std::unique_ptr<Container> frontend::initControls() {
     auto controls = std::make_unique<Container>(Align::centre, Orientation::horizontal);
-    auto names = std::make_unique<Layout>(Orientation::vertical);
-    auto binds = std::make_unique<Layout>(Orientation::vertical);
+    auto names = controls->addNode(new Layout (Orientation::vertical));
+    auto binds = controls->addNode(new Layout (Orientation::vertical));
 
     for (const auto& [bindName, binding] : Controls::getBindings()) {
         if (!binding.changable)
             continue;
-        auto name = std::make_unique<Label>(utf8::fromConstCharToU32String(bindName.c_str()));
-        auto bind = std::make_unique<Button>(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']');
-        bind->addCallback(std::bind(rebind, bind.get(), bindName));
-        names->addNode(name.release());
-        binds->addNode(bind.release());
+        names->addNode(new Label(utf8::fromConstCharToU32String(bindName.c_str())));
+        auto btn = binds->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']'));
+        btn->addCallback(std::bind(rebind, btn, bindName));
     }
 
-    auto ok = std::make_unique<Button>(BTN_SIZE, U"OK");
+    auto ok = controls->addNode(new Button(BTN_SIZE, U"OK"));
     ok->addCallback([container = controls.get()] { Controls::writeBindings(); container->close(); });
 
-    controls->addNode(names.release());
-    controls->addNode(binds.release());
-    controls->addNode(ok.release());
     controls->arrange();
     return controls;
 }

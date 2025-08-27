@@ -10,5 +10,9 @@ void Label::draw() {
 
 void Label::translate(const tin::Data& translations) {
     visibleName = translations.getU32String(validator::toStdString(name).c_str()).value_or(name);
+    resize();
+}
+
+void Label::resize() {
     setSize(PixelCoord(static_cast<int>(visibleName.length()) * 8, 16));
 }

@@ -19,8 +19,8 @@ void Checkbox::callback() {
 void Checkbox::setState(const ButtonState newState) {
     state = newState;
     switch (state) {
-    case ButtonState::idle:    setTexture(BTN_IDLE);  break;
-    case ButtonState::hover:   setTexture(BTN_HOVER); break;
+    case ButtonState::idle:    setTexture(BTN_IDLE);    break;
+    case ButtonState::hover:   setTexture(BTN_HOVER);   break;
     case ButtonState::checked: setTexture(BTN_CHECKED); break;
     }
 }
