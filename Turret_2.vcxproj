@@ -45,6 +45,7 @@
     <ClInclude Include="src\engine\util\local_time.hpp" />
     <ClInclude Include="src\engine\util\sleep.hpp" />
     <ClInclude Include="src\engine\widgets\button.hpp" />
+    <ClInclude Include="src\engine\widgets\checkbox.hpp" />
     <ClInclude Include="src\engine\widgets\container.hpp" />
     <ClInclude Include="src\engine\widgets\form.hpp" />
     <ClInclude Include="src\engine\widgets\form_editor\form_editor.hpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="src\engine\settings\settings.cpp" />
     <ClCompile Include="src\engine\util\local_time.cpp" />
     <ClCompile Include="src\engine\widgets\button.cpp" />
+    <ClCompile Include="src\engine\widgets\checkbox.cpp" />
     <ClCompile Include="src\engine\widgets\container.cpp" />
     <ClCompile Include="src\engine\widgets\form.cpp" />
     <ClCompile Include="src\engine\widgets\form_editor\form_editor.cpp" />

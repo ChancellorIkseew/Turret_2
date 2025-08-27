@@ -16,17 +16,18 @@ static inline Align operator|(const Align a, const Align b) {
     return static_cast<Align>(static_cast<AlignType>(a) | static_cast<AlignType>(b));
 }
 
-enum class Orientation {
+enum class Orientation : uint8_t {
     vertical,
     horizontal
 };
 
-enum class SizePolicy {
+enum class SizePolicy : uint8_t {
     fixed,
     minimized
 };
 
-enum class ButtonState {
+enum class ButtonState : uint8_t {
     idle,
-    hover
+    hover,
+    checked
 };
