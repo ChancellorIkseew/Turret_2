@@ -5,7 +5,7 @@
 
 namespace text {
     void drawString(const std::u32string& text, const float x, const float y);
-    static void drawString(const std::u32string& text, const PixelCoord pos) {
+    inline void drawString(const std::u32string& text, const PixelCoord pos) {
         drawString(text, pos.x, pos.y);
     }
     void setRenderer(SDL_Renderer* renderer);
