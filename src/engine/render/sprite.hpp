@@ -19,6 +19,8 @@ class Sprite {
     SDL_FPoint origin = SDL_FPoint(0.0f, 0.0f);
     double angle = 0.0;
 public:
+    Sprite(const std::string& name, const PixelCoord size, const PixelCoord position) :
+        textureRect(Atlas::at(name)), rect(position.x, position.y, size.x, size.y) { }
     Sprite(const std::string& name) : textureRect(Atlas::at(name)) {
         rect = SDL_FRect(0, 0, 32, 32);
     }
@@ -56,6 +58,9 @@ public:
     t1_finline void setTexture(const Texture& texture) noexcept {
         textureRect = texture.rect;
     }
+    //
+    t1_finline PixelCoord getSize() const noexcept { return PixelCoord(rect.w, rect.h); }
+    t1_finline PixelCoord getPosition() const noexcept { return PixelCoord(rect.x, rect.y); }
 private:
     friend MainWindow;
     static void setRenderer(SDL_Renderer* renderer) noexcept {

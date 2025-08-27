@@ -8,26 +8,22 @@ namespace tin {
 
 class Node {
     Sprite sprite;
-    PixelCoord position;
-    PixelCoord size;
 public:
-    Node(const PixelCoord size, const PixelCoord position) :
-        size(size), position(position), sprite("fill") { }
-    Node(const PixelCoord size, std::string& textureName) :
-        size(size), sprite(textureName) { }
-    Node(const PixelCoord size) : size(size), sprite("fill") { }
-    Node() : sprite("fill") { }
+    Node(const PixelCoord size, const PixelCoord position) : sprite("fill", size, position) { }
+    Node(const PixelCoord size, std::string& textureName)  : sprite(textureName, size, PixelCoord(0, 0)) { }
+    Node(const PixelCoord size)                            : sprite("fill", size, PixelCoord(0, 0)) { }
+    Node()                                                 : sprite("fill") { }
     virtual ~Node() = default;
     //
     virtual void draw();
     virtual void translate(const tin::Data& translations) { }
     virtual void callback() = 0;
     //
-    PixelCoord getPosition() const { return position; }
-    PixelCoord getSize() const { return size; }
-    virtual void setPosition(const PixelCoord position) { this->position = position; }
-    void setSize(const PixelCoord size) { this->size = size; }
-    void setTexture(std::string& textureName) { sprite = Sprite(textureName); }
+    PixelCoord getPosition() const { return sprite.getPosition(); }
+    PixelCoord getSize() const { return sprite.getSize(); }
+    virtual void setPosition(const PixelCoord position) { sprite.setPosition(position); }
+    void setSize(const PixelCoord size) { sprite.setSize(size); }
+    void setTexture(std::string& textureName) { sprite.setTexture(textureName); }
     bool containsMouse() const;
 private:
     Node(const Node& other) = delete;
