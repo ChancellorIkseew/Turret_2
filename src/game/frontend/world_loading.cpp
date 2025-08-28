@@ -25,12 +25,12 @@ std::unique_ptr<Container> frontend::initWorldLoading(Engine& engine) {
     auto saves = loading->addNode(initSaves(folder).release());
     auto lower = loading->addNode(new Layout(Orientation::horizontal));
 
-    auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
-    auto load = lower->addNode(new Button(BTN_SIZE, U"Load"));
+    auto back        = lower->addNode(new Button(BTN_SIZE, U"Back"));
+    auto load        = lower->addNode(new Button(BTN_SIZE, U"Load"));
     auto deleteWorld = lower->addNode(new Button(BTN_SIZE, U"Delete"));
 
-    back->addCallback([container = loading.get()] { container->close(); });
-    load->addCallback([&] { loadWorld(engine); });
+    back       ->addCallback([container = loading.get()] { container->close(); });
+    load       ->addCallback([&] { loadWorld(engine); });
     deleteWorld->addCallback(std::bind_front(deleteFolder, saves, loading.get()));
 
     loading->arrange();

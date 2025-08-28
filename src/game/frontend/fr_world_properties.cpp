@@ -22,15 +22,15 @@ static void createWorld(Engine& engine, Form* _seed, Form* width, Form* height) 
 std::unique_ptr<Container> frontend::initWorldProperties(Engine& engine) {
     auto propsForm = std::make_unique<Container>(Align::centre, Orientation::vertical);
     auto parameters = propsForm->addNode(new Layout(Orientation::horizontal));
-    auto lower = propsForm->addNode(new Layout(Orientation::horizontal));
+    auto lower      = propsForm->addNode(new Layout(Orientation::horizontal));
     auto labels = parameters->addNode(new Layout(Orientation::vertical));
-    auto forms = parameters->addNode(new Layout(Orientation::vertical));
+    auto forms  = parameters->addNode(new Layout(Orientation::vertical));
 
     labels->addNode(new Label(U"Seed"));
     labels->addNode(new Label(U"Width"));
     labels->addNode(new Label(U"Height"));
-    auto seedF = forms->addNode(new Form());
-    auto widthF = forms->addNode(new Form());
+    auto seedF =   forms->addNode(new Form());
+    auto widthF =  forms->addNode(new Form());
     auto heightF = forms->addNode(new Form());
 
     auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));

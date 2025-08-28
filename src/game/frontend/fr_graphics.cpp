@@ -19,13 +19,13 @@ static void aplySettings(Form* fps, Checkbox* fullscreen, Engine& engine) {
 
 std::unique_ptr<Container> frontend::initGraphics(Engine& engine) {
     auto graphics = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto fps = graphics->addNode(new Layout(Orientation::horizontal));
+    auto fps        = graphics->addNode(new Layout(Orientation::horizontal));
     auto fullscreen = graphics->addNode(new Layout(Orientation::horizontal));
-    auto lower = graphics->addNode(new Layout(Orientation::horizontal));
+    auto lower      = graphics->addNode(new Layout(Orientation::horizontal));
 
-    fps->addNode(new Label(U"FPS"));
+    fps       ->addNode(new Label(U"FPS"));
     fullscreen->addNode(new Label(U"fullscreen"));
-    auto fpsF = fps->addNode(new Form(Settings::display.FPS));
+    auto fpsF        = fps->addNode(new Form(Settings::display.FPS));
     auto fullscreenC = fullscreen->addNode(new Checkbox(Settings::display.fullscreen));
 
     auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));

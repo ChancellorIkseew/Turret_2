@@ -2,7 +2,6 @@
 //
 #include "button.hpp"
 #include "engine/window/input/input.hpp"
-#include "ui_defs.hpp"
 
 void Selector::callback() {
     for (auto& it : contents) {
