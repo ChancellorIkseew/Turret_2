@@ -33,6 +33,7 @@ enum class ButtonState : uint8_t {
     checked
 };
 
-constexpr std::string BTN_IDLE = "button_idle";
-constexpr std::string BTN_HOVER = "button_hover";
-constexpr std::string BTN_CHECKED = "button_checked";
+using cString = const char*;
+constexpr cString BTN_IDLE = "button_idle";
+constexpr cString BTN_HOVER = "button_hover";
+constexpr cString BTN_CHECKED = "button_checked";
