@@ -12,7 +12,7 @@
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 static std::string folder;
 
-static void saveWorld(Form* form, Layout* saves, Container* saving) {
+static void saveWorld(Form* form, Selector* saves, Container* saving) {
     std::string folder = validator::toStdString(form->getText());
     if (!io::folders::isPathValid(folder))
         return;

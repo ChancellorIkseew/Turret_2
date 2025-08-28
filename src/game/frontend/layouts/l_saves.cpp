@@ -6,19 +6,18 @@
 
 constexpr PixelCoord BTN_SIZE(190.0f, 30.0f);
 
-void frontend::update(Layout* saves, std::string& folder) {
+void frontend::update(Selector* saves, std::string& folder) {
     saves->clear();
     auto contents = io::folders::getContents(io::folders::SAVES, io::folders::ContentsType::folder);
     for (const auto& it : contents) {
-        auto btn = std::make_unique<Button>(BTN_SIZE, utf8::fromConstCharToU32String(it.c_str()));
-        btn->addCallback([&, it] { folder = it; });
-        saves->addNode(btn.release());
+        auto btn = saves->addNode(new Button(BTN_SIZE, utf8::fromConstCharToU32String(it.c_str())));
+        btn->addCallback([=, &folder] { folder = it; });
     }
     saves->arrange();
 }
 
-std::unique_ptr<Layout> frontend::initSaves(std::string& folder) {
-    auto saves = std::make_unique<Layout>(Orientation::vertical);
+std::unique_ptr<Selector> frontend::initSaves(std::string& folder) {
+    auto saves = std::make_unique<Selector>(Orientation::vertical);
     update(saves.get(), folder);
     return saves;
 }

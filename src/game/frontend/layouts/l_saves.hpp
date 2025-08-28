@@ -1,7 +1,7 @@
-#include "engine/widgets/layout.hpp"
+#include "engine/widgets/selector.hpp"
 
 namespace frontend {
-    void update(Layout* saves, std::string& folder);
+    void update(Selector* saves, std::string& folder);
     //
-    std::unique_ptr<Layout> initSaves(std::string& folder);
+    std::unique_ptr<Selector> initSaves(std::string& folder);
 }

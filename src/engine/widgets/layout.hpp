@@ -5,9 +5,10 @@
 #include "ui_node.hpp"
 
 class Layout : public Node {
-    std::vector<std::unique_ptr<Node>> contents;
     const float margin = 5.0f;
     Orientation orientation;
+protected:
+    std::vector<std::unique_ptr<Node>> contents;
 public:
     Layout(const Orientation orientation) :
         Node(), orientation(orientation) { }
@@ -30,7 +31,7 @@ public:
             it->translate(translations);
         }
     }
-    void callback() final {
+    void callback() override {
         for (auto& it : contents) {
             it->callback();
         }

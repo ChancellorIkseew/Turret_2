@@ -9,7 +9,7 @@
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 static std::string folder;
 
-static void deleteFolder(Layout* saves, Container* loading) {
+static void deleteFolder(Selector* saves, Container* loading) {
     io::folders::deleteFolder(io::folders::SAVES / folder);
     frontend::update(saves, folder);
     loading->arrange();
