@@ -90,4 +90,4 @@ namespace tin {
 
     void write(std::filesystem::path path, const Data& data);
     Data read(std::filesystem::path path);
-};
+}

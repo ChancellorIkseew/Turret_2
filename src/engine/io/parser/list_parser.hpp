@@ -11,4 +11,4 @@ namespace list {
     /// Commentaries must begin with "#" symbol.
     void write(std::filesystem::path path, const Data& data);
     std::optional<Data> read(std::filesystem::path path);
-};
+}
