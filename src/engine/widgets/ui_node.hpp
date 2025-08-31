@@ -33,4 +33,4 @@ private:
 };
 
 template<typename T>
-concept DerivedFromNode = requires(T* ptr) { static_cast<Node*>(ptr); };
+concept DerivedFromNode = std::is_base_of_v<Node, T>;
