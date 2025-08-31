@@ -6,10 +6,22 @@
 static Form* targetForm = nullptr;
 
 void FormEditor::setForm(Form* form) {
-    if (form == targetForm)
-        form = nullptr;
+    if (form == targetForm) {
+        resetTarget();
+        return;
+    }
+    resetTarget();
     targetForm = form;
-    Input::enableTextEnter(form);
+    form->setState(ButtonState::checked);
+    Input::enableTextEnter(true);
+}
+
+void FormEditor::resetTarget() {
+    if (!targetForm)
+        return;
+    Input::enableTextEnter(false);
+    targetForm->setState(ButtonState::idle);
+    targetForm = nullptr;
 }
 
 void FormEditor::editForm() {

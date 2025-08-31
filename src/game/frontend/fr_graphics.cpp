@@ -15,6 +15,7 @@ static void aplySettings(Form* fps, Checkbox* fullscreen, Engine& engine) {
     Settings::display.FPS = validator::toUint32(fps->getText()).value_or(60U);
     Settings::display.fullscreen = fullscreen->getValue();
     Settings::aplySettings(engine);
+    Settings::writeSettings();
 }
 
 std::unique_ptr<Container> frontend::initGraphics(Engine& engine) {

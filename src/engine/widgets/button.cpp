@@ -3,11 +3,7 @@
 #include "engine/window/input/input.hpp"
 
 void Button::callback() {
-    if (state == ButtonState::hover && !containsMouse())
-        setState(ButtonState::idle);
-    else if (state == ButtonState::idle && containsMouse())
-        setState(ButtonState::hover);
-    //
+    Clickable::callback();
     if (containsMouse() && action && Input::jactive(LMB))
         action();
 }
@@ -30,13 +26,4 @@ void Button::setText(const std::u32string& name) {
 void Button::centerText() {
     PixelCoord margin = (getSize() - label.getSize()) / 2;
     label.setPosition(getPosition() + margin);
-}
-
-void Button::setState(const ButtonState newState) {
-    state = newState;
-    switch (state) {
-    case ButtonState::idle:    setTexture(BTN_IDLE);    break;
-    case ButtonState::hover:   setTexture(BTN_HOVER);   break;
-    case ButtonState::checked: setTexture(BTN_CHECKED); break;
-    }
 }

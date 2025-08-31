@@ -5,7 +5,7 @@
 #include "engine/window/input/input.hpp"
 
 Form::~Form() {
-    FormEditor::setForm(nullptr);
+    FormEditor::resetTarget();
 }
 
 void Form::draw() {
@@ -14,6 +14,7 @@ void Form::draw() {
 }
 
 void Form::callback() {
+    Clickable::callback();
     if (containsMouse() && Input::jactive(LMB))
         FormEditor::setForm(this);
 }

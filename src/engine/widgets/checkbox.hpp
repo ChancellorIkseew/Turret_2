@@ -1,16 +1,11 @@
 #pragma once
-#include "ui_defs.hpp"
-#include "ui_node.hpp"
+#include "clickable.hpp"
 
-class Checkbox : public Node {
-    ButtonState state;
+class Checkbox : public Clickable {
 public:
-    Checkbox(const bool flag) : state(flag ? ButtonState::checked : ButtonState::idle),
-        Node(PixelCoord(20, 20), flag ? BTN_CHECKED : BTN_IDLE) { }
+    Checkbox(const bool flag) : Clickable(PixelCoord(20, 20), flag ? ButtonState::checked : ButtonState::idle) { }
     ~Checkbox() final = default;
     //
     void callback() final;
     bool getValue() const { return state == ButtonState::checked; }
-private:
-    void setState(const ButtonState newState);
 };
