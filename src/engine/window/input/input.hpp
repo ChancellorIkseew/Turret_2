@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL3/SDL_events.h>
 #include <optional>
-#include <string>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
