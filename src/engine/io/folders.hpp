@@ -7,7 +7,8 @@ namespace io::folders {
     inline const std::filesystem::path RES = "res";
     inline const std::filesystem::path SAVES = "saves";
     inline const std::filesystem::path LANG = RES / "lang";
-    inline const std::filesystem::path TEXTURES = RES / "textures";
+    inline const std::filesystem::path IMAGES = RES / "images";
+    inline const std::filesystem::path FONTS = RES / "fonts";
 
     using Contents = std::vector<std::string>;
     enum class ContentsType {

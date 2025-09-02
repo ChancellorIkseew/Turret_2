@@ -1,6 +1,5 @@
 #pragma once
 #include <filesystem>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -10,5 +9,5 @@ namespace list {
     ///@brief Data vector can contain commentaries.
     /// Commentaries must begin with "#" symbol.
     void write(std::filesystem::path path, const Data& data);
-    std::optional<Data> read(std::filesystem::path path);
+    Data read(std::filesystem::path path);
 }

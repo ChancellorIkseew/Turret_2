@@ -21,11 +21,11 @@ void list::write(fs::path path, const list::Data& data) {
     logger.info() << "Writen file: " << path;
 }
 
-std::optional<list::Data> list::read(fs::path path) {
+list::Data list::read(fs::path path) {
     std::ifstream fin(path);
     if (!fin.is_open()) {
         logger.error() << "Could not open file to read. File: " << path;
-        return std::nullopt;
+        return list::Data();
     }
 
     list::Data data;
