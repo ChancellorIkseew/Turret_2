@@ -1,9 +1,6 @@
 #pragma once
-#include <vector>
 #include "engine/coords/tile_coord.hpp"
 #include "game/world/world.hpp"
-
-class WorldMap;
 
 struct WorldProperties {
     WorldProperties() = default;
@@ -14,6 +11,5 @@ struct WorldProperties {
 };
 
 namespace gen {
-    WorldMap generateMap(const WorldProperties& properties);
     std::unique_ptr<World> generateWorld(const WorldProperties& properties);
 }
