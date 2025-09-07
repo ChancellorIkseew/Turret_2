@@ -32,12 +32,11 @@ struct MapTile {
 
 class WorldMap {
     ElementRegistry registry;
-    std::vector<std::vector<MapTile>> terrain;
+    std::vector<MapTile> terrain;
     const TileCoord mapSize;
 public:
     WorldMap(const TileCoord mapSize);
     void print();
-    const std::vector<std::vector<MapTile>>& getMap() const { return terrain; }
     void placeFloor(const TileCoord tile, const uint8_t floorID);
     void placeOverlay(const TileCoord tile, const uint8_t overlayID);
     void placeBlock();
@@ -54,7 +53,12 @@ public:
         return registry;
     }
 
-    const auto& operator[](const int x) const { return terrain[x]; }
-    auto& operator[](const int x) { return terrain[x]; }
-    TileCoord getSize() const { return mapSize; }
+    t1_finline const MapTile& at(const int x, const int y) const noexcept { return terrain[x + y * mapSize.x]; }
+    t1_finline const MapTile& at(const TileCoord tile)     const noexcept { return at(tile.x, tile.y); }
+    t1_finline const MapTile& at(const int i)              const noexcept { return terrain[i]; }
+    t1_finline       MapTile& at(const int x, const int y)       noexcept { return terrain[x + y * mapSize.x]; }
+    t1_finline       MapTile& at(const TileCoord tile)           noexcept { return at(tile.x, tile.y); }
+    t1_finline       MapTile& at(const int i)                    noexcept { return terrain[i]; }
+    //
+    TileCoord getSize() const noexcept { return mapSize; }
 };

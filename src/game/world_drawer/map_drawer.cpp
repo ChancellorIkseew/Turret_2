@@ -25,7 +25,7 @@ void MapDrawer::cacheLayers() {
     //
     for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
         for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
-            layers.at(map[x][y].floor).push_back(t1::pixel(x, y));
+            layers.at(map.at(x, y).floor).push_back(t1::pixel(x, y));
         }
     }
 }
@@ -67,8 +67,8 @@ void MapDrawer::drawStructures() {
     const TileCoord end = camera.getEndTile();
     for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
         for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
-            if (map[x][y].block)
-                map[x][y].block->draw();
+            if (map.at(x, y).block)
+                map.at(x, y).block->draw();
         }
     }
 }
@@ -80,8 +80,8 @@ void MapDrawer::cacheOres() {
     //
     for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
         for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
-            if (map[x][y].overlay != 0)
-                ores.at(map[x][y].overlay).push_back(t1::pixel(x, y));
+            if (map.at(x, y).overlay != 0)
+                ores.at(map.at(x, y).overlay).push_back(t1::pixel(x, y));
         }
     }
 }

@@ -40,7 +40,7 @@ static WorldMap generateMap(const WorldProperties& properties) {
         for (int y = 0; y < mapSize.y; ++y) {
             const float m = mainNoise.createTile(x, y + 1, MAIN_NOISE_SCALE);
             const float s = supportNoise.createTile(x, y + 1, SUPPORT_NOISE_SCALE);
-            map[x][y].floor = calculateTileType(m * 0.85f + s * 0.25f);
+            map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f);
             //min = std::min(mainNoise.createTile(x, y + 1, 40.0f), min);
             //max = std::max(mainNoise.createTile(x, y + 1, 40.0f), max);
         }

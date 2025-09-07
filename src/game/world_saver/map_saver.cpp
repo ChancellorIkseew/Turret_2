@@ -13,10 +13,8 @@ void MapSaver::save(const WorldMap& map, const std::filesystem::path& path) {
     uLong tileCount = static_cast<uLong>(mapSize.x * mapSize.y);
     std::vector<uint8_t> rawData;
     rawData.reserve(tileCount);
-    for (int x = 0; x < mapSize.x; ++x) {
-        for (int y = 0; y < mapSize.y; ++y) {
-            rawData.push_back(map[x][y].floor);
-        }
+    for (uLong i = 0; i < tileCount; ++i) {
+         rawData.push_back(map.at(i).floor);
     }
 
     uLongf packedDataSize = compressBound(tileCount);
@@ -59,10 +57,8 @@ WorldMap MapSaver::load(const std::filesystem::path& path) {
     }
 
     WorldMap map(mapSize);
-    for (int x = 0; x < mapSize.x; ++x) {
-        for (int y = 0; y < mapSize.y; ++y) {
-            map[x][y].floor = rawData[x * mapSize.y + y];
-        }
+    for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
+         map.at(i).floor = rawData[i];
     }
     logger.info() << "World map successfully load.";
     return map;
