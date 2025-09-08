@@ -12,13 +12,13 @@ std::unique_ptr<Container> frontend::initHint(TileData& tileData, const ElementR
     auto hint = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);
     
     std::string hintStr;
-
+    /*
     switch (tileData.component) {
-    case TileComponent::floor:   hintStr = reg.floorTypes.at(tileData.id);   break;
-    case TileComponent::overlay: hintStr = reg.overlayTypes.at(tileData.id); break;
+    //case TileComponent::floor:   hintStr = reg.floorTypes.at(tileData.id);   break;
+    //case TileComponent::overlay: hintStr = reg.overlayTypes.at(tileData.id); break;
     }
-
-    std::u32string hintStrU32 = utf8::fromConstCharToU32String(reg.floorTypes.at(tileData.id).c_str());
-    hint->addNode(new Label(hintStrU32));
+    */
+    //std::u32string hintStrU32 = utf8::fromConstCharToU32String(reg.floorTypes.at(tileData.id).c_str());
+    //hint->addNode(new Label(hintStrU32));
     return hint;
 }

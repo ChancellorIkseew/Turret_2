@@ -3,9 +3,9 @@
 #include <unordered_map>
 
 struct ElementRegistry {
-    std::unordered_map<uint8_t, std::string> floorTypes;
-    std::unordered_map<uint8_t, std::string> overlayTypes;
-    std::unordered_map<uint16_t, std::string> blockTypes;
+    std::unordered_map<std::string, uint8_t> floorTypes;
+    std::unordered_map<std::string, uint8_t> overlayTypes;
+    std::unordered_map<std::string, uint16_t> blockTypes;
 };
 
 namespace content {

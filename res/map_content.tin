@@ -1,0 +1,13 @@
+#floor
+floor_snow=1
+floor_ice=2
+floor_water=3
+floor_soil=4
+floor_stone=5
+floor_magma=6
+floor_plate=7
+#overlay
+overlay_iron=1
+overlay_coal=2
+overlay_copper=3
+#block

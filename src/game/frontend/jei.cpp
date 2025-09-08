@@ -13,12 +13,11 @@ std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ElementRe
     auto line = std::make_unique<Layout>(Orientation::horizontal);
 
     auto addButton = [&](const std::string& name, int id, TileComponent component) {
-        auto btn = std::make_unique<ImageButton>(BTN_SIZE, name);
+        auto btn = line->addNode(new ImageButton(BTN_SIZE, name));
         btn->addCallback([id, component, &tileData]() {
             tileData.id = id;
             tileData.component = component;
             });
-        line->addNode(btn.release());
         btns++;
         if (btns >= ROW_SIZE) {
             jei->addNode(line.release());
@@ -27,15 +26,15 @@ std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ElementRe
         }
     };
 
-    for (const auto& [id, floorName] : reg.floorTypes) {
+    for (const auto& [floorName, id] : reg.floorTypes) {
         addButton(floorName, id, TileComponent::floor);
     }
-    for (const auto& [id, overlayName] : reg.overlayTypes) {
+    for (const auto& [overlayName, id] : reg.overlayTypes) {
         addButton(overlayName, id, TileComponent::overlay);
     }
 
     tileData.component = TileComponent::floor; // Reset tileData to avoid errors.
-    tileData.id = reg.floorTypes.begin()->first;
+    tileData.id = reg.floorTypes.begin()->second;
 
     if (btns != 0)
         jei->addNode(line.release());

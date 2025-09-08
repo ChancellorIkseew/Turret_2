@@ -1,14 +1,15 @@
 # floor
-ice.png
-magma.png
-plate.png
-snow.png
-soil.png
-stone.png
-water.png
+floor_ice.png
+floor_magma.png
+floor_plate.png
+floor_snow.png
+floor_soil.png
+floor_stone.png
+floor_water.png
 # ores
-iron.png
-copper.png
+overlay_iron.png
+overlay_coal.png
+overlay_copper.png
 # other
 ice_block.png
 round_shadow.png
