@@ -34,7 +34,7 @@ static std::vector<Pair> readGen(const ElementRegistry& reg) {
     return vals;
 }
 
-static uint8_t calculateTileType(float height, std::vector<Pair> vals) {
+static uint8_t calculateTileType(const float height, const std::vector<Pair>& vals) {
     for (const auto/*not ref*/ [minHeight, floorID] : vals) {
         if (height > minHeight)
             return floorID;
