@@ -1,6 +1,6 @@
-magma=0.65
-stone=0.625
-soil=0.6
-water=0.585
-ice=0.57
-snow=0.0
+floor_magma=0.65
+floor_stone=0.625
+floor_soil=0.6
+floor_water=0.585
+floor_ice=0.57
+floor_snow=0.0
