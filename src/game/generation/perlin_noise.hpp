@@ -5,7 +5,8 @@
 
 class PerlinNoise2D {
 public:
-    PerlinNoise2D(uint64_t seed) : rng(seed) {
+    PerlinNoise2D(uint64_t seed) {
+        std::mt19937_64 rng(seed);
         std::uniform_real_distribution<float> dist(-1.0f, 1.0);
         for (int i = 0; i < 256; ++i) {
             float x, y;
@@ -55,7 +56,6 @@ private:
     static float interpolateLinear(const float pointA, const float pointB, const float deltaS) {
         return pointA + deltaS * (pointB - pointA);
     }
-    std::mt19937_64 rng;
     std::array<std::pair<float, float>, 256> gradients;
     static constexpr std::array<uint8_t, 256> permutations = {
       151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,
