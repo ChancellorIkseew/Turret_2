@@ -4,6 +4,7 @@
 #include <random>
 
 class PerlinNoise2D {
+    using PerlinUint = uint16_t; // Change it to 32_t or 64_t, in case of generation artifacts.
 public:
     PerlinNoise2D(uint64_t seed) {
         std::mt19937_64 rng(seed);
@@ -22,9 +23,9 @@ public:
         const float xNorm = x / generationScale; // Norm - normalized to float value (range 0.0f-1.0f).
         const float yNorm = y / generationScale;
 
-        const uint8_t X = static_cast<uint8_t>(xNorm);
-        const uint8_t Y = static_cast<uint8_t>(yNorm);
-
+        const PerlinUint X = static_cast<PerlinUint>(xNorm);
+        const PerlinUint Y = static_cast<PerlinUint>(yNorm);
+        
         const float xFloatPart = xNorm - floorf(xNorm);
         const float yFloatPart = yNorm - floorf(yNorm);
 
@@ -40,7 +41,7 @@ public:
     }
 
 private:
-    float dotGridGradient(const uint8_t ix, const uint8_t iy, const float x, const float y) {
+    float dotGridGradient(const PerlinUint ix, const PerlinUint iy, const float x, const float y) {
         // Compute the distance vector.
         const float dx = x - static_cast<float>(ix);
         const float dy = y - static_cast<float>(iy);
