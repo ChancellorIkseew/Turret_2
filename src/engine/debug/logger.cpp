@@ -20,20 +20,14 @@ LogMessage::~LogMessage() {
 }
 
 static void write(LogLevel level, const std::string& name, const std::string& message) {
-    if (level == LogLevel::print) {
-        std::cout << "[" << name << "]    " << message << std::endl;
-        return;
-    }
-
     std::stringstream ss;
     switch (level) {
-        case LogLevel::print:
-        case LogLevel::debug:
-#ifdef NDEBUG
-            return;
-#endif
+    case LogLevel::debug:
+#ifndef NDEBUG
             ss << "[D]";
             break;
+#endif
+            return;
         case LogLevel::info:
             ss << "[I]";
             break;

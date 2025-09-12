@@ -59,9 +59,7 @@ SDL_Point packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas)
     for (auto& [name, rect] : atlas) {
         rect.x = rects[i].x;
         rect.y = rects[i].y;
-#ifndef NDEBUG
-        logger.info() << "Texture placed: \"" << name << "\" position: " << rect.x << " " << rect.y;
-#endif
+        logger.debug() << "Texture placed: \"" << name << "\" position: " << rect.x << " " << rect.y;
         ++i;
     }
     logger.info() << "Atlas packed. Size: " << size.x << " " << size.y;

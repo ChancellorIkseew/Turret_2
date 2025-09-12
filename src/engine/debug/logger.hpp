@@ -2,7 +2,7 @@
 #include <sstream>
 
 namespace debug {
-    enum class LogLevel { print, debug, info, warning, error };
+    enum class LogLevel { debug, info, warning, error };
     class Logger;
 
     class LogMessage {
@@ -28,8 +28,6 @@ namespace debug {
         //
         static void init(const std::string& filename);
         //
-        /// @brief Print-debugging tool (printed without header)
-        LogMessage print()   { return LogMessage(this, LogLevel::print); }
         LogMessage debug()   { return LogMessage(this, LogLevel::debug); }
         LogMessage info()    { return LogMessage(this, LogLevel::info); }
         LogMessage error()   { return LogMessage(this, LogLevel::error); }
