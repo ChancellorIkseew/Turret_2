@@ -5,8 +5,11 @@ class HashNoise2D {
     static constexpr uint32_t DEFAULT_MAP_SQUARE = 10000U;
     const uint64_t seed;
 public:
-    HashNoise2D(uint64_t seed) : seed(seed) {}
+    HashNoise2D(const uint64_t seed) : seed(seed) {}
 
+    uint32_t createTile(const int x, const int y) const {
+        return hash(x, y);
+    }
     bool createTile(const int x, const int y, const uint32_t frequancy) const {
         uint32_t randomValue = hash(x, y) % DEFAULT_MAP_SQUARE;
         return randomValue < frequancy;

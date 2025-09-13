@@ -6,7 +6,7 @@
 class PerlinNoise2D {
     using PerlinUint = uint16_t; // Change it to 32_t or 64_t, in case of generation artifacts.
 public:
-    PerlinNoise2D(uint64_t seed) {
+    PerlinNoise2D(const uint64_t seed) {
         std::mt19937_64 rng(seed);
         std::uniform_real_distribution<float> dist(-1.0f, 1.0);
         for (int i = 0; i < 256; ++i) {

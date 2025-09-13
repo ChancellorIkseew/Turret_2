@@ -68,6 +68,7 @@ static WorldMap generateMap(const WorldProperties& properties) {
     readGen2(map.getContent());
 
     HashNoise2D hashNoise(properties.seed);
+    SpotGenerator2D spotGenerator(properties.seed);
 
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
@@ -76,7 +77,7 @@ static WorldMap generateMap(const WorldProperties& properties) {
             map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, vals);
 
             if (hashNoise.createTile(x, y, 50))
-                SpotGenerator2D::generateSpot(map, TileCoord(x, y), 1, 7);
+                spotGenerator.generateSpot(map, TileCoord(x, y), 1, 7);
         }
     }
     return map;
