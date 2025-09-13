@@ -19,12 +19,25 @@ static void createWorld(Engine& engine, Form* _seed, Form* width, Form* height) 
     engine.createWorldInGame(properties);
 }
 
+static std::unique_ptr<Layout> initGenerationProps() {
+    auto genProps = std::make_unique<Layout>(Orientation::horizontal);
+    auto resources = genProps->addNode(new Layout(Orientation::vertical));
+    auto frequency = genProps->addNode(new Layout(Orientation::vertical));
+    auto deposite  = genProps->addNode(new Layout(Orientation::vertical));
+    frequency->addNode(new Label(U"Frequency"));
+    deposite ->addNode(new Label(U"Deposite"));
+
+    genProps->arrange();
+    return genProps;
+}
+
 std::unique_ptr<Container> frontend::initWorldProperties(Engine& engine) {
     auto propsForm = std::make_unique<Container>(Align::centre, Orientation::vertical);
     auto parameters = propsForm->addNode(new Layout(Orientation::horizontal));
     auto lower      = propsForm->addNode(new Layout(Orientation::horizontal));
     auto labels = parameters->addNode(new Layout(Orientation::vertical));
     auto forms  = parameters->addNode(new Layout(Orientation::vertical));
+    parameters->addNode(initGenerationProps().release());
 
     labels->addNode(new Label(U"Seed"));
     labels->addNode(new Label(U"Width"));

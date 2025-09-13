@@ -19,7 +19,7 @@ public:
         }
     }
 
-    float createTile(const int x, const int y, const float generationScale) {
+    float createTile(const int x, const int y, const float generationScale) const {
         const float xNorm = x / generationScale; // Norm - normalized to float value (range 0.0f-1.0f).
         const float yNorm = y / generationScale;
 
@@ -41,7 +41,7 @@ public:
     }
 
 private:
-    float dotGridGradient(const PerlinUint ix, const PerlinUint iy, const float x, const float y) {
+    float dotGridGradient(const PerlinUint ix, const PerlinUint iy, const float x, const float y) const {
         // Compute the distance vector.
         const float dx = x - static_cast<float>(ix);
         const float dy = y - static_cast<float>(iy);

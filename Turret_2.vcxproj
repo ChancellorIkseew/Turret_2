@@ -66,6 +66,8 @@
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
+    <ClInclude Include="src\game\generation\hash_noise.hpp" />
+    <ClInclude Include="src\game\generation\spot_generator.hpp" />
     <ClInclude Include="src\game\mob\mob_presets.hpp" />
     <ClInclude Include="src\game\physics\mob.hpp" />
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
@@ -136,7 +138,6 @@
     <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
     <ClCompile Include="src\game\frontend\world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
-    <ClCompile Include="src\game\generation\perlin_noise.cpp" />
     <ClCompile Include="src\game\physics\mobs_system.cpp" />
     <ClCompile Include="src\game\physics\shells_system.cpp" />
     <ClCompile Include="src\game\physics\team\team.cpp" />
