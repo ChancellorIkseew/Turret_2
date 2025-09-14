@@ -8,8 +8,8 @@ WorldMap::WorldMap(const TileCoord mapSize) : terrain(mapSize.x * mapSize.y), ma
 }
 
 void WorldMap::print() {
-    for (int y = 0; y < mapSize.x; ++y) {
-        for (int x = 0; x < mapSize.y; ++x) {
+    for (int x = 0; x < mapSize.x; ++x) {
+        for (int y = 0; y < mapSize.y; ++y) {
             std::cout << static_cast<int>(WorldMap::at(x, y).floor);
         }
         std::cout << '\n';

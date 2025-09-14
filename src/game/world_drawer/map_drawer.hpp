@@ -11,16 +11,16 @@ class WorldMap;
 class MapDrawer {
     const Camera& camera;
     const WorldMap& map;
-    std::map<uint8_t, std::vector<PixelCoord>> floor;
-    std::map<uint8_t, std::vector<PixelCoord>> overlay;
+    std::map<uint8_t, std::vector<PixelCoord>> cachedFloor;
+    std::map<uint8_t, std::vector<PixelCoord>> cachedOverlay;
     TileCoord cashedStart, cashedEnd;
     Sprite sprite;
     std::map<uint8_t, Texture> floorTextures;
     std::map<uint8_t, Texture> overlayTextures;
 public:
     MapDrawer(const Camera& camera, const World& world);
-    void cacheLayers();
-    void cacheOres();
+    void cacheFloor();
+    void cacheOverlay();
     void draw();
     void drawStructures();
 };
