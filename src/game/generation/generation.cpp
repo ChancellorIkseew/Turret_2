@@ -65,19 +65,27 @@ static WorldMap generateMap(const WorldProperties& properties) {
     PerlinNoise2D supportNoise(properties.seed + 100U);
     WorldMap map(mapSize);
     const auto vals = readGen(map.getContent());
-    readGen2(map.getContent());
+    const auto vals2 = readGen2(map.getContent());
 
-    HashNoise2D hashNoise(properties.seed);
     SpotGenerator2D spotGenerator(properties.seed);
+
+    std::unordered_map<uint8_t, HashNoise2D> hashNoises;
+    uint64_t x = 0U;
+    for (const auto& [ui, tc] : vals2) {
+        hashNoises.emplace(ui, HashNoise2D(properties.seed + x));
+        x += 50U;
+    }
 
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
             const float m = mainNoise.createTile(x, y + 1, MAIN_NOISE_SCALE);
             const float s = supportNoise.createTile(x, y + 1, SUPPORT_NOISE_SCALE);
             map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, vals);
-
-            if (hashNoise.createTile(x, y, 50))
-                spotGenerator.generateSpot(map, TileCoord(x, y), 1, 7);
+ 
+            for (const auto& [ui, tc] : vals2) {
+                if (hashNoises.at(ui).createTile(x, y, tc.x))
+                    spotGenerator.generateSpot(map, TileCoord(x, y), ui, tc.y);
+            }
         }
     }
     return map;
