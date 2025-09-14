@@ -47,8 +47,8 @@ private:
         const float dy = y - static_cast<float>(iy);
 
         // Dot-product with the gradient vector.
-        return (dx * gradients[permutations[static_cast<uint8_t>(ix + permutations[iy])]].first +
-                dy * gradients[permutations[static_cast<uint8_t>(ix + permutations[iy])]].second);
+        return (dx * gradients[permutations[(ix + permutations[iy % 256]) % 256]].first +
+                dy * gradients[permutations[(ix + permutations[iy % 256]) % 256]].second);
     }
 
     static float fade(const float t) {
