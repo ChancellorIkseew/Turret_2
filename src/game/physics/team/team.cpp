@@ -6,7 +6,9 @@
 #include "game/physics/mob_ai.hpp"
 
 void Team::spawnMob(const MobPreset& preset, const PixelCoord position, const float angle) {
-    mobs.emplace_back(std::make_unique<PlayerControlledMoving>(), nullptr, preset, position, angle, Team::ID);
+    //mobs.emplace_back(std::make_unique<PlayerControlledMoving>(), nullptr, preset, position, angle, Team::ID);
+    mobs.emplace_back(std::make_unique<BasicMovingAI>(), nullptr, preset, position, angle, Team::ID);
+    mobs.back().movingAI->setDest(PixelCoord(100.0f, 320.0f));
 }
 void Team::spawnShell(const ShellPreset& preset, const PixelCoord position, const float angle) {
     shells.push_back(Shell(preset, position, angle, Team::ID));
