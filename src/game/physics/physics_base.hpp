@@ -20,7 +20,8 @@ public:
         start(start), end(end) { }
     Hitbox(const PixelCoord center, const float radius) :
         start(center - PixelCoord(radius, radius)),
-        end(center + PixelCoord(radius, radius)) { }
+        end(center + PixelCoord(radius, radius)) {
+    }
 
     t1_finline bool contains(const PixelCoord pixel) const noexcept {
         return pixel.x >= start.x && pixel.x <= end.x &&

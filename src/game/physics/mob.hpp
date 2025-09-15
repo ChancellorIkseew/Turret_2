@@ -5,21 +5,44 @@
 
 struct Mob;
 
-struct MobAI {
-    virtual ~MobAI() = default;
-    virtual void operator()(Mob& mob) = 0;
+struct MovingAI {
+protected:
+    PixelCoord dest, motionVector;
+public:
+    virtual ~MovingAI() = default;
+    virtual void update(const Mob& mob) = 0;
+    PixelCoord getMotionVector() const { return motionVector; }
+    void setDest(const PixelCoord dest) {
+        this->dest = dest;
+    }
+};
+
+struct ShootingAI {
+protected:
+    PixelCoord dest;
+    PixelCoord motionVector;
+public:
+    virtual ~ShootingAI() = default;
+    //
+    virtual void update(const Mob& mob) = 0;
+    //
+    void setDest(const PixelCoord dest) {
+        this->dest = dest;
+    }
 };
 
 struct MobPreset {
-    std::string textureName;
-    Explosion explosion;
-    Health collisionDamage;
-    Health maxHealth;
-    float speed;
+    const std::string textureName;
+    const Explosion explosion;
+    const Health collisionDamage;
+    const Health maxHealth;
+    const float speed;
+    const float hitboxRadius;
 };
 
 struct Mob {
-    std::unique_ptr<MobAI> AI;
+    std::unique_ptr<MovingAI> movingAI;
+    std::unique_ptr<ShootingAI> shootingAI;
     const MobPreset& preset;
     Hitbox hitbox;
     PixelCoord position, velocity;
@@ -27,8 +50,19 @@ struct Mob {
     float angle;
     bool wasted = false;
     TeamID teamID;
-
-    Mob(std::unique_ptr<MobAI> AI, const MobPreset& preset, const PixelCoord position, const float angle, const TeamID teamID) :
-        preset(preset), angle(angle), position(position), teamID(teamID),
-        hitbox(position, position), health(preset.maxHealth), AI(std::move(AI)) { }
+    //
+    Mob(std::unique_ptr<MovingAI> movingAI,
+        std::unique_ptr<ShootingAI> shootingAI,
+        const MobPreset& preset,
+        const PixelCoord position,
+        const float angle,
+        const TeamID teamID) :
+        movingAI(std::move(movingAI)),
+        shootingAI(std::move(shootingAI)),
+        preset(preset),
+        hitbox(position, preset.hitboxRadius),
+        position(position),
+        angle(angle),
+        teamID(teamID),
+        health(preset.maxHealth) { }
 };

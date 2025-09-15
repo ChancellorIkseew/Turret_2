@@ -10,7 +10,10 @@ static Sprite mobSprite;
 
 void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
     for (auto& mob : mobs) {
-        (*mob.AI)(mob);
+        if (!mob.movingAI)
+            continue;
+        mob.movingAI->update(mob);
+        mob.velocity = mob.movingAI->getMotionVector() * mob.preset.speed;
         mob.position = mob.position + mob.velocity;
     }
     //

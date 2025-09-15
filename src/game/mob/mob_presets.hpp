@@ -3,4 +3,4 @@
 
 static inline Explosion explosion(0, 0, 0.0f);
 
-static inline MobPreset cannonBoss("cannoner_bot", explosion, 0, 100, 1.0f);
+static inline MobPreset cannonBoss("cannoner_bot", explosion, 0, 100, 1.0f, 17.0f);
