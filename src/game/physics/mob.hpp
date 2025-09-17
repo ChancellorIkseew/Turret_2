@@ -36,6 +36,7 @@ public:
 
 struct MobPreset {
     const std::string textureName;
+    const PixelCoord spriteOrigin;
     const Explosion explosion;
     const Health collisionDamage;
     const Health maxHealth;
@@ -47,6 +48,7 @@ struct Mob {
     std::unique_ptr<MovingAI> movingAI;
     std::unique_ptr<ShootingAI> shootingAI;
     const MobPreset& preset;
+    Sprite sprite;
     Hitbox hitbox;
     PixelCoord position, velocity;
     Health health;
@@ -63,9 +65,12 @@ struct Mob {
         movingAI(std::move(movingAI)),
         shootingAI(std::move(shootingAI)),
         preset(preset),
+        sprite(preset.textureName),
         hitbox(position, preset.hitboxRadius),
         position(position),
         angle(angle),
         teamID(teamID),
-        health(preset.maxHealth) { }
+        health(preset.maxHealth) {
+        sprite.setOrigin(preset.spriteOrigin);
+    }
 };

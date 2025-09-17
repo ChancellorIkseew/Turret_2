@@ -19,7 +19,7 @@ void Team::interact(World& world) {
     mobs::processMobs(mobs, world.getTeams());
 }
 
-void Team::drawGroundUnits(const Camera& camera) const {
+void Team::drawGroundUnits(const Camera& camera) {
     mobs::drawMobs(mobs, camera);
 }
 

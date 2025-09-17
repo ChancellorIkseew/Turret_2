@@ -27,6 +27,7 @@ static void spawnMob(int x, int y, TeamID teamID) {
     }   
     auto team = lib_world::world->getTeams().getTeamByID(teamID);
     team->spawnMob(cannonBoss, PixelCoord(x, y), 0.0f);
+    team->spawnMob(gatlingBot, PixelCoord(x + 50, y), 0.0f);
 }
 
 void script_libs::registerWorld(const ScriptsHandler& scriptsHandler) {

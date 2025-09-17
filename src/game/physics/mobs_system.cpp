@@ -6,7 +6,6 @@
 #include "team/teams_pool.hpp"
 
 static std::mutex mobsMutex;
-static Sprite mobSprite;
 static Sprite hitboxSprite;
 
 static t1_finline void move(Mob& mob, const PixelCoord vector) {
@@ -69,7 +68,7 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
     mobs.remove_if([](const Mob& mob) { return mob.wasted; });
 }
 
-void mobs::drawMobs(const std::list<Mob>& mobs, const Camera& camera) {
+void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera) {
     std::lock_guard<std::mutex> guard(mobsMutex);
     for (auto& mob : mobs) {
         if (!camera.contains(t1::tile(mob.position)))
@@ -80,16 +79,12 @@ void mobs::drawMobs(const std::list<Mob>& mobs, const Camera& camera) {
         const PixelCoord hitbox(hitboxSize, hitboxSize);
         hitboxSprite.setTexture(Texture("fill"));
         hitboxSprite.setSize(hitbox);
-        hitboxSprite.setOrigin(hitboxSize / 2, hitboxSize / 2);
+        hitboxSprite.setOrigin(hitbox / 2.0f);
         hitboxSprite.setPosition(mob.position);
         hitboxSprite.draw();
         //
-
-        mobSprite.setTexture(Texture(mob.preset.textureName));
-        mobSprite.setSize(PixelCoord(45, 45));
-        mobSprite.setOrigin(22.5f, 28.0f);
-        mobSprite.setPosition(mob.position);
-        mobSprite.setRotation(mob.angle);
-        mobSprite.draw();
+        mob.sprite.setPosition(mob.position);
+        mob.sprite.setRotation(mob.angle);
+        mob.sprite.draw();
     }
 }

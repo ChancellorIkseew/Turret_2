@@ -22,7 +22,7 @@ public:
     Sprite(const std::string& name, const PixelCoord size, const PixelCoord position) :
         textureRect(Atlas::at(name)), rect(position.x, position.y, size.x, size.y) { }
     Sprite(const std::string& name) : textureRect(Atlas::at(name)) {
-        rect = SDL_FRect(0, 0, 32, 32);
+        rect = SDL_FRect(0, 0, textureRect.w, textureRect.h);
     }
     Sprite() = default;
     //
@@ -30,7 +30,7 @@ public:
     t1_finline void drawFast() const {
         SDL_RenderTexture(renderer, Atlas::rawSDL(), &textureRect, &rect);
     }
-    void draw() {
+    void draw() const {
         SDL_FRect translatedRect = rect;
         translatedRect.x -= translation.x + origin.x;
         translatedRect.y -= translation.y + origin.y;
@@ -38,22 +38,19 @@ public:
             &textureRect, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     //
-    t1_finline void setPosition(const float x, const float y) noexcept {
-        rect.x = x;
-        rect.y = y;
+    t1_finline void setRotation(const double angleDegree) noexcept {
+        angle = angleDegree;
     }
     t1_finline void setPosition(const PixelCoord& pos) noexcept {
-        setPosition(pos.x, pos.y);
+        rect.x = pos.x;
+        rect.y = pos.y;
     }
     t1_finline void setSize(const PixelCoord& size) noexcept {
         rect.w = size.x;
         rect.h = size.y;
     }
-    t1_finline void setRotation(const double angleDegree) noexcept {
-        angle = angleDegree;
-    }
-    t1_finline void setOrigin(const float x, const float y) noexcept {
-        origin = SDL_FPoint(x, y);
+    t1_finline void setOrigin(const PixelCoord origin) noexcept {
+        this->origin = SDL_FPoint(origin.x, origin.y);
     }
     t1_finline void setTexture(const Texture& texture) noexcept {
         textureRect = texture.rect;
