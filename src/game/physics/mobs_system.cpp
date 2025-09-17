@@ -7,14 +7,62 @@
 
 static std::mutex mobsMutex;
 static Sprite mobSprite;
+static Sprite hitboxSprite;
+
+static t1_finline void move(Mob& mob, const PixelCoord vector) {
+    mob.position = mob.position + vector;
+    mob.hitbox.move(vector);
+}
+
+static t1_finline void moveX(Mob& mob, const float x) {
+    mob.position.x = mob.position.x + x;
+    mob.hitbox.move(PixelCoord(x, 0.0f));
+}
+
+static t1_finline void moveY(Mob& mob, const float y) {
+    mob.position.y = mob.position.y + y;
+    mob.hitbox.move(PixelCoord(0.0f, y));
+}
+
+static inline void resolveCollisions(Mob& mob, std::list<Mob>& mobs) {
+    for (auto& otherMob : mobs) {
+        if (&mob == &otherMob || !mob.hitbox.intersects(otherMob.hitbox))
+            continue;
+        
+        PixelCoord overlap = mob.hitbox.overlap(otherMob.hitbox);
+        const float w = 1.0f / (mob.preset.hitboxRadius + otherMob.preset.hitboxRadius);
+        if (overlap.x > overlap.y) {
+            if (mob.position.y > otherMob.position.y) {
+                moveY(mob,             w * overlap.y * otherMob.preset.hitboxRadius);
+                moveY(otherMob, -1.f * w * overlap.y * mob.preset.hitboxRadius);   
+            }
+            else {
+                moveY(mob,      -1.f * w * overlap.y * otherMob.preset.hitboxRadius);
+                moveY(otherMob,        w * overlap.y * mob.preset.hitboxRadius);
+            }
+        }
+        else {
+            if (mob.position.x > otherMob.position.x) {
+                moveX(mob,             w * overlap.x * otherMob.preset.hitboxRadius);
+                moveX(otherMob, -1.f * w * overlap.x * mob.preset.hitboxRadius);
+            }
+            else {
+                moveX(mob,      -1.f * w * overlap.x * otherMob.preset.hitboxRadius);
+                moveX(otherMob,        w * overlap.x * mob.preset.hitboxRadius);
+            }
+        }
+    }
+}
 
 void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
     for (auto& mob : mobs) {
+        resolveCollisions(mob, mobs);
         if (!mob.movingAI)
             continue;
         mob.movingAI->update(mob);
         mob.velocity = mob.movingAI->getMotionVector() * mob.preset.speed;
-        mob.position = mob.position + mob.velocity;
+        mob.angle = t1::radToDegree(mob.movingAI->getMotionAngleRad());
+        move(mob, mob.velocity);
     }
     //
     std::lock_guard<std::mutex> guard(mobsMutex);
@@ -26,8 +74,20 @@ void mobs::drawMobs(const std::list<Mob>& mobs, const Camera& camera) {
     for (auto& mob : mobs) {
         if (!camera.contains(t1::tile(mob.position)))
             continue;
+
+        // TODO: refactoring
+        const float hitboxSize = mob.preset.hitboxRadius * 2.0f;
+        const PixelCoord hitbox(hitboxSize, hitboxSize);
+        hitboxSprite.setTexture(Texture("fill"));
+        hitboxSprite.setSize(hitbox);
+        hitboxSprite.setOrigin(hitboxSize / 2, hitboxSize / 2);
+        hitboxSprite.setPosition(mob.position);
+        hitboxSprite.draw();
+        //
+
         mobSprite.setTexture(Texture(mob.preset.textureName));
         mobSprite.setSize(PixelCoord(45, 45));
+        mobSprite.setOrigin(22.5f, 28.0f);
         mobSprite.setPosition(mob.position);
         mobSprite.setRotation(mob.angle);
         mobSprite.draw();

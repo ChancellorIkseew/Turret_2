@@ -33,8 +33,8 @@ public:
     }
 
     t1_finline bool intersects(const Hitbox& other) const noexcept {
-        return (start.x <= other.end.x && end.x >= other.start.x &&
-                start.y <= other.end.y && end.y >= other.start.y);
+        return !(end.x < other.start.x || start.x > other.end.x ||
+                 end.y < other.start.y || start.y > other.end.y);
     }
 
     t1_finline PixelCoord overlap(const Hitbox& other) const noexcept {
