@@ -14,7 +14,7 @@ AS_DEBUG/
 .vs/
 
 # test
-Turret_2_test/packages/
-Turret_2_test/test_build/
-Turret_2_test/test_obj/
-Turret_2_test/.vs/
+test/packages/
+test/test_build/
+test/test_obj/
+test/.vs/
