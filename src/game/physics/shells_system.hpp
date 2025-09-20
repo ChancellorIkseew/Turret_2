@@ -7,5 +7,5 @@ class TeamsPool;
 
 namespace shells {
     void processShells(std::list<Shell>& shells, TeamsPool& teams);
-    void drawShells(const std::list<Shell>& shells, const Camera& camera);
+    void drawShells(std::list<Shell>& shells, const Camera& camera);
 }

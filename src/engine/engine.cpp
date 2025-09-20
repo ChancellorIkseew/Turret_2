@@ -15,7 +15,7 @@
 #include "game/script_libs/script_libs.hpp"
 #include "game/world/camera.hpp"
 #include "game/world_drawer/world_drawer.hpp"
-#include "game/mob/mob_presets.hpp"
+#include "game/presets/mob_presets.hpp"
 
 #include "game/player/player_controller.hpp"
 #include "game/world_saver/world_saver.hpp"

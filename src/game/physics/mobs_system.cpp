@@ -60,7 +60,7 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
             continue;
         mob.movingAI->update(mob);
         mob.velocity = mob.movingAI->getMotionVector() * mob.preset.speed;
-        mob.angle = t1::radToDegree(mob.movingAI->getMotionAngleRad());
+        mob.angle = mob.movingAI->getMotionAngle();
         move(mob, mob.velocity);
     }
     //
@@ -84,7 +84,7 @@ void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera) {
         hitboxSprite.draw();
         //
         mob.sprite.setPosition(mob.position);
-        mob.sprite.setRotation(mob.angle);
+        mob.sprite.setRotationRad(mob.angle);
         mob.sprite.draw();
     }
 }

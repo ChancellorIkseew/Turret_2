@@ -2,6 +2,7 @@
 #include <SDL3/SDL_render.h>
 #include "atlas.hpp"
 #include "config.hpp"
+#include "engine/coords/math.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
 class MainWindow;
@@ -38,8 +39,11 @@ public:
             &textureRect, &translatedRect, angle, &origin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     //
-    t1_finline void setRotation(const double angleDegree) noexcept {
+    t1_finline void setRotationDegree(const double angleDegree) noexcept {
         angle = angleDegree;
+    }
+    t1_finline void setRotationRad(const double angleRad) noexcept {
+        angle = t1::radToDegree(angleRad);
     }
     t1_finline void setPosition(const PixelCoord& pos) noexcept {
         rect.x = pos.x;

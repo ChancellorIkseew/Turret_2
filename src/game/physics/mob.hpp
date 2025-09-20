@@ -8,13 +8,13 @@ struct Mob;
 struct MovingAI {
 protected:
     PixelCoord dest, motionVector;
-    float motionAngleRad;
+    float motionAngle = 0.0f;
 public:
     virtual ~MovingAI() = default;
     virtual void update(const Mob& mob) = 0;
     PixelCoord getDest() const { return dest; }
     PixelCoord getMotionVector() const { return motionVector; }
-    float getMotionAngleRad() const { return motionAngleRad; }
+    float getMotionAngle() const { return motionAngle; }
     void setDest(const PixelCoord dest) {
         this->dest = dest;
     }

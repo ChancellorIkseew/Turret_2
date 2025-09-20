@@ -22,6 +22,7 @@
     <ClInclude Include="src\config.hpp" />
     <ClInclude Include="src\engine\content\load_content.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
+    <ClInclude Include="src\engine\coords\math.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
     <ClInclude Include="src\engine\coords\transforms.hpp" />
     <ClInclude Include="src\engine\debug\logger.hpp" />
@@ -68,7 +69,6 @@
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\generation\hash_noise.hpp" />
     <ClInclude Include="src\game\generation\spot_generator.hpp" />
-    <ClInclude Include="src\game\mob\mob_presets.hpp" />
     <ClInclude Include="src\game\physics\mob.hpp" />
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
     <ClInclude Include="src\game\physics\mob_ai.hpp" />
@@ -78,6 +78,8 @@
     <ClInclude Include="src\game\physics\team\team.hpp" />
     <ClInclude Include="src\game\physics\team\teams_pool.hpp" />
     <ClInclude Include="src\game\player\player_controller.hpp" />
+    <ClInclude Include="src\game\presets\mob_presets.hpp" />
+    <ClInclude Include="src\game\presets\shell_presets.hpp" />
     <ClInclude Include="src\game\script_libs\lib_world_init.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\weather\weather.hpp" />
@@ -94,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\content\load_textures.cpp" />
+    <ClCompile Include="src\engine\coords\math.cpp" />
     <ClCompile Include="src\engine\coords\transforms.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />

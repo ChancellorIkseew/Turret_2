@@ -23,10 +23,10 @@ void Team::drawGroundUnits(const Camera& camera) {
     mobs::drawMobs(mobs, camera);
 }
 
-void Team::drawAirUnits(const Camera& camera) const {
+void Team::drawAirUnits(const Camera& camera) {
     // TODO : implement
 }
 
-void Team::drawShells(const Camera& camera) const {
+void Team::drawShells(const Camera& camera) {
     shells::drawShells(shells, camera);
 }

@@ -10,9 +10,9 @@ struct BasicMovingAI : MovingAI {
         if (t1::areCloser(dest, mob.position, mob.preset.speed))
             motionVector = NO_MOTION;
         else {
-            motionAngleRad = atan2f(dest.x - mob.position.x, dest.y - mob.position.y);
-            motionVector.x = sinf(motionAngleRad);
-            motionVector.y = cosf(motionAngleRad);
+            motionAngle = atan2f(dest.x - mob.position.x, dest.y - mob.position.y);
+            motionVector.x = sinf(motionAngle);
+            motionVector.y = cosf(motionAngle);
         }
     }
 };
@@ -24,9 +24,9 @@ struct PlayerControlledMoving : MovingAI {
         if (vector == NO_MOTION)
             motionVector = NO_MOTION;
         else {
-            motionAngleRad = atan2f(vector.x, vector.y);
-            motionVector.x = sin(motionAngleRad);
-            motionVector.y = cos(motionAngleRad);
+            motionAngle = atan2f(vector.x, vector.y);
+            motionVector.x = sin(motionAngle);
+            motionVector.y = cos(motionAngle);
         }
     }
 };

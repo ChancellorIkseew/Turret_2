@@ -10,14 +10,18 @@ floor_water.png
 overlay_iron.png
 overlay_coal.png
 overlay_copper.png
-# other
-ice_block.png
-round_shadow.png
-plant.png
+#mobs
 cannoner_bot.png
 gatling_bot.png
+#shells
+cannon_shell.png
+#gui
 fill.png
 button_idle.png
 button_hover.png
 button_checked.png
+# other
+ice_block.png
+round_shadow.png
+plant.png
 snowflake_1.png

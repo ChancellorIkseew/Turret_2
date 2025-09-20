@@ -6,7 +6,6 @@
 #include "team/teams_pool.hpp"
 
 static std::mutex shellsMutex;
-static Sprite shellSprite;
 
 static inline void tryHitBuilding(Shell& shell, TeamsPool& teams) {
 }
@@ -37,13 +36,13 @@ void shells::processShells(std::list<Shell>& shells, TeamsPool& teams) {
     shells.remove_if([](const Shell& shell) { return shell.wasted; });
 }
 
-void shells::drawShells(const std::list<Shell>& shells, const Camera& camera) {
+void shells::drawShells(std::list<Shell>& shells, const Camera& camera) {
     std::lock_guard<std::mutex> guard(shellsMutex);
     for (auto& shell : shells) {
         if (!camera.contains(t1::tile(shell.position)))
             continue;
-        shellSprite.setPosition(shell.position);
-        shellSprite.setRotation(shell.angle);
-        shellSprite.draw();
+        shell.sprite.setPosition(shell.position);
+        shell.sprite.setRotationRad(shell.angle);
+        shell.sprite.draw();
     }
 }

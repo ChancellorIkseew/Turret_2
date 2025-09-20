@@ -1,6 +1,4 @@
 #include "transforms.hpp"
-//
-#include <utility>
 
 // pixel_to_tile
 int t1::tile(const float pixelCoord) {
@@ -48,27 +46,6 @@ PixelCoord t1::tileCentre(const TileCoord tileCoord) {
 }
 
 // simple math
-int t1::pow2i(const int value) {
-    return value * value;
-}
-float t1::pow2f(const float value) {
-    return value * value;
-}
-int t1::ceilUpPow2(int value) {
-    --value;
-    value |= value >> 1;
-    value |= value >> 2;
-    value |= value >> 4;
-    value |= value >> 8;
-    value |= value >> 16;
-    ++value;
-    return std::max(value, 1);
-}
 bool t1::areCloser(const PixelCoord first, const PixelCoord second, const float distance) {
     return abs(first.x - second.x) < distance && abs(first.y - second.y) < distance;
-}
-
-// angles
-float t1::radToDegree(const float radian) {
-    return 180.0f - radian * 57.3f;
 }
