@@ -30,6 +30,7 @@ inline constexpr cString Hide_GUI("Hide_GUI");
 inline constexpr cString Screenshot("Screenshot");
 inline constexpr cString Show_FPS("Show_FPS");
 inline constexpr cString Show_atlas("Show_atlas");
+inline constexpr cString Show_hitboxes("Show_hitboxes");
 inline constexpr cString Fullscreen("Fullscreen");
 inline constexpr cString Console_cheat("Console_cheat");
 

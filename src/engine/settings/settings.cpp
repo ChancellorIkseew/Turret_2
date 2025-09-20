@@ -12,6 +12,7 @@ void Settings::writeSettings() {
     tin::Data data;
     data.emplace("FPS", std::to_string(display.FPS));
     data.emplace("fullscreen", std::to_string(display.fullscreen));
+    data.emplace("show_hitboxes", std::to_string(gameplay.showHitboxes));
     data.emplace("lang", gui.lang);
     tin::write("settings.tin", data);
 }
@@ -25,6 +26,7 @@ void Settings::readSettings() {
     }
     display.FPS = data.getUint32("FPS").value_or(60U);
     display.fullscreen = data.getBool("fullscreen").value_or(false);
+    gameplay.showHitboxes = data.getBool("show_hitboxes").value_or(false);
     gui.lang = data.getString("lang").value_or("en_US");
 }
 

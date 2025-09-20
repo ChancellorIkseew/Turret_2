@@ -3,6 +3,7 @@
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
+#include "engine/settings/settings.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
@@ -63,6 +64,8 @@ void GUI::acceptHotkeys() {
         showGUI = !showGUI;
     if (Input::jactive(Show_atlas))
         showAtlas = !showAtlas;
+    if (Input::jactive(Show_hitboxes))
+        Settings::gameplay.showHitboxes = !Settings::gameplay.showHitboxes;
     if (Input::jactive(Fullscreen))
         mainWindow.setFullscreen(!mainWindow.isFullscreen());
     FormEditor::editForm();

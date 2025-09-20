@@ -2,6 +2,7 @@
 //
 #include <mutex>
 #include "engine/coords/transforms.hpp"
+#include "engine/settings/settings.hpp"
 #include "game/world/camera.hpp"
 #include "team/teams_pool.hpp"
 
@@ -68,12 +69,10 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
     mobs.remove_if([](const Mob& mob) { return mob.wasted; });
 }
 
-void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera) {
-    std::lock_guard<std::mutex> guard(mobsMutex);
+static void drawHitboxes(const std::list<Mob>& mobs, const Camera& camera) {
     for (auto& mob : mobs) {
         if (!camera.contains(t1::tile(mob.position)))
             continue;
-
         // TODO: refactoring
         const float hitboxSize = mob.preset.hitboxRadius * 2.0f;
         const PixelCoord hitbox(hitboxSize, hitboxSize);
@@ -82,7 +81,16 @@ void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera) {
         hitboxSprite.setOrigin(hitbox / 2.0f);
         hitboxSprite.setPosition(mob.position);
         hitboxSprite.draw();
-        //
+    }
+}
+
+void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera) {
+    std::lock_guard<std::mutex> guard(mobsMutex);
+    if (Settings::gameplay.showHitboxes)
+        drawHitboxes(mobs, camera);
+    for (auto& mob : mobs) {
+        if (!camera.contains(t1::tile(mob.position)))
+            continue;
         mob.sprite.setPosition(mob.position);
         mob.sprite.setRotationRad(mob.angle);
         mob.sprite.draw();
