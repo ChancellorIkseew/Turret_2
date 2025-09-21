@@ -1,6 +1,8 @@
 #pragma once
+#include <memory>
 #include "engine/coords/tile_coord.hpp"
-#include "game/world/world.hpp"
+
+class World;
 
 struct WorldProperties {
     WorldProperties() = default;

@@ -6,7 +6,7 @@
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/util/local_time.hpp"
-#include "game/world/world_map.hpp"
+#include "game/world/world.hpp"
 #include "hash_noise.hpp"
 #include "perlin_noise.hpp"
 #include "spot_generator.hpp"

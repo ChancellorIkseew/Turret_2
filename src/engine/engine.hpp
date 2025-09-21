@@ -1,5 +1,4 @@
 #pragma once
-#include <stdexcept>
 #include "engine_command.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "engine/window/window.hpp"
