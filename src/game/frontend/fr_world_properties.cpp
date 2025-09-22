@@ -42,9 +42,9 @@ std::unique_ptr<Container> frontend::initWorldProperties(Engine& engine) {
     labels->addNode(new Label(U"Seed"));
     labels->addNode(new Label(U"Width"));
     labels->addNode(new Label(U"Height"));
-    auto seedF =   forms->addNode(new Form());
-    auto widthF =  forms->addNode(new Form());
-    auto heightF = forms->addNode(new Form());
+    auto seedF =   forms->addNode(new Form(0U, new Uint64Validator(0U, std::numeric_limits<uint64_t>::max())));
+    auto widthF =  forms->addNode(new Form(100, new Int32Validator(20, 5000)));
+    auto heightF = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
 
     auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
     auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));

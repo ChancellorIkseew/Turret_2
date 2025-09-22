@@ -1,19 +1,20 @@
 #pragma once
 #include <string>
 #include "clickable.hpp"
+#include "engine/widgets/form_editor/form_validator.hpp"
 #include "engine/window/input/utf8/utf8.hpp"
 
 class Form : public Clickable {
+    static constexpr PixelCoord FORM_SIZE{100.0f, 20.0f};
     std::u32string text;
+    std::unique_ptr<Validator> validator;
 public:
     template<typename T>
-    Form(T value) : Clickable(PixelCoord(100, 20)) {
-        std::string strValue = std::to_string(value);
-        text = utf8::fromConstCharToU32String(strValue.c_str());
-    }
+    Form(T value, Validator* validator) :
+        Clickable(PixelCoord(100, 20)), validator(validator), text(to_u32string(value)) { }
 
-    Form(std::u32string text) : Clickable(PixelCoord(100, 20)), text(text) { }
-    Form()                    : Clickable(PixelCoord(100, 20)) { }
+    Form(std::u32string text) : Clickable(FORM_SIZE), text(text) { }
+    Form()                    : Clickable(FORM_SIZE) { }
     ~Form() final;
 
     void draw() final;

@@ -26,7 +26,7 @@ std::unique_ptr<Container> frontend::initGraphics(Engine& engine) {
 
     fps       ->addNode(new Label(U"FPS"));
     fullscreen->addNode(new Label(U"fullscreen"));
-    auto fpsF        = fps->addNode(new Form(Settings::display.FPS));
+    auto fpsF        = fps->addNode(new Form(Settings::display.FPS, new Uint32Validator(15U, 240U)));
     auto fullscreenC = fullscreen->addNode(new Checkbox(Settings::display.fullscreen));
 
     auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
