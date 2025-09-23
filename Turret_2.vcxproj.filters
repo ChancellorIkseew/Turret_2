@@ -237,6 +237,9 @@
     <ClInclude Include="src\engine\coords\math.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\physics\turret.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
     <ClInclude Include="src\engine\widgets\form_editor\form_validator.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
