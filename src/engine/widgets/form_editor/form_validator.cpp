@@ -3,23 +3,23 @@
 #include <algorithm>
 #include "engine/io/parser/validator.hpp"
 
-static inline bool isNotUnsignedIntegral(const uint32_t symbol) {
-    return symbol < '0' || symbol > '9';
+static inline bool isNotUnsignedIntegral(const char32_t symbol) {
+    return symbol < U'0' || symbol > U'9';
 }
-static inline bool isNotIntegral(const uint32_t symbol) {
-    return isNotUnsignedIntegral(symbol) && symbol != '-';
+static inline bool isNotIntegral(const char32_t symbol) {
+    return isNotUnsignedIntegral(symbol) && symbol != U'-';
 }
-static inline bool isNotFloat(const uint8_t symbol) {
-    return isNotIntegral(symbol) && symbol != '.';
+static inline bool isNotFloat(const char32_t symbol) {
+    return isNotIntegral(symbol) && symbol != U'.';
 }
 
 static void validateUnsignedIntegral(std::u32string& text) {
     const auto it = std::remove_if(text.begin(), text.end(), isNotUnsignedIntegral);
-    text.erase(it);
+    text.erase(it, text.end());
 }
 static void validateIntegral(std::u32string& text) {
     const auto it = std::remove_if(text.begin(), text.end(), isNotIntegral);
-    text.erase(it);
+    text.erase(it, text.end());
 }
 
 void Uint64Validator::validateText(std::u32string& text) const { validateUnsignedIntegral(text); }
