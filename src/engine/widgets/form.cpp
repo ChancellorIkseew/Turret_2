@@ -15,8 +15,15 @@ void Form::draw() {
 
 void Form::callback() {
     if (validator && state == ButtonState::checked)
-        validator->validate(text);
+        validator->validateText(text);
     Clickable::callback();
     if (containsMouse() && Input::jactive(LMB))
         FormEditor::setForm(this);
+}
+
+void Form::validate() {
+    if (!validator)
+        return;
+    validator->validateText(text);
+    validator->validateValue(text);
 }

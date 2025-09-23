@@ -6,6 +6,8 @@
 static Form* targetForm = nullptr;
 
 void FormEditor::setForm(Form* form) {
+    if (targetForm)
+        targetForm->validate();
     if (form == targetForm) {
         resetTarget();
         return;

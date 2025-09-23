@@ -19,6 +19,7 @@ public:
 
     void draw() final;
     void callback() final;
+    void validate();
     const std::u32string& getText() const { return text; }
     std::u32string& getText() { return text; }
 };
