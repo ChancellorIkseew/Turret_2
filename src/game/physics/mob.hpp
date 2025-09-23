@@ -2,6 +2,7 @@
 #include <memory>
 #include "engine/render/sprite.hpp"
 #include "physics_base.hpp"
+#include "turret.hpp"
 
 struct Mob;
 
@@ -22,15 +23,15 @@ public:
 
 struct ShootingAI {
 protected:
-    PixelCoord dest;
-    PixelCoord motionVector;
+    PixelCoord aim;
 public:
     virtual ~ShootingAI() = default;
     //
     virtual void update(const Mob& mob) = 0;
     //
-    void setDest(const PixelCoord dest) {
-        this->dest = dest;
+    PixelCoord getAim() { return aim; }
+    void setAim(const PixelCoord aim) {
+        this->aim = aim;
     }
 };
 
@@ -47,6 +48,7 @@ struct MobPreset {
 struct Mob {
     std::unique_ptr<MovingAI> movingAI;
     std::unique_ptr<ShootingAI> shootingAI;
+    std::unique_ptr<Turret> turret;
     const MobPreset& preset;
     Sprite sprite;
     Hitbox hitbox;

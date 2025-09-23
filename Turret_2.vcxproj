@@ -78,6 +78,7 @@
     <ClInclude Include="src\game\physics\shell.hpp" />
     <ClInclude Include="src\game\physics\team\team.hpp" />
     <ClInclude Include="src\game\physics\team\teams_pool.hpp" />
+    <ClInclude Include="src\game\physics\turret.hpp" />
     <ClInclude Include="src\game\player\player_controller.hpp" />
     <ClInclude Include="src\game\presets\mob_presets.hpp" />
     <ClInclude Include="src\game\presets\shell_presets.hpp" />
