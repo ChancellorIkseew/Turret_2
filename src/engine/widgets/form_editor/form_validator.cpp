@@ -25,7 +25,7 @@ static void validateIntegral(std::u32string& text) {
 void Uint64Validator::validateText(std::u32string& text) const { validateUnsignedIntegral(text); }
 void Uint32Validator::validateText(std::u32string& text) const { validateUnsignedIntegral(text); }
 void Uint16Validator::validateText(std::u32string& text) const { validateUnsignedIntegral(text); }
-void Uint8Validator::validateText(std::u32string& text) const  { validateUnsignedIntegral(text); }
+void Uint8Validator::validateText(std::u32string& text)  const { validateUnsignedIntegral(text); }
 
 void Int64Validator::validateText(std::u32string& text) const { validateIntegral(text); }
 void Int32Validator::validateText(std::u32string& text) const { validateIntegral(text); }

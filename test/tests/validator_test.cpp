@@ -37,8 +37,7 @@ TEST(NumberToU32StringConvertor, ToU32String) {
 
 TEST(FormValidatorTest, ValidatedText) {
     std::u32string emptyString = U"";
-    std::u32string someGarbage = U"6Y";
-    std::u32string someGarbage2 = U"Z6"; //TODO: solve
+    std::u32string someGarbage = U"DU6YXTY______+++++===76==fedfkdgkd89";
     std::u32string normalUint64 = U"500";
     std::u32string maxUint64 = to_u32string(std::numeric_limits<uint64_t>::max());
     std::u32string minUint64 = to_u32string(std::numeric_limits<uint64_t>::min());
@@ -51,18 +50,10 @@ TEST(FormValidatorTest, ValidatedText) {
     u64validator.validateText(normalInt64);
 
     EXPECT_TRUE(emptyString == U"");
-    EXPECT_TRUE(someGarbage == U"6");
-    EXPECT_TRUE(someGarbage2 == U"6");
+    EXPECT_TRUE(someGarbage == U"67689");
     EXPECT_TRUE(normalUint64 == U"500");
     EXPECT_TRUE(maxUint64 == to_u32string(std::numeric_limits<uint64_t>::max()));
     EXPECT_TRUE(minUint64 == to_u32string(std::numeric_limits<uint64_t>::min()));
-    
-
-    for (char32_t s : someGarbage2) {
-        std::cout << static_cast<char>(s);
-    }
-
-    
 }
 
 #endif
