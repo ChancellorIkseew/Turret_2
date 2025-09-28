@@ -12,7 +12,7 @@ namespace io::folders {
     inline const std::filesystem::path GENERATION = RES / "generation";
 
     using Contents = std::vector<std::string>;
-    enum class ContentsType {
+    enum class ContentsType : uint8_t {
         folder,
         file
     };
