@@ -7,15 +7,13 @@
 #include <fstream>
 #include <mutex>
 #include <utility>
+#include "color_format.inl"
 #pragma warning(disable : 4996)
 
 using namespace debug;
 static std::ofstream fout;
 static std::mutex mutex;
 static std::string utcOffset = "";
-constexpr std::string_view RED = "\033[31m";
-constexpr std::string_view YELLOW = "\033[33m";
-constexpr std::string_view DEFAULT = "\033[0m";
 constexpr unsigned int moduleLen = 20;
 
 LogMessage::~LogMessage() {
@@ -56,17 +54,7 @@ static void write(LogLevel level, const std::string& name, const std::string& me
             fout << string << '\n';
             fout.flush();
         }
-        switch (level) {
-        case LogLevel::warning:
-            std::cout << YELLOW << string << DEFAULT << std::endl;
-            break;
-        case LogLevel::error:
-            std::cout << RED << string << DEFAULT << std::endl;
-            break;
-        default: 
-            std::cout << string << std::endl;
-            break;
-        }
+        debug::printColorfull(string, level);
     }
 }
 
