@@ -1,6 +1,7 @@
 #include "validator.hpp"
 //
 #include <stdexcept>
+#include "engine/coords/tile_coord.hpp"
 
 // Unsigned int
 std::optional<uint64_t> validator::toUint64(const std::string& str) {
@@ -59,6 +60,17 @@ std::optional<int8_t> validator::toInt8(const std::string& str) {
 }
 
 //other
+std::optional<TileCoord> validator::toTileCoord(const std::string& str) {
+    const size_t stick = str.find_first_of('|');
+    if (stick == std::string::npos)
+        return std::nullopt;
+    const auto x = validator::toInt32(str.substr(0, stick));
+    const auto y = validator::toInt32(str.substr(stick + 1));
+    if (!x.has_value() || !y.has_value())
+        return std::nullopt;
+    return TileCoord(x.value(), y.value());
+}
+
 std::optional<float> validator::toFloat(const std::string& str) {
     try {
         return std::stof(str);

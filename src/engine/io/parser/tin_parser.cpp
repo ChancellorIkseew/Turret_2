@@ -34,7 +34,7 @@ tin::Data tin::read(fs::path path) {
         if (line.empty() || line[0] == '#')
             continue;
         const size_t eqv = line.find_first_of('=');
-        if (eqv == line.npos)
+        if (eqv == std::string::npos)
             continue;
         std::string key = line.substr(0, eqv);
         std::string value = line.substr(eqv + 1);
