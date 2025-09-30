@@ -2,7 +2,7 @@
 #include <sstream>
 
 namespace debug {
-    enum class LogLevel { debug, info, warning, error };
+    enum class LogLevel : uint8_t { debug, info, warning, error };
     class Logger;
 
     class LogMessage {

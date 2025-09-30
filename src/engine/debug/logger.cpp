@@ -24,19 +24,19 @@ static void write(LogLevel level, const std::string& name, const std::string& me
     switch (level) {
     case LogLevel::debug:
 #ifndef NDEBUG
-            ss << "[D]";
-            break;
+        ss << "[D]";
+        break;
 #endif
-            return;
-        case LogLevel::info:
-            ss << "[I]";
-            break;
-        case LogLevel::warning:
-            ss << "[W]";
-            break;
-        case LogLevel::error:
-            ss << "[E]";
-            break;
+        return;
+    case LogLevel::info:
+        ss << "[I]";
+        break;
+    case LogLevel::warning:
+        ss << "[W]";
+        break;
+    case LogLevel::error:
+        ss << "[E]";
+        break;
     }
 
     time_t tm = std::time(nullptr);
