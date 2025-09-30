@@ -1,13 +1,13 @@
 #include "utf8.hpp"
 
-uint32_t utf8::fromConstCharToUint32(const char* s) noexcept {
+char32_t utf8::to_char32_t(const char* s) noexcept {
     if (!s || *s == '\0') return 0;
 
     const uint8_t u0 = static_cast<uint8_t>(s[0]);
     if (u0 < 0x80) return u0; // 1-byte ASCII.
 
     size_t len = 0;
-    uint32_t cp = 0;
+    char32_t cp = 0;
 
     if      (u0 < 0xE0) { len = 2; cp = u0 & 0x1F; }
     else if (u0 < 0xF0) { len = 3; cp = u0 & 0x0F; }
@@ -32,13 +32,13 @@ uint32_t utf8::fromConstCharToUint32(const char* s) noexcept {
     return cp;
 }
 
-std::u32string utf8::fromConstCharToU32String(const char* cStr) {
+std::u32string utf8::to_u32String(const char* cStr) {
     std::u32string result;
     if (!cStr) return result;
 
     const char* current = cStr;
     while (*current != '\0') {
-        uint32_t codePoint = fromConstCharToUint32(current);
+        char32_t codePoint = to_char32_t(current);
         if (codePoint == 0) {
             current += 1;
             continue;

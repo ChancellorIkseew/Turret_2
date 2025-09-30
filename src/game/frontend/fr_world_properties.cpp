@@ -29,7 +29,7 @@ public:
             const auto preset = data.getTileCoord(strID).value_or(TileCoord(0, 0));
             const uint8_t id = validator::toUint8(strID).value_or(0U);
             overlayPresets.emplace_back(id, 0, 0);
-            labels->addNode(new Label(to_u32string(id)));
+            labels->addNode(new Label(utf8::to_u32string(id)));
             frequency->addNode(new Form(preset.x, new Int32Validator(0, 10000)));
             deposite->addNode(new Form(preset.y, new Int32Validator(0, 100)));
         }

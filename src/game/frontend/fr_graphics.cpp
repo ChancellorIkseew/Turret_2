@@ -7,7 +7,6 @@
 #include "engine/widgets/checkbox.hpp"
 #include "engine/widgets/form.hpp"
 #include "engine/widgets/label.hpp"
-#include "engine/window/input/utf8/utf8.hpp"
 
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 

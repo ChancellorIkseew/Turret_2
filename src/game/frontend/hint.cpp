@@ -2,7 +2,7 @@
 //
 #include "engine/gui/gui_util/tile_data.hpp"
 #include "engine/widgets/label.hpp"
-#include "engine/window/input/utf8/utf8.hpp"
+#include "engine/io/utf8/utf8.hpp"
 #include "game/world/world.hpp"
 
 constexpr int ROW_SIZE = 6;

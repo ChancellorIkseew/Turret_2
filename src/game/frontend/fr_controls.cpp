@@ -1,11 +1,11 @@
 #include "frontend.hpp"
 //
+#include "engine/io/utf8/utf8.hpp"
 #include "engine/util/sleep.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/label.hpp"
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
-#include "engine/window/input/utf8/utf8.hpp"
 
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
@@ -34,7 +34,7 @@ std::unique_ptr<Container> frontend::initControls() {
     for (const auto& [bindName, binding] : Controls::getBindings()) {
         if (!binding.changable)
             continue;
-        names->addNode(new Label(utf8::fromConstCharToU32String(bindName.c_str())));
+        names->addNode(new Label(utf8::to_u32String(bindName)));
         auto btn = binds->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']'));
         btn->addCallback(std::bind(rebind, btn, bindName));
     }

@@ -1,8 +1,8 @@
 #include "l_saves.hpp"
 //
 #include "engine/io/folders.hpp"
+#include "engine/io/utf8/utf8.hpp"
 #include "engine/widgets/button.hpp"
-#include "engine/window/input/utf8/utf8.hpp"
 
 constexpr PixelCoord BTN_SIZE(190.0f, 30.0f);
 
@@ -10,7 +10,7 @@ void frontend::update(Selector* saves, std::string& folder) {
     saves->clear();
     auto contents = io::folders::getContents(io::folders::SAVES, io::folders::ContentsType::folder);
     for (const auto& it : contents) {
-        auto btn = saves->addNode(new Button(BTN_SIZE, utf8::fromConstCharToU32String(it.c_str())));
+        auto btn = saves->addNode(new Button(BTN_SIZE, utf8::to_u32String(it)));
         btn->addCallback([=, &folder] { folder = it; });
     }
     saves->arrange();

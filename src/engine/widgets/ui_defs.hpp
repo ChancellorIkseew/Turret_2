@@ -34,6 +34,6 @@ enum class ButtonState : uint8_t {
 };
 
 using cString = const char*;
-constexpr cString BTN_IDLE = "button_idle";
-constexpr cString BTN_HOVER = "button_hover";
-constexpr cString BTN_CHECKED = "button_checked";
+inline constexpr cString BTN_IDLE = "button_idle";
+inline constexpr cString BTN_HOVER = "button_hover";
+inline constexpr cString BTN_CHECKED = "button_checked";

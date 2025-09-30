@@ -1,12 +1,13 @@
 #include "input.hpp"
 //
+#include <SDL3/SDL_events.h>
 #include <atomic>
 #include "controls.hpp"
-#include "utf8/utf8.hpp"
+#include "engine/io/utf8/utf8.hpp"
 
 static SDL_Window* window;
 static std::atomic<std::optional<Binding>> lastKeyPressed;
-static std::atomic<std::optional<uint32_t>> symbolJustEntered;
+static std::atomic<std::optional<char32_t>> symbolJustEntered;
 static std::atomic<PixelCoord> mouseCoord;
 static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
 
@@ -27,7 +28,7 @@ void Input::update(const SDL_Event& event) {
         return;
     }
     if (event.type == SDL_EVENT_TEXT_INPUT) {
-        symbolJustEntered.store(utf8::fromConstCharToUint32(event.text.text), std::memory_order_relaxed);
+        symbolJustEntered.store(utf8::to_char32_t(event.text.text), std::memory_order_relaxed);
         return;
     }
 
@@ -81,7 +82,7 @@ std::optional<Binding> Input::getLastKeyPressed() {
 void Input::resetLastKeyPressed() {
     lastKeyPressed = std::nullopt;
 }
-std::optional<uint32_t> Input::getLastSymbolEntered() {
+std::optional<char32_t> Input::getLastSymbolEntered() {
     return symbolJustEntered.exchange(std::nullopt, std::memory_order_relaxed);
 }
 void Input::enableTextEnter(const bool flag) {

@@ -7,7 +7,7 @@
 #include "engine/settings/settings.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/selector.hpp"
-#include "engine/window/input/utf8/utf8.hpp"
+#include "engine/io/utf8/utf8.hpp"
 
 constexpr PixelCoord BTN_SIZE(110.0f, 30.0f);
 
@@ -25,12 +25,11 @@ std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
     auto selector = languages->addNode(new Selector(Orientation::vertical));
 
     auto contents = io::folders::getContents(io::folders::LANG, io::folders::ContentsType::file);
-    for (const auto& file : contents) {
-        const auto fileName = utf8::fromConstCharToU32String(file.c_str());
-        auto langName = fileName.substr(0, fileName.length() - 4);
+    for (const auto& fileName : contents) {
+        auto langName = utf8::to_u32String(fileName).substr(0, fileName.length() - 4);
         auto btn = selector->addNode(new Button(BTN_SIZE, langName));
         btn->addCallback([&, langName] {changeLang(engine, langName); });
-        if (file == Settings::gui.lang + ".tin")
+        if (fileName == Settings::gui.lang + ".tin")
             btn->setState(ButtonState::checked);
     }
 

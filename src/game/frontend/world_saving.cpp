@@ -4,7 +4,6 @@
 #include "engine/io/parser/validator.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/form.hpp"
-#include "engine/window/input/utf8/utf8.hpp"
 #include "game/script_libs/lib_world_init.hpp"
 #include "game/world_saver/world_saver.hpp"
 #include "layouts/l_saves.hpp"

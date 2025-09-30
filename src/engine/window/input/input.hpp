@@ -1,9 +1,10 @@
 #pragma once
-#include <SDL3/SDL_events.h>
 #include <optional>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
+struct SDL_Window;
+union SDL_Event;
 class MainWindow;
 
 class Input {
@@ -23,7 +24,7 @@ public:
     static std::optional<Binding> getLastKeyPressed();
     static void resetLastKeyPressed();
     ///@brief Last symbol entered in any text field.
-    static std::optional<uint32_t> getLastSymbolEntered();
+    static std::optional<char32_t> getLastSymbolEntered();
     ///@brief Start/stop checking.
     static void enableTextEnter(const bool flag);
 private:

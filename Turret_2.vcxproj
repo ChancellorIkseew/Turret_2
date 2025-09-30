@@ -37,6 +37,7 @@
     <ClInclude Include="src\engine\io\parser\list_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\tin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\validator.hpp" />
+    <ClInclude Include="src\engine\io\utf8\utf8.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\sprite.hpp" />
@@ -61,7 +62,6 @@
     <ClInclude Include="src\engine\window\input\binding.hpp" />
     <ClInclude Include="src\engine\window\input\controls.hpp" />
     <ClInclude Include="src\engine\window\input\input.hpp" />
-    <ClInclude Include="src\engine\window\input\utf8\utf8.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
@@ -107,6 +107,7 @@
     <ClCompile Include="src\engine\io\parser\list_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\tin_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\validator.cpp" />
+    <ClCompile Include="src\engine\io\utf8\utf8.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
@@ -128,7 +129,6 @@
     <ClCompile Include="src\engine\window\input\controls.cpp" />
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
-    <ClCompile Include="src\engine\window\input\utf8\utf8.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_languages.cpp" />
