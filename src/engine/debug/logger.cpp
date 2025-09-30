@@ -13,9 +13,9 @@ using namespace debug;
 static std::ofstream fout;
 static std::mutex mutex;
 static std::string utcOffset = "";
-static const std::string RED = "\033[31m";
-static const std::string YELLOW = "\033[33m";
-static const std::string DEFAULT = "\033[0m";
+constexpr std::string_view RED = "\033[31m";
+constexpr std::string_view YELLOW = "\033[33m";
+constexpr std::string_view DEFAULT = "\033[0m";
 constexpr unsigned int moduleLen = 20;
 
 LogMessage::~LogMessage() {

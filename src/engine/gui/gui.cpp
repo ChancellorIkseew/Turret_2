@@ -68,12 +68,12 @@ void GUI::acceptHotkeys() {
     if (Input::jactive(Show_hitboxes)) {
         Settings::gameplay.showHitboxes = !Settings::gameplay.showHitboxes;
         Settings::writeSettings();
-    }   
+    }
     if (Input::jactive(Show_console)) {
         debug::Console::setVisible(!debug::Console::isVisible());
         Settings::gui.showConsole = debug::Console::isVisible();
         Settings::writeSettings();
-    }  
+    }
     if (Input::jactive(Fullscreen)) {
         mainWindow.setFullscreen(!mainWindow.isFullscreen());
         Settings::display.fullscreen = mainWindow.isFullscreen();
