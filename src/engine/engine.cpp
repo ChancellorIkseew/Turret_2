@@ -55,7 +55,7 @@ void Engine::createWorldInEditor(WorldProperties& properties) {
 void Engine::openMainMenu() {
     closeWorld();
     command = EngineCommand::main_menu;
-    worldProperties = WorldProperties(TileCoord(100, 100), 0U);;
+    worldProperties = WorldProperties(TileCoord(100, 100), 0U, { {0, 5, 7} });;
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {

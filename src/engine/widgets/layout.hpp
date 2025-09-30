@@ -36,6 +36,7 @@ public:
             it->callback();
         }
     }
+    const auto& getContents() const { return contents; }
 private:
     void arrangeVertical();
     void arrangeHorizontal();

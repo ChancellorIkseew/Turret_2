@@ -2,6 +2,8 @@
 #include <optional>
 #include <string>
 
+struct TileCoord;
+
 namespace validator {
     std::optional<uint64_t> toUint64(const std::string& str);
     std::optional<uint32_t> toUint32(const std::string& str);
@@ -13,6 +15,7 @@ namespace validator {
     std::optional<int16_t> toInt16(const std::string& str);
     std::optional<int8_t> toInt8(const std::string& str);
     //
+    std::optional<TileCoord> toTileCoord(const std::string& str);
     std::optional<float> toFloat(const std::string& str);
     std::optional<bool> toBool(const std::string& str);
     std::string toStdString(const std::u32string& str);
