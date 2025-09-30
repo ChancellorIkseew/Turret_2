@@ -7,13 +7,14 @@ class Engine;
 class Settings {
     struct _GUI {
         std::string lang = "en_US";
+        bool showConsole = false;
     };
     struct _Display {
         uint32_t FPS = 60U;
         bool fullscreen = false;
     };
     struct _Gameplay {
-        bool showHitboxes = false;
+        bool showHitboxes = false; 
     };
 public:
     static inline _GUI gui;

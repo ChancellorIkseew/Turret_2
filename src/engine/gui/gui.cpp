@@ -1,5 +1,6 @@
 #include "gui.hpp"
 //
+#include "engine/debug/console.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
@@ -64,10 +65,20 @@ void GUI::acceptHotkeys() {
         showGUI = !showGUI;
     if (Input::jactive(Show_atlas))
         showAtlas = !showAtlas;
-    if (Input::jactive(Show_hitboxes))
+    if (Input::jactive(Show_hitboxes)) {
         Settings::gameplay.showHitboxes = !Settings::gameplay.showHitboxes;
-    if (Input::jactive(Fullscreen))
+        Settings::writeSettings();
+    }   
+    if (Input::jactive(Show_console)) {
+        debug::Console::setVisible(!debug::Console::isVisible());
+        Settings::gui.showConsole = debug::Console::isVisible();
+        Settings::writeSettings();
+    }  
+    if (Input::jactive(Fullscreen)) {
         mainWindow.setFullscreen(!mainWindow.isFullscreen());
+        Settings::display.fullscreen = mainWindow.isFullscreen();
+        Settings::writeSettings();
+    }
     FormEditor::editForm();
 }
 
