@@ -5,6 +5,7 @@
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/settings/settings.hpp"
+#include "engine/util/time.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
@@ -63,8 +64,10 @@ void GUI::addOverlaped(std::unique_ptr<Container> container) {
 void GUI::acceptHotkeys() {
     if (Input::jactive(Hide_GUI))
         showGUI = !showGUI;
-    if (Input::jactive(Screenshot))
-        mainWindow.takeScreenshot(io::folders::SCREENSHOTS / "img.png");
+    if (Input::jactive(Screenshot)) {
+        const std::string timeMs = std::to_string(util::time::getLocalTimeMs());
+        mainWindow.takeScreenshot(io::folders::SCREENSHOTS / ("img" + timeMs + ".png"));
+    }
     if (Input::jactive(Show_atlas))
         showAtlas = !showAtlas;
     if (Input::jactive(Show_hitboxes)) {

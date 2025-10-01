@@ -90,7 +90,7 @@
     <ClInclude Include="src\game\generation\generation.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\util\local_time.hpp">
+    <ClInclude Include="src\engine\util\time.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\generation\perlin_noise.hpp">
@@ -317,7 +317,7 @@
     <ClCompile Include="src\game\generation\generation.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\util\local_time.cpp">
+    <ClCompile Include="src\engine\util\time.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\weather\weather.cpp">
