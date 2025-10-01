@@ -10,20 +10,22 @@ namespace debug {
     constexpr WORD YELLOW = FOREGROUND_RED | FOREGROUND_GREEN;
     constexpr WORD DEFAULT = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
 
-    static void printColorfull(const std::string& string, const LogLevel level) {
+    static void printColorfull(const std::string& string, const WORD color) {
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(hConsole, &csbi);
+        SetConsoleTextAttribute(hConsole, color | (csbi.wAttributes & 0xFFF0));
+        std::cout << string << std::endl;
+        SetConsoleTextAttribute(hConsole, DEFAULT | (csbi.wAttributes & 0xFFF0));
+    }
+
+    static void printColorfull(const std::string& string, const LogLevel level) {
         switch (level) {
         case LogLevel::warning:
-            SetConsoleTextAttribute(hConsole, YELLOW | (csbi.wAttributes & 0xFFF0));
-            std::cout << string << std::endl;
-            SetConsoleTextAttribute(hConsole, DEFAULT | (csbi.wAttributes & 0xFFF0));
+            printColorfull(string, YELLOW);
             break;
         case LogLevel::error:
-            SetConsoleTextAttribute(hConsole, RED | (csbi.wAttributes & 0xFFF0));
-            std::cout << string << std::endl;
-            SetConsoleTextAttribute(hConsole, DEFAULT | (csbi.wAttributes & 0xFFF0));
+            printColorfull(string, RED);
             break;
         default:
             std::cout << string << std::endl;
