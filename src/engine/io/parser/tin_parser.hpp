@@ -65,7 +65,7 @@ namespace tin {
         }
         std::optional<std::u32string> getU32String(const std::string& key) const {
             if (!data.contains(key)) return std::nullopt;
-            return utf8::to_u32String(data.at(key));
+            return utf8::to_u32string(data.at(key));
         }
         std::optional<TileCoord> getTileCoord(const std::string& key) const {
             if (!data.contains(key)) return std::nullopt;

@@ -32,7 +32,7 @@ char32_t utf8::to_char32_t(const char* s) noexcept {
     return cp;
 }
 
-std::u32string utf8::to_u32String(const char* cStr) {
+std::u32string utf8::to_u32string(const char* cStr) {
     std::u32string result;
     if (!cStr) return result;
 

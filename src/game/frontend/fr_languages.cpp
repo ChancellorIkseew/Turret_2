@@ -26,7 +26,7 @@ std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
 
     auto contents = io::folders::getContents(io::folders::LANG, io::folders::ContentsType::file);
     for (const auto& fileName : contents) {
-        auto langName = utf8::to_u32String(fileName).substr(0, fileName.length() - 4);
+        auto langName = utf8::to_u32string(fileName).substr(0, fileName.length() - 4);
         auto btn = selector->addNode(new Button(BTN_SIZE, langName));
         btn->addCallback([&, langName] {changeLang(engine, langName); });
         if (fileName == Settings::gui.lang + ".tin")

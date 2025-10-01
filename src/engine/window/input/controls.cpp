@@ -27,7 +27,7 @@ static Binding getBinding(const std::string& keyName) {
 }
 
 std::u32string Controls::getKeyName(const std::string& bindName) {
-    return utf8::to_u32String(getKeyNameCStr(bindings.at(bindName)));
+    return utf8::to_u32string(getKeyNameCStr(bindings.at(bindName)));
 }
 
 void Controls::rebind(const std::string& bindName, const Binding binding) {

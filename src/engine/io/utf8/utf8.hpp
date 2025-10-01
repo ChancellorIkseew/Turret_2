@@ -4,9 +4,9 @@
 
 namespace utf8 {
     char32_t to_char32_t(const char* s) noexcept;
-    std::u32string to_u32String(const char* cStr);
-    inline std::u32string to_u32String(const std::string str) {
-        return to_u32String(str.c_str());
+    std::u32string to_u32string(const char* cStr);
+    inline std::u32string to_u32string(const std::string str) {
+        return to_u32string(str.c_str());
     }
 
     namespace priv {
@@ -45,6 +45,6 @@ namespace utf8 {
     }
 
     static std::u32string to_u32string(const float value) {
-        return to_u32String(std::to_string(value));
+        return to_u32string(std::to_string(value));
     }
 }

@@ -34,7 +34,7 @@ std::unique_ptr<Container> frontend::initControls() {
     for (const auto& [bindName, binding] : Controls::getBindings()) {
         if (!binding.changable)
             continue;
-        names->addNode(new Label(utf8::to_u32String(bindName)));
+        names->addNode(new Label(utf8::to_u32string(bindName)));
         auto btn = binds->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']'));
         btn->addCallback(std::bind(rebind, btn, bindName));
     }
