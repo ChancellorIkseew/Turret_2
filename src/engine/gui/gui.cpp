@@ -63,6 +63,8 @@ void GUI::addOverlaped(std::unique_ptr<Container> container) {
 void GUI::acceptHotkeys() {
     if (Input::jactive(Hide_GUI))
         showGUI = !showGUI;
+    if (Input::jactive(Screenshot))
+        mainWindow.takeScreenshot(io::folders::SCREENSHOTS / "img.png");
     if (Input::jactive(Show_atlas))
         showAtlas = !showAtlas;
     if (Input::jactive(Show_hitboxes)) {

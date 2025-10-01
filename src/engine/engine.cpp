@@ -109,7 +109,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         gui->draw();
         gui->callback();
         mainWindow.render();
-        scriptsHandler.execute();
+        scriptsHandler.execute();   
     }
     simulation.join();
     //TODO: network.join();

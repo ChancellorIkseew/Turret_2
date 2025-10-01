@@ -3,6 +3,8 @@
 #include <string>
 #include "engine/coords/pixel_coord.hpp"
 
+namespace std::filesystem { class path; }
+
 class MainWindow {
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -27,6 +29,7 @@ public:
         return PixelCoord(x, y);
     }
     //
+    void takeScreenshot(const std::filesystem::path& path) const;
     void pollEvents();
     void setRenderTranslation(const PixelCoord translation);
     void setRenderScale(const float scale) {

@@ -3,6 +3,7 @@ build/
 obj/
 res/scripts/
 saves/
+screenshots/
 controls.tin
 settings.tin
 

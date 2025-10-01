@@ -1,10 +1,15 @@
 #include "window.hpp"
 //
+#include <SDL3_image/SDL_image.h>
 #include <stdexcept>
+#include "engine/debug/logger.hpp"
+#include "engine/io/folders.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/render/text.hpp"
 #include "input/input.hpp"
+
+static debug::Logger logger("main_window");
 
 MainWindow::MainWindow(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))
@@ -67,4 +72,21 @@ void MainWindow::pollEvents() {
             break;
         }
     }
+}
+
+void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
+    SDL_Surface* windowSurface = SDL_RenderReadPixels(renderer, nullptr);
+    try {
+        if (!io::folders::createOrCheckFolder(path.parent_path()))
+            throw std::runtime_error("Failed to create or find directory.");
+        if (!windowSurface)
+            throw std::runtime_error("SDL_RenderReadPixels error: " + std::string(SDL_GetError()));
+        if (!IMG_SavePNG(windowSurface, path.string().c_str()))
+            throw std::runtime_error("IMG_SavePNG error: " + std::string(SDL_GetError()));
+        logger.info() << "Screenshot saved. Path: " << path;
+    }
+    catch (const std::runtime_error& exception) {
+        logger.error() << "Failed to take screensot. " << exception.what();
+    }
+    SDL_DestroySurface(windowSurface);
 }
