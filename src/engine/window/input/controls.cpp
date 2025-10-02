@@ -4,7 +4,6 @@
 #include <array>
 #include <filesystem>
 #include "engine/debug/logger.hpp"
-#include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/io/utf8/utf8.hpp"
 
