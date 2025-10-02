@@ -24,7 +24,7 @@ public:
     PixelCoord getPosition() const { return cameraUpperLeftCorner; }
     float getMapScale() const { return mapScale; }
 
-    PixelCoord fromMapToScreen(const PixelCoord screenCoord) const;
+    PixelCoord fromMapToScreen(const PixelCoord mapCoord) const;
     PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
 
     t1_finline bool contains(const TileCoord tile) const noexcept {
