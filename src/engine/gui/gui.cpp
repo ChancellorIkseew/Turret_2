@@ -12,6 +12,12 @@
 
 static tin::Data langTranslations;
 
+static void drawDebugText(const MainWindow& mainWindow, Label& debugText) {
+    debugText.setText(U"FPS: " + utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()));
+    debugText.setPosition(PixelCoord(mainWindow.getSize().x - 100.0f, 20.0f));
+    debugText.draw();
+}
+
 void GUI::draw() {
     if (mainWindow.justResized())
         relocateContainers();
@@ -23,6 +29,8 @@ void GUI::draw() {
         if (!overlaped.empty())
             overlaped.back()->draw();
     }
+    if (showFPS)
+        drawDebugText(mainWindow, debugText);
     if (showAtlas)
         Atlas::testDraw();
 }
@@ -68,6 +76,8 @@ void GUI::acceptHotkeys() {
         const std::string timeMs = std::to_string(util::time::getLocalTimeMs());
         mainWindow.takeScreenshot(io::folders::SCREENSHOTS / ("img" + timeMs + ".png"));
     }
+    if (Input::jactive(Show_FPS))
+        showFPS = !showFPS;
     if (Input::jactive(Show_atlas))
         showAtlas = !showAtlas;
     if (Input::jactive(Show_hitboxes)) {

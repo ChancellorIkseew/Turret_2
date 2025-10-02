@@ -4,6 +4,7 @@
 #include <vector>
 #include "engine/engine.hpp"
 #include "engine/widgets/container.hpp"
+#include "engine/widgets/label.hpp"
 
 class MainWindow;
 
@@ -11,11 +12,12 @@ class GUI {
 protected:
     std::vector<std::unique_ptr<Container>> containers;
     std::deque<std::unique_ptr<Container>> overlaped;
+    Label debugText;
     Engine& engine;
     MainWindow& mainWindow;
-    bool showGUI = true, showAtlas = false;
+    bool showGUI = true, showFPS = false, showAtlas = false;
 public:
-    GUI(Engine& engine) : engine(engine), mainWindow(engine.getMainWindow()) { }
+    GUI(Engine& engine) : debugText(U""), engine(engine), mainWindow(engine.getMainWindow()) {}
     virtual ~GUI() = default;
 
     void draw();

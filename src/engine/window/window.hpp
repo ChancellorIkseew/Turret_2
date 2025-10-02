@@ -9,7 +9,7 @@ class MainWindow {
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Event event = SDL_Event(0);
-    Uint32 FPS = 60, requiredDelay = 16, frameStart = 0;
+    Uint32 FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
     bool open = true, resized = false, fullscreen = false;
 public:
     MainWindow(const std::string& title);
@@ -22,6 +22,7 @@ public:
     bool isFullscreen() const { return fullscreen; }
     bool justResized() const { return resized; }
     Uint32 getFPS() const { return FPS; }
+    Uint32 getRealFrameDelay() const { return realDelay; }
     Uint64 getTime() const { return SDL_GetTicks(); }
     PixelCoord getSize() const {
         int x = 0, y = 0;
@@ -48,7 +49,8 @@ private:
         const Uint32 frameTime = Uint32(getTime()) - frameStart;
         if (frameTime < requiredDelay)
             SDL_Delay(requiredDelay - frameTime);
-        frameStart = Uint32(getTime());
+        realDelay = Uint32(getTime()) - frameStart;
+        frameStart += realDelay;
     }
 private:
     MainWindow(const MainWindow&) = delete;
