@@ -49,7 +49,7 @@ private:
         const Uint32 frameTime = Uint32(getTime()) - frameStart;
         if (frameTime < requiredDelay)
             SDL_Delay(requiredDelay - frameTime);
-        realDelay = Uint32(getTime()) - frameStart;
+        realDelay = frameTime > requiredDelay ? frameTime : requiredDelay;
         frameStart += realDelay;
     }
 private:
