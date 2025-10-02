@@ -28,15 +28,15 @@ static void rebind(Button* btn, std::string bindName) {
 
 std::unique_ptr<Container> frontend::initControls() {
     auto controls = std::make_unique<Container>(Align::centre, Orientation::horizontal);
-    auto names = controls->addNode(new Layout (Orientation::vertical));
-    auto binds = controls->addNode(new Layout (Orientation::vertical));
+    auto bindNames = controls->addNode(new Layout (Orientation::vertical));
+    auto bindings  = controls->addNode(new Layout (Orientation::vertical));
 
     for (const auto& [bindName, binding] : Controls::getBindings()) {
         if (!binding.changable)
             continue;
-        names->addNode(new Label(utf8::to_u32string(bindName)));
-        auto btn = binds->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']'));
-        btn->addCallback(std::bind(rebind, btn, bindName));
+        bindNames->addNode(new Label(utf8::to_u32string(bindName)));
+        auto btn = bindings->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']'));
+        btn->addCallback([=] { rebind(btn, bindName); });
     }
 
     auto ok = controls->addNode(new Button(BTN_SIZE, U"OK"));
