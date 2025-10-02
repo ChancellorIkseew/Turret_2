@@ -5,14 +5,14 @@
 #include "engine/render/text.hpp"
 
 void Label::draw() {
-    text::drawString(visibleName, getPosition());
+    text::drawString(visibleText, getPosition());
 }
 
 void Label::translate(const tin::Data& translations) {
     if (!translatable)
         return;
-    visibleName = translations.getU32String(validator::toStdString(name)).value_or(name);
-    resizeBy(visibleName);
+    visibleText = translations.getU32String(validator::toStdString(originalText)).value_or(originalText);
+    resizeBy(visibleText);
 }
 
 void Label::resizeBy(const std::u32string& text) {

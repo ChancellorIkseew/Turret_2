@@ -2,19 +2,18 @@
 #include "ui_node.hpp"
 
 class Label : public Node {
-    std::u32string name, visibleName;
+    std::u32string originalText, visibleText;
     const bool translatable;
 public:
-    Label(const std::u32string& name, const bool translatable = true) :
-        name(name), translatable(translatable) {
-        resizeBy(name);
+    Label(const std::u32string& originalText, const bool translatable = true) : translatable(translatable) {
+        setText(originalText);
     }
     ~Label() final = default;
     //
-    void setText(const std::u32string& name) {
-        this->name = name;
-        visibleName = name;
-        resizeBy(visibleName);
+    void setText(const std::u32string& text) {
+        originalText = text;
+        visibleText = text;
+        resizeBy(visibleText);
     }
     void resizeBy(const std::u32string& text);
     void draw() final;

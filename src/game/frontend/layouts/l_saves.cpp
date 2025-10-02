@@ -10,7 +10,7 @@ void frontend::update(Selector* saves, std::string& folder) {
     saves->clear();
     auto contents = io::folders::getContents(io::folders::SAVES, io::folders::ContentsType::folder);
     for (const auto& it : contents) {
-        auto btn = saves->addNode(new Button(BTN_SIZE, utf8::to_u32string(it)));
+        auto btn = saves->addNode(new Button(BTN_SIZE, utf8::to_u32string(it), false));
         btn->addCallback([=, &folder] { folder = it; });
     }
     saves->arrange();
