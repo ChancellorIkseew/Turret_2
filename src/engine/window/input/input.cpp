@@ -57,6 +57,7 @@ void Input::update(const SDL_Event& event) {
 }
 
 void Input::reset() {
+    mouseWheelScroll.store(MouseWheelScroll::none, std::memory_order_relaxed);
     for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
     }
@@ -73,7 +74,7 @@ PixelCoord Input::getMouseCoord() {
     return mouseCoord.load(std::memory_order_relaxed);
 }
 MouseWheelScroll Input::getMouseWheelScroll() {
-    return mouseWheelScroll.exchange(MouseWheelScroll::none, std::memory_order_relaxed);
+    return mouseWheelScroll.load(std::memory_order_relaxed);
 }
 
 std::optional<Binding> Input::getLastKeyPressed() {
