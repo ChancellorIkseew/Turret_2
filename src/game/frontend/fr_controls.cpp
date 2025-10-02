@@ -1,5 +1,6 @@
 #include "frontend.hpp"
 //
+#include <mutex>
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/util/sleep.hpp"
 #include "engine/widgets/button.hpp"
@@ -7,9 +8,12 @@
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 
+static bool isRebindingActive;
+static std::mutex mutex;
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
-static void rebind(Button* btn, std::string bindName) {
+static void rebind(Button* btn, std::string bindName) { //TODO: refactor to avoid multithreading
+    std::lock_guard<std::mutex> guarg(mutex);
     btn->setState(ButtonState::checked);
     std::thread tr([=]() {
         std::optional<Binding> binding = std::nullopt;
@@ -19,11 +23,15 @@ static void rebind(Button* btn, std::string bindName) {
             binding = Input::getLastKeyPressed();
             util::sleep(48);
         }
+        if (!btn)
+            return;
         Controls::rebind(bindName, binding.value());
         btn->setText(U'[' + Controls::getKeyName(bindName) + U']');
         btn->setState(ButtonState::idle);
         });
     tr.detach();
+    util::sleep(160);
+    isRebindingActive = false;
 }
 
 std::unique_ptr<Container> frontend::initControls() {

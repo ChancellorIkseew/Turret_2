@@ -7,8 +7,8 @@ class Button : public Clickable {
     std::function<void()> action;
     Label label;
 public:
-    Button(const int sizeX, const int sizeY, std::u32string name) : Clickable(PixelCoord(sizeX, sizeY)), label(name) { }
-    Button(const PixelCoord size, std::u32string name)            : Clickable(size), label(name) { }
+    Button(const PixelCoord size, const std::u32string& name, const bool translateble = true)
+        : Clickable(size), label(name, translateble) { }
     ~Button() final = default;
     //
     void draw() final;

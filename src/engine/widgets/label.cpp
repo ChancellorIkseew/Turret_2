@@ -9,10 +9,12 @@ void Label::draw() {
 }
 
 void Label::translate(const tin::Data& translations) {
-    visibleName = translations.getU32String(validator::toStdString(name).c_str()).value_or(name);
-    resize();
+    if (!translatable)
+        return;
+    visibleName = translations.getU32String(validator::toStdString(name)).value_or(name);
+    resizeBy(visibleName);
 }
 
-void Label::resize() {
-    setSize(PixelCoord(static_cast<int>(visibleName.length()) * 8, 16));
+void Label::resizeBy(const std::u32string& text) {
+    setSize(PixelCoord(static_cast<int>(text.length()) * 8, 16));
 }
