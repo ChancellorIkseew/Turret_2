@@ -57,7 +57,7 @@ SDL_FRect Atlas::at(const std::string& name) {
         return SDL_FRect(0.0f, 0.0f, 0.0f, 0.0f);
     }
     SDL_FRect fRect;
-    auto& iRect = atlas.at(name);
+    auto& iRect = atlas[name];
     fRect.x = static_cast<float>(iRect.x);
     fRect.y = static_cast<float>(iRect.y);
     fRect.w = static_cast<float>(iRect.w);

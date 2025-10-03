@@ -9,5 +9,7 @@ namespace text {
         drawString(text, pos.x, pos.y);
     }
     void setRenderer(SDL_Renderer* renderer);
-    void setFont(const std::string& latin, const std::string& cyrilic);
+    void setFont(const std::string& latin, const std::string& cyrilic, const std::string& custom);
+    void loadCustomSymbols();
+    char32_t getCustomSymbol(const std::string& symbolName);
 }

@@ -14,6 +14,8 @@ void content::loadTextures() {
 
     Atlas::addTexture(io::folders::FONTS / "vc_latin.png");
     Atlas::addTexture(io::folders::FONTS / "vc_cyrilic.png");
+    Atlas::addTexture(io::folders::FONTS / "t1_custom.png");
     Atlas::build();
-    text::setFont("vc_latin", "vc_cyrilic");
+    text::setFont("vc_latin", "vc_cyrilic", "t1_custom");
+    text::loadCustomSymbols();
 }
