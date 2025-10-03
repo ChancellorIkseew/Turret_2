@@ -4,6 +4,10 @@
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/io/parser/validator.hpp"
 
+static const std::string floorError = "floor_error";
+static const std::string overlayError = "overlay_error";
+static const std::string blockError = "block_error";
+
 void content::load(ElementRegistry& reg) {
     tin::Data data = tin::read(io::folders::RES / "map_content.tin");
     for (const auto& [name, id] : data) {
@@ -21,19 +25,19 @@ const std::string& ElementRegistry::getFloorByIndex(const uint8_t index) const {
         if (index == id)
             return type;
     }
-    return "";
+    return floorError;
 }
 const std::string& ElementRegistry::getOverlayByIndex(const uint8_t index) const {
     for (const auto& [type, id] : overlayTypes) {
         if (index == id)
             return type;
     }
-    return "";
+    return overlayError;
 }
 const std::string& ElementRegistry::getBlockByIndex(const uint16_t index) const {
     for (const auto& [type, id] : blockTypes) {
         if (index == id)
             return type;
     }
-    return "";
+    return blockError;
 }
