@@ -3,7 +3,7 @@
 #include "engine/widgets/container.hpp"
 
 struct TileData;
-struct ElementRegistry;
+struct ContentIndexes;
 class Engine;
 
 namespace frontend {
@@ -15,8 +15,8 @@ namespace frontend {
     std::unique_ptr<Container> initSettings(Engine& engine);
     std::unique_ptr<Container> initTimer();
     std::unique_ptr<Container> initWorldProperties(Engine& engine);
-    std::unique_ptr<Container> initJEI(TileData& tileData, const ElementRegistry& reg);
-    std::unique_ptr<Container> initHint(TileData& tileData, const ElementRegistry& reg);
+    std::unique_ptr<Container> initJEI(TileData& tileData, const ContentIndexes& reg);
+    std::unique_ptr<Container> initHint(TileData& tileData, const ContentIndexes& reg);
     std::unique_ptr<Container> initLanguages(Engine& engine);
     std::unique_ptr<Container> initGraphics(Engine& engine);
 }

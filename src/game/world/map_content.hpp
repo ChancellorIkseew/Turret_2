@@ -2,7 +2,7 @@
 #include <string>
 #include <unordered_map>
 
-struct ElementRegistry {
+struct ContentIndexes {
     std::unordered_map<std::string, uint8_t> floorTypes;
     std::unordered_map<std::string, uint8_t> overlayTypes;
     std::unordered_map<std::string, uint16_t> blockTypes;
@@ -13,5 +13,5 @@ struct ElementRegistry {
 };
 
 namespace content {
-    void load(ElementRegistry& reg);
+    void load(ContentIndexes& reg);
 }

@@ -7,7 +7,7 @@
 constexpr int ROW_SIZE = 6;
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
 
-std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ElementRegistry& reg) {
+std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ContentIndexes& reg) {
     auto jei = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);
     int btns = 0;
     auto line = std::make_unique<Layout>(Orientation::horizontal);

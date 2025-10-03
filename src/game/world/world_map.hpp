@@ -31,7 +31,7 @@ struct MapTile {
 };
 
 class WorldMap {
-    ElementRegistry registry;
+    ContentIndexes indexes;
     std::vector<MapTile> terrain;
     const TileCoord mapSize;
 public:
@@ -49,8 +49,8 @@ public:
         return tileExists(tile.x, tile.y);
     }
 
-    const ElementRegistry& getContent() const {
-        return registry;
+    const ContentIndexes& getContentIndexes() const {
+        return indexes;
     }
 
     t1_finline const MapTile& at(const int x, const int y) const noexcept { return terrain[x + y * mapSize.x]; }

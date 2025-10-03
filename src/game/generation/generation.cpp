@@ -20,7 +20,7 @@ static inline bool fromMaxToMin(const Pair a, const Pair b) {
     return a.first > b.first;
 }
 
-static std::vector<Pair> readGen(const ElementRegistry& reg) {
+static std::vector<Pair> readGen(const ContentIndexes& reg) {
     tin::Data data = tin::read(io::folders::GENERATION / "floor.tin");
     std::vector<Pair> vals;
     for (const auto& [name, val] : data) {
@@ -48,7 +48,7 @@ static WorldMap generateMap(const WorldProperties& properties) {
     PerlinNoise2D mainNoise(properties.seed);
     PerlinNoise2D supportNoise(properties.seed + 100U);
     WorldMap map(mapSize);
-    const auto vals = readGen(map.getContent());
+    const auto vals = readGen(map.getContentIndexes());
 
     SpotGenerator2D spotGenerator(properties.seed);
 
@@ -67,7 +67,7 @@ static WorldMap generateMap(const WorldProperties& properties) {
  
             for (const auto& [id, frequency, deposite] : properties.overlayPresets) {
                 if (hashNoises.at(id).createTile(x, y, frequency))
-                    spotGenerator.generateSpot(map, TileCoord(x, y), map.getContent().overlayTypes.at(id), deposite);
+                    spotGenerator.generateSpot(map, TileCoord(x, y), map.getContentIndexes().overlayTypes.at(id), deposite);
             }
         }
     }

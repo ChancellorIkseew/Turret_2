@@ -10,11 +10,11 @@ constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
 MapDrawer::MapDrawer(const Camera& camera, const World& world) :
     camera(camera), map(world.getMap()) {
-    for (const auto& [name, id] : world.getMap().getContent().floorTypes) {
+    for (const auto& [name, id] : world.getMap().getContentIndexes().floorTypes) {
         cachedFloor.emplace(id, std::vector<PixelCoord>());
         floorTextures.emplace(id, Texture(name));
     }
-    for (const auto& [name, id] : world.getMap().getContent().overlayTypes) {
+    for (const auto& [name, id] : world.getMap().getContentIndexes().overlayTypes) {
         cachedOverlay.emplace(id, std::vector<PixelCoord>());
         overlayTextures.emplace(id, Texture(name));
     }
