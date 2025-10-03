@@ -10,17 +10,21 @@ static debug::Logger logger("map_saver");
 
 void MapSaver::save(const WorldMap& map, const std::filesystem::path& path) {
     const auto mapSize = map.getSize();
-    uLong tileCount = static_cast<uLong>(mapSize.x * mapSize.y);
+    const int tileCount = mapSize.x * mapSize.y;
     std::vector<uint8_t> rawData;
-    rawData.reserve(tileCount);
-    for (uLong i = 0; i < tileCount; ++i) {
+    rawData.reserve(tileCount * 2);
+    for (int i = 0; i < tileCount; ++i) {
          rawData.push_back(map.at(i).floor);
     }
+    for (int i = 0; i < tileCount; ++i) {
+        rawData.push_back(map.at(i).overlay);
+    }
 
-    uLongf packedDataSize = compressBound(tileCount);
+    uLongf packedDataSize = compressBound(static_cast<uLong>(rawData.size()));
     std::vector<uint8_t> packedData(packedDataSize);
 
-    int result = compress2(packedData.data(), &packedDataSize, rawData.data(), static_cast<uLong>(tileCount), COMPRESSION_LEVEL);
+    int result = compress2(packedData.data(), &packedDataSize, rawData.data(),
+        static_cast<uLong>(rawData.size()), COMPRESSION_LEVEL);
     if (result != Z_OK) {
         logger.error() << "Data compression failed. Error code: " << result;
         return;
@@ -46,7 +50,7 @@ WorldMap MapSaver::load(const std::filesystem::path& path) {
     fin.read(reinterpret_cast<char*>(&packedDataSize), sizeof(packedDataSize));
 
     std::vector<uint8_t> packedData(packedDataSize);
-    std::vector<uint8_t> rawData(mapSize.x * mapSize.y);
+    std::vector<uint8_t> rawData(mapSize.x * mapSize.y * 2);
     fin.read(reinterpret_cast<char*>(packedData.data()), packedDataSize);
     uLongf destLen = static_cast<uLongf>(rawData.size());
 
@@ -57,8 +61,12 @@ WorldMap MapSaver::load(const std::filesystem::path& path) {
     }
 
     WorldMap map(mapSize);
-    for (int i = 0; i < mapSize.x * mapSize.y; ++i) {
+    const int tileCount = mapSize.x* mapSize.y;
+    for (int i = 0; i < tileCount; ++i) {
          map.at(i).floor = rawData[i];
+    }
+    for (int i = 0; i < tileCount; ++i) {
+        map.at(i).overlay = rawData[i + tileCount];
     }
     logger.info() << "World map successfully load.";
     return map;

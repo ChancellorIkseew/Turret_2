@@ -4,7 +4,7 @@
 
 WorldMap::WorldMap(const TileCoord mapSize) : terrain(mapSize.x * mapSize.y), mapSize(mapSize) {
     content::load(registry);
-    WorldMap::at(10, 10).block = new Block("round_shadow", "ice_block", TileCoord(10, 10));
+    //WorldMap::at(10, 10).block = new Block("round_shadow", "ice_block", TileCoord(10, 10));
 }
 
 void WorldMap::print() {
