@@ -8,7 +8,7 @@
 constexpr int COMPRESSION_LEVEL = 6;
 static debug::Logger logger("map_saver");
 
-void MapSaver::save(const WorldMap& map, const std::filesystem::path& path) {
+void serializer::saveMap(const WorldMap& map, const std::filesystem::path& path) {
     const auto mapSize = map.getSize();
     const int tileCount = mapSize.x * mapSize.y;
     std::vector<uint8_t> rawData;
@@ -37,7 +37,7 @@ void MapSaver::save(const WorldMap& map, const std::filesystem::path& path) {
     logger.info() << "World map successfully saved.";
 }
 
-WorldMap MapSaver::load(const std::filesystem::path& path) {
+WorldMap serializer::loadMap(const std::filesystem::path& path) {
     std::ifstream fin(path / "world_map.dat", std::ios::binary);
     if (!fin.is_open()) {
         logger.error() << "Failed to open file: " << path / "world_map.dat";

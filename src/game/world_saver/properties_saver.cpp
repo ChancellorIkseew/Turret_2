@@ -7,7 +7,7 @@
 
 static debug::Logger logger("properties_saver");
 
-void PropertiesSaver::saveContentIndexes(const ContentIndexes& indexes, const std::filesystem::path& path) {
+void serializer::saveContentIndexes(const ContentIndexes& indexes, const std::filesystem::path& path) {
     tin::Data data;
     for (const auto& [name, index] : indexes.floorTypes) {
         data.emplace(name, std::to_string(index));
@@ -21,7 +21,7 @@ void PropertiesSaver::saveContentIndexes(const ContentIndexes& indexes, const st
     tin::write(path / "content_indexes.tin", data);
 }
 
-ContentIndexes PropertiesSaver::loadContentIndexes(const std::filesystem::path& path) {
+ContentIndexes serializer::loadContentIndexes(const std::filesystem::path& path) {
     tin::Data data = tin::read(path/ "content_indexes.tin");
     ContentIndexes indexes;
     for (const auto& [name, index] : data) {
@@ -35,7 +35,7 @@ ContentIndexes PropertiesSaver::loadContentIndexes(const std::filesystem::path& 
     return indexes;
 }
 
-void PropertiesSaver::saveOverlayPreset(const OverlayPresets& overlayPresets, const std::filesystem::path& path) {
+void serializer::saveOverlayPreset(const OverlayPresets& overlayPresets, const std::filesystem::path& path) {
     tin::Data data;
     for (const auto& [id, frequency, deposite] : overlayPresets) {
         data.emplace(id, std::to_string(frequency) + '|' + std::to_string(deposite));
@@ -43,7 +43,7 @@ void PropertiesSaver::saveOverlayPreset(const OverlayPresets& overlayPresets, co
     tin::write(path / "overlay.tin", data);
 }
 
-OverlayPresets PropertiesSaver::loadOverlayPreset(const std::filesystem::path& path) {
+OverlayPresets serializer::loadOverlayPreset(const std::filesystem::path& path) {
     const tin::Data data = tin::read(path / "overlay.tin");
     OverlayPresets overlayPresets;
     for (const auto& [id, strEntry] : data) {
@@ -53,7 +53,7 @@ OverlayPresets PropertiesSaver::loadOverlayPreset(const std::filesystem::path& p
     return overlayPresets;
 }
 
-void PropertiesSaver::save(const WorldProperties& properties, const std::filesystem::path& path) {
+void serializer::save(const WorldProperties& properties, const std::filesystem::path& path) {
     tin::Data data;
     data.emplace("map_size", std::to_string(properties.mapSize.x) + '|' + std::to_string(properties.mapSize.y));
     data.emplace("seed", std::to_string(properties.seed));
@@ -61,7 +61,7 @@ void PropertiesSaver::save(const WorldProperties& properties, const std::filesys
     saveOverlayPreset(properties.overlayPresets, path);
 }
 
-WorldProperties PropertiesSaver::load(const std::filesystem::path& path) {
+WorldProperties serializer::load(const std::filesystem::path& path) {
     const tin::Data data = tin::read(path / "world_properties.tin");
     TileCoord mapSize = data.getTileCoord("map_size").value_or(TileCoord(0, 0));
     uint64_t seed = data.getUint64("seed").value_or(0U);

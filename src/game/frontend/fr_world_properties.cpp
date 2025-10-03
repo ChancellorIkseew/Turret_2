@@ -21,7 +21,7 @@ class OProps : public Layout {
     Layout* deposite  = nullptr;
 public:
     OProps() : Layout(Orientation::horizontal),
-        overlayPresets(PropertiesSaver::loadOverlayPreset(io::folders::GENERATION)) {
+        overlayPresets(serializer::loadOverlayPreset(io::folders::GENERATION)) {
         labels    = addNode(new Layout(Orientation::vertical));
         frequency = addNode(new Layout(Orientation::vertical));
         deposite  = addNode(new Layout(Orientation::vertical));

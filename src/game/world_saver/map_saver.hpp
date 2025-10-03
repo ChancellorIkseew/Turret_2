@@ -3,8 +3,7 @@
 
 class WorldMap;
 
-class MapSaver {
-public:
-    static void save(const WorldMap& world, const std::filesystem::path& path);
-    static WorldMap load(const std::filesystem::path& path);
-};
+namespace serializer {
+    void saveMap(const WorldMap& world, const std::filesystem::path& path);
+    WorldMap loadMap(const std::filesystem::path& path);
+}

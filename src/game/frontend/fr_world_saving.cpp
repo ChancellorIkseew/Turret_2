@@ -1,26 +1,26 @@
 #include "frontend.hpp"
 //
+#include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/form.hpp"
-#include "game/script_libs/lib_world_init.hpp"
 #include "game/world_saver/world_saver.hpp"
 #include "layouts/l_saves.hpp"
 
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 static std::string folder;
 
-static void saveWorld(Form* form, Selector* saves, Container* saving) {
+static void saveWorld(Form* form, Selector* saves, Container* saving, Engine& engine) {
     std::string folder = validator::toStdString(form->getText());
     if (!io::folders::isPathValid(folder))
         return;
-    WorldSaver::save(*lib_world::world, folder);
+    serializer::saveWorld(engine.getWorld(), folder);
     frontend::update(saves, folder);
     saving->arrange();
 }
 
-std::unique_ptr<Container> frontend::initWorldSaving() {
+std::unique_ptr<Container> frontend::initWorldSaving(Engine& engine) {
     folder = ""; // Reset folder name to avoid erors.
     auto saving = std::make_unique<Container>(Align::centre, Orientation::vertical);
     auto saves = saving->addNode(initSaves(folder).release());
@@ -31,7 +31,7 @@ std::unique_ptr<Container> frontend::initWorldSaving() {
     auto worldName = lower->addNode(new Form());
 
     back->addCallback([container = saving.get()] { container->close(); });
-    save->addCallback([=, saving = saving.get()] { saveWorld(worldName, saves, saving); });
+    save->addCallback([=, saving = saving.get(), &engine] { saveWorld(worldName, saves, saving, engine); });
 
     saving->arrange();
     return saving;

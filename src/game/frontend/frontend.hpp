@@ -11,7 +11,7 @@ namespace frontend {
     std::unique_ptr<Container> initMenu(Engine& engine);
     std::unique_ptr<Container> initControls();
     std::unique_ptr<Container> initWorldLoading(Engine& engine);
-    std::unique_ptr<Container> initWorldSaving();
+    std::unique_ptr<Container> initWorldSaving(Engine& engine);
     std::unique_ptr<Container> initSettings(Engine& engine);
     std::unique_ptr<Container> initTimer();
     std::unique_ptr<Container> initWorldProperties(Engine& engine);
