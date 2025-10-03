@@ -290,13 +290,13 @@
     <ClCompile Include="src\engine\engine.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\menu.cpp">
+    <ClCompile Include="src\game\frontend\fr_menu.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\frontend\fr_settings.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\timer.cpp">
+    <ClCompile Include="src\game\frontend\fr_timer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\world\camera.cpp">
@@ -323,10 +323,10 @@
     <ClCompile Include="src\game\weather\weather.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\jei.cpp">
+    <ClCompile Include="src\game\frontend\fr_jei.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\main_menu.cpp">
+    <ClCompile Include="src\game\frontend\fr_main_menu.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\widgets\image_button.cpp">
@@ -380,16 +380,16 @@
     <ClCompile Include="src\game\player\player_controller.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\hint.cpp">
+    <ClCompile Include="src\game\frontend\fr_hint.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\world_loading.cpp">
+    <ClCompile Include="src\game\frontend\fr_world_loading.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\world_saver\map_saver.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\frontend\world_saving.cpp">
+    <ClCompile Include="src\game\frontend\fr_world_saving.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\io\folders.cpp">
