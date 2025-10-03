@@ -55,7 +55,12 @@ void Engine::createWorldInEditor(WorldProperties& properties) {
 void Engine::openMainMenu() {
     closeWorld();
     command = EngineCommand::main_menu;
-    worldProperties = WorldProperties(TileCoord(100, 100), 0U, { {0, 5, 7} });;
+    OverlayPresets overlayPresets{
+        { "overlay_iron", 50, 7 },
+        { "overlay_coal", 50, 3 },
+        { "overlay_copper", 50, 5 }
+    };
+    worldProperties = WorldProperties(TileCoord(100, 100), 0U, overlayPresets);
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {

@@ -52,11 +52,11 @@ static WorldMap generateMap(const WorldProperties& properties) {
 
     SpotGenerator2D spotGenerator(properties.seed);
 
-    std::unordered_map<uint8_t, HashNoise2D> hashNoises;
-    uint64_t x = 0U;
+    std::unordered_map<std::string, HashNoise2D> hashNoises;
+    uint64_t seedOfset = 0U;
     for (const auto& [id, frequency, deposite] : properties.overlayPresets) {
-        hashNoises.emplace(id, HashNoise2D(properties.seed + x));
-        x += 50U;
+        hashNoises.emplace(id, HashNoise2D(properties.seed + seedOfset));
+        seedOfset += 50U;
     }
 
     for (int x = 0; x < mapSize.x; ++x) {
@@ -67,7 +67,7 @@ static WorldMap generateMap(const WorldProperties& properties) {
  
             for (const auto& [id, frequency, deposite] : properties.overlayPresets) {
                 if (hashNoises.at(id).createTile(x, y, frequency))
-                    spotGenerator.generateSpot(map, TileCoord(x, y), id, deposite);
+                    spotGenerator.generateSpot(map, TileCoord(x, y), map.getContent().overlayTypes.at(id), deposite);
             }
         }
     }

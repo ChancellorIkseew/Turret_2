@@ -15,3 +15,25 @@ void content::load(ElementRegistry& reg) {
             reg.blockTypes.emplace(name, validator::toUint16(id).value_or(0U));
     }
 }
+
+const std::string& ElementRegistry::getFloorByIndex(const uint8_t index) const {
+    for (const auto& [type, id] : floorTypes) {
+        if (index == id)
+            return type;
+    }
+    return "";
+}
+const std::string& ElementRegistry::getOverlayByIndex(const uint8_t index) const {
+    for (const auto& [type, id] : overlayTypes) {
+        if (index == id)
+            return type;
+    }
+    return "";
+}
+const std::string& ElementRegistry::getBlockByIndex(const uint16_t index) const {
+    for (const auto& [type, id] : blockTypes) {
+        if (index == id)
+            return type;
+    }
+    return "";
+}

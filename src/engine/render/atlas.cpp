@@ -26,7 +26,7 @@ void Atlas::addTexture(const fs::path& path) {
     }
     std::string name = path.filename().stem().string();
     if (atlas.contains(name)) {
-        logger.warning() << "Texture with name \" " << name << "\" already exists.";
+        logger.warning() << "Texture with name \"" << name << "\" already exists.";
         return;
     }
     SDL_Surface* surface = IMG_Load(path.string().c_str());
