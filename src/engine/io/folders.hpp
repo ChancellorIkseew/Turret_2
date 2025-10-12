@@ -20,7 +20,9 @@ namespace io::folders {
 
     bool isPathValid(const std::filesystem::path& path) noexcept;
     bool folderExists(const std::filesystem::path& path);
+    ///@brief Returns true if folder already exists or folder was
+    /// successfully created by this function.
     bool createOrCheckFolder(const std::filesystem::path& path);
-    Contents getContents(const std::filesystem::path& path, ContentsType type);
+    Contents getContents(const std::filesystem::path& path, const ContentsType type);
     void deleteFolder(const std::filesystem::path& path);
 }

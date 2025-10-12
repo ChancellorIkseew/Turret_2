@@ -67,8 +67,11 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     std::unique_ptr<GUI> gui;
     std::unique_ptr<World> world;
 
-    if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
+    if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world) {
         world = serializer::loadWorld(folder);
+        if (!world)
+            return openMainMenu();
+    }   
     else
         world = gen::generateWorld(properties);
 

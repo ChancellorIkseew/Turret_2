@@ -10,10 +10,7 @@ bool io::folders::isPathValid(const fs::path& path) noexcept {
 }
 
 bool io::folders::folderExists(const std::filesystem::path& path) {
-    bool exists = isPathValid(path) && fs::exists(path) && fs::is_directory(path);
-    if (!exists)
-        logger.error() << "Directory does not exist. Invalid path: " << path;
-    return exists;
+    return isPathValid(path) && fs::exists(path) && fs::is_directory(path);
 }
 
 bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
@@ -37,10 +34,12 @@ bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
     }
 }
 
-io::folders::Contents io::folders::getContents(const std::filesystem::path& path, ContentsType type) {
+io::folders::Contents io::folders::getContents(const std::filesystem::path& path, const ContentsType type) {
     Contents contents;
-    if (!folderExists(path))
+    if (!folderExists(path)) {
+        logger.error() << "Directory does not exist. Path: " << path;
         return contents;
+    }
     for (const auto& entry : fs::directory_iterator(path)) {
         if (type == ContentsType::folder && entry.is_directory() ||
             type == ContentsType::file && entry.is_regular_file())
@@ -51,13 +50,15 @@ io::folders::Contents io::folders::getContents(const std::filesystem::path& path
 }
 
 void io::folders::deleteFolder(const std::filesystem::path& path) {
-    if (!folderExists(path))
+    if (!folderExists(path)) {
+        logger.error() << "Directory does not exist. Path: " << path;
         return;
+    }
     try {
         fs::remove_all(path);
         logger.info() << "Deleted directory: " << path;
     }
     catch (const fs::filesystem_error& exception) {
         logger.error() << "Failed to delete directory: " << path << "std::filesystem exception : " << exception.what();
-    }  
+    }
 }

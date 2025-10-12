@@ -95,6 +95,7 @@
     <ClInclude Include="src\game\world_drawer\world_drawer.hpp" />
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
     <ClInclude Include="src\game\world_saver\properties_saver.hpp" />
+    <ClInclude Include="src\game\world_saver\serializer_error.hpp" />
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
