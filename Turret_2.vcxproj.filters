@@ -446,6 +446,9 @@
     <ClCompile Include="src\engine\debug\console.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\engine\io\comon_pathes.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\engine\debug\color_format.inl">

@@ -4,13 +4,15 @@
 #include <vector>
 
 namespace io::folders {
-    inline const std::filesystem::path RES = "res";
-    inline const std::filesystem::path SAVES = "saves";
-    inline const std::filesystem::path SCREENSHOTS = "screenshots";
-    inline const std::filesystem::path LANG = RES / "lang";
-    inline const std::filesystem::path IMAGES = RES / "images";
-    inline const std::filesystem::path FONTS = RES / "fonts";
-    inline const std::filesystem::path GENERATION = RES / "generation";
+    namespace fs = std::filesystem;
+    extern const fs::path RES;
+    extern const fs::path SAVES;
+    extern const fs::path SCREENSHOTS;
+    extern const fs::path LANG;
+    extern const fs::path IMAGES;
+    extern const fs::path FONTS;
+    extern const fs::path CONTENT;
+    extern const fs::path GENERATION;
 
     using Contents = std::vector<std::string>;
     enum class ContentsType : uint8_t {
@@ -18,11 +20,11 @@ namespace io::folders {
         file
     };
 
-    bool isPathValid(const std::filesystem::path& path) noexcept;
-    bool folderExists(const std::filesystem::path& path);
+    bool isPathValid(const fs::path& path) noexcept;
+    bool folderExists(const fs::path& path);
     ///@brief Returns true if folder already exists or folder was
     /// successfully created by this function.
-    bool createOrCheckFolder(const std::filesystem::path& path);
-    Contents getContents(const std::filesystem::path& path, const ContentsType type);
-    void deleteFolder(const std::filesystem::path& path);
+    bool createOrCheckFolder(const fs::path& path);
+    Contents getContents(const fs::path& path, const ContentsType type);
+    void deleteFolder(const fs::path& path);
 }

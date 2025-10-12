@@ -21,7 +21,7 @@ static inline bool fromMaxToMin(const Pair a, const Pair b) {
 }
 
 static std::vector<Pair> readGen(const ContentIndexes& reg) {
-    tin::Data data = tin::read(io::folders::GENERATION / "floor.tin");
+    tin::Data data = tin::read(io::folders::GENERATION / "default" / "floor.tin");
     std::vector<Pair> vals;
     for (const auto& [name, val] : data) {
         vals.emplace_back(validator::toFloat(val).value_or(1.0f), reg.floorTypes.at(name));

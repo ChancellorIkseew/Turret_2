@@ -9,7 +9,7 @@ static const std::string overlayError = "overlay_error";
 static const std::string blockError = "block_error";
 
 void content::load(ContentIndexes& reg) {
-    tin::Data data = tin::read(io::folders::RES / "map_content.tin");
+    tin::Data data = tin::read(io::folders::CONTENT / "content_indexes.tin");
     for (const auto& [name, id] : data) {
         if (name.find("floor_") != std::string::npos)
             reg.floorTypes.emplace(name, validator::toUint8(id).value_or(0U));

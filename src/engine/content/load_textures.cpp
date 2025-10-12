@@ -7,7 +7,7 @@
 
 void content::loadTextures() {
     Atlas::clear();
-    list::Data textureNames = list::read(io::folders::RES / "textures.list");
+    list::Data textureNames = list::read(io::folders::CONTENT / "textures.list");
     for (const auto& name : textureNames) {
         Atlas::addTexture(io::folders::IMAGES / name);
     }
