@@ -109,7 +109,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
         worldDrawer.draw();
-        Events::clear(); // for editor
+        Events::reset(); // for editor
         MobController::interact(*player, camera);
 
         mainWindow.setRenderScale(1.0f);

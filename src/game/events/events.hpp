@@ -1,22 +1,30 @@
 #pragma once
-#include <unordered_map>
+#include <array>
 
 enum class Event : uint8_t {
-    terrain_changed
+    map_changed,
+    floor_changed,
+    overlay_changed,
+    block_changed,
+    mob_spavned,
+    shell_spawned,
+    count
 };
 
-class Events {
-    static inline std::unordered_map<Event, bool> events;
+class Events {;
+    static inline std::array<bool, static_cast<size_t>(Event::count)> states = {
+        false, false, false, false, false, false
+    };
 public:
-    static void pushEvent(const Event event) {
-        events[event] = true;
+    static bool active(const Event eventType) {
+        return states[size_t(eventType)];
     }
-    static void clear() {
-        for (auto& [Event, state] : events) {
+    static constexpr void setActive(const Event event) {
+        states[size_t(event)] = true;
+    }
+    static void reset() {
+        for (auto& state : states) {
             state = false;
         }
-    }
-    static bool active(const Event event) {
-        return events.contains(event) && events.at(event);
     }
 };

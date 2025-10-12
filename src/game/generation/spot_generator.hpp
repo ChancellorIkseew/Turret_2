@@ -15,7 +15,7 @@ public:
 			tile = tile + spotPreset[hashNoise.createTile(tile.x ^ s, tile.y ^ s) % 4];
 			for (int i = 0; i < 5; ++i) {
 				if (map.tileExists(tile + spotPreset[i]))
-					map.placeOverlay(tile + spotPreset[i], tileType);
+					map.at(tile + spotPreset[i]).overlay = tileType;
 			}
 		}
 	}

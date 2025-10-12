@@ -17,7 +17,7 @@ public:
     Team(const std::u32string& name, const TeamID ID) : name(name), ID(ID) { }
 
     void interact(World& world);
-    void drawGroundUnits(const Camera& camera) ;
+    void drawGroundUnits(const Camera& camera);
     void drawAirUnits(const Camera& camera);
     void drawShells(const Camera& camera);
 

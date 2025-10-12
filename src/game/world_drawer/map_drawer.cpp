@@ -48,7 +48,7 @@ void MapDrawer::cacheOverlay() {
 void MapDrawer::draw() {
     const TileCoord start = camera.getStartTile();
     const TileCoord end = camera.getEndTile();
-    if (cashedStart != start || cashedEnd != end || Events::active(Event::terrain_changed)) {
+    if (cashedStart != start || cashedEnd != end || Events::active(Event::map_changed)) {
         cashedStart = start;
         cashedEnd = end;
         cacheFloor();

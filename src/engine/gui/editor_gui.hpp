@@ -39,6 +39,5 @@ private:
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
         case TileComponent::block: break;
         }
-        Events::pushEvent(Event::terrain_changed);
     }
 };

@@ -43,7 +43,7 @@ public:
         for (auto& it : flakes) {
             ++it.lifetime;
             it.position = it.position + dtsin(it.lifetime) * 1.6f - dtsin(it.lifetime + 1U) * 0.5f;
-            sprite.setPosition(floorf(it.position.x), floorf(it.position.y));
+            sprite.setPosition(PixelCoord(floorf(it.position.x), floorf(it.position.y)));
             sprite.drawFast();
         }
     }
