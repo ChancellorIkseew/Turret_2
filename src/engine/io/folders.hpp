@@ -13,6 +13,7 @@ namespace io::folders {
     extern const fs::path FONTS;
     extern const fs::path CONTENT;
     extern const fs::path GENERATION;
+    extern const fs::path GENERATION_DEFAULT;
 
     using Contents = std::vector<std::string>;
     enum class ContentsType : uint8_t {

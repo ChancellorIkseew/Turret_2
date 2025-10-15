@@ -9,7 +9,7 @@
 #include "engine/widgets/form.hpp"
 #include "engine/widgets/label.hpp"
 #include "game/generation/generation.hpp"
-#include "game/world_saver/properties_saver.hpp"
+#include "game/world_saver/gen_preset_saver.hpp"
 
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 constexpr PixelCoord ICON_SIZE(0.0f, 20.0f);
@@ -21,7 +21,7 @@ class OProps : public Layout {
     Layout* deposite  = nullptr;
 public:
     OProps() : Layout(Orientation::horizontal),
-        overlayPresets(serializer::loadOverlayPreset(io::folders::GENERATION)) {
+        overlayPresets(serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT)) {
         labels    = addNode(new Layout(Orientation::vertical));
         frequency = addNode(new Layout(Orientation::vertical));
         deposite  = addNode(new Layout(Orientation::vertical));
@@ -59,7 +59,8 @@ static void createWorld(Engine& engine, Form* _seed, Form* width, Form* height, 
     uint64_t seed = validator::toUint64(_seed->getText()).value_or(0U);
     mapSize.x = validator::toInt32(width->getText()).value_or(100);
     mapSize.y = validator::toInt32(height->getText()).value_or(100);
-    WorldProperties properties(mapSize, seed, oprops->getPresets());
+    const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
+    WorldProperties properties(mapSize, seed, floorPresets, oprops->getPresets());
     engine.createWorldInGame(properties);
 }
 

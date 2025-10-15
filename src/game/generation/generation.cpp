@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <vector>
 #include "engine/debug/logger.hpp"
-#include "engine/io/folders.hpp"
-#include "engine/io/parser/tin_parser.hpp"
 #include "game/world/world.hpp"
 #include "hash_noise.hpp"
 #include "perlin_noise.hpp"
@@ -12,27 +10,11 @@
 
 constexpr float MAIN_NOISE_SCALE = 40.0f;
 constexpr float SUPPORT_NOISE_SCALE = 10.0f;
-static debug::Logger logger("world_generation");
 
 using Pair = std::pair<float, uint8_t>;
 
 static inline bool fromMaxToMin(const Pair a, const Pair b) {
     return a.first > b.first;
-}
-
-static std::vector<Pair> readGen(const ContentIndexes& reg) {
-    tin::Data data = tin::read(io::folders::GENERATION / "default" / "floor.tin");
-    std::vector<Pair> vals;
-    for (const auto& [name, val] : data) {
-        vals.emplace_back(validator::toFloat(val).value_or(1.0f), reg.floorTypes.at(name));
-    }
-
-    std::sort(vals.begin(), vals.end(), fromMaxToMin);
-
-    for (const auto& [f, ui] : vals) {
-        logger.debug() << "float: " << f << " uint: " << ui;
-    }
-    return vals;
 }
 
 static uint8_t calculateTileType(const float height, const std::vector<Pair>& vals) {
@@ -43,12 +25,21 @@ static uint8_t calculateTileType(const float height, const std::vector<Pair>& va
     return 0U;
 }
 
+static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets, const WorldMap& map) {
+    std::vector<Pair> vals;
+    for (const auto& [name, height] : floorPresets) {
+        vals.emplace_back(height, map.getContentIndexes().floorTypes.at(name));
+    }
+    std::sort(vals.begin(), vals.end(), fromMaxToMin);
+    return vals;
+}
+
 static WorldMap generateMap(const WorldProperties& properties) {
     const auto mapSize = properties.mapSize;
     PerlinNoise2D mainNoise(properties.seed);
     PerlinNoise2D supportNoise(properties.seed + 100U);
     WorldMap map(mapSize);
-    const auto vals = readGen(map.getContentIndexes());
+    const auto vals = processFloorPresets(properties.floorPresets, map);
 
     SpotGenerator2D spotGenerator(properties.seed);
 

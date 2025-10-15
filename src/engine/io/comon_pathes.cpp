@@ -9,3 +9,4 @@ const fs::path io::folders::IMAGES = RES / "images";
 const fs::path io::folders::FONTS = RES / "fonts";
 const fs::path io::folders::CONTENT = RES / "content";
 const fs::path io::folders::GENERATION = CONTENT / "generation";
+const fs::path io::folders::GENERATION_DEFAULT = GENERATION / "default";

@@ -93,6 +93,7 @@
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\world_drawer.hpp" />
+    <ClInclude Include="src\game\world_saver\gen_preset_saver.hpp" />
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
     <ClInclude Include="src\game\world_saver\properties_saver.hpp" />
     <ClInclude Include="src\game\world_saver\serializer_error.hpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="src\game\world\world_map.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />
+    <ClCompile Include="src\game\world_saver\gen_preset_saver.cpp" />
     <ClCompile Include="src\game\world_saver\map_saver.cpp" />
     <ClCompile Include="src\game\world_saver\properties_saver.cpp" />
     <ClCompile Include="src\game\world_saver\world_saver.cpp" />

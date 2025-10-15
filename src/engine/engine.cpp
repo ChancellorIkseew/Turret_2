@@ -20,6 +20,9 @@
 #include "game/player/player_controller.hpp"
 #include "game/world_saver/world_saver.hpp"
 #include "game/generation/generation.hpp"
+//
+#include "engine/io/folders.hpp"
+#include "game/world_saver/gen_preset_saver.hpp"
 
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
@@ -55,12 +58,9 @@ void Engine::createWorldInEditor(WorldProperties& properties) {
 void Engine::openMainMenu() {
     closeWorld();
     command = EngineCommand::main_menu;
-    OverlayPresets overlayPresets{
-        { "overlay_iron", 50, 7 },
-        { "overlay_coal", 50, 3 },
-        { "overlay_copper", 50, 5 }
-    };
-    worldProperties = WorldProperties(TileCoord(100, 100), 0U, overlayPresets);
+    const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
+    const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
+    worldProperties = WorldProperties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
