@@ -56,7 +56,7 @@ void Controls::readBindings() {
 
 void Controls::addBinding(const std::string& bindName, const std::string& keyName) {
     if (bindings.contains(bindName)) {
-        logger.error() << "BindName already exists. BindName : " << bindName;
+        logger.warning() << "BindName already exists. BindName : " << bindName;
         return;
     }
     const auto binding = getBinding(keyName);
