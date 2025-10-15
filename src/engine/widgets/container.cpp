@@ -11,7 +11,7 @@ void Container::aplyAlignment(const PixelCoord windowSize) {
         setPosition(PixelCoord(0.0f, getPosition().y));
     else if ((align | Align::right) == align)
         setPosition(PixelCoord(windowSize.x - getSize().x, getPosition().y));
-    //  
+    //
     if ((align | Align::up) == align)
         setPosition(PixelCoord(getPosition().x, 0.0f));
     else if ((align | Align::down) == align)
