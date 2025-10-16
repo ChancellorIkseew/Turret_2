@@ -4,7 +4,6 @@
 #include "engine/coords/tile_coord.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/coords/transforms.hpp"
-#include "map_content.hpp"
 
 class Block {
     Sprite shadow;
@@ -31,7 +30,6 @@ struct MapTile {
 };
 
 class WorldMap {
-    ContentIndexes indexes;
     std::vector<MapTile> terrain;
     const TileCoord mapSize;
 public:
@@ -47,10 +45,6 @@ public:
     }
     t1_finline bool tileExists(const TileCoord tile) const {
         return tileExists(tile.x, tile.y);
-    }
-
-    const ContentIndexes& getContentIndexes() const {
-        return indexes;
     }
 
     t1_finline const MapTile& at(const int x, const int y) const noexcept { return terrain[x + y * mapSize.x]; }

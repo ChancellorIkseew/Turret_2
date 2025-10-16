@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp" />
-    <ClInclude Include="src\engine\content\load_content.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\math.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
@@ -64,6 +63,8 @@
     <ClInclude Include="src\engine\window\input\controls.hpp" />
     <ClInclude Include="src\engine\window\input\input.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
+    <ClInclude Include="src\game\content\indexes.hpp" />
+    <ClInclude Include="src\game\content\content.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
@@ -88,7 +89,6 @@
     <ClInclude Include="src\game\weather\weather.hpp" />
     <ClInclude Include="src\game\world\camera.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
-    <ClInclude Include="src\game\world\map_content.hpp" />
     <ClInclude Include="src\game\world\world_map.hpp" />
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
@@ -100,7 +100,6 @@
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\engine\content\load_textures.cpp" />
     <ClCompile Include="src\engine\coords\math.cpp" />
     <ClCompile Include="src\engine\coords\transforms.cpp" />
     <ClCompile Include="src\engine\debug\console.cpp" />
@@ -135,6 +134,8 @@
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
+    <ClCompile Include="src\game\content\indexes.cpp" />
+    <ClCompile Include="src\game\content\textures.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_languages.cpp" />
     <ClCompile Include="src\game\frontend\fr_hint.cpp" />
@@ -158,7 +159,6 @@
     <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
     <ClCompile Include="src\game\world\camera.cpp" />
-    <ClCompile Include="src\game\world\map_content.cpp" />
     <ClCompile Include="src\game\world\world_map.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />

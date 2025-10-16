@@ -1,20 +1,21 @@
 #include "map_drawer.hpp"
 //
+#include "game/content/indexes.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/render/atlas.hpp"
 #include "game/events/events.hpp"
 #include "game/world/camera.hpp"
-#include "game/world/world.hpp"
+#include "game/world/world_map.hpp"
 
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
-MapDrawer::MapDrawer(const Camera& camera, const World& world) :
-    camera(camera), map(world.getMap()) {
-    for (const auto& [name, id] : world.getMap().getContentIndexes().floorTypes) {
+MapDrawer::MapDrawer(const Camera& camera, const WorldMap& map) :
+    camera(camera), map(map) {
+    for (const auto& [name, id] : content::Indexes::getFloor()) {
         cachedFloor.emplace(id, std::vector<PixelCoord>());
         floorTextures.emplace(id, Texture(name));
     }
-    for (const auto& [name, id] : world.getMap().getContentIndexes().overlayTypes) {
+    for (const auto& [name, id] : content::Indexes::getOverlay()) {
         cachedOverlay.emplace(id, std::vector<PixelCoord>());
         overlayTextures.emplace(id, Texture(name));
     }

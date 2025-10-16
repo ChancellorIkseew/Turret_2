@@ -6,7 +6,7 @@
 #include "engine/gui/gameplay_gui.hpp"
 #include "engine/gui/menu_gui.hpp"
 //
-#include "engine/content/load_content.hpp"
+#include "game/content/content.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/util/sleep.hpp"
 //
@@ -27,7 +27,7 @@
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
-    content::loadTextures();
+    content::load();
     openMainMenu();
     while (mainWindow.isOpen()) {
         createScene(worldFolder, worldProperties);

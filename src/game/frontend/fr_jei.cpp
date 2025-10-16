@@ -2,12 +2,13 @@
 //
 #include "engine/gui/gui_util/tile_data.hpp"
 #include "engine/widgets/image_button.hpp"
+#include "game/content/indexes.hpp"
 #include "game/world/world.hpp"
 
 constexpr int ROW_SIZE = 6;
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
 
-std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ContentIndexes& reg) {
+std::unique_ptr<Container> frontend::initJEI(TileData& tileData) {
     auto jei = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);
     int btns = 0;
     auto line = std::make_unique<Layout>(Orientation::horizontal);
@@ -26,15 +27,15 @@ std::unique_ptr<Container> frontend::initJEI(TileData& tileData, const ContentIn
         }
     };
 
-    for (const auto& [floorName, id] : reg.floorTypes) {
+    for (const auto& [floorName, id] : content::Indexes::getFloor()) {
         addButton(floorName, id, TileComponent::floor);
     }
-    for (const auto& [overlayName, id] : reg.overlayTypes) {
+    for (const auto& [overlayName, id] : content::Indexes::getOverlay()) {
         addButton(overlayName, id, TileComponent::overlay);
     }
 
     tileData.component = TileComponent::floor; // Reset tileData to avoid errors.
-    tileData.id = reg.floorTypes.begin()->second;
+    tileData.id = content::Indexes::getFloor().begin()->second;
 
     if (btns != 0)
         jei->addNode(line.release());

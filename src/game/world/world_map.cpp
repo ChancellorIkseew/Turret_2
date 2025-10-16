@@ -3,10 +3,8 @@
 #include <iostream>
 #include "game/events/events.hpp"
 
-WorldMap::WorldMap(const TileCoord mapSize) : terrain(mapSize.x * mapSize.y), mapSize(mapSize) {
-    content::load(indexes);
-    //WorldMap::at(10, 10).block = new Block("round_shadow", "ice_block", TileCoord(10, 10));
-}
+WorldMap::WorldMap(const TileCoord mapSize) :
+    terrain(mapSize.x * mapSize.y), mapSize(mapSize) { }
 
 void WorldMap::print() {
     for (int x = 0; x < mapSize.x; ++x) {

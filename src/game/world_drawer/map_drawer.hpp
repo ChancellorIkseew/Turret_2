@@ -5,7 +5,6 @@
 
 struct MapTile;
 class Camera;
-class World;
 class WorldMap;
 
 class MapDrawer {
@@ -18,7 +17,7 @@ class MapDrawer {
     std::map<uint8_t, Texture> floorTextures;
     std::map<uint8_t, Texture> overlayTextures;
 public:
-    MapDrawer(const Camera& camera, const World& world);
+    MapDrawer(const Camera& camera, const WorldMap& map);
     void cacheFloor();
     void cacheOverlay();
     void draw();

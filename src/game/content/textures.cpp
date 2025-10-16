@@ -1,9 +1,15 @@
-#include "load_content.hpp"
+#include "content.hpp"
 //
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/list_parser.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/text.hpp"
+#include "indexes.hpp"
+
+void content::load() {
+    loadTextures();
+    Indexes::load();
+}
 
 void content::loadTextures() {
     Atlas::clear();
