@@ -13,7 +13,10 @@ static const std::string overlayError = "overlay_error";
 static const std::string blockError = "block_error";
 
 void content::Indexes::load() {
-    tin::Data data = tin::read(io::folders::CONTENT / "content_indexes.tin");
+    std::filesystem::path path = io::folders::CONTENT / "content_indexes.tin";
+    if (!io::folders::fileExists(path)) // Should not be caught. Crash the game. 
+        throw std::runtime_error("Could not find content indexes file. Path: " + path.string());
+    tin::Data data = tin::read(path);
     for (const auto& [name, id] : data) {
         if (name.find("floor_") != std::string::npos)
             floor.emplace(name, validator::toUint8(id).value_or(0U));

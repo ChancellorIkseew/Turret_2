@@ -12,6 +12,9 @@ bool io::folders::isPathValid(const fs::path& path) noexcept {
 bool io::folders::folderExists(const std::filesystem::path& path) {
     return isPathValid(path) && fs::exists(path) && fs::is_directory(path);
 }
+bool io::folders::fileExists(const std::filesystem::path& path) {
+    return isPathValid(path) && fs::exists(path) && fs::is_regular_file(path);
+}
 
 bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
     if (!isPathValid(path)) {
