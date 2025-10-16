@@ -42,6 +42,7 @@ void GUI::translate() {
     for (auto& it : overlaped) {
         it->translate(langTranslations);
     }
+    relocateContainers();
 }
 
 void GUI::loadLangTranslations(const std::string& lang) {
@@ -64,8 +65,8 @@ void GUI::callback() {
 }
 
 void GUI::addOverlaped(std::unique_ptr<Container> container) {
-    container->aplyAlignment(mainWindow.getSize());
     container->translate(langTranslations);
+    container->aplyAlignment(mainWindow.getSize());
     overlaped.push_back(std::move(container));
 }
 
