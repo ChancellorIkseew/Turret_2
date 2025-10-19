@@ -104,13 +104,13 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     //TODO: std::thread network([&] { startNet(); }); 
     while (mainWindow.isOpen() && worldOpen) {
         mainWindow.pollEvents();
-        camera.interact(mainWindow.getSize());
+        camera.update(mainWindow.getSize());
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
         worldDrawer.draw();
         Events::reset(); // for editor
-        MobController::interact(*player, camera);
+        MobController::update(*player, camera);
 
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));

@@ -24,6 +24,9 @@ public:
     void spawnMob(const MobPreset& preset, const PixelCoord position, const float angle);
     void spawnShell(const ShellPreset& preset, const PixelCoord position, const float angle);
 
+
+    const std::list<Mob>& getMobs() const { return mobs; }
+    const std::list<Shell>& getShells() const { return shells; }
     std::list<Mob>& getMobs() { return mobs; }
     std::list<Shell>& getShells() { return shells; }
 

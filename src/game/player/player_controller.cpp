@@ -4,6 +4,8 @@
 #include "engine/window/input/input.hpp"
 #include "engine/util/sleep.hpp"
 #include "game/world/camera.hpp"
+#include "game/physics/team/team.hpp"
+#include "game/physics/mob_ai.hpp"
 
 void MobController::shoot(const Camera& camera) {
 	const auto mouse = camera.fromScreenToMap(Input::getMouseCoord());
@@ -17,7 +19,7 @@ void MobController::mine() {
 
 }
 
-void MobController::move() {
+void MobController::move(Camera& camera) {
 	PixelCoord delta(0.0f, 0.0f);
 
 	if (Input::active(Move_up))
@@ -30,15 +32,34 @@ void MobController::move() {
 		delta.x += 1.0f;
 
 	motionVector.store(delta, std::memory_order_relaxed);
+	if (state == State::control_camera) {
+		camera.move(delta);
+		camera.moveByMouse();
+		camera.scale();
+	}
+
+	if (state == State::control_mob) {
+		//camera.move(); move with mob
+		camera.scale();
+	}
+
 }
 
-
-void MobController::interact(const Team& player, const Camera& camera) {
-	move();
+void MobController::update(const Team& playerTeam, Camera& camera) {
+	move(camera);
 	shoot(camera);
 	mine();
+	captureMob(playerTeam, camera);
 }
 
-void MobController::captureMob(Mob* mob) {
-	targetedMob = mob;
+void MobController::captureMob(const Team& playerTeam, const Camera& camera) {
+	if (!Input::active(Control_unit))
+		return;
+	for (const auto& mob : playerTeam.getMobs()) {
+		if (!t1::areCloser(camera.fromMapToScreen(mob.position), Input::getMouseCoord(), 20.f))
+			return;
+	    targetedMob = const_cast<Mob*>(&mob);
+	    targetedMob->movingAI = std::make_unique<PlayerControlledMoving>();
+		//TODO: targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>();
+	}
 }
