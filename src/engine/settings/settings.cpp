@@ -32,6 +32,7 @@ void Settings::readSettings() {
     display.fullscreen = data.getBool("fullscreen").value_or(false);
     //
     gameplay.showHitboxes = data.getBool("show_hitboxes").value_or(false);
+    gameplay.cameraInertia = data.getBool("camera_inertia").value_or(true);
     //
     gui.lang = data.getString("lang").value_or("en_US");
     gui.showConsole = data.getBool("show_console").value_or(false);

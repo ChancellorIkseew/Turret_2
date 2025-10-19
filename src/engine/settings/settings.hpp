@@ -14,7 +14,8 @@ class Settings {
         bool fullscreen = false;
     };
     struct _Gameplay {
-        bool showHitboxes = false; 
+        bool showHitboxes = false;
+        bool cameraInertia = true;
     };
 public:
     static inline _GUI gui;
