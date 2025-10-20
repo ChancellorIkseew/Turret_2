@@ -30,7 +30,8 @@ public:
 	static void captureMob(const Team& playerTeam, const Camera& camera);
 	static void update(const Team& playerTeam, Camera& camera, const GUI& gui);
 
-	static void setTarget(Mob* mob) { targetedMob = mob; }
+	static void resetTarget();
+	static void setTarget(const Mob& mob);
 	static Mob* getTarget() { return targetedMob; }
 
 	static PixelCoord getMotionVector() { return motionVector.load(std::memory_order_relaxed); }

@@ -60,10 +60,25 @@ void MobController::captureMob(const Team& playerTeam, const Camera& camera) {
 	if (!Input::active(Control_unit))
 		return;
 	for (const auto& mob : playerTeam.getMobs()) {
-		if (!t1::areCloser(camera.fromMapToScreen(mob.position), Input::getMouseCoord(), 20.f))
-			return;
-	    targetedMob = const_cast<Mob*>(&mob);
-	    targetedMob->movingAI = std::make_unique<PlayerControlledMoving>();
-		//TODO: targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>();
+		if (t1::areCloser(camera.fromMapToScreen(mob.position), Input::getMouseCoord(), 20.f))
+			return setTarget(mob);
 	}
+	resetTarget();
+}
+
+void MobController::setTarget(const Mob& mob) {
+	resetTarget();
+	targetedMob = const_cast<Mob*>(&mob);
+	targetedMob->movingAI = std::make_unique<PlayerControlledMoving>();
+	//TODO: targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>();
+	state = State::control_mob;
+}
+
+void MobController::resetTarget() {
+	if (!targetedMob)
+		return;
+	targetedMob->movingAI = std::make_unique<BasicMovingAI>();
+	//TODO: targetedMob->shootingAI = std::make_unique<BasicShootingAI>();
+	targetedMob = nullptr;
+	state = State::control_camera;
 }
