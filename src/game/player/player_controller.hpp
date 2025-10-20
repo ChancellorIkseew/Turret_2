@@ -1,19 +1,21 @@
 #pragma once
 #include <atomic>
+#include <cstdint>
 #include "engine/coords/pixel_coord.hpp"
 
 struct Mob;
+class GUI;
 class Camera;
 class Team;
 
 class MobController {
-	enum class State {
+	enum class State : uint8_t {
 		control_camera,
-		control_mob,
-		use_gui
+		control_mob
 	};
 
 	static inline State state = State::control_camera;
+	static inline bool guiActive;
 
 	static inline Mob* targetedMob = nullptr;
 	//static inline Control preveousControlType = Control::NONE;
@@ -26,7 +28,7 @@ class MobController {
 	static void shoot(const Camera& camera);
 public:
 	static void captureMob(const Team& playerTeam, const Camera& camera);
-	static void update(const Team& playerTeam, Camera& camera);
+	static void update(const Team& playerTeam, Camera& camera, const GUI& gui);
 
 	static void setTarget(Mob* mob) { targetedMob = mob; }
 	static Mob* getTarget() { return targetedMob; }

@@ -24,6 +24,7 @@ public:
     void translate();
     virtual void callback();
     void addOverlaped(std::unique_ptr<Container> container);
+    bool hasOverlaped() const { return !overlaped.empty(); }
     bool isMouseFree() const;
     static void loadLangTranslations(const std::string& lang);
 protected:

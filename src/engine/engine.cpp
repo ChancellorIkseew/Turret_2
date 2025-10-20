@@ -110,7 +110,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         mainWindow.setRenderTranslation(camera.getPosition());
         worldDrawer.draw();
         Events::reset(); // for editor
-        MobController::update(*player, camera);
+        MobController::update(*player, camera, *gui);
 
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));

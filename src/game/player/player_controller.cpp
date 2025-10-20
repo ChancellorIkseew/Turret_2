@@ -1,6 +1,7 @@
 #include "player_controller.hpp"
 //
 #include "engine/coords/transforms.hpp"
+#include "engine/gui/editor_gui.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/util/sleep.hpp"
 #include "game/world/camera.hpp"
@@ -8,8 +9,8 @@
 #include "game/physics/mob_ai.hpp"
 
 void MobController::shoot(const Camera& camera) {
-	const auto mouse = camera.fromScreenToMap(Input::getMouseCoord());
-	aimCoord.store(PixelCoord(mouse.x, mouse.y), std::memory_order_relaxed);
+	const auto mouseCoord = camera.fromScreenToMap(Input::getMouseCoord());
+	aimCoord.store(mouseCoord, std::memory_order_relaxed);
 
 	const bool flag = Input::active(Shoot);
 	shooting.store(flag, std::memory_order_relaxed);
@@ -20,6 +21,8 @@ void MobController::mine() {
 }
 
 void MobController::move(Camera& camera) {
+	if (guiActive)
+		return;
 	PixelCoord delta(0.0f, 0.0f);
 
 	if (Input::active(Move_up))
@@ -45,7 +48,8 @@ void MobController::move(Camera& camera) {
 
 }
 
-void MobController::update(const Team& playerTeam, Camera& camera) {
+void MobController::update(const Team& playerTeam, Camera& camera, const GUI& gui) {
+	guiActive = gui.hasOverlaped() || !gui.isMouseFree();
 	move(camera);
 	shoot(camera);
 	mine();
