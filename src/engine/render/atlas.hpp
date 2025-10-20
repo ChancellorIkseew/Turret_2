@@ -1,7 +1,8 @@
 #pragma once
 #include <SDL3/SDL_render.h>
-#include <filesystem>
-#include <unordered_map>
+#include <string>
+
+namespace std::filesystem { class path; }
 
 class Atlas {
     static inline SDL_Texture* comonTexture = nullptr;

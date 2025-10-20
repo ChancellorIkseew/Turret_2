@@ -1,6 +1,7 @@
 #include "map_saver.hpp"
 //
 #include <ZLIB/zlib.h>
+#include <filesystem>
 #include <fstream>
 #include "engine/debug/logger.hpp"
 #include "game/world/world_map.hpp"

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 #include "clickable.hpp"
 #include "engine/widgets/form_editor/form_validator.hpp"
