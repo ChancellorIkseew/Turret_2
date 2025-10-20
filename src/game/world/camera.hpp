@@ -19,6 +19,7 @@ public:
     void move(const PixelCoord delta);
     void moveByMouse();
     void scale();
+    void setPosition(const PixelCoord position) { cameraCentre = position; }
 
     ///@brief applies correction for building max size
     TileCoord getBuildingsStartTile() const { return buildingsStartTile; }

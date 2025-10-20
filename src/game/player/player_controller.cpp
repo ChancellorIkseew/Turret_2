@@ -43,6 +43,7 @@ void MobController::move(Camera& camera) {
 
 	if (state == State::control_mob) {
 		//camera.move(); move with mob
+		camera.setPosition(targetedMob->position);
 		camera.scale();
 	}
 
@@ -57,7 +58,7 @@ void MobController::update(const Team& playerTeam, Camera& camera, const GUI& gu
 }
 
 void MobController::captureMob(const Team& playerTeam, const Camera& camera) {
-	if (!Input::active(Control_unit))
+	if (!Input::jactive(Control_unit))
 		return;
 	for (const auto& mob : playerTeam.getMobs()) {
 		if (t1::areCloser(camera.fromMapToScreen(mob.position), Input::getMouseCoord(), 20.f))
