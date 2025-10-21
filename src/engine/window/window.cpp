@@ -9,7 +9,16 @@
 #include "engine/render/text.hpp"
 #include "input/input.hpp"
 
+static std::filesystem::path ICON_PATH = io::folders::IMAGES / "icon.bmp";
 static debug::Logger logger("main_window");
+
+static inline void loadIcon(SDL_Window* window) {
+    SDL_Surface* iconSurface = IMG_Load(ICON_PATH.string().c_str());
+    if (!iconSurface)
+        logger.error() << "Cold not Load image from file " << ICON_PATH;
+    SDL_SetWindowIcon(window, iconSurface);
+    SDL_DestroySurface(iconSurface);
+}
 
 MainWindow::MainWindow(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))
@@ -30,6 +39,7 @@ MainWindow::MainWindow(const std::string& title) {
         throw std::runtime_error("SDL_CreateRenderer Error: " + error);
     }
 
+    loadIcon(window);
     Input::init(window);
     Sprite::setRenderer(renderer);
     Atlas::setRenderer(renderer);
