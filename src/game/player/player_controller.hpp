@@ -18,17 +18,16 @@ class MobController {
 	static inline bool guiActive;
 
 	static inline Mob* targetedMob = nullptr;
-	//static inline Control preveousControlType = Control::NONE;
 	static inline std::atomic<PixelCoord> motionVector;
 	static inline std::atomic<PixelCoord> aimCoord;
 	static inline std::atomic<bool> shooting;
 
-	static void move(Camera& camera);
+	static void move(Camera& camera, const uint64_t deltaT);
 	static void mine();
 	static void shoot(const Camera& camera);
 public:
 	static void captureMob(const Team& playerTeam, const Camera& camera);
-	static void update(const Team& playerTeam, Camera& camera, const GUI& gui);
+	static void update(const Team& playerTeam, Camera& camera, const GUI& gui, const uint64_t deltaT);
 
 	static void resetTarget();
 	static void setTarget(const Mob& mob);

@@ -8,6 +8,7 @@ class World;
 class GUI;
 
 class Engine {
+    uint64_t simStart = 0U;
     MainWindow mainWindow;
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
@@ -28,9 +29,10 @@ public:
     void closeGame() { worldOpen = false; mainWindow.close(); }
     void closeWorld() { worldOpen = false; }
     void startSimulation(World& world);
-    void startNet(); 
+    void startNet();
     //
     MainWindow& getMainWindow() { return mainWindow; }
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
+    uint64_t getDelta() const { return mainWindow.getTime() - simStart; }
 };

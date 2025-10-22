@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 class Camera;
 class TeamsPool;
@@ -9,5 +10,5 @@ class EntitiesDrawer {
     const TeamsPool& teams;
 public:
     EntitiesDrawer(const Camera& camera, const World& world);
-    void draw();
+    void draw(const uint64_t deltaT);
 };

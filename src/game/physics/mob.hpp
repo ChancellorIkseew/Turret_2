@@ -55,7 +55,7 @@ struct Mob {
     PixelCoord position, velocity;
     Health health;
     float angle;
-    bool wasted = false;
+    bool wasted = false, colided = false;
     TeamID teamID;
     //
     Mob(std::unique_ptr<MovingAI> movingAI,

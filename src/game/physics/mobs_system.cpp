@@ -29,6 +29,8 @@ static inline void resolveCollisions(Mob& mob, std::list<Mob>& mobs) {
         if (&mob == &otherMob || !mob.hitbox.intersects(otherMob.hitbox))
             continue;
         
+        mob.colided = true;
+        otherMob.colided = true;
         PixelCoord overlap = mob.hitbox.overlap(otherMob.hitbox);
         const float w = 1.0f / (mob.preset.hitboxRadius + otherMob.preset.hitboxRadius);
         if (overlap.x > overlap.y) {
@@ -54,7 +56,10 @@ static inline void resolveCollisions(Mob& mob, std::list<Mob>& mobs) {
     }
 }
 
-void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
+void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) { 
+    for (auto& mob : mobs) {
+        mob.colided = false; //TODO: find better way to resolve collisions.
+    }
     for (auto& mob : mobs) {
         resolveCollisions(mob, mobs);
         if (!mob.movingAI)
@@ -84,14 +89,17 @@ static void drawHitboxes(const std::list<Mob>& mobs, const Camera& camera) {
     }
 }
 
-void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera) {
+void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera, const uint64_t deltaT) {
     std::lock_guard<std::mutex> guard(mobsMutex);
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(mobs, camera);
     for (auto& mob : mobs) {
         if (!camera.contains(t1::tile(mob.position)))
             continue;
-        mob.sprite.setPosition(mob.position);
+        if (mob.colided)
+            mob.sprite.setPosition(mob.position);
+        else
+            mob.sprite.setPosition(mob.position + mob.velocity * (deltaT / 48.0f));
         mob.sprite.setRotationRad(mob.angle);
         mob.sprite.draw();
     }

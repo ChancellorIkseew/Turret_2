@@ -1,9 +1,8 @@
 #include "player_controller.hpp"
 //
 #include "engine/coords/transforms.hpp"
-#include "engine/gui/editor_gui.hpp"
+#include "engine/gui/gui.hpp"
 #include "engine/window/input/input.hpp"
-#include "engine/util/sleep.hpp"
 #include "game/world/camera.hpp"
 #include "game/physics/team/team.hpp"
 #include "game/physics/mob_ai.hpp"
@@ -20,7 +19,7 @@ void MobController::mine() {
 
 }
 
-void MobController::move(Camera& camera) {
+void MobController::move(Camera& camera, const uint64_t deltaT) {
 	if (guiActive)
 		return;
 	PixelCoord delta(0.0f, 0.0f);
@@ -43,15 +42,15 @@ void MobController::move(Camera& camera) {
 
 	if (state == State::control_mob) {
 		//camera.move(); move with mob
-		camera.setPosition(targetedMob->position);
+		camera.setPosition(targetedMob->position + targetedMob->velocity * (float(deltaT) / 48.0f));
 		camera.scale();
 	}
 
 }
 
-void MobController::update(const Team& playerTeam, Camera& camera, const GUI& gui) {
+void MobController::update(const Team& playerTeam, Camera& camera, const GUI& gui, const uint64_t deltaT) {
 	guiActive = gui.hasOverlaped() || !gui.isMouseFree();
-	move(camera);
+	move(camera, deltaT);
 	shoot(camera);
 	mine();
 	captureMob(playerTeam, camera);

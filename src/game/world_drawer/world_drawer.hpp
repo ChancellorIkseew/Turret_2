@@ -16,9 +16,9 @@ public:
 
     }
 
-    void draw() {
+    void draw(const uint64_t deltaT) {
         mapDrawer.draw();
-        entitiesDrawer.draw();
+        entitiesDrawer.draw(deltaT);
         // TODO: weatherDrawer.draw();
     }
 };

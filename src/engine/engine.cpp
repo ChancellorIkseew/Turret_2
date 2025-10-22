@@ -108,10 +108,12 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         mainWindow.clear();
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
-        worldDrawer.draw();
+        auto deltaT = getDelta();
+        MobController::update(*player, camera, *gui, deltaT);
+        worldDrawer.draw(deltaT);
         Events::reset(); // for editor
-        MobController::update(*player, camera, *gui);
-
+        
+        
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
         gui->draw();
@@ -125,6 +127,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
 void Engine::startSimulation(World& world) {
     while (mainWindow.isOpen() && worldOpen) {
+        simStart = mainWindow.getTime();
         for (auto& [teamID, team] : world.getTeams()) {
             team->interact(world);
         }

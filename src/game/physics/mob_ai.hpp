@@ -25,8 +25,8 @@ struct PlayerControlledMoving : MovingAI {
             motionVector = NO_MOTION;
         else {
             motionAngle = atan2f(vector.x, vector.y);
-            motionVector.x = sin(motionAngle);
-            motionVector.y = cos(motionAngle);
+            motionVector.x = sinf(motionAngle);
+            motionVector.y = cosf(motionAngle);
         }
     }
 };
