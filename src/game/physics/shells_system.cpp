@@ -2,7 +2,7 @@
 //
 #include <mutex>
 #include "engine/coords/transforms.hpp"
-#include "game/world/camera.hpp"
+#include "game/player/camera.hpp"
 #include "team/teams_pool.hpp"
 
 static std::mutex shellsMutex;

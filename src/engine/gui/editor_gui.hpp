@@ -5,7 +5,7 @@
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
 #include "game/events/events.hpp"
-#include "game/world/camera.hpp"
+#include "game/player/camera.hpp"
 #include "game/world/world_map.hpp"
 #include "gui_util/tile_data.hpp"
 

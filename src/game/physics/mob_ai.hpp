@@ -20,7 +20,7 @@ struct BasicMovingAI : MovingAI {
 struct PlayerControlledMoving : MovingAI {
     ~PlayerControlledMoving() final = default;
     void update(const Mob& mob) final {
-        const auto vector = MobController::getMotionVector();
+        const auto vector = PlayerController::getMotionVector();
         if (vector == NO_MOTION)
             motionVector = NO_MOTION;
         else {
@@ -34,7 +34,7 @@ struct PlayerControlledMoving : MovingAI {
 struct PlayerControlledShooting : ShootingAI {
     ~PlayerControlledShooting() final = default;
     void update(const Mob& mob) final {
-        aim = MobController::getAimCoord();
-        firing = MobController::shootingActive();
+        aim = PlayerController::getAimCoord();
+        firing = PlayerController::shootingActive();
     }
 };

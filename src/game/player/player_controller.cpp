@@ -1,13 +1,13 @@
 #include "player_controller.hpp"
 //
+#include "camera.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/window/input/input.hpp"
-#include "game/world/camera.hpp"
 #include "game/physics/team/team.hpp"
 #include "game/physics/mob_ai.hpp"
 
-void MobController::shoot(const Camera& camera) {
+void PlayerController::shoot(const Camera& camera) {
 	const auto mouseCoord = camera.fromScreenToMap(Input::getMouseCoord());
 	aimCoord.store(mouseCoord, std::memory_order_relaxed);
 
@@ -15,11 +15,11 @@ void MobController::shoot(const Camera& camera) {
 	shooting.store(flag, std::memory_order_relaxed);
 }
 
-void MobController::mine() {
+void PlayerController::mine() {
 
 }
 
-void MobController::move(Camera& camera, const uint64_t deltaT) {
+void PlayerController::move(Camera& camera, const uint64_t deltaT) {
 	if (guiActive)
 		return;
 	PixelCoord delta(0.0f, 0.0f);
@@ -37,18 +37,14 @@ void MobController::move(Camera& camera, const uint64_t deltaT) {
 	if (state == State::control_camera) {
 		camera.move(delta);
 		camera.moveByMouse();
-		camera.scale();
 	}
-
-	if (state == State::control_mob) {
-		//camera.move(); move with mob
+    else if (state == State::control_mob) {
 		camera.setPosition(targetedMob->position + targetedMob->velocity * (float(deltaT) / 48.0f));
-		camera.scale();
 	}
-
+	camera.scale();
 }
 
-void MobController::update(const Team& playerTeam, Camera& camera, const GUI& gui, const uint64_t deltaT) {
+void PlayerController::update(const Team& playerTeam, Camera& camera, const GUI& gui, const uint64_t deltaT) {
 	guiActive = gui.hasOverlaped() || !gui.isMouseFree();
 	move(camera, deltaT);
 	shoot(camera);
@@ -56,7 +52,7 @@ void MobController::update(const Team& playerTeam, Camera& camera, const GUI& gu
 	captureMob(playerTeam, camera);
 }
 
-void MobController::captureMob(const Team& playerTeam, const Camera& camera) {
+void PlayerController::captureMob(const Team& playerTeam, const Camera& camera) {
 	if (!Input::jactive(Control_unit))
 		return;
 	for (const auto& mob : playerTeam.getMobs()) {
@@ -66,7 +62,7 @@ void MobController::captureMob(const Team& playerTeam, const Camera& camera) {
 	resetTarget();
 }
 
-void MobController::setTarget(const Mob& mob) {
+void PlayerController::setTarget(const Mob& mob) {
 	resetTarget();
 	targetedMob = const_cast<Mob*>(&mob);
 	targetedMob->movingAI = std::make_unique<PlayerControlledMoving>();
@@ -74,7 +70,7 @@ void MobController::setTarget(const Mob& mob) {
 	state = State::control_mob;
 }
 
-void MobController::resetTarget() {
+void PlayerController::resetTarget() {
 	if (!targetedMob)
 		return;
 	targetedMob->movingAI = std::make_unique<BasicMovingAI>();

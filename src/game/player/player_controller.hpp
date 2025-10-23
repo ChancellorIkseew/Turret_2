@@ -8,7 +8,7 @@ class GUI;
 class Camera;
 class Team;
 
-class MobController {
+class PlayerController {
 	enum class State : uint8_t {
 		control_camera,
 		control_mob

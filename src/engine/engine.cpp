@@ -13,7 +13,7 @@
 #include "game/events/events.hpp"
 #include "game/script_libs/lib_world_init.hpp"
 #include "game/script_libs/script_libs.hpp"
-#include "game/world/camera.hpp"
+#include "game/player/camera.hpp"
 #include "game/world_drawer/world_drawer.hpp"
 #include "game/presets/mob_presets.hpp"
 
@@ -114,7 +114,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
         auto deltaT = getDelta();
-        MobController::update(*player, camera, *gui, deltaT);
+        PlayerController::update(*player, camera, *gui, deltaT);
         worldDrawer.draw(deltaT);
         Events::reset(); // for editor
         
