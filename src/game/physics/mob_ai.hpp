@@ -30,3 +30,11 @@ struct PlayerControlledMoving : MovingAI {
         }
     }
 };
+
+struct PlayerControlledShooting : ShootingAI {
+    ~PlayerControlledShooting() final = default;
+    void update(const Mob& mob) final {
+        aim = MobController::getAimCoord();
+        firing = MobController::shootingActive();
+    }
+};

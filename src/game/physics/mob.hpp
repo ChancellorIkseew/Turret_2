@@ -24,12 +24,13 @@ public:
 struct ShootingAI {
 protected:
     PixelCoord aim;
+    bool firing = false;
 public:
     virtual ~ShootingAI() = default;
     //
     virtual void update(const Mob& mob) = 0;
-    //
-    PixelCoord getAim() { return aim; }
+    bool isFiring() { return firing; }
+    PixelCoord getAim() const { return aim; }
     void setAim(const PixelCoord aim) {
         this->aim = aim;
     }

@@ -23,6 +23,9 @@
 //
 #include "engine/io/folders.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
+//
+#include "game/physics/mob_ai.hpp"
+#include "game/physics/turret_types.hpp"
 
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
@@ -81,6 +84,8 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
     Team* player = world->getTeams().addTeam(U"player");
     player->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
+    player->getMobs().begin()->shootingAI = std::make_unique<PlayerControlledShooting>();
+    player->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
 
     switch (command) {
     case EngineCommand::main_menu:

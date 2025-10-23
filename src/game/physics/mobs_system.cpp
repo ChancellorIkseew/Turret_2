@@ -69,6 +69,18 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
         mob.angle = mob.movingAI->getMotionAngle();
         move(mob, mob.velocity);
     }
+    for (auto& mob : mobs) {
+        if (!mob.turret)
+            continue;
+        mob.shootingAI->update(mob);
+        auto aim = mob.shootingAI->getAim();
+        mob.shootingAI->isFiring();
+        mob.turret->position = mob.position;
+        auto delta = aim - mob.position;
+        float angle = atan2f(delta.x, delta.y);
+        mob.turret->angle = angle;
+        mob.turret->shoot(*teams.getTeamByID(mob.teamID));
+    }
     //
     std::lock_guard<std::mutex> guard(mobsMutex);
     mobs.remove_if([](const Mob& mob) { return mob.wasted; });
