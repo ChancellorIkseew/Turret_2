@@ -28,5 +28,5 @@ void Team::drawAirUnits(const Camera& camera, const float tickOfset) {
 }
 
 void Team::drawShells(const Camera& camera, const float tickOfset) {
-    shells::drawShells(shells, camera);
+    shells::drawShells(shells, camera, tickOfset);
 }

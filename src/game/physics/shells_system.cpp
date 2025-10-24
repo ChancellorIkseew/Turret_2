@@ -32,11 +32,11 @@ void shells::processShells(std::list<Shell>& shells, TeamsPool& teams) {
     shells.remove_if([](const Shell& shell) { return shell.wasted; });
 }
 
-void shells::drawShells(std::list<Shell>& shells, const Camera& camera) {
+void shells::drawShells(std::list<Shell>& shells, const Camera& camera, const float tickOfset) {
     for (auto& shell : shells) {
         if (!camera.contains(t1::tile(shell.position)))
             continue;
-        shell.sprite.setPosition(shell.position);
+        shell.sprite.setPosition(shell.position + shell.velocity * tickOfset);
         shell.sprite.setRotationRad(shell.angle);
         shell.sprite.draw();
     }
