@@ -4,7 +4,7 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
 
-constexpr float MIN_MAP_SCALE = 0.5f, MAX_MAP_SCALE = 5.0f;
+constexpr float MIN_MAP_SCALE = 0.68f, MAX_MAP_SCALE = 5.0f; // Strong visual artifacts with (slow motion and scale < 0.68). 
 constexpr float SCALE_FACTOR = 1.2f;
 constexpr float MOTION_SPEED = 20.0f;
 constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
