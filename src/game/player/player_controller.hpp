@@ -22,12 +22,12 @@ class PlayerController {
 	static inline std::atomic<PixelCoord> aimCoord;
 	static inline std::atomic<bool> shooting;
 
-	static void move(Camera& camera, const uint64_t deltaT);
+	static void move(Camera& camera, const float tickOfset);
 	static void mine();
 	static void shoot(const Camera& camera);
 public:
 	static void captureMob(const Team& playerTeam, const Camera& camera);
-	static void update(const Team& playerTeam, Camera& camera, const GUI& gui, const uint64_t deltaT);
+	static void update(const Team& playerTeam, Camera& camera, const GUI& gui, const float tickOfset);
 
 	static void resetTarget();
 	static void setTarget(const Mob& mob);

@@ -9,7 +9,7 @@ class World;
 class GUI;
 
 class Engine {
-    uint64_t simStart = 0U;
+    uint64_t currentTickStart = 0U;
     MainWindow mainWindow;
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
@@ -38,5 +38,5 @@ public:
     //
     void setPaused(const bool flag) { paused = flag; }
     bool isPaused() { return paused; }
-    uint64_t getDelta() const { return mainWindow.getTime() - simStart; }
+    uint64_t getCurrentTickTime() const { return mainWindow.getTime() - currentTickStart; }
 };

@@ -1,5 +1,6 @@
 #include "player_controller.hpp"
 //
+#include <cmath>
 #include "camera.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/gui/gui.hpp"
@@ -19,7 +20,7 @@ void PlayerController::mine() {
 
 }
 
-void PlayerController::move(Camera& camera, const uint64_t deltaT) {
+void PlayerController::move(Camera& camera, const float tickOfset) {
 	if (guiActive)
 		return;
 	PixelCoord delta(0.0f, 0.0f);
@@ -39,14 +40,14 @@ void PlayerController::move(Camera& camera, const uint64_t deltaT) {
 		camera.moveByMouse();
 	}
     else if (state == State::control_mob) {
-		camera.setPosition(targetedMob->position + targetedMob->velocity * (float(deltaT) / 48.0f));
+		camera.setPosition(targetedMob->position + targetedMob->velocity * tickOfset);
 	}
 	camera.scale();
 }
 
-void PlayerController::update(const Team& playerTeam, Camera& camera, const GUI& gui, const uint64_t deltaT) {
+void PlayerController::update(const Team& playerTeam, Camera& camera, const GUI& gui, const float tickOfset) {
 	guiActive = gui.hasOverlaped() || !gui.isMouseFree();
-	move(camera, deltaT);
+	move(camera, tickOfset);
 	shoot(camera);
 	mine();
 	captureMob(playerTeam, camera);

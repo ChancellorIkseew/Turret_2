@@ -100,7 +100,7 @@ static void drawHitboxes(const std::list<Mob>& mobs, const Camera& camera) {
     }
 }
 
-void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera, const uint64_t deltaT) {
+void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera, const float tickOfset) {
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(mobs, camera);
     for (auto& mob : mobs) {
@@ -109,7 +109,7 @@ void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera, const uint64_t d
         if (mob.colided)
             mob.sprite.setPosition(mob.position);
         else
-            mob.sprite.setPosition(mob.position + mob.velocity * (deltaT / 48.0f));
+            mob.sprite.setPosition(mob.position + mob.velocity * tickOfset);
         mob.sprite.setRotationRad(mob.angle);
         mob.sprite.draw();
     }

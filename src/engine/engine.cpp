@@ -69,6 +69,8 @@ void Engine::openMainMenu() {
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
+    int tickSpeed = 1;
+    float tickTime = 48.0f;
     paused = Settings::gameplay.pauseOnWorldOpen;
     std::mutex worldMutex;
     std::unique_ptr<GUI> gui;
@@ -119,9 +121,9 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
             camera.update(mainWindow.getSize());
             mainWindow.setRenderScale(camera.getMapScale());
             mainWindow.setRenderTranslation(camera.getPosition());
-            auto deltaT = getDelta();
-            PlayerController::update(*player, camera, *gui, deltaT);
-            worldDrawer.draw(deltaT);
+            const float tickOfset = static_cast<float>(getCurrentTickTime()) / tickTime;
+            PlayerController::update(*player, camera, *gui, tickOfset);
+            worldDrawer.draw(tickOfset);
             Events::reset(); // for editor
         }
         mainWindow.setRenderScale(1.0f);
@@ -139,7 +141,7 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex) {
     while (mainWindow.isOpen() && worldOpen) {
         if (!paused) {
             std::lock_guard<std::mutex> guard(worldMutex);
-            simStart = mainWindow.getTime();
+            currentTickStart = mainWindow.getTime();
             for (auto& [teamID, team] : world.getTeams()) {
                 team->interact(world);
             }

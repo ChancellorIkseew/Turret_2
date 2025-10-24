@@ -19,14 +19,14 @@ void Team::interact(World& world) {
     mobs::processMobs(mobs, world.getTeams());
 }
 
-void Team::drawGroundUnits(const Camera& camera, const uint64_t deltaT) {
-    mobs::drawMobs(mobs, camera, deltaT);
+void Team::drawGroundUnits(const Camera& camera, const float tickOfset) {
+    mobs::drawMobs(mobs, camera, tickOfset);
 }
 
-void Team::drawAirUnits(const Camera& camera, const uint64_t deltaT) {
+void Team::drawAirUnits(const Camera& camera, const float tickOfset) {
     // TODO : implement
 }
 
-void Team::drawShells(const Camera& camera, const uint64_t deltaT) {
+void Team::drawShells(const Camera& camera, const float tickOfset) {
     shells::drawShells(shells, camera);
 }

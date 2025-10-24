@@ -6,14 +6,14 @@
 EntitiesDrawer::EntitiesDrawer(const Camera& camera, const World& world) :
     camera(camera), teams(world.getTeams()) { }
 
-void EntitiesDrawer::draw(const uint64_t deltaT) {
+void EntitiesDrawer::draw(const float tickOfset) {
     for (const auto& [_teamID, team] : teams) {
-        team->drawGroundUnits(camera, deltaT);
+        team->drawGroundUnits(camera, tickOfset);
     }
     for (const auto& [_teamID, team] : teams) {
-        team->drawShells(camera, deltaT);
+        team->drawShells(camera, tickOfset);
     }
     for (const auto& [_teamID, team] : teams) {
-        team->drawAirUnits(camera, deltaT);
+        team->drawAirUnits(camera, tickOfset);
     }
 }

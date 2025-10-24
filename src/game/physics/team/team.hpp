@@ -17,9 +17,9 @@ public:
     Team(const std::u32string& name, const TeamID ID) : name(name), ID(ID) { }
 
     void interact(World& world);
-    void drawGroundUnits(const Camera& camera, const uint64_t deltaT);
-    void drawAirUnits(const Camera& camera, const uint64_t deltaT);
-    void drawShells(const Camera& camera, const uint64_t deltaT);
+    void drawGroundUnits(const Camera& camera, const float tickOfset);
+    void drawAirUnits(const Camera& camera, const float tickOfset);
+    void drawShells(const Camera& camera, const float tickOfset);
 
     void spawnMob(const MobPreset& preset, const PixelCoord position, const float angle);
     void spawnShell(const ShellPreset& preset, const PixelCoord position, const float angle);
