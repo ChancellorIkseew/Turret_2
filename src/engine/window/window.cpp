@@ -9,7 +9,7 @@
 #include "engine/render/text.hpp"
 #include "input/input.hpp"
 
-static std::filesystem::path ICON_PATH = io::folders::IMAGES / "icon.bmp";
+static std::filesystem::path ICON_PATH = io::folders::RES / "icon.bmp";
 static debug::Logger logger("main_window");
 
 static inline void loadIcon(SDL_Window* window) {
