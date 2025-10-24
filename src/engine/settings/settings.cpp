@@ -14,6 +14,8 @@ void Settings::writeSettings() {
     data.emplace("FPS", std::to_string(display.FPS));
     data.emplace("fullscreen", std::to_string(display.fullscreen));
     //
+    data.emplace("camera_inertia", std::to_string(gameplay.cameraInertia));
+    data.emplace("pause_on_world_open", std::to_string(gameplay.pauseOnWorldOpen));
     data.emplace("show_hitboxes", std::to_string(gameplay.showHitboxes));
     //
     data.emplace("lang", gui.lang);
@@ -31,8 +33,9 @@ void Settings::readSettings() {
     display.FPS = data.getUint32("FPS").value_or(60U);
     display.fullscreen = data.getBool("fullscreen").value_or(false);
     //
-    gameplay.showHitboxes = data.getBool("show_hitboxes").value_or(false);
     gameplay.cameraInertia = data.getBool("camera_inertia").value_or(true);
+    gameplay.pauseOnWorldOpen = data.getBool("pause_on_world_open").value_or(false);
+    gameplay.showHitboxes = data.getBool("show_hitboxes").value_or(false);
     //
     gui.lang = data.getString("lang").value_or("en_US");
     gui.showConsole = data.getBool("show_console").value_or(false);
@@ -41,9 +44,9 @@ void Settings::readSettings() {
 void Settings::aplySettings(Engine& engine) { 
     engine.getMainWindow().setFPS(display.FPS);
     engine.getMainWindow().setFullscreen(display.fullscreen);
-    //
-    // TODO implement "show hitboxes"
-    //
+    // "camera_inertia not imlemented"
+    // "pause_on_world_open: implemented in engine.cpp
+    // "show_hitboxes" implemented in mobs_system.cpp
     GUI::loadLangTranslations(gui.lang);
     debug::Console::setVisible(Settings::gui.showConsole);
 }

@@ -23,6 +23,7 @@
 #include "game/generation/generation.hpp"
 //
 #include "engine/io/folders.hpp"
+#include "engine/settings/settings.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 //
 #include "game/physics/mob_ai.hpp"
@@ -68,6 +69,7 @@ void Engine::openMainMenu() {
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
+    paused = Settings::gameplay.pauseOnWorldOpen;
     std::mutex worldMutex;
     std::unique_ptr<GUI> gui;
     std::unique_ptr<World> world;
@@ -135,7 +137,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex) {
     while (mainWindow.isOpen() && worldOpen) {
-        {
+        if (!paused) {
             std::lock_guard<std::mutex> guard(worldMutex);
             simStart = mainWindow.getTime();
             for (auto& [teamID, team] : world.getTeams()) {

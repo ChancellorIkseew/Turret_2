@@ -17,7 +17,7 @@ class Engine {
     World* _world = nullptr;
     GUI* _gui = nullptr;
     EngineCommand command = EngineCommand::main_menu;
-    bool worldOpen = false;
+    bool worldOpen = false, paused = false;
 public:
     Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
     void run();
@@ -35,5 +35,8 @@ public:
     MainWindow& getMainWindow() { return mainWindow; }
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
+    //
+    void setPaused(const bool flag) { paused = flag; }
+    bool isPaused() { return paused; }
     uint64_t getDelta() const { return mainWindow.getTime() - simStart; }
 };
