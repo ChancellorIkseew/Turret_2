@@ -2,8 +2,8 @@
 #include <memory>
 #include <string>
 #include "clickable.hpp"
-#include "engine/widgets/form_editor/form_validator.hpp"
 #include "engine/io/utf8/utf8.hpp"
+#include "engine/widgets/form_editor/form_validator.hpp"
 
 class Form : public Clickable {
     static constexpr PixelCoord FORM_SIZE{100.0f, 20.0f};
