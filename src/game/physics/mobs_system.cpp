@@ -1,12 +1,10 @@
 #include "mobs_system.hpp"
 //
-#include <mutex>
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/player/camera.hpp"
 #include "team/teams_pool.hpp"
 
-static std::mutex mobsMutex;
 static Sprite hitboxSprite;
 
 static t1_finline void move(Mob& mob, const PixelCoord vector) {
@@ -73,6 +71,8 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
         if (!mob.turret)
             continue;
         mob.shootingAI->update(mob);
+        if (!mob.shootingAI->isFiring())
+            continue;
         auto aim = mob.shootingAI->getAim();
         mob.shootingAI->isFiring();
         mob.turret->position = mob.position;
@@ -82,7 +82,6 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
         mob.turret->shoot(*teams.getTeamByID(mob.teamID));
     }
     //
-    std::lock_guard<std::mutex> guard(mobsMutex);
     mobs.remove_if([](const Mob& mob) { return mob.wasted; });
 }
 
@@ -102,7 +101,6 @@ static void drawHitboxes(const std::list<Mob>& mobs, const Camera& camera) {
 }
 
 void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera, const uint64_t deltaT) {
-    std::lock_guard<std::mutex> guard(mobsMutex);
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(mobs, camera);
     for (auto& mob : mobs) {

@@ -4,6 +4,7 @@
 #include "engine/window/window.hpp"
 #include "game/generation/generation.hpp"
 
+namespace std { class mutex; }
 class World;
 class GUI;
 
@@ -28,7 +29,7 @@ public:
     void openMainMenu();
     void closeGame() { worldOpen = false; mainWindow.close(); }
     void closeWorld() { worldOpen = false; }
-    void startSimulation(World& world);
+    void startSimulation(World& world, std::mutex& worldMutex);
     void startNet();
     //
     MainWindow& getMainWindow() { return mainWindow; }

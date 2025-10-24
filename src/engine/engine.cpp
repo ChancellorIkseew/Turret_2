@@ -1,6 +1,7 @@
 #include "engine.hpp"
 //
 #include <functional>
+#include <mutex>
 #include <thread>
 #include "engine/gui/editor_gui.hpp"
 #include "engine/gui/gameplay_gui.hpp"
@@ -67,6 +68,7 @@ void Engine::openMainMenu() {
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
+    std::mutex worldMutex;
     std::unique_ptr<GUI> gui;
     std::unique_ptr<World> world;
 
@@ -105,20 +107,21 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     _gui = gui.get();
 
     worldOpen = true;
-    std::thread simulation([&] { startSimulation(*world); });
+    std::thread simulation([&] { startSimulation(*world, worldMutex); });
     //TODO: std::thread network([&] { startNet(); }); 
     while (mainWindow.isOpen() && worldOpen) {
         mainWindow.pollEvents();
-        camera.update(mainWindow.getSize());
         mainWindow.clear();
-        mainWindow.setRenderScale(camera.getMapScale());
-        mainWindow.setRenderTranslation(camera.getPosition());
-        auto deltaT = getDelta();
-        PlayerController::update(*player, camera, *gui, deltaT);
-        worldDrawer.draw(deltaT);
-        Events::reset(); // for editor
-        
-        
+        {
+            std::lock_guard<std::mutex> guard(worldMutex);
+            camera.update(mainWindow.getSize());
+            mainWindow.setRenderScale(camera.getMapScale());
+            mainWindow.setRenderTranslation(camera.getPosition());
+            auto deltaT = getDelta();
+            PlayerController::update(*player, camera, *gui, deltaT);
+            worldDrawer.draw(deltaT);
+            Events::reset(); // for editor
+        }
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
         gui->draw();
@@ -130,11 +133,14 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     //TODO: network.join();
 }
 
-void Engine::startSimulation(World& world) {
+void Engine::startSimulation(World& world, std::mutex& worldMutex) {
     while (mainWindow.isOpen() && worldOpen) {
-        simStart = mainWindow.getTime();
-        for (auto& [teamID, team] : world.getTeams()) {
-            team->interact(world);
+        {
+            std::lock_guard<std::mutex> guard(worldMutex);
+            simStart = mainWindow.getTime();
+            for (auto& [teamID, team] : world.getTeams()) {
+                team->interact(world);
+            }
         }
         util::sleep(48);
     }
