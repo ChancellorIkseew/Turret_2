@@ -141,10 +141,10 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex) {
     while (mainWindow.isOpen() && worldOpen) {
         if (!paused) {
             std::lock_guard<std::mutex> guard(worldMutex);
-            currentTickStart = mainWindow.getTime();
             for (auto& [teamID, team] : world.getTeams()) {
                 team->interact(world);
             }
+            currentTickStart = mainWindow.getTime();
         }
         util::sleep(48);
     }
