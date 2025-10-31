@@ -29,6 +29,12 @@
 #include "game/physics/mob_ai.hpp"
 #include "game/physics/turret_types.hpp"
 
+static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
+    if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
+        return serializer::loadWorld(folder);
+    return gen::generateWorld(properties);
+}
+
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
@@ -74,15 +80,9 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     paused = Settings::gameplay.pauseOnWorldOpen;
     std::mutex worldMutex;
     std::unique_ptr<GUI> gui;
-    std::unique_ptr<World> world;
-
-    if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world) {
-        world = serializer::loadWorld(folder);
-        if (!world)
-            return openMainMenu();
-    }   
-    else
-        world = gen::generateWorld(properties);
+    std::unique_ptr<World> world = createWorld(command, folder, properties);
+    if (!world)
+        return openMainMenu();
 
     Camera camera(world->getMap().getSize());
     WorldDrawer worldDrawer(camera, *world);
