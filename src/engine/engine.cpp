@@ -35,6 +35,20 @@ static std::unique_ptr<World> createWorld(const EngineCommand command, const std
     return gen::generateWorld(properties);
 }
 
+static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engine, WorldMap& map, const Camera& camera) {
+    switch (command) {
+    case EngineCommand::main_menu:
+        return std::make_unique<MenuGUI>(engine);
+    case EngineCommand::gameplay_new_world:
+    case EngineCommand::gameplay_load_world:
+        return std::make_unique<GameplayGUI>(engine);
+    case EngineCommand::editor_new_world:
+    case EngineCommand::editor_load_world:
+        return std::make_unique<EditorGUI>(engine, map, camera);
+    }
+    throw std::runtime_error("Failed to create GUI.");
+}
+
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
@@ -79,33 +93,18 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     float tickTime = 48.0f;
     paused = Settings::gameplay.pauseOnWorldOpen;
     std::mutex worldMutex;
-    std::unique_ptr<GUI> gui;
     std::unique_ptr<World> world = createWorld(command, folder, properties);
     if (!world)
         return openMainMenu();
-
     Camera camera(world->getMap().getSize());
     WorldDrawer worldDrawer(camera, *world);
+    std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
     lib_world::init(world.get());
 
     Team* player = world->getTeams().addTeam(U"player");
     player->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
     player->getMobs().begin()->shootingAI = std::make_unique<PlayerControlledShooting>();
     player->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
-
-    switch (command) {
-    case EngineCommand::main_menu:
-        gui = std::make_unique<MenuGUI>(*this);
-        break;
-    case EngineCommand::gameplay_new_world:
-    case EngineCommand::gameplay_load_world:
-        gui = std::make_unique<GameplayGUI>(*this);
-        break;
-    case EngineCommand::editor_new_world:
-    case EngineCommand::editor_load_world:
-        gui = std::make_unique<EditorGUI>(*this, world->getMap(), camera);
-        break;
-    }
 
     _world = world.get();
     _gui = gui.get();
