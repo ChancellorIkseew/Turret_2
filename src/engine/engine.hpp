@@ -37,6 +37,6 @@ public:
     GUI& getGUI() { return *_gui; }
     //
     void setPaused(const bool flag) { paused = flag; }
-    bool isPaused() { return paused; }
+    bool isPaused() const { return paused; }
     uint64_t getCurrentTickTime() const { return mainWindow.getTime() - currentTickStart; }
 };
