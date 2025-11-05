@@ -91,8 +91,10 @@ void Engine::openMainMenu() {
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
     int tickSpeed = 1;
     float tickTime = 48.0f;
+    float tickOfset = 0.0f;
     paused = Settings::gameplay.pauseOnWorldOpen;
     std::mutex worldMutex;
+    
     std::unique_ptr<World> world = createWorld(command, folder, properties);
     if (!world)
         return openMainMenu();
@@ -115,12 +117,15 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     while (mainWindow.isOpen() && worldOpen) {
         mainWindow.pollEvents();
         mainWindow.clear();
+        camera.update(mainWindow.getSize());
+        mainWindow.setRenderScale(camera.getMapScale());
+        mainWindow.setRenderTranslation(camera.getPosition());
         {
             std::lock_guard<std::mutex> guard(worldMutex);
-            camera.update(mainWindow.getSize());
-            mainWindow.setRenderScale(camera.getMapScale());
-            mainWindow.setRenderTranslation(camera.getPosition());
-            const float tickOfset = static_cast<float>(getCurrentTickTime()) / tickTime;
+            if (paused)
+                tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
+            else
+                tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
             PlayerController::update(*player, camera, *gui, tickOfset);
             worldDrawer.draw(tickOfset);
             Events::reset(); // for editor
@@ -130,7 +135,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         gui->draw();
         gui->callback();
         mainWindow.render();
-        scriptsHandler.execute();   
+        scriptsHandler.execute();
     }
     simulation.join();
     //TODO: network.join();
@@ -138,14 +143,18 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex) {
     while (mainWindow.isOpen() && worldOpen) {
-        if (!paused) {
-            std::lock_guard<std::mutex> guard(worldMutex);
-            for (auto& [teamID, team] : world.getTeams()) {
-                team->interact(world);
+        if (paused)
+            util::sleep(1);
+        else {
+            {
+                std::lock_guard<std::mutex> guard(worldMutex);
+                for (auto& [teamID, team] : world.getTeams()) {
+                    team->interact(world);
+                }
+                currentTickStart = mainWindow.getTime();
             }
-            currentTickStart = mainWindow.getTime();
+            util::sleep(48);
         }
-        util::sleep(48);
     }
 }
 

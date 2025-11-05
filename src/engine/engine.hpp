@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include "engine_command.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "engine/window/window.hpp"
@@ -9,7 +10,7 @@ class World;
 class GUI;
 
 class Engine {
-    uint64_t currentTickStart = 0U;
+    uint64_t currentTickStart = 0U, pauseStart = 0U;
     MainWindow mainWindow;
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
@@ -36,7 +37,6 @@ public:
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
     //
-    void setPaused(const bool flag) { paused = flag; }
+    void setPaused(const bool flag) { paused = flag; pauseStart = mainWindow.getTime(); }
     bool isPaused() const { return paused; }
-    uint64_t getCurrentTickTime() const { return mainWindow.getTime() - currentTickStart; }
 };
