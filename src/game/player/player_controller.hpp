@@ -20,7 +20,7 @@ class PlayerController {
 	static inline Mob* targetedMob = nullptr;
 	static inline std::atomic<PixelCoord> motionVector;
 	static inline std::atomic<PixelCoord> aimCoord;
-	static inline std::atomic<bool> shooting;
+	static std::atomic_bool shooting;
 
 	static void move(Camera& camera, const float tickOfset);
 	static void mine();

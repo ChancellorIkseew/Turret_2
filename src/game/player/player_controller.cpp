@@ -8,6 +8,8 @@
 #include "game/physics/team/team.hpp"
 #include "game/physics/mob_ai.hpp"
 
+std::atomic_bool PlayerController::shooting = false;
+
 void PlayerController::shoot(const Camera& camera) {
 	const auto mouseCoord = camera.fromScreenToMap(Input::getMouseCoord());
 	aimCoord.store(mouseCoord, std::memory_order_relaxed);

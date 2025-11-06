@@ -18,7 +18,7 @@ class Engine {
     World* _world = nullptr;
     GUI* _gui = nullptr;
     EngineCommand command = EngineCommand::main_menu;
-    bool worldOpen = false, paused = false;
+    std::atomic_bool worldOpen = false, paused = false;
 public:
     Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
     void run();
@@ -28,8 +28,8 @@ public:
     void createWorldInGame(WorldProperties& properties);
     void createWorldInEditor(WorldProperties& properties);
     void openMainMenu();
-    void closeGame() { worldOpen = false; mainWindow.close(); }
-    void closeWorld() { worldOpen = false; }
+    void closeWorld() { worldOpen.store(false, std::memory_order::seq_cst); }
+    void closeGame() { closeWorld(); mainWindow.close(); }
     void startSimulation(World& world, std::mutex& worldMutex);
     void startNet();
     //
@@ -37,6 +37,10 @@ public:
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
     //
-    void setPaused(const bool flag) { paused = flag; pauseStart = mainWindow.getTime(); }
-    bool isPaused() const { return paused; }
+    bool isWorldOpen() const { return worldOpen.load(std::memory_order_relaxed); }
+    bool isPaused() const { return paused.load(std::memory_order_relaxed); }
+    void setPaused(const bool flag) {
+        paused.store(flag, std::memory_order::seq_cst);
+        pauseStart = mainWindow.getTime();
+    }
 };

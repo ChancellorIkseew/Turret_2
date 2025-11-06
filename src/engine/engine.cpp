@@ -114,7 +114,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     worldOpen = true;
     std::thread simulation([&] { startSimulation(*world, worldMutex); });
     //TODO: std::thread network([&] { startNet(); }); 
-    while (mainWindow.isOpen() && worldOpen) {
+    while (mainWindow.isOpen() && isWorldOpen()) {
         mainWindow.pollEvents();
         mainWindow.clear();
         camera.update(mainWindow.getSize());
@@ -122,7 +122,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         mainWindow.setRenderTranslation(camera.getPosition());
         {
             std::lock_guard<std::mutex> guard(worldMutex);
-            if (paused)
+            if (isPaused())
                 tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
             else
                 tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
@@ -142,8 +142,8 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 }
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex) {
-    while (mainWindow.isOpen() && worldOpen) {
-        if (paused)
+    while (mainWindow.isOpen() && isWorldOpen()) {
+        if (isPaused())
             util::sleep(1);
         else {
             {
@@ -159,7 +159,7 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex) {
 }
 
 void Engine::startNet() {
-    while (mainWindow.isOpen() && worldOpen) {
+    while (mainWindow.isOpen() && isWorldOpen()) {
         util::sleep(48);
     }
 }
