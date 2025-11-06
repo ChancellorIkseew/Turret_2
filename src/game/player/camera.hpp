@@ -15,7 +15,11 @@ class Camera {
 public:
     Camera(const TileCoord mapSize);
 
-    void interact(const PixelCoord windowSize);
+    void update(const PixelCoord windowSize);
+    void move(const PixelCoord delta);
+    void moveByMouse();
+    void scale();
+    void setPosition(const PixelCoord position) { cameraCentre = position; }
 
     ///@brief applies correction for building max size
     TileCoord getBuildingsStartTile() const { return buildingsStartTile; }
@@ -32,10 +36,7 @@ public:
                tile.y >= startTile.y && tile.y <= endTile.y;
     }
 private:
-    void moveByMouse();
-    void moveByWASD();
     void avoidEscapeFromMap();
-    void scale();
     void resize(const PixelCoord windowSize);
     void updateMapRegion(const PixelCoord windowSize);
 };

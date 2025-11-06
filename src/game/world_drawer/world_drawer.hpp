@@ -16,9 +16,9 @@ public:
 
     }
 
-    void draw() {
+    void draw(const float tickOfset) {
         mapDrawer.draw();
-        entitiesDrawer.draw();
+        entitiesDrawer.draw(tickOfset);
         // TODO: weatherDrawer.draw();
     }
 };

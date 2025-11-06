@@ -1,12 +1,10 @@
 #include "mobs_system.hpp"
 //
-#include <mutex>
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
-#include "game/world/camera.hpp"
+#include "game/player/camera.hpp"
 #include "team/teams_pool.hpp"
 
-static std::mutex mobsMutex;
 static Sprite hitboxSprite;
 
 static t1_finline void move(Mob& mob, const PixelCoord vector) {
@@ -29,6 +27,8 @@ static inline void resolveCollisions(Mob& mob, std::list<Mob>& mobs) {
         if (&mob == &otherMob || !mob.hitbox.intersects(otherMob.hitbox))
             continue;
         
+        mob.colided = true;
+        otherMob.colided = true;
         PixelCoord overlap = mob.hitbox.overlap(otherMob.hitbox);
         const float w = 1.0f / (mob.preset.hitboxRadius + otherMob.preset.hitboxRadius);
         if (overlap.x > overlap.y) {
@@ -54,7 +54,10 @@ static inline void resolveCollisions(Mob& mob, std::list<Mob>& mobs) {
     }
 }
 
-void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
+void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) { 
+    for (auto& mob : mobs) {
+        mob.colided = false; //TODO: find better way to resolve collisions.
+    }
     for (auto& mob : mobs) {
         resolveCollisions(mob, mobs);
         if (!mob.movingAI)
@@ -64,8 +67,21 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
         mob.angle = mob.movingAI->getMotionAngle();
         move(mob, mob.velocity);
     }
+    for (auto& mob : mobs) {
+        if (!mob.turret)
+            continue;
+        mob.shootingAI->update(mob);
+        if (!mob.shootingAI->isFiring())
+            continue;
+        auto aim = mob.shootingAI->getAim();
+        mob.shootingAI->isFiring();
+        mob.turret->position = mob.position;
+        auto delta = aim - mob.position;
+        float angle = atan2f(delta.x, delta.y);
+        mob.turret->angle = angle;
+        mob.turret->shoot(*teams.getTeamByID(mob.teamID));
+    }
     //
-    std::lock_guard<std::mutex> guard(mobsMutex);
     mobs.remove_if([](const Mob& mob) { return mob.wasted; });
 }
 
@@ -84,14 +100,16 @@ static void drawHitboxes(const std::list<Mob>& mobs, const Camera& camera) {
     }
 }
 
-void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera) {
-    std::lock_guard<std::mutex> guard(mobsMutex);
+void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera, const float tickOfset) {
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(mobs, camera);
     for (auto& mob : mobs) {
         if (!camera.contains(t1::tile(mob.position)))
             continue;
-        mob.sprite.setPosition(mob.position);
+        if (mob.colided)
+            mob.sprite.setPosition(mob.position);
+        else
+            mob.sprite.setPosition(mob.position + mob.velocity * tickOfset);
         mob.sprite.setRotationRad(mob.angle);
         mob.sprite.draw();
     }

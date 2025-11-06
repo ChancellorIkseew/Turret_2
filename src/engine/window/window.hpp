@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <atomic>
 #include <string>
 #include "engine/coords/pixel_coord.hpp"
 
@@ -10,15 +11,16 @@ class MainWindow {
     SDL_Renderer* renderer;
     SDL_Event event = SDL_Event(0);
     Uint32 FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
-    bool open = true, resized = false, fullscreen = false;
+    bool resized = false, fullscreen = false;
+    std::atomic_bool open = true;
 public:
     MainWindow(const std::string& title);
     ~MainWindow();
     //
-    void close() { open = false; }
+    void close() { open.store(false, std::memory_order_seq_cst); }
     void setFullscreen(const bool flag);
     void setFPS(const Uint32 FPS);
-    bool isOpen() const { return open; }
+    bool isOpen() const { return open.load(std::memory_order_relaxed); }
     bool isFullscreen() const { return fullscreen; }
     bool justResized() const { return resized; }
     Uint32 getFPS() const { return FPS; }

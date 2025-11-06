@@ -4,7 +4,7 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
 
-constexpr float MIN_MAP_SCALE = 0.5f, MAX_MAP_SCALE = 5.0f;
+constexpr float MIN_MAP_SCALE = 0.68f, MAX_MAP_SCALE = 5.0f; // Strong visual artifacts with (slow motion and scale < 0.68). 
 constexpr float SCALE_FACTOR = 1.2f;
 constexpr float MOTION_SPEED = 20.0f;
 constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
@@ -12,10 +12,7 @@ constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
 Camera::Camera(const TileCoord mapSize) : mapScale(MIN_MAP_SCALE),
     tileMapSize(mapSize), pixelMapSize(t1::pixel(mapSize)) { }
 
-void Camera::interact(const PixelCoord windowSize) {
-    scale();
-    moveByMouse();
-    moveByWASD();
+void Camera::update(const PixelCoord windowSize) {
     avoidEscapeFromMap();
     resize(windowSize);
     updateMapRegion(windowSize);
@@ -30,18 +27,7 @@ void Camera::moveByMouse() {
     }
 }
 
-void Camera::moveByWASD() {
-    PixelCoord delta(0.0f, 0.0f);
-
-    if (Input::active(Move_up))
-        delta.y -= 1.0f;
-    if (Input::active(Move_left))
-        delta.x -= 1.0f;
-    if (Input::active(Move_down))
-        delta.y += 1.0f;
-    if (Input::active(Move_right))
-        delta.x += 1.0f;
-
+void Camera::move(const PixelCoord delta) {
     if (delta != PixelCoord(0.0f, 0.0f))
         cameraCentre = cameraCentre + (delta * MOTION_SPEED / mapScale);
 }

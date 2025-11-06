@@ -1,11 +1,8 @@
 #include "shells_system.hpp"
 //
-#include <mutex>
 #include "engine/coords/transforms.hpp"
-#include "game/world/camera.hpp"
+#include "game/player/camera.hpp"
 #include "team/teams_pool.hpp"
-
-static std::mutex shellsMutex;
 
 static inline void tryHitBuilding(Shell& shell, TeamsPool& teams) {
 }
@@ -32,16 +29,14 @@ void shells::processShells(std::list<Shell>& shells, TeamsPool& teams) {
         tryHitMob(shell, teams);
     }
     //
-    std::lock_guard<std::mutex> guard(shellsMutex);
     shells.remove_if([](const Shell& shell) { return shell.wasted; });
 }
 
-void shells::drawShells(std::list<Shell>& shells, const Camera& camera) {
-    std::lock_guard<std::mutex> guard(shellsMutex);
+void shells::drawShells(std::list<Shell>& shells, const Camera& camera, const float tickOfset) {
     for (auto& shell : shells) {
         if (!camera.contains(t1::tile(shell.position)))
             continue;
-        shell.sprite.setPosition(shell.position);
+        shell.sprite.setPosition(shell.position + shell.velocity * tickOfset);
         shell.sprite.setRotationRad(shell.angle);
         shell.sprite.draw();
     }

@@ -2,7 +2,9 @@
 //
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
+#include <unordered_map>
 #include "engine/debug/logger.hpp"
+#include "engine/io/folders.hpp"
 #include "packer/packer.hpp"
 
 namespace fs = std::filesystem;
@@ -20,7 +22,7 @@ static void clearTemporary() {
 }
 
 void Atlas::addTexture(const fs::path& path) {
-    if (!fs::exists(path) || !fs::is_regular_file(path)) {
+    if (!io::folders::fileExists(path)) {
         logger.error() << "Image file does not exist: " << path;
         return;
     }

@@ -20,5 +20,7 @@ public:
             GUI::addOverlaped(frontend::initMenu(engine));
         else
             GUI::callback();
+        if (Input::jactive(Pause))
+            engine.setPaused(!engine.isPaused());
     }
 };

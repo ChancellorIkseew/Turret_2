@@ -5,7 +5,7 @@
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
 #include "game/events/events.hpp"
-#include "game/world/camera.hpp"
+#include "game/player/camera.hpp"
 #include "game/world/world_map.hpp"
 #include "gui_util/tile_data.hpp"
 
@@ -14,7 +14,7 @@ class EditorGUI : public GUI {
     WorldMap& map;
     TileData tileData;
 public:
-    EditorGUI(Engine& engine, WorldMap& map, Camera& camera) :
+    EditorGUI(Engine& engine, WorldMap& map, const Camera& camera) :
         GUI(engine), map(map), camera(camera) {
         containers.push_back(frontend::initJEI(tileData));
         GUI::relocateContainers();

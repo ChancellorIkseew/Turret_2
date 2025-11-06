@@ -4,7 +4,7 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/render/atlas.hpp"
 #include "game/events/events.hpp"
-#include "game/world/camera.hpp"
+#include "game/player/camera.hpp"
 #include "game/world/world_map.hpp"
 
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);

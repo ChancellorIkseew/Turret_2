@@ -46,7 +46,7 @@ void Controls::readBindings() {
     tin::Data data = tin::read(controls);
     if (data.empty()) {
         writeBindings();
-        logger.info() << "Saved file with default settings. File: " << controls;
+        logger.info() << "Saved file with default controls. File: " << controls;
         return;
     }
     for (const auto& [bindName, keyName] : data) {

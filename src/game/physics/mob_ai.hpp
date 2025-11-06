@@ -20,13 +20,21 @@ struct BasicMovingAI : MovingAI {
 struct PlayerControlledMoving : MovingAI {
     ~PlayerControlledMoving() final = default;
     void update(const Mob& mob) final {
-        const auto vector = MobController::getMotionVector();
+        const auto vector = PlayerController::getMotionVector();
         if (vector == NO_MOTION)
             motionVector = NO_MOTION;
         else {
             motionAngle = atan2f(vector.x, vector.y);
-            motionVector.x = sin(motionAngle);
-            motionVector.y = cos(motionAngle);
+            motionVector.x = sinf(motionAngle);
+            motionVector.y = cosf(motionAngle);
         }
+    }
+};
+
+struct PlayerControlledShooting : ShootingAI {
+    ~PlayerControlledShooting() final = default;
+    void update(const Mob& mob) final {
+        aim = PlayerController::getAimCoord();
+        firing = PlayerController::shootingActive();
     }
 };

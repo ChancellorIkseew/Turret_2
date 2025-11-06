@@ -72,9 +72,6 @@
     <ClInclude Include="src\game\frontend\frontend.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\world\camera.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\world\world.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -252,6 +249,12 @@
     <ClInclude Include="src\game\content\indexes.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\physics\turret_types.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\player\camera.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\transforms.cpp">
@@ -303,9 +306,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\frontend\fr_timer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\world\camera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
@@ -453,6 +453,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\content\indexes.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\player\camera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
