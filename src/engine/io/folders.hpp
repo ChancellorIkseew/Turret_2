@@ -9,6 +9,7 @@ namespace io::folders {
     extern const fs::path SAVES;
     extern const fs::path SCREENSHOTS;
     extern const fs::path LANG;
+    extern const fs::path CURSORS;
     extern const fs::path IMAGES;
     extern const fs::path FONTS;
     extern const fs::path CONTENT;

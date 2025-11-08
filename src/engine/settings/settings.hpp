@@ -5,10 +5,6 @@
 class Engine;
 
 class Settings {
-    struct _GUI {
-        std::string lang = "en_US";
-        bool showConsole = false;
-    };
     struct _Display {
         uint32_t FPS = 60U;
         bool fullscreen = false;
@@ -18,10 +14,15 @@ class Settings {
         bool pauseOnWorldOpen = false;
         bool showHitboxes = false;
     };
+    struct _GUI {
+        std::string lang = "en_US";
+        bool customCursor = true;
+        bool showConsole = false;
+    };
 public:
-    static inline _GUI gui;
     static inline _Display display;
     static inline _Gameplay gameplay;
+    static inline _GUI gui;
     static void writeSettings();
     static void readSettings();
     static void aplySettings(Engine& engine);

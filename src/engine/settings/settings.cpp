@@ -19,6 +19,7 @@ void Settings::writeSettings() {
     data.emplace("show_hitboxes", std::to_string(gameplay.showHitboxes));
     //
     data.emplace("lang", gui.lang);
+    data.emplace("custom_cursor", std::to_string(gui.customCursor));
     data.emplace("show_console", std::to_string(gui.showConsole));
     tin::write("settings.tin", data);
 }
@@ -38,15 +39,17 @@ void Settings::readSettings() {
     gameplay.showHitboxes = data.getBool("show_hitboxes").value_or(false);
     //
     gui.lang = data.getString("lang").value_or("en_US");
+    gui.customCursor = data.getBool("custom_cursor").value_or(true);
     gui.showConsole = data.getBool("show_console").value_or(false);
 }
 
 void Settings::aplySettings(Engine& engine) { 
     engine.getMainWindow().setFPS(display.FPS);
     engine.getMainWindow().setFullscreen(display.fullscreen);
-    // "camera_inertia not imlemented"
-    // "pause_on_world_open: implemented in engine.cpp
+    // "camera_inertia" not imlemented
+    // "pause_on_world_open": implemented in engine.cpp
     // "show_hitboxes" implemented in mobs_system.cpp
     GUI::loadLangTranslations(gui.lang);
+    engine.getMainWindow().setCursor(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     debug::Console::setVisible(Settings::gui.showConsole);
 }

@@ -2,6 +2,7 @@
 #include <SDL3/SDL.h>
 #include <atomic>
 #include <string>
+#include "cursor.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
 namespace std::filesystem { class path; }
@@ -10,6 +11,7 @@ class MainWindow {
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Event event = SDL_Event(0);
+    Cursor cursor;
     Uint32 FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
     bool resized = false, fullscreen = false;
     std::atomic_bool open = true;
@@ -31,6 +33,9 @@ public:
         SDL_GetWindowSize(window, &x, &y);
         return PixelCoord(x, y);
     }
+    //
+    void setCursor(const CursorType type) { cursor = Cursor(type); }
+    CursorType getCursor() const { return cursor.getType(); }
     //
     void takeScreenshot(const std::filesystem::path& path) const;
     void pollEvents();
