@@ -34,7 +34,10 @@ public:
         return PixelCoord(x, y);
     }
     //
-    void setCursor(const CursorType type) { cursor = Cursor(type); }
+    void setCursor(const CursorType type) {
+        if (getCursor() != type)
+            cursor = Cursor(type);
+    }
     CursorType getCursor() const { return cursor.getType(); }
     //
     void takeScreenshot(const std::filesystem::path& path) const;

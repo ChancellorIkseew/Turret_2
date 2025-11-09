@@ -7,7 +7,7 @@
 
 static debug::Logger logger("cursor");
 
-Cursor::Cursor(const CursorType type) {
+Cursor::Cursor(const CursorType type) : type(type) {
     std::filesystem::path path;
     switch (type) {
     case CursorType::arrow:
@@ -18,7 +18,7 @@ Cursor::Cursor(const CursorType type) {
         break;
 
     case CursorType::OS_default:
-        SDL_SetCursor(nullptr);
+        SDL_SetCursor(SDL_GetDefaultCursor());
         return;
     // TODO: other types.
     }
