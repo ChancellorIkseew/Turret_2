@@ -1,6 +1,5 @@
 #include "frontend.hpp"
 //
-#include "engine/engine.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/widgets/button.hpp"
