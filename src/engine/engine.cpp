@@ -75,10 +75,12 @@ void Engine::createWorldInGame(WorldProperties& properties) {
     command = EngineCommand::gameplay_new_world;
     worldProperties = properties;
 }
-void Engine::createWorldInEditor(WorldProperties& properties) {
+void Engine::createWorldInEditor() {
     closeWorld();
     command = EngineCommand::editor_new_world;
-    worldProperties = properties;
+    const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
+    const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
+    worldProperties = WorldProperties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
 }
 void Engine::openMainMenu() {
     closeWorld();

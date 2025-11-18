@@ -26,7 +26,7 @@ public:
     void loadWorldInGame(const std::string& folder);
     void loadWorldInEditor(const std::string& folder);
     void createWorldInGame(WorldProperties& properties);
-    void createWorldInEditor(WorldProperties& properties);
+    void createWorldInEditor();
     void openMainMenu();
     void closeWorld() { worldOpen.store(false, std::memory_order::seq_cst); }
     void closeGame() { closeWorld(); mainWindow.close(); }
