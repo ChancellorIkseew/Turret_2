@@ -13,6 +13,9 @@ static inline bool isNotIntegral(const char32_t symbol) {
 static inline bool isNotFloat(const char32_t symbol) {
     return isNotIntegral(symbol) && symbol != U'.';
 }
+static inline bool isNotANSI(const char32_t symbol) {
+    return symbol < 0 || symbol > 255;
+}
 
 static void validateUnsignedIntegral(std::u32string& text) {
     const auto it = std::remove_if(text.begin(), text.end(), isNotUnsignedIntegral);
@@ -65,4 +68,21 @@ void Int16Validator::validateValue(std::u32string& text) const {
 void Int8Validator::validateValue(std::u32string& text) const {
     const int8_t value = validator::toInt8(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
+}
+
+void FloatValidator::validateText(std::u32string& text) const {
+    const auto it = std::remove_if(text.begin(), text.end(), isNotFloat);
+    text.erase(it, text.end());
+}
+void FloatValidator::validateValue(std::u32string& text) const {
+    const float value = validator::toFloat(text).value_or(0.0f);
+    text = utf8::to_u32string(std::clamp(value, min, max));
+}
+
+void ANSIValidator::validateText(std::u32string& text) const {
+    const auto it = std::remove_if(text.begin(), text.end(), isNotANSI);
+    text.erase(it, text.end());
+}
+void ANSIValidator::validateValue(std::u32string& text) const {
+    ANSIValidator::validateText(text);
 }
