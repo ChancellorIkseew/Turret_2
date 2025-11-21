@@ -15,7 +15,7 @@ struct Texture {
 class Sprite {
     static inline SDL_Renderer* renderer = nullptr;
     static inline PixelCoord translation;
-    SDL_FRect textureRect;
+    SDL_FRect textureRect = SDL_FRect(0.0f, 0.0f, 0.0f, 0.0f);
     SDL_FRect rect = SDL_FRect(0.0f, 0.0f, 0.0f, 0.0f);
     SDL_FPoint origin = SDL_FPoint(0.0f, 0.0f);
     double angle = 0.0;
