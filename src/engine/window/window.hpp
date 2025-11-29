@@ -6,8 +6,6 @@
 #include "cursor.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
-//namespace std::filesystem { class path; }
-
 class MainWindow {
     SDL_Window* window;
     SDL_Renderer* renderer;

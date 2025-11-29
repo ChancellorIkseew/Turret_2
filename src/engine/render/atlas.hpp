@@ -3,8 +3,6 @@
 #include <filesystem>
 #include <string>
 
-//namespace std::filesystem { class path; }
-
 class Atlas {
     static inline SDL_Texture* comonTexture = nullptr;
     static inline SDL_Renderer* renderer = nullptr;
