@@ -33,6 +33,9 @@ std::unique_ptr<Container> frontend::initJEI(TileData& tileData) {
     for (const auto& [overlayName, id] : content::Indexes::getOverlay()) {
         addButton(overlayName, id, TileComponent::overlay);
     }
+    for (const auto& [blockName, id] : content::Indexes::getBlocks()) {
+        addButton(blockName, id, TileComponent::block);
+    }
 
     tileData.component = TileComponent::floor; // Reset tileData to avoid errors.
     tileData.id = content::Indexes::getFloor().begin()->second;

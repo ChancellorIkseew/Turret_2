@@ -9,5 +9,5 @@ enum class TileComponent : uint8_t {
 
 struct TileData {
     TileComponent component = TileComponent::floor;
-    uint8_t id = 0U;
+    uint16_t id = 0U;
 };

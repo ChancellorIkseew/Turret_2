@@ -1,6 +1,7 @@
 #pragma once
 #include "gui.hpp"
 //
+#include "engine/coords/transforms.hpp"
 #include "engine/engine.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
@@ -35,9 +36,9 @@ private:
             return;
         const TileCoord tile = t1::tile(camera.fromScreenToMap(Input::getMouseCoord()));
         switch (tileData.component) {
-        case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
-        case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
-        case TileComponent::block: break;
+        //case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
+        //case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
+        case TileComponent::block:   map.placeBlock(tile, tileData.id); break;
         }
     }
 };

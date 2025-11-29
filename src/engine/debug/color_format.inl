@@ -1,5 +1,5 @@
-#include <string>
 #include <iostream>
+#include <string>
 #include "logger.hpp"
 
 #ifdef _WIN32

@@ -90,6 +90,8 @@
     <ClInclude Include="src\game\script_libs\lib_world_init.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\weather\weather.hpp" />
+    <ClInclude Include="src\game\world\block.hpp" />
+    <ClInclude Include="src\game\world\blocks_list.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
     <ClInclude Include="src\game\world\world_map.hpp" />
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
@@ -163,6 +165,7 @@
     <ClCompile Include="src\game\script_libs\lib_util.cpp" />
     <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
+    <ClCompile Include="src\game\world\blocks_list.cpp" />
     <ClCompile Include="src\game\world\world_map.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />

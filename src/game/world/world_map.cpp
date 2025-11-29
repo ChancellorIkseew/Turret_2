@@ -29,3 +29,10 @@ void WorldMap::placeOverlay(const TileCoord tile, const uint8_t overlayID) {
     Events::setActive(Event::overlay_changed);
     Events::setActive(Event::map_changed);
 }
+void WorldMap::placeBlock(const TileCoord tile, const uint16_t blockID) {
+    if (!tileExists(tile))
+        return;
+    //WorldMap::at(tile).block = std::make blockID;
+    Events::setActive(Event::block_changed);
+    Events::setActive(Event::map_changed);
+}

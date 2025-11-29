@@ -82,8 +82,8 @@ void MapDrawer::drawStructures() {
     const TileCoord end = camera.getEndTile();
     for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
         for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
-            if (map.at(x, y).block)
-                map.at(x, y).block->draw();
+            //if (map.at(x, y).block) TODO: update
+                //map.at(x, y).block->draw();
         }
     }
 }

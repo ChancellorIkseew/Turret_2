@@ -2,26 +2,8 @@
 #include <vector>
 #include "config.hpp"
 #include "engine/coords/tile_coord.hpp"
-#include "engine/render/sprite.hpp"
-#include "engine/coords/transforms.hpp"
 
-class Block {
-    Sprite shadow;
-    Sprite base;
-    const TileCoord tile;
-public:
-    Block(const std::string& shadow, const std::string& base, const TileCoord tile) :
-        shadow(shadow), base(base), tile(tile) {
-        this->shadow.setSize(PixelCoord(40, 40));
-        this->base.setSize(PixelCoord(32, 32));
-        this->shadow.setPosition(t1::pixel(tile) - PixelCoord(4, 4));
-        this->base.setPosition(t1::pixel(tile));
-    }
-    void draw() {
-        shadow.draw();
-        base.draw();
-    }
-};
+class Block;
 
 struct MapTile {
     uint8_t floor = 0;
@@ -37,7 +19,7 @@ public:
     void print();
     void placeFloor(const TileCoord tile, const uint8_t floorID);
     void placeOverlay(const TileCoord tile, const uint8_t overlayID);
-    void placeBlock();
+    void placeBlock(const TileCoord tile, const uint16_t blockID);
 
     t1_finline bool tileExists(const int tileX, const int tileY) const {
         return tileX >= 0 && tileX < mapSize.x &&

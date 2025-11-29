@@ -11,3 +11,4 @@ overlay_iron=1
 overlay_coal=2
 overlay_copper=3
 #block
+block_concrete_wall=1
