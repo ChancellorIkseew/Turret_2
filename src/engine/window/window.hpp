@@ -1,11 +1,12 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include <atomic>
+#include <filesystem>
 #include <string>
 #include "cursor.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
-namespace std::filesystem { class path; }
+//namespace std::filesystem { class path; }
 
 class MainWindow {
     SDL_Window* window;

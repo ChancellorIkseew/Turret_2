@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include "engine/coords/transforms.hpp"
 #include "engine/render/sprite.hpp"
 #include "physics_base.hpp"

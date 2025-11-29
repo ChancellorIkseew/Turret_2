@@ -12,7 +12,12 @@ latest_log.txt
 AS_DEBUG/
 
 # IDE:
+.vscode/
 .vs/
+
+# CMake_cache
+cmake_proj/*
+!cmake_proj/CMakeLists.txt
 
 # test
 test/packages/

@@ -1,6 +1,6 @@
 #pragma once
-
-namespace std::filesystem { class path; }
+#include <filesystem>
+//namespace std::filesystem { class path; }
 class WorldMap;
 
 namespace serializer {
