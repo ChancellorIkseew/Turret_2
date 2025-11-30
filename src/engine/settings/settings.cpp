@@ -7,6 +7,7 @@
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/window/window.hpp"
 
+using namespace t1_sp;
 static debug::Logger logger("settings");
 
 void Settings::writeSettings() {

@@ -1,6 +1,7 @@
 #include "text.hpp"
 //
 #include <cstdint>
+#include <cmath>
 #include <unordered_map>
 #include "atlas.hpp"
 #include "config.hpp"
@@ -8,7 +9,7 @@
 #include "engine/io/parser/tin_parser.hpp"
 
 constexpr char32_t CYRILIC_BEGIN = 1024U;
-constexpr char32_t CUSTOM_BEGIN = 57344U; // Unicode private use area 57344 – 63743.
+constexpr char32_t CUSTOM_BEGIN = 57344U; // Unicode private use area 57344 ï¿½ 63743.
 constexpr char32_t SYMBOLS_PER_LINE = 16U;
 constexpr float GLYPH_SIZE = 16.0f;
 static SDL_FPoint startLatin;
