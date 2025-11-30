@@ -64,6 +64,9 @@
     <ClInclude Include="src\engine\window\input\controls.hpp" />
     <ClInclude Include="src\engine\window\input\input.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
+    <ClInclude Include="src\game\block\block.hpp" />
+    <ClInclude Include="src\game\block\blocks_list.hpp" />
+    <ClInclude Include="src\game\block\item_stack.hpp" />
     <ClInclude Include="src\game\content\indexes.hpp" />
     <ClInclude Include="src\game\content\content.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
@@ -90,8 +93,6 @@
     <ClInclude Include="src\game\script_libs\lib_world_init.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\weather\weather.hpp" />
-    <ClInclude Include="src\game\world\block.hpp" />
-    <ClInclude Include="src\game\world\blocks_list.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
     <ClInclude Include="src\game\world\world_map.hpp" />
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
+    <ClCompile Include="src\game\block\blocks_list.cpp" />
     <ClCompile Include="src\game\content\indexes.cpp" />
     <ClCompile Include="src\game\content\textures.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
@@ -165,7 +167,6 @@
     <ClCompile Include="src\game\script_libs\lib_util.cpp" />
     <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
-    <ClCompile Include="src\game\world\blocks_list.cpp" />
     <ClCompile Include="src\game\world\world_map.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />

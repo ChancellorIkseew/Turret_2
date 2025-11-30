@@ -258,10 +258,13 @@
     <ClInclude Include="src\engine\window\cursor.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\world\blocks_list.hpp">
+    <ClInclude Include="src\game\block\block.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\world\block.hpp">
+    <ClInclude Include="src\game\block\blocks_list.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\block\item_stack.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -473,7 +476,7 @@
     <ClCompile Include="src\game\frontend\fr_gui.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\world\blocks_list.cpp">
+    <ClCompile Include="src\game\block\blocks_list.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
