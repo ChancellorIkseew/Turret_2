@@ -1,7 +1,6 @@
 #pragma once
+#include <filesystem>
 #include "game/generation/generation.hpp"
-
-namespace std::filesystem { class path; }
 
 namespace serializer {
     void saveFloorPreset(const FloorPresets& floorPresets, const std::filesystem::path& path);
