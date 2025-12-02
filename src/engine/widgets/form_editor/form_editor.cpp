@@ -3,7 +3,6 @@
 #include "engine/widgets/form.hpp"
 #include "engine/window/input/input.hpp"
 
-
 static std::weak_ptr<Form> targetForm;
 static Sprite carriage;
 static int carPos = 0;
@@ -29,13 +28,13 @@ void FormEditor::setForm(std::weak_ptr<Form> form) {
     resetTarget();
     targetForm = form;
     form.lock()->setState(ButtonState::checked);
-    Input::enableTextEnter(true);
 }
 
 void FormEditor::resetTarget() {
-    Input::enableTextEnter(false);
-    if (targetForm.lock() && targetForm.lock() != nullptr)
-        targetForm.lock()->setState(ButtonState::idle);
+    if (!targetForm.lock())
+        return;
+    targetForm.lock()->validate();
+    targetForm.lock()->setState(ButtonState::idle);
     targetForm.reset();
     carPos = 0;
 }
@@ -71,10 +70,18 @@ void FormEditor::editForm(const int frameDelay) {
     }  
 }
 
+void FormEditor::enableInput() {
+    if (targetForm.lock() && !Input::isTextEnterEnabled())
+        Input::enableTextEnter(true);
+    if (!targetForm.lock() && Input::isTextEnterEnabled())
+        Input::enableTextEnter(false);
+}
+
 void FormEditor::update(const int frameDelay) {
+    enableInput();
     if (!targetForm.lock())
         return;
     if (Input::jactive(LMB) && !targetForm.lock()->containsMouse())
-        resetTarget();
+        return resetTarget();
     editForm(frameDelay);
 }

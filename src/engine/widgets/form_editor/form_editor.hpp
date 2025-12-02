@@ -12,4 +12,5 @@ public:
 private:
     static void resetTarget();
     static void editForm(const int frameDelay);
+    static void enableInput();
 };

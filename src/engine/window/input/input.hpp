@@ -27,6 +27,7 @@ public:
     static std::optional<char32_t> getLastSymbolEntered();
     ///@brief Start/stop checking.
     static void enableTextEnter(const bool flag);
+    static bool isTextEnterEnabled();
 private:
     friend MainWindow;
     static void init(SDL_Window* mainWindow);
