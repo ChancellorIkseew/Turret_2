@@ -8,7 +8,7 @@ class Layout : public Node {
     const float margin = 5.0f;
     Orientation orientation;
 protected:
-    std::vector<std::unique_ptr<Node>> contents;
+    std::vector<std::shared_ptr<Node>> contents;
 public:
     Layout(const Orientation orientation) :
         Node(), orientation(orientation) { }

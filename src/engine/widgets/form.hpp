@@ -5,7 +5,7 @@
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/widgets/form_editor/form_validator.hpp"
 
-class Form : public Clickable {
+class Form : public Clickable, public std::enable_shared_from_this<Form> {
     static constexpr PixelCoord FORM_SIZE{100.0f, 20.0f};
     std::u32string text;
     std::unique_ptr<Validator> validator;
@@ -16,7 +16,7 @@ public:
 
     Form(std::u32string text) : Clickable(FORM_SIZE), text(text) { }
     Form()                    : Clickable(FORM_SIZE) { }
-    ~Form() final;
+    ~Form() final = default;
 
     void draw() final;
     void callback() final;
