@@ -64,10 +64,10 @@ void FormEditor::editForm(const int frameDelay) {
     }
     //
     std::optional<uint32_t> sym = Input::getLastSymbolEntered();
-    if (sym.has_value()) {
+    if (sym.has_value() && targetForm.lock()->accepts(sym.value())) {
         text.insert(carPos, 1, sym.value());
         ++carPos;
-    }  
+    }
 }
 
 void FormEditor::enableInput() {

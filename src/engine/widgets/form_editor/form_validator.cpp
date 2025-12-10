@@ -26,6 +26,16 @@ static void validateIntegral(std::u32string& text) {
     text.erase(it, text.end());
 }
 
+bool Uint64Validator::isValid(const char32_t symbol) const { return !isNotUnsignedIntegral(symbol); }
+bool Uint32Validator::isValid(const char32_t symbol) const { return !isNotUnsignedIntegral(symbol); }
+bool Uint16Validator::isValid(const char32_t symbol) const { return !isNotUnsignedIntegral(symbol); }
+bool Uint8Validator::isValid(const char32_t symbol) const { return !isNotUnsignedIntegral(symbol); }
+
+bool Int64Validator::isValid(const char32_t symbol) const { return !isNotIntegral(symbol); }
+bool Int32Validator::isValid(const char32_t symbol) const { return !isNotIntegral(symbol); }
+bool Int16Validator::isValid(const char32_t symbol) const { return !isNotIntegral(symbol); }
+bool Int8Validator::isValid(const char32_t symbol) const { return !isNotIntegral(symbol); }
+
 void Uint64Validator::validateText(std::u32string& text) const { validateUnsignedIntegral(text); }
 void Uint32Validator::validateText(std::u32string& text) const { validateUnsignedIntegral(text); }
 void Uint16Validator::validateText(std::u32string& text) const { validateUnsignedIntegral(text); }
@@ -70,6 +80,7 @@ void Int8Validator::validateValue(std::u32string& text) const {
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 
+bool FloatValidator::isValid(const char32_t symbol) const { return !isNotFloat(symbol); }
 void FloatValidator::validateText(std::u32string& text) const {
     const auto it = std::remove_if(text.begin(), text.end(), isNotFloat);
     text.erase(it, text.end());
@@ -79,6 +90,7 @@ void FloatValidator::validateValue(std::u32string& text) const {
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 
+bool ANSIValidator::isValid(const char32_t symbol) const { return !isNotANSI(symbol); }
 void ANSIValidator::validateText(std::u32string& text) const {
     const auto it = std::remove_if(text.begin(), text.end(), isNotANSI);
     text.erase(it, text.end());

@@ -11,6 +11,9 @@ inline constexpr cString Arrow_left("Arrow_left");
 inline constexpr cString Arrow_right("Arrow_right");
 inline constexpr cString Backspace("Backspace");
 inline constexpr cString Delete("Delete");
+inline constexpr cString Copy("Copy");
+inline constexpr cString Cut("Cut");
+inline constexpr cString Paste("Paste");
 inline constexpr cString Escape("Escape");
 
 inline constexpr cString Build("Build");

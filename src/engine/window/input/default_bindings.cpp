@@ -10,6 +10,9 @@ std::unordered_map<std::string, Binding> Controls::bindings = {
     {Arrow_left, Binding(SDL_SCANCODE_LEFT, InputType::keyboard, false)},
     {Arrow_right, Binding(SDL_SCANCODE_RIGHT, InputType::keyboard, false)},
     {Backspace, Binding(SDL_SCANCODE_BACKSPACE, InputType::keyboard, false)},
+    {Copy, Binding(SDL_SCANCODE_C, InputType::keyboard, false)},
+    {Cut, Binding(SDL_SCANCODE_X, InputType::keyboard, false)},
+    {Paste, Binding(SDL_SCANCODE_V, InputType::keyboard, false)},
     {Delete, Binding(SDL_SCANCODE_DELETE, InputType::keyboard, false)},
     {Escape, Binding(SDL_SCANCODE_ESCAPE, InputType::keyboard, false)},
 

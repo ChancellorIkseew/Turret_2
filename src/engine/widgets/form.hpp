@@ -23,4 +23,9 @@ public:
     void validate();
     const std::u32string& getText() const { return text; }
     std::u32string& getText() { return text; }
+    bool accepts(const char32_t symbol) {
+        if (validator)
+            return validator->isValid(symbol);
+        return true;
+    }
 };
