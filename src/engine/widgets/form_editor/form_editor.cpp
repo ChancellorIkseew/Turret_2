@@ -5,7 +5,7 @@
 
 static std::weak_ptr<Form> targetForm;
 static Sprite carriage;
-static int carPos = 0;
+static size_t carPos = 0;
 constexpr int INPUT_RELOAD = 120;
 static int inputTimer = 0;
 
@@ -28,6 +28,7 @@ void FormEditor::setForm(std::weak_ptr<Form> form) {
     resetTarget();
     targetForm = form;
     form.lock()->setState(ButtonState::checked);
+    moveCarriageToCursor();
 }
 
 void FormEditor::resetTarget() {
@@ -81,7 +82,19 @@ void FormEditor::update(const int frameDelay) {
     enableInput();
     if (!targetForm.lock())
         return;
-    if (Input::jactive(LMB) && !targetForm.lock()->containsMouse())
-        return resetTarget();
+    if (Input::jactive(LMB)) {
+        if (targetForm.lock()->containsMouse())
+            moveCarriageToCursor();
+        else
+            return resetTarget();
+    }
     editForm(frameDelay);
+}
+
+void FormEditor::moveCarriageToCursor() {
+    const auto positionInForm = Input::getMouseCoord() - targetForm.lock()->getPosition();
+    carPos = static_cast<size_t>((positionInForm / 8).x);
+    const size_t textLength = targetForm.lock()->getText().length();
+    if (carPos > textLength)
+        carPos = textLength;
 }
