@@ -92,3 +92,6 @@ void Input::enableTextEnter(const bool flag) {
     else
         SDL_StopTextInput(window);
 }
+bool Input::isTextEnterEnabled() {
+    return SDL_TextInputActive(window);
+}

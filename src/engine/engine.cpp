@@ -24,6 +24,7 @@
 //
 #include "engine/io/folders.hpp"
 #include "engine/settings/settings.hpp"
+#include "engine/widgets/form_editor/form_editor.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 //
 #include "game/physics/mob_ai.hpp"
@@ -53,6 +54,7 @@ void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
     content::load();
+    FormEditor::init();
     openMainMenu();
     while (mainWindow.isOpen()) {
         createScene(worldFolder, worldProperties);

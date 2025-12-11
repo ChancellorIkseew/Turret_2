@@ -4,10 +4,6 @@
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 
-Form::~Form() {
-    FormEditor::resetTarget();
-}
-
 void Form::draw() {
     Node::draw();
     text::drawString(text, getPosition());
@@ -18,7 +14,7 @@ void Form::callback() {
         validator->validateText(text);
     Clickable::callback();
     if (containsMouse() && Input::jactive(LMB))
-        FormEditor::setForm(this);
+        FormEditor::setForm(weak_from_this());    
 }
 
 void Form::validate() {

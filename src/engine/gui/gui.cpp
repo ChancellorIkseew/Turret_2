@@ -28,6 +28,7 @@ void GUI::draw() {
         }
         if (!overlaped.empty())
             overlaped.back()->draw();
+        FormEditor::drawCarriage();
     }
     if (showFPS)
         drawDebugText(mainWindow, debugText);
@@ -95,7 +96,7 @@ void GUI::acceptHotkeys() {
         Settings::display.fullscreen = mainWindow.isFullscreen();
         Settings::writeSettings();
     }
-    FormEditor::editForm();
+    FormEditor::update(mainWindow.getRealFrameDelay());
 }
 
 void GUI::relocateContainers() {
