@@ -3,6 +3,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include "validator.hpp"
 #include "engine/coords/tile_coord.hpp"
 #include "engine/io/utf8/utf8.hpp"
@@ -70,6 +71,18 @@ namespace tin {
         std::optional<TileCoord> getTileCoord(const std::string& key) const {
             if (!data.contains(key)) return std::nullopt;
             return validator::toTileCoord(data.at(key));
+        }
+
+        std::vector<std::string> getList(const std::string& key) const {
+            std::vector<std::string> list;
+            if (!data.contains(key)) return list;
+            //
+            std::stringstream ss(data.at(key));
+            std::string line;
+            while (std::getline(ss, line, ',')) {
+                list.push_back(line);
+            }
+            return list;
         }
 
         auto cbegin() const noexcept { return data.cbegin(); }
