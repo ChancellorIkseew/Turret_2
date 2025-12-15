@@ -7,28 +7,26 @@
 
 static SDL_Window* window;
 static std::atomic<std::optional<Binding>> lastKeyPressed;
-static std::atomic<std::optional<char32_t>> symbolJustEntered;
-static std::atomic<PixelCoord> mouseCoord;
-static std::atomic<MouseWheelScroll> mouseWheelScroll = MouseWheelScroll::none;
+static std::optional<char32_t> symbolJustEntered;
+static PixelCoord mouseCoord;
+static MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
 
 void Input::init(SDL_Window* mainWindow) { window = mainWindow; }
 
 void Input::update(const SDL_Event& event) {
     if (event.type == SDL_EVENT_MOUSE_WHEEL) {
-        MouseWheelScroll scroll = MouseWheelScroll::none;
         if (event.wheel.y < 0.0f)
-            scroll = MouseWheelScroll::up;
+            mouseWheelScroll = MouseWheelScroll::up;
         else if (event.wheel.y > 0.0f)
-            scroll = MouseWheelScroll::down;
-        mouseWheelScroll.store(scroll, std::memory_order_relaxed);
+            mouseWheelScroll = MouseWheelScroll::down;
         return;
     }
     if (event.type == SDL_EVENT_MOUSE_MOTION) {
-        mouseCoord.store(PixelCoord(event.motion.x, event.motion.y));
+        mouseCoord = PixelCoord(event.motion.x, event.motion.y);
         return;
     }
     if (event.type == SDL_EVENT_TEXT_INPUT) {
-        symbolJustEntered.store(utf8::to_char32_t(event.text.text), std::memory_order_relaxed);
+        symbolJustEntered = utf8::to_char32_t(event.text.text);
         return;
     }
 
@@ -57,7 +55,8 @@ void Input::update(const SDL_Event& event) {
 }
 
 void Input::reset() {
-    mouseWheelScroll.store(MouseWheelScroll::none, std::memory_order_relaxed);
+    mouseWheelScroll = MouseWheelScroll::none;
+    symbolJustEntered.reset();
     for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
     }
@@ -71,10 +70,10 @@ bool Input::jactive(cString bindName) {
 }
 
 PixelCoord Input::getMouseCoord() {
-    return mouseCoord.load(std::memory_order_relaxed);
+    return mouseCoord;
 }
 MouseWheelScroll Input::getMouseWheelScroll() {
-    return mouseWheelScroll.load(std::memory_order_relaxed);
+    return mouseWheelScroll;
 }
 
 std::optional<Binding> Input::getLastKeyPressed() {
@@ -84,7 +83,7 @@ void Input::resetLastKeyPressed() {
     lastKeyPressed = std::nullopt;
 }
 std::optional<char32_t> Input::getLastSymbolEntered() {
-    return symbolJustEntered.exchange(std::nullopt, std::memory_order_relaxed);
+    return symbolJustEntered;
 }
 void Input::enableTextEnter(const bool flag) {
     if (flag)

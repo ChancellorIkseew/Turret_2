@@ -8,7 +8,6 @@
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 
-static bool isRebindingActive;
 static std::mutex mutex;
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
@@ -31,7 +30,6 @@ static void rebind(Button* btn, std::string bindName) { //TODO: refactor to avoi
         });
     tr.detach();
     util::sleep(160);
-    isRebindingActive = false;
 }
 
 std::unique_ptr<Container> frontend::initControls() {

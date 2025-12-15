@@ -31,7 +31,7 @@ std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
         auto btn = selector->addNode(new Button(LANG_BTN_SIZE, langName));
         btn->addCallback([&, langName] { changeLang(engine, langName); });
         if (fileName == Settings::gui.lang + ".tin")
-            btn->setState(ButtonState::checked);
+            selector->setTarget(btn);
     }
 
     languages->arrange();
