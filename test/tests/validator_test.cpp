@@ -1,6 +1,7 @@
 #include "pch.h"
 #ifdef FORM_VALIDATOR_TEST
 #include "engine/io/utf8/utf8.hpp"
+#include "engine/io/utf8/utf8.cpp"
 #include "engine/widgets/form_editor/form_validator.hpp"
 #include "engine/widgets/form_editor/form_validator.cpp"
 #include "engine/io/parser/validator.hpp"
