@@ -87,7 +87,6 @@
     <ClInclude Include="src\game\player\player_controller.hpp" />
     <ClInclude Include="src\game\presets\mob_presets.hpp" />
     <ClInclude Include="src\game\presets\shell_presets.hpp" />
-    <ClInclude Include="src\game\script_libs\lib_world_init.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\weather\weather.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />

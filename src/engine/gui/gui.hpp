@@ -15,9 +15,11 @@ protected:
     Label debugText;
     Engine& engine;
     MainWindow& mainWindow;
+    Input& input;
     bool showGUI = true, showFPS = false, showAtlas = false;
 public:
-    GUI(Engine& engine) : debugText(U""), engine(engine), mainWindow(engine.getMainWindow()) {}
+    GUI(Engine& engine) : debugText(U""), engine(engine),
+        mainWindow(engine.getMainWindow()), input(mainWindow.getInput()) {}
     virtual ~GUI() = default;
 
     void draw();

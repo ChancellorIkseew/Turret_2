@@ -16,11 +16,11 @@ public:
     ~GameplayGUI() final = default;
 
     void callback() final {
-        if (Input::jactive(Escape) && overlaped.empty())
+        if (input.jactive(Escape) && overlaped.empty())
             GUI::addOverlaped(frontend::initMenu(engine));
         else
             GUI::callback();
-        if (Input::jactive(Pause))
+        if (input.jactive(Pause))
             engine.setPaused(!engine.isPaused());
     }
 };

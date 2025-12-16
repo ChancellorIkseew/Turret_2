@@ -31,9 +31,9 @@ public:
             it->translate(translations);
         }
     }
-    void callback() override {
+    void callback(const Input& input) override {
         for (auto& it : contents) {
-            it->callback();
+            it->callback(input);
         }
     }
     const auto& getContents() const { return contents; }

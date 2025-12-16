@@ -17,7 +17,7 @@ std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     auto language = settings->addNode(new Button(BTN_SIZE, U"Language"));
     
     back    ->addCallback([container = settings.get()] { container->close(); });
-    controls->addCallback([&] { engine.getGUI().addOverlaped(frontend::initControls()); });
+    controls->addCallback([&] { engine.getGUI().addOverlaped(frontend::initControls(engine)); });
     graphics->addCallback([&] { engine.getGUI().addOverlaped(frontend::initGraphics(engine)); });
     gui     ->addCallback([&] { engine.getGUI().addOverlaped(frontend::initGUI(engine)); });
     language->addCallback([&] { engine.getGUI().addOverlaped(frontend::initLanguages(engine)); });

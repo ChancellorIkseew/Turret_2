@@ -162,9 +162,6 @@
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\script_libs\lib_world_init.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\world\world_map.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

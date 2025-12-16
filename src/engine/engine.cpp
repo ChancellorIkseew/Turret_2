@@ -12,7 +12,6 @@
 #include "engine/util/sleep.hpp"
 //
 #include "game/events/events.hpp"
-#include "game/script_libs/lib_world_init.hpp"
 #include "game/script_libs/script_libs.hpp"
 #include "game/player/camera.hpp"
 #include "game/world_drawer/world_drawer.hpp"
@@ -105,7 +104,6 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     Camera camera(world->getMap().getSize());
     WorldDrawer worldDrawer(camera, *world);
     std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
-    lib_world::init(world.get());
 
     Team* player = world->getTeams().addTeam(U"player");
     player->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
@@ -114,6 +112,8 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
     _world = world.get();
     _gui = gui.get();
+    _camera = &camera;
+    script_libs::initNewGame(*this);
 
     worldOpen = true;
     std::thread simulation([&] { startSimulation(*world, worldMutex); });
@@ -130,7 +130,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
                 tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
             else
                 tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
-            PlayerController::update(*player, camera, *gui, tickOfset);
+            PlayerController::update(*player, *this, tickOfset);
             worldDrawer.draw(tickOfset);
             Events::reset(); // for editor
         }

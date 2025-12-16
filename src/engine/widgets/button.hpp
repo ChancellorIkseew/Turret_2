@@ -12,7 +12,7 @@ public:
     ~Button() final = default;
     //
     void draw() final;
-    void callback() final;
+    void callback(const Input& input) final;
     void setPosition(const PixelCoord position) final;
     void setText(const std::u32string& name);
     void translate(const tin::Data& translations) final {

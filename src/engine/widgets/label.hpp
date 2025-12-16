@@ -18,5 +18,5 @@ public:
     void resizeBy(const std::u32string& text);
     void draw() final;
     void translate(const tin::Data& translations) final;
-    void callback() final { };
+    void callback(const Input& input) final { };
 };

@@ -9,12 +9,12 @@ void Form::draw() {
     text::drawString(text, getPosition());
 }
 
-void Form::callback() {
+void Form::callback(const Input& input) {
     if (validator && state == ButtonState::checked)
         validator->validateText(text);
-    Clickable::callback();
-    if (containsMouse() && Input::jactive(LMB))
-        FormEditor::setForm(weak_from_this());    
+    Clickable::callback(input);
+    if (containsMouse(input) && input.jactive(LMB))
+        FormEditor::setForm(input, weak_from_this());
 }
 
 void Form::validate() {

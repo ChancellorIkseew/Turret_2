@@ -11,7 +11,7 @@ public:
         Node(size, textureName) { }
     ~ImageButton() final = default;
     //
-    void callback() final;
+    void callback(const Input& input) final;
     void addCallback(std::function<void()> action) {
         this->action = action;
     }

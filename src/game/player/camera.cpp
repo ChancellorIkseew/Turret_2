@@ -18,11 +18,11 @@ void Camera::update(const PixelCoord windowSize) {
     updateMapRegion(windowSize);
 }
 
-void Camera::moveByMouse() {
-    if (Input::jactive(MidMB))
-        movingStartMouseCoord = fromScreenToMap(Input::getMouseCoord());
-    else if (Input::active(MidMB)) {
-        const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(Input::getMouseCoord());
+void Camera::moveByMouse(const Input& input) {
+    if (input.jactive(MidMB))
+        movingStartMouseCoord = fromScreenToMap(input.getMouseCoord());
+    else if (input.active(MidMB)) {
+        const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(input.getMouseCoord());
         cameraCentre = cameraCentre + delta;
     }
 }
@@ -37,8 +37,8 @@ void Camera::avoidEscapeFromMap() {
     cameraCentre.y = std::clamp(cameraCentre.y, 0.0f, pixelMapSize.y);
 }
 
-void Camera::scale() {
-    switch (Input::getMouseWheelScroll()) {
+void Camera::scale(const Input& input) {
+    switch (input.getMouseWheelScroll()) {
     case MouseWheelScroll::none:
         return;
     case MouseWheelScroll::up:

@@ -10,6 +10,6 @@ public:
     Clickable(const PixelCoord size)                          : Node(size, BTN_IDLE) { }
     ~Clickable() override = default;
     //
-    void callback() override;
+    void callback(const Input& input) override;
     void setState(const ButtonState newState);
 };

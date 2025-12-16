@@ -24,31 +24,32 @@ MainWindow::MainWindow(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))
         throw std::runtime_error("Could not init SDL");
 
-    window = SDL_CreateWindow(title.c_str(), 720, 480, SDL_WINDOW_RESIZABLE);
-    if (!window) {
+    sdlWindow = SDL_CreateWindow(title.c_str(), 720, 480, SDL_WINDOW_RESIZABLE);
+    if (!sdlWindow) {
         const std::string error = SDL_GetError();
         SDL_Quit();
         throw std::runtime_error("SDL_CreateWindow Error: " + error);
     }
 
-    renderer = SDL_CreateRenderer(window, nullptr);
-    if (!renderer) {
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, nullptr);
+    if (!sdlRenderer) {
         const std::string error = SDL_GetError();
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(sdlWindow);
         SDL_Quit();
         throw std::runtime_error("SDL_CreateRenderer Error: " + error);
     }
 
-    loadIcon(window);
-    Input::init(window);
-    Sprite::setRenderer(renderer);
-    Atlas::setRenderer(renderer);
-    text::setRenderer(renderer);
+    loadIcon(sdlWindow);
+
+    input.setWindow(sdlWindow);
+    Sprite::setRenderer(sdlRenderer);
+    Atlas::setRenderer(sdlRenderer);
+    text::setRenderer(sdlRenderer);
 }
 
 MainWindow::~MainWindow() {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(sdlRenderer);
+    SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
 }
 
@@ -59,7 +60,7 @@ void MainWindow::setFPS(const Uint32 FPS) {
 
 void MainWindow::setFullscreen(const bool flag) {
     fullscreen = flag;
-    SDL_SetWindowFullscreen(window, flag);
+    SDL_SetWindowFullscreen(sdlWindow, flag);
 }
 
 void MainWindow::setRenderTranslation(const PixelCoord translation) {
@@ -67,7 +68,7 @@ void MainWindow::setRenderTranslation(const PixelCoord translation) {
 }
 
 void MainWindow::pollEvents() {
-    Input::reset();
+    input.reset();
     resized = false;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -78,14 +79,14 @@ void MainWindow::pollEvents() {
             resized = true;
             break;
         default:
-            Input::update(event);
+            input.update(event);
             break;
         }
     }
 }
 
 void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
-    SDL_Surface* windowSurface = SDL_RenderReadPixels(renderer, nullptr);
+    SDL_Surface* windowSurface = SDL_RenderReadPixels(sdlRenderer, nullptr);
     try {
         if (!io::folders::createOrCheckFolder(path.parent_path()))
             throw std::runtime_error("Failed to create or find directory.");

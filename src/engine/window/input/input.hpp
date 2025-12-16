@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include <optional>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
@@ -8,29 +9,41 @@ union SDL_Event;
 class MainWindow;
 
 class Input {
+    SDL_Window* sdlWindow;
+    std::atomic<std::optional<Binding>> lastKeyPressed;
+    std::optional<char32_t> symbolJustEntered;
+    PixelCoord mouseCoord;
+    MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
 public:
+    Input() = default;
+
     ///@brief Check any press/click.
-    static bool active(const cString bindName);
+    bool active(const cString bindName) const;
     ///@brief Check only short press/click.
-    static bool jactive(const cString bindName);
+    bool jactive(const cString bindName) const;
 
     ///@brief Coordinate in window.
-    static PixelCoord getMouseCoord();
+    PixelCoord getMouseCoord() const;
     ///@brief (none/up/down)
-    static MouseWheelScroll getMouseWheelScroll();
+    MouseWheelScroll getMouseWheelScroll() const;
 
     ///@brief Int code and input type(keyboard/mouse) of the last key/button press.
     /// Is used for controls rebinding, but can have other usages.
-    static std::optional<Binding> getLastKeyPressed();
-    static void resetLastKeyPressed();
+    std::optional<Binding> getLastKeyPressed() const;
+    void resetLastKeyPressed();
     ///@brief Last symbol entered in any text field.
-    static std::optional<char32_t> getLastSymbolEntered();
+    std::optional<char32_t> getLastSymbolEntered() const;
     ///@brief Start/stop checking.
-    static void enableTextEnter(const bool flag);
-    static bool isTextEnterEnabled();
+    void enableTextEnter(const bool flag);
+    bool isTextEnterEnabled() const;
 private:
     friend MainWindow;
-    static void init(SDL_Window* mainWindow);
-    static void update(const SDL_Event& event);
-    static void reset();
+    void setWindow(SDL_Window* sdlWindow) { this->sdlWindow = sdlWindow; }
+    void update(const SDL_Event& event);
+    void reset();
+private:
+    Input(const Input&) = delete;
+    Input(Input&&) = delete;
+    Input& operator=(const Input&) = delete;
+    Input& operator=(Input&&) = delete;
 };

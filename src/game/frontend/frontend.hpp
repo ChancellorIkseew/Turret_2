@@ -9,7 +9,7 @@ class Engine;
 namespace frontend {
     std::unique_ptr<Container> initMainMenu(Engine& engine);
     std::unique_ptr<Container> initMenu(Engine& engine);
-    std::unique_ptr<Container> initControls();
+    std::unique_ptr<Container> initControls(Engine& engine);
     std::unique_ptr<Container> initWorldLoading(Engine& engine);
     std::unique_ptr<Container> initWorldSaving(Engine& engine);
     std::unique_ptr<Container> initSettings(Engine& engine);

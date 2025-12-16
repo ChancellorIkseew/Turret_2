@@ -1,6 +1,7 @@
 #include "frontend.hpp"
 //
 #include <mutex>
+#include "engine/engine.hpp"
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/util/sleep.hpp"
 #include "engine/widgets/button.hpp"
@@ -11,15 +12,15 @@
 static std::mutex mutex;
 constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
 
-static void rebind(Button* btn, std::string bindName) { //TODO: refactor to avoid multithreading
+static void rebind(Input& input, Button* btn, std::string bindName) { //TODO: refactor to avoid multithreading
     std::lock_guard<std::mutex> guarg(mutex);
     btn->setState(ButtonState::checked);
-    std::thread tr([=]() {
+    std::thread tr([=, &input]() {
         std::optional<Binding> binding = std::nullopt;
         util::sleep(160);
-        Input::resetLastKeyPressed();
+        input.resetLastKeyPressed();
         while (!binding.has_value()) {
-            binding = Input::getLastKeyPressed();
+            binding = input.getLastKeyPressed();
             util::sleep(48);
         }
         if (!btn)
@@ -32,7 +33,7 @@ static void rebind(Button* btn, std::string bindName) { //TODO: refactor to avoi
     util::sleep(160);
 }
 
-std::unique_ptr<Container> frontend::initControls() {
+std::unique_ptr<Container> frontend::initControls(Engine& engine) {
     auto controls = std::make_unique<Container>(Align::centre, Orientation::horizontal);
     auto bindNames = controls->addNode(new Layout (Orientation::vertical));
     auto bindings  = controls->addNode(new Layout (Orientation::vertical));
@@ -42,7 +43,7 @@ std::unique_ptr<Container> frontend::initControls() {
             continue;
         bindNames->addNode(new Label(utf8::to_u32string(bindName)));
         auto btn = bindings->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']'));
-        btn->addCallback([=] { rebind(btn, bindName); });
+        btn->addCallback([=, &engine] { rebind(engine.getMainWindow().getInput(), btn, bindName); });
     }
 
     auto ok = controls->addNode(new Button(BTN_SIZE, U"OK"));

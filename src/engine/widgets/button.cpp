@@ -2,9 +2,9 @@
 //
 #include "engine/window/input/input.hpp"
 
-void Button::callback() {
-    Clickable::callback();
-    if (containsMouse() && action && Input::jactive(LMB))
+void Button::callback(const Input& input) {
+    Clickable::callback(input);
+    if (containsMouse(input) && action && input.jactive(LMB))
         action();
 }
 

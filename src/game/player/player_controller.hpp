@@ -4,8 +4,10 @@
 #include "engine/coords/pixel_coord.hpp"
 
 struct Mob;
-class GUI;
 class Camera;
+class Engine;
+class GUI;
+class Input;
 class Team;
 
 class PlayerController {
@@ -22,12 +24,12 @@ class PlayerController {
 	static inline std::atomic<PixelCoord> aimCoord;
 	static std::atomic_bool shooting;
 
-	static void move(Camera& camera, const float tickOfset);
+	static void move(const Input& input, Camera& camera, const float tickOfset);
 	static void mine();
-	static void shoot(const Camera& camera);
+	static void shoot(const Input& input, const Camera& camera);
 public:
-	static void captureMob(const Team& playerTeam, const Camera& camera);
-	static void update(const Team& playerTeam, Camera& camera, const GUI& gui, const float tickOfset);
+	static void captureMob(const Team& playerTeam, const Input& input, const Camera& camera);
+	static void update(const Team& playerTeam, Engine& engine, const float tickOfset);
 
 	static void resetTarget();
 	static void setTarget(const Mob& mob);

@@ -3,7 +3,6 @@
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/widgets/button.hpp"
-#include "game/script_libs/lib_world_init.hpp"
 #include "layouts/l_saves.hpp"
 
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);

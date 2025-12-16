@@ -2,10 +2,10 @@
 //
 #include "engine/window/input/input.hpp"
 
-void Clickable::callback() {
-    if (state == ButtonState::hover && !containsMouse())
+void Clickable::callback(const Input& input) {
+    if (state == ButtonState::hover && !containsMouse(input))
         setState(ButtonState::idle);
-    else if (state == ButtonState::idle && containsMouse())
+    else if (state == ButtonState::idle && containsMouse(input))
         setState(ButtonState::hover);
 }
 

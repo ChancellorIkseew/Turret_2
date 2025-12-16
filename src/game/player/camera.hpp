@@ -3,6 +3,8 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/coords/tile_coord.hpp"
 
+class Input;
+
 class Camera {
     PixelCoord cameraUpperLeftCorner, cameraCentre;
     PixelCoord movingStartMouseCoord;
@@ -17,8 +19,8 @@ public:
 
     void update(const PixelCoord windowSize);
     void move(const PixelCoord delta);
-    void moveByMouse();
-    void scale();
+    void moveByMouse(const Input& input);
+    void scale(const Input& input);
     void setPosition(const PixelCoord position) { cameraCentre = position; }
 
     ///@brief applies correction for building max size

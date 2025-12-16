@@ -4,10 +4,10 @@
 #include "engine/window/input/input.hpp"
 
 static bool active(const std::string& bindName) {
-    return Input::active(bindName.c_str());
+    return script_libs::input->active(bindName.c_str());
 }
 static bool jactive(const std::string& bindName) {
-    return Input::jactive(bindName.c_str());
+    return script_libs::input->jactive(bindName.c_str());
 }
 static void addBinding(const std::string& bindName, const std::string& keyName) {
     Controls::addBinding(bindName, keyName);

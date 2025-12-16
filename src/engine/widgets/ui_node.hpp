@@ -2,9 +2,8 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/render/sprite.hpp"
 
-namespace tin {
-    class Data;
-}
+namespace tin { class Data; }
+class Input;
 
 class Node {
     Sprite sprite;
@@ -17,14 +16,14 @@ public:
     //
     virtual void draw();
     virtual void translate(const tin::Data& translations) { }
-    virtual void callback() = 0;
+    virtual void callback(const Input& input) = 0;
     //
     PixelCoord getPosition() const { return sprite.getPosition(); }
     PixelCoord getSize() const { return sprite.getSize(); }
     virtual void setPosition(const PixelCoord position) { sprite.setPosition(position); }
     void setSize(const PixelCoord size) { sprite.setSize(size); }
     void setTexture(const std::string& textureName) { sprite.setTexture(textureName); }
-    bool containsMouse() const;
+    bool containsMouse(const Input& input) const;
 private:
     Node(const Node& other) = delete;
     Node(Node&& other) = delete;

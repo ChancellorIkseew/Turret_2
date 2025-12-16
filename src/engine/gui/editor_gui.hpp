@@ -23,7 +23,7 @@ public:
     ~EditorGUI() final = default;
 
     void callback() final {
-        if (Input::jactive(Escape) && overlaped.empty())
+        if (input.jactive(Escape) && overlaped.empty())
             GUI::addOverlaped(frontend::initMenu(engine));
         else
             GUI::callback();
@@ -31,9 +31,9 @@ public:
     }
 private:
     void editMap() const {
-        if (!Input::active(Build) || !GUI::isMouseFree())
+        if (!input.active(Build) || !GUI::isMouseFree())
             return;
-        const TileCoord tile = t1::tile(camera.fromScreenToMap(Input::getMouseCoord()));
+        const TileCoord tile = t1::tile(camera.fromScreenToMap(input.getMouseCoord()));
         switch (tileData.component) {
         case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;

@@ -6,8 +6,9 @@
 #include "game/generation/generation.hpp"
 
 namespace std { class mutex; }
-class World;
+class Camera;
 class GUI;
+class World;
 
 class Engine {
     uint64_t currentTickStart = 0U, pauseStart = 0U;
@@ -15,8 +16,9 @@ class Engine {
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
     std::string worldFolder;
-    World* _world = nullptr;
-    GUI* _gui = nullptr;
+    Camera* _camera = nullptr;
+    World*  _world  = nullptr;
+    GUI*    _gui    = nullptr;
     EngineCommand command = EngineCommand::main_menu;
     std::atomic_bool worldOpen = false, paused = false;
 public:
@@ -33,7 +35,12 @@ public:
     void startSimulation(World& world, std::mutex& worldMutex);
     void startNet();
     //
+    const MainWindow& getMainWindow() const { return mainWindow; }
+    const Camera& getCamera() const { return *_camera; }
+    const World& getWorld() const { return *_world; }
+    const GUI& getGUI() const { return *_gui; }
     MainWindow& getMainWindow() { return mainWindow; }
+    Camera& getCamera() { return *_camera; }
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
     //

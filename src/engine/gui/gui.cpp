@@ -55,13 +55,13 @@ void GUI::callback() {
     if (!showGUI)
         return;
     if (!overlaped.empty()) {
-        overlaped.back()->callback();
-        if (!overlaped.back()->isOpen() || Input::jactive(Escape))
+        overlaped.back()->callback(input);
+        if (!overlaped.back()->isOpen() || input.jactive(Escape))
             overlaped.pop_back();
         return; // Do not callback other containers.
     }
     for (const auto& it : containers) {
-        it->callback();
+        it->callback(input);
     }
 }
 
@@ -72,31 +72,31 @@ void GUI::addOverlaped(std::unique_ptr<Container> container) {
 }
 
 void GUI::acceptHotkeys() {
-    if (Input::jactive(Hide_GUI))
+    if (input.jactive(Hide_GUI))
         showGUI = !showGUI;
-    if (Input::jactive(Screenshot)) {
+    if (input.jactive(Screenshot)) {
         const std::string timeMs = std::to_string(util::time::getLocalTimeMs());
         mainWindow.takeScreenshot(io::folders::SCREENSHOTS / ("img" + timeMs + ".png"));
     }
-    if (Input::jactive(Show_FPS))
+    if (input.jactive(Show_FPS))
         showFPS = !showFPS;
-    if (Input::jactive(Show_atlas))
+    if (input.jactive(Show_atlas))
         showAtlas = !showAtlas;
-    if (Input::jactive(Show_hitboxes)) {
+    if (input.jactive(Show_hitboxes)) {
         Settings::gameplay.showHitboxes = !Settings::gameplay.showHitboxes;
         Settings::writeSettings();
     }
-    if (Input::jactive(Show_console)) {
+    if (input.jactive(Show_console)) {
         debug::Console::setVisible(!debug::Console::isVisible());
         Settings::gui.showConsole = debug::Console::isVisible();
         Settings::writeSettings();
     }
-    if (Input::jactive(Fullscreen)) {
+    if (input.jactive(Fullscreen)) {
         mainWindow.setFullscreen(!mainWindow.isFullscreen());
         Settings::display.fullscreen = mainWindow.isFullscreen();
         Settings::writeSettings();
     }
-    FormEditor::update(mainWindow.getRealFrameDelay());
+    FormEditor::update(input, mainWindow.getRealFrameDelay());
 }
 
 void GUI::relocateContainers() {
@@ -111,10 +111,10 @@ void GUI::relocateContainers() {
 bool GUI::isMouseFree() const {
     if (!showGUI)
         return true;
-    if (!overlaped.empty() && overlaped.back()->containsMouse())
+    if (!overlaped.empty() && overlaped.back()->containsMouse(input))
         return false;
     for (const auto& it : containers) {
-        if (it->containsMouse())
+        if (it->containsMouse(input))
             return false;
     }
     return true;

@@ -22,13 +22,13 @@ void FormEditor::drawCarriage() {
     carriage.drawFast();
 }
 
-void FormEditor::setForm(std::weak_ptr<Form> form) {
+void FormEditor::setForm(const Input& input, std::weak_ptr<Form> form) {
     if (form.lock() == targetForm.lock())
         return;
     resetTarget();
     targetForm = form;
     form.lock()->setState(ButtonState::checked);
-    moveCarriageToCursor();
+    moveCarriageToCursor(input);
 }
 
 void FormEditor::resetTarget() {
@@ -40,59 +40,59 @@ void FormEditor::resetTarget() {
     carPos = 0;
 }
 
-void FormEditor::editForm(const int frameDelay) {
+void FormEditor::editForm(const Input& input, const int frameDelay) {
     if (inputTimer > 0)
         inputTimer -= frameDelay;
     //
     auto& text = targetForm.lock()->getText();
     //
-    if (Input::active(Arrow_left) && carPos > 0 && inputTimer <= 0) {
+    if (input.active(Arrow_left) && carPos > 0 && inputTimer <= 0) {
         inputTimer = INPUT_RELOAD;
         --carPos;
     }
-    if (Input::active(Arrow_right) && carPos < text.length() && inputTimer <= 0) {
+    if (input.active(Arrow_right) && carPos < text.length() && inputTimer <= 0) {
         inputTimer = INPUT_RELOAD;
         ++carPos;
     }
-    if (Input::active(Backspace) && carPos > 0 && inputTimer <= 0) {
+    if (input.active(Backspace) && carPos > 0 && inputTimer <= 0) {
         inputTimer = INPUT_RELOAD;
         --carPos;
         text.erase(carPos, 1);
     }
-    if (Input::active(Delete) && carPos < text.length() && inputTimer <= 0) {
+    if (input.active(Delete) && carPos < text.length() && inputTimer <= 0) {
         inputTimer = INPUT_RELOAD;
         text.erase(carPos, 1);
     }
     //
-    std::optional<uint32_t> sym = Input::getLastSymbolEntered();
+    std::optional<uint32_t> sym = input.getLastSymbolEntered();
     if (sym.has_value() && targetForm.lock()->accepts(sym.value())) {
         text.insert(carPos, 1, sym.value());
         ++carPos;
     }
 }
 
-void FormEditor::enableInput() {
-    if (targetForm.lock() && !Input::isTextEnterEnabled())
-        Input::enableTextEnter(true);
-    if (!targetForm.lock() && Input::isTextEnterEnabled())
-        Input::enableTextEnter(false);
+void FormEditor::enableInput(Input& input) {
+    if (targetForm.lock() && !input.isTextEnterEnabled())
+        input.enableTextEnter(true);
+    if (!targetForm.lock() && input.isTextEnterEnabled())
+        input.enableTextEnter(false);
 }
 
-void FormEditor::update(const int frameDelay) {
-    enableInput();
+void FormEditor::update(Input& input, const int frameDelay) {
+    enableInput(input);
     if (!targetForm.lock())
         return;
-    if (Input::jactive(LMB)) {
-        if (targetForm.lock()->containsMouse())
-            moveCarriageToCursor();
+    if (input.jactive(LMB)) {
+        if (targetForm.lock()->containsMouse(input))
+            moveCarriageToCursor(input);
         else
             return resetTarget();
     }
-    editForm(frameDelay);
+    editForm(input, frameDelay);
 }
 
-void FormEditor::moveCarriageToCursor() {
-    const auto positionInForm = Input::getMouseCoord() - targetForm.lock()->getPosition();
+void FormEditor::moveCarriageToCursor(const Input& input) {
+    const auto positionInForm = input.getMouseCoord() - targetForm.lock()->getPosition();
     carPos = static_cast<size_t>((positionInForm / 8).x);
     const size_t textLength = targetForm.lock()->getText().length();
     if (carPos > textLength)

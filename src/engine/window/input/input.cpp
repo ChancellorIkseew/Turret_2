@@ -5,14 +5,6 @@
 #include "controls.hpp"
 #include "engine/io/utf8/utf8.hpp"
 
-static SDL_Window* window;
-static std::atomic<std::optional<Binding>> lastKeyPressed;
-static std::optional<char32_t> symbolJustEntered;
-static PixelCoord mouseCoord;
-static MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
-
-void Input::init(SDL_Window* mainWindow) { window = mainWindow; }
-
 void Input::update(const SDL_Event& event) {
     if (event.type == SDL_EVENT_MOUSE_WHEEL) {
         if (event.wheel.y < 0.0f)
@@ -62,35 +54,35 @@ void Input::reset() {
     }
 }
 
-bool Input::active(cString bindName) {
+bool Input::active(cString bindName) const {
     return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).active;
 }
-bool Input::jactive(cString bindName) {
+bool Input::jactive(cString bindName) const {
     return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).justTriggered;
 }
 
-PixelCoord Input::getMouseCoord() {
+PixelCoord Input::getMouseCoord() const {
     return mouseCoord;
 }
-MouseWheelScroll Input::getMouseWheelScroll() {
+MouseWheelScroll Input::getMouseWheelScroll() const {
     return mouseWheelScroll;
 }
 
-std::optional<Binding> Input::getLastKeyPressed() {
+std::optional<Binding> Input::getLastKeyPressed() const {
     return lastKeyPressed.load(std::memory_order_relaxed);
 }
 void Input::resetLastKeyPressed() {
     lastKeyPressed = std::nullopt;
 }
-std::optional<char32_t> Input::getLastSymbolEntered() {
+std::optional<char32_t> Input::getLastSymbolEntered() const {
     return symbolJustEntered;
 }
 void Input::enableTextEnter(const bool flag) {
     if (flag)
-        SDL_StartTextInput(window);
+        SDL_StartTextInput(sdlWindow);
     else
-        SDL_StopTextInput(window);
+        SDL_StopTextInput(sdlWindow);
 }
-bool Input::isTextEnterEnabled() {
-    return SDL_TextInputActive(window);
+bool Input::isTextEnterEnabled() const {
+    return SDL_TextInputActive(sdlWindow);
 }

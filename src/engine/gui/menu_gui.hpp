@@ -20,8 +20,8 @@ public:
         GUI::acceptHotkeys();
         if (!showGUI)
             return;
-        overlaped.back()->callback();
-        if (overlaped.size() > 1 && (!overlaped.back()->isOpen() || Input::jactive(Escape)))
+        overlaped.back()->callback(input);
+        if (overlaped.size() > 1 && (!overlaped.back()->isOpen() || input.jactive(Escape)))
             overlaped.pop_back();
     }
 };
