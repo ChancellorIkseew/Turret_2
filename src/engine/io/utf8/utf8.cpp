@@ -54,3 +54,35 @@ std::u32string utf8::to_u32string(const char* cStr) {
     }
     return result;
 }
+
+static void appendUTF8Char(std::string& result, char32_t cp) {
+    if (cp < 0x00000000 || cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF))
+        return;
+
+    if (cp <= 0x7F) // 1-byte ASCII.
+        result.push_back(static_cast<char>(cp));
+    else if (cp <= 0x7FF) { // 2-byte UTF-8.
+        result.push_back(static_cast<char>(0xC0 | (cp >> 6)));
+        result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+    }
+    else if (cp <= 0xFFFF) { // 3-byte UTF-8.
+        result.push_back(static_cast<char>(0xE0 | (cp >> 12)));
+        result.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+        result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+    }
+    else { // 4-byte UTF-8. (cp <= 0x10FFFF)
+        result.push_back(static_cast<char>(0xF0 | (cp >> 18)));
+        result.push_back(static_cast<char>(0x80 | ((cp >> 12) & 0x3F)));
+        result.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+        result.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+    }
+}
+
+std::string utf8::to_string(const std::u32string& u32Str) {
+    std::string result;
+    if (u32Str.empty()) return result;
+    for (char32_t codePoint : u32Str) {
+        appendUTF8Char(result, codePoint);
+    }
+    return result;
+}

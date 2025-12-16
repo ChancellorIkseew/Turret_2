@@ -88,7 +88,7 @@ std::optional<bool> validator::toBool(const std::string& str) {
     return std::nullopt;
 }
 
-std::string validator::toStdString(const std::u32string& u32str) {
+std::string validator::trimToStdString(const std::u32string& u32str) {
     if (u32str.empty())
         return "";
     std::string str;

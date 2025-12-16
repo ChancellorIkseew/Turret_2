@@ -13,7 +13,7 @@ constexpr PixelCoord LANG_BTN_SIZE(110.0f, 30.0f);
 constexpr PixelCoord BACK_BTN_SIZE(120.0f, 30.0f);
 
 static void changeLang(Engine& engine, const std::u32string langName) {
-    Settings::gui.lang = validator::toStdString(langName);
+    Settings::gui.lang = validator::trimToStdString(langName);
     Settings::writeSettings();
     GUI::loadLangTranslations(Settings::gui.lang);
     engine.getGUI().translate();

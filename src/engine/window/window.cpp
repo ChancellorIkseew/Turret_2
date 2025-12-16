@@ -7,7 +7,6 @@
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/render/text.hpp"
-#include "input/input.hpp"
 
 static std::filesystem::path ICON_PATH = io::folders::RES / "icon.bmp";
 static debug::Logger logger("main_window");

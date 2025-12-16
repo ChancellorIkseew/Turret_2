@@ -3,6 +3,7 @@
 #include <string>
 
 namespace utf8 {
+    std::string to_string(const std::u32string& u32Str);
     char32_t to_char32_t(const char* s) noexcept;
     std::u32string to_u32string(const char* cStr);
     inline std::u32string to_u32string(const std::string str) {
