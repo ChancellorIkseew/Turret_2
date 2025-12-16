@@ -105,11 +105,6 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     WorldDrawer worldDrawer(camera, *world);
     std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
 
-    Team* player = world->getTeams().addTeam(U"player");
-    player->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
-    player->getMobs().begin()->shootingAI = std::make_unique<PlayerControlledShooting>();
-    player->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
-
     _world = world.get();
     _gui = gui.get();
     _camera = &camera;
@@ -130,7 +125,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
                 tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
             else
                 tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
-            PlayerController::update(*player, *this, tickOfset);
+            PlayerController::update(*this, tickOfset);
             worldDrawer.draw(tickOfset);
             Events::reset(); // for editor
         }
@@ -146,6 +141,12 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 }
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex) {
+    Team* playerTeam = world.getTeams().addTeam(U"player");
+    PlayerController::setPlayerTeam(playerTeam);
+    playerTeam->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
+    playerTeam->getMobs().begin()->shootingAI = std::make_unique<PlayerControlledShooting>();
+    playerTeam->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
+
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())
             util::sleep(1);

@@ -19,6 +19,7 @@ class PlayerController {
 	static inline State state = State::control_camera;
 	static inline bool guiActive;
 
+	static inline Team* playerTeam = nullptr;
 	static inline Mob* targetedMob = nullptr;
 	static inline std::atomic<PixelCoord> motionVector;
 	static inline std::atomic<PixelCoord> aimCoord;
@@ -28,9 +29,11 @@ class PlayerController {
 	static void mine();
 	static void shoot(const Input& input, const Camera& camera);
 public:
-	static void captureMob(const Team& playerTeam, const Input& input, const Camera& camera);
-	static void update(const Team& playerTeam, Engine& engine, const float tickOfset);
+	static void captureMob(const Input& input, const Camera& camera);
+	static void update(Engine& engine, const float tickOfset);
 
+	static void setPlayerTeam(Team* team) { playerTeam = team; }
+	static Team* getPlayerTeam() { return playerTeam; }
 	static void resetTarget();
 	static void setTarget(const Mob& mob);
 	static Mob* getTarget() { return targetedMob; }

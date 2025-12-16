@@ -48,7 +48,7 @@ void PlayerController::move(const Input& input, Camera& camera, const float tick
 	camera.scale(input);
 }
 
-void PlayerController::update(const Team& playerTeam, Engine& engine, const float tickOfset) {
+void PlayerController::update(Engine& engine, const float tickOfset) {
 	const Input& input = engine.getMainWindow().getInput();
 	Camera& camera = engine.getCamera();
 	const GUI& gui = engine.getGUI();
@@ -57,13 +57,13 @@ void PlayerController::update(const Team& playerTeam, Engine& engine, const floa
 	move(engine.getMainWindow().getInput(), camera, tickOfset);
 	shoot(input, camera);
 	mine();
-	captureMob(playerTeam, input, camera);
+	captureMob(input, camera);
 }
 
-void PlayerController::captureMob(const Team& playerTeam, const Input& input, const Camera& camera) {
+void PlayerController::captureMob(const Input& input, const Camera& camera) {
 	if (!input.jactive(Control_unit))
 		return;
-	for (const auto& mob : playerTeam.getMobs()) {
+	for (const auto& mob : playerTeam->getMobs()) {
 		if (t1::areCloser(camera.fromMapToScreen(mob.position), input.getMouseCoord(), 20.f))
 			return setTarget(mob);
 	}

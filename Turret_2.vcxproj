@@ -159,6 +159,7 @@
     <ClCompile Include="src\game\player\camera.cpp" />
     <ClCompile Include="src\game\player\player_controller.cpp" />
     <ClCompile Include="src\game\script_libs\lib_input.cpp" />
+    <ClCompile Include="src\game\script_libs\lib_player.cpp" />
     <ClCompile Include="src\game\script_libs\lib_util.cpp" />
     <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\weather\weather.cpp" />
