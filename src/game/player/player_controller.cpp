@@ -9,8 +9,6 @@
 #include "game/physics/team/team.hpp"
 #include "game/physics/mob_ai.hpp"
 
-std::atomic_bool PlayerController::shooting = false;
-
 void PlayerController::shoot(const Input& input, const Camera& camera) {
 	const auto mouseCoord = camera.fromScreenToMap(input.getMouseCoord());
 	aimCoord.store(mouseCoord, std::memory_order_relaxed);
@@ -73,8 +71,8 @@ void PlayerController::captureMob(const Input& input, const Camera& camera) {
 void PlayerController::setTarget(const Mob& mob) {
 	resetTarget();
 	targetedMob = const_cast<Mob*>(&mob);
-	targetedMob->movingAI = std::make_unique<PlayerControlledMoving>();
-	//TODO: targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>();
+	targetedMob->movingAI = std::make_unique<PlayerControlledMoving>(*this);
+	targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>(*this);
 	state = State::control_mob;
 }
 
@@ -82,7 +80,7 @@ void PlayerController::resetTarget() {
 	if (!targetedMob)
 		return;
 	targetedMob->movingAI = std::make_unique<BasicMovingAI>();
-	//TODO: targetedMob->shootingAI = std::make_unique<BasicShootingAI>();
+	targetedMob->shootingAI = std::make_unique<BasicShootingAI>();
 	targetedMob = nullptr;
 	state = State::control_camera;
 }

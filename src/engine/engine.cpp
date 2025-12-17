@@ -104,14 +104,16 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     Camera camera(world->getMap().getSize());
     WorldDrawer worldDrawer(camera, *world);
     std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
+    PlayerController playerController;
 
     _world = world.get();
     _gui = gui.get();
     _camera = &camera;
+    _playerController = &playerController;
     script_libs::initNewGame(*this);
 
     worldOpen = true;
-    std::thread simulation([&] { startSimulation(*world, worldMutex); });
+    std::thread simulation([&] { startSimulation(*world, worldMutex, playerController); });
     //TODO: std::thread network([&] { startNet(); }); 
     while (mainWindow.isOpen() && isWorldOpen()) {
         mainWindow.pollEvents();
@@ -125,7 +127,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
                 tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
             else
                 tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
-            PlayerController::update(*this, tickOfset);
+            playerController.update(*this, tickOfset);
             worldDrawer.draw(tickOfset);
             Events::reset(); // for editor
         }
@@ -140,12 +142,12 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     //TODO: network.join();
 }
 
-void Engine::startSimulation(World& world, std::mutex& worldMutex) {
+void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController) {
     Team* playerTeam = world.getTeams().addTeam(U"player");
-    PlayerController::setPlayerTeam(playerTeam);
     playerTeam->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
-    playerTeam->getMobs().begin()->shootingAI = std::make_unique<PlayerControlledShooting>();
     playerTeam->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
+    playerController.setPlayerTeam(playerTeam);
+    playerController.setTarget(playerTeam->getMobs().front());
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())

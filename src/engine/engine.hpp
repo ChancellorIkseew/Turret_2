@@ -8,6 +8,7 @@
 namespace std { class mutex; }
 class Camera;
 class GUI;
+class PlayerController;
 class World;
 
 class Engine {
@@ -16,6 +17,7 @@ class Engine {
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
     std::string worldFolder;
+    PlayerController* _playerController = nullptr;
     Camera* _camera = nullptr;
     World*  _world  = nullptr;
     GUI*    _gui    = nullptr;
@@ -32,13 +34,15 @@ public:
     void openMainMenu();
     void closeWorld() { worldOpen.store(false, std::memory_order::seq_cst); }
     void closeGame() { closeWorld(); mainWindow.close(); }
-    void startSimulation(World& world, std::mutex& worldMutex);
+    void startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController);
     void startNet();
     //
+    const PlayerController& getPlayerController() const { return *_playerController; }
     const MainWindow& getMainWindow() const { return mainWindow; }
     const Camera& getCamera() const { return *_camera; }
     const World& getWorld() const { return *_world; }
     const GUI& getGUI() const { return *_gui; }
+    PlayerController& getPlayerController() { return *_playerController; }
     MainWindow& getMainWindow() { return mainWindow; }
     Camera& getCamera() { return *_camera; }
     World& getWorld() { return *_world; }

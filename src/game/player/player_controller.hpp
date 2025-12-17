@@ -16,30 +16,31 @@ class PlayerController {
 		control_mob
 	};
 
-	static inline State state = State::control_camera;
-	static inline bool guiActive;
+	State state = State::control_camera;
+	bool guiActive;
 
-	static inline Team* playerTeam = nullptr;
-	static inline Mob* targetedMob = nullptr;
-	static inline std::atomic<PixelCoord> motionVector;
-	static inline std::atomic<PixelCoord> aimCoord;
-	static std::atomic_bool shooting;
+	Team* playerTeam = nullptr;
+	Mob* targetedMob = nullptr;
+	std::atomic<PixelCoord> motionVector;
+	std::atomic<PixelCoord> aimCoord;
+	std::atomic_bool shooting = false;
 
-	static void move(const Input& input, Camera& camera, const float tickOfset);
-	static void mine();
-	static void shoot(const Input& input, const Camera& camera);
+	void move(const Input& input, Camera& camera, const float tickOfset);
+	void mine();
+	void shoot(const Input& input, const Camera& camera);
 public:
-	static void captureMob(const Input& input, const Camera& camera);
-	static void update(Engine& engine, const float tickOfset);
+	PlayerController() = default;
 
-	static void setPlayerTeam(Team* team) { playerTeam = team; }
-	static Team* getPlayerTeam() { return playerTeam; }
-	static void resetTarget();
-	static void setTarget(const Mob& mob);
-	static Mob* getTarget() { return targetedMob; }
+	void captureMob(const Input& input, const Camera& camera);
+	void update(Engine& engine, const float tickOfset);
 
-	static PixelCoord getMotionVector() { return motionVector.load(std::memory_order_relaxed); }
-	static PixelCoord getAimCoord() { return aimCoord.load(std::memory_order_relaxed); }
-	static bool shootingActive() { return shooting.load(std::memory_order_relaxed); }
+	void setPlayerTeam(Team* team) { playerTeam = team; }
+	Team* getPlayerTeam() { return playerTeam; }
+	void resetTarget();
+	void setTarget(const Mob& mob);
+	Mob* getTarget() { return targetedMob; }
 
+	PixelCoord getMotionVector() const { return motionVector.load(std::memory_order_relaxed); }
+	PixelCoord getAimCoord()     const     { return aimCoord.load(std::memory_order_relaxed); }
+	bool shootingActive()        const     { return shooting.load(std::memory_order_relaxed); }
 };

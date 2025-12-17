@@ -17,10 +17,19 @@ struct BasicMovingAI : MovingAI {
     }
 };
 
+struct BasicShootingAI : ShootingAI {
+    ~BasicShootingAI() final = default;
+    void update(const Mob& mob) final {
+        
+    }
+};
+
 struct PlayerControlledMoving : MovingAI {
+    PlayerControlledMoving(PlayerController& playerController) :
+        playerController(playerController) { }
     ~PlayerControlledMoving() final = default;
     void update(const Mob& mob) final {
-        const auto vector = PlayerController::getMotionVector();
+        const auto vector = playerController.getMotionVector();
         if (vector == NO_MOTION)
             motionVector = NO_MOTION;
         else {
@@ -29,12 +38,19 @@ struct PlayerControlledMoving : MovingAI {
             motionVector.y = cosf(motionAngle);
         }
     }
+private:
+    const PlayerController& playerController;
 };
 
 struct PlayerControlledShooting : ShootingAI {
+    PlayerControlledShooting(PlayerController& playerController) :
+        playerController(playerController) {
+    }
     ~PlayerControlledShooting() final = default;
     void update(const Mob& mob) final {
-        aim = PlayerController::getAimCoord();
-        firing = PlayerController::shootingActive();
+        aim = playerController.getAimCoord();
+        firing = playerController.shootingActive();
     }
+private:
+    const PlayerController& playerController;
 };

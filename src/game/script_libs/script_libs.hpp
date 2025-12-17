@@ -21,12 +21,14 @@ namespace script_libs {
     inline GUI*    gui;
     inline Input*  input;
     inline World*  world;
+    inline PlayerController* playerController;
 
     inline void initNewGame(Engine& engine) {
         camera = &engine.getCamera();
         gui    = &engine.getGUI();
         input  = &engine.getMainWindow().getInput();
         world  = &engine.getWorld();
+        playerController = &engine.getPlayerController();
     }
 
     [[noreturn]] inline void logAndThrow(const std::string& message) noexcept(false) {

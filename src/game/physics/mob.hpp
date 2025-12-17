@@ -27,9 +27,8 @@ protected:
     bool firing = false;
 public:
     virtual ~ShootingAI() = default;
-    //
     virtual void update(const Mob& mob) = 0;
-    bool isFiring() { return firing; }
+    bool isFiring() const { return firing; }
     PixelCoord getAim() const { return aim; }
     void setAim(const PixelCoord aim) {
         this->aim = aim;
