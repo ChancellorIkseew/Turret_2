@@ -11,14 +11,11 @@ class WorldDrawer {
     EntitiesDrawer entitiesDrawer;
     // TODO: WeatherDrawer weatherDrawer;
 public:
-    WorldDrawer(const Camera& camera, const World& world) :
-        mapDrawer(camera, world.getMap()), entitiesDrawer(camera, world) {
+    WorldDrawer() = default;
 
-    }
-
-    void draw(const float tickOfset) {
-        mapDrawer.draw();
-        entitiesDrawer.draw(tickOfset);
+    void draw(const Camera& camera, const World& world, const float tickOfset) {
+        mapDrawer.draw(camera, world.getMap());
+        entitiesDrawer.draw(camera, world.getTeams(), tickOfset);
         // TODO: weatherDrawer.draw();
     }
 };

@@ -9,8 +9,6 @@ class Camera;
 class WorldMap;
 
 class MapDrawer {
-    const Camera& camera;
-    const WorldMap& map;
     std::map<uint8_t, std::vector<PixelCoord>> cachedFloor;
     std::map<uint8_t, std::vector<PixelCoord>> cachedOverlay;
     TileCoord cashedStart, cashedEnd;
@@ -18,9 +16,9 @@ class MapDrawer {
     std::map<uint8_t, Texture> floorTextures;
     std::map<uint8_t, Texture> overlayTextures;
 public:
-    MapDrawer(const Camera& camera, const WorldMap& map);
-    void cacheFloor();
-    void cacheOverlay();
-    void draw();
-    void drawStructures();
+    MapDrawer();
+    void cacheFloor(const WorldMap& map);
+    void cacheOverlay(const WorldMap& map);
+    void draw(const Camera& camera, const WorldMap& map);
+    void drawStructures(const Camera& camera, const WorldMap& map);
 };

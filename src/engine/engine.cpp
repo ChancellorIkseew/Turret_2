@@ -102,9 +102,9 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     if (!world)
         return openMainMenu();
     Camera camera(world->getMap().getSize());
-    WorldDrawer worldDrawer(camera, *world);
     std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
     PlayerController playerController;
+    WorldDrawer worldDrawer;
 
     _world = world.get();
     _gui = gui.get();
@@ -128,7 +128,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
             else
                 tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
             playerController.update(*this, tickOfset);
-            worldDrawer.draw(tickOfset);
+            worldDrawer.draw(camera, *world, tickOfset);
             Events::reset(); // for editor
         }
         mainWindow.setRenderScale(1.0f);

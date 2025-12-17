@@ -9,8 +9,7 @@
 
 constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 
-MapDrawer::MapDrawer(const Camera& camera, const WorldMap& map) :
-    camera(camera), map(map) {
+MapDrawer::MapDrawer() {
     for (const auto& [name, id] : content::Indexes::getFloor()) {
         cachedFloor.emplace(id, std::vector<PixelCoord>());
         floorTextures.emplace(id, Texture(name));
@@ -21,7 +20,7 @@ MapDrawer::MapDrawer(const Camera& camera, const WorldMap& map) :
     }
 }
 
-void MapDrawer::cacheFloor() {
+void MapDrawer::cacheFloor(const WorldMap& map) {
     for (auto& [_type, layer] : cachedFloor) {
         layer.clear();
     }
@@ -33,7 +32,7 @@ void MapDrawer::cacheFloor() {
     }
 }
 
-void MapDrawer::cacheOverlay() {
+void MapDrawer::cacheOverlay(const WorldMap& map) {
     for (auto& [_type, layer] : cachedOverlay) {
         layer.clear();
     }
@@ -46,14 +45,14 @@ void MapDrawer::cacheOverlay() {
     }
 }
 
-void MapDrawer::draw() {
+void MapDrawer::draw(const Camera& camera, const WorldMap& map) {
     const TileCoord start = camera.getStartTile();
     const TileCoord end = camera.getEndTile();
     if (cashedStart != start || cashedEnd != end || Events::active(Event::map_changed)) {
         cashedStart = start;
         cashedEnd = end;
-        cacheFloor();
-        cacheOverlay();
+        cacheFloor(map);
+        cacheOverlay(map);
     }
     //
     sprite.setSize(PixelCoord(40, 40));
@@ -74,10 +73,10 @@ void MapDrawer::draw() {
         }
     }
     //
-    drawStructures();
+    drawStructures(camera, map);
 }
 
-void MapDrawer::drawStructures() {
+void MapDrawer::drawStructures(const Camera& camera, const WorldMap& map) {
     const TileCoord start = camera.getStartTile();
     const TileCoord end = camera.getEndTile();
     for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
