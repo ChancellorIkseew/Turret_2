@@ -113,8 +113,8 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     script_libs::initNewGame(*this);
 
     worldOpen = true;
-    std::thread simulation([&] { startSimulation(*world, worldMutex, playerController); });
-    //TODO: std::thread network([&] { startNet(); }); 
+    std::jthread simulation([&] { startSimulation(*world, worldMutex, playerController); });
+    //TODO: std::jthread network([&] { startNet(); }); 
     while (mainWindow.isOpen() && isWorldOpen()) {
         mainWindow.pollEvents();
         mainWindow.clear();
@@ -138,8 +138,6 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         mainWindow.render();
         scriptsHandler.execute();
     }
-    simulation.join();
-    //TODO: network.join();
 }
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController) {
