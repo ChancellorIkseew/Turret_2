@@ -12,45 +12,34 @@ static t1_finline void move(Mob& mob, const PixelCoord vector) {
     mob.hitbox.move(vector);
 }
 
-static t1_finline void moveX(Mob& mob, const float x) {
-    mob.position.x = mob.position.x + x;
-    mob.hitbox.move(PixelCoord(x, 0.0f));
-}
+static inline void resolveCollisions(Mob& mob, std::list<Mob>::iterator current, std::list<Mob>::iterator end) {
+    for (auto it = std::next(current); it != end; ++it) {
+        Mob& other = *it;
 
-static t1_finline void moveY(Mob& mob, const float y) {
-    mob.position.y = mob.position.y + y;
-    mob.hitbox.move(PixelCoord(0.0f, y));
-}
+        if (!mob.hitbox.intersects(other.hitbox)) continue;
 
-static inline void resolveCollisions(Mob& mob, std::list<Mob>& mobs) {
-    for (auto& otherMob : mobs) {
-        if (&mob == &otherMob || !mob.hitbox.intersects(otherMob.hitbox))
-            continue;
-        
         mob.colided = true;
-        otherMob.colided = true;
-        PixelCoord overlap = mob.hitbox.overlap(otherMob.hitbox);
-        const float w = 1.0f / (mob.preset.hitboxRadius + otherMob.preset.hitboxRadius);
-        if (overlap.x > overlap.y) {
-            if (mob.position.y > otherMob.position.y) {
-                moveY(mob,             w * overlap.y * otherMob.preset.hitboxRadius);
-                moveY(otherMob, -1.f * w * overlap.y * mob.preset.hitboxRadius);   
-            }
-            else {
-                moveY(mob,      -1.f * w * overlap.y * otherMob.preset.hitboxRadius);
-                moveY(otherMob,        w * overlap.y * mob.preset.hitboxRadius);
-            }
-        }
-        else {
-            if (mob.position.x > otherMob.position.x) {
-                moveX(mob,             w * overlap.x * otherMob.preset.hitboxRadius);
-                moveX(otherMob, -1.f * w * overlap.x * mob.preset.hitboxRadius);
-            }
-            else {
-                moveX(mob,      -1.f * w * overlap.x * otherMob.preset.hitboxRadius);
-                moveX(otherMob,        w * overlap.x * mob.preset.hitboxRadius);
-            }
-        }
+        other.colided = true;
+
+        const PixelCoord overlap = mob.hitbox.overlap(other.hitbox);
+
+        const bool pushX = (overlap.x < overlap.y);
+        const float distance = pushX ? overlap.x : overlap.y;
+
+        const float pushDirection = pushX ? (mob.position.x > other.position.x ? 1.0f : -1.0f)
+            : (mob.position.y > other.position.y ? 1.0f : -1.0f);
+
+        const float totalRadius = mob.preset.hitboxRadius + other.preset.hitboxRadius;
+        const float invertedTotalRadius = 1.0f / totalRadius;
+        const float mob1Weight = other.preset.hitboxRadius * invertedTotalRadius;
+        const float mob2Weight = mob.preset.hitboxRadius * invertedTotalRadius;
+
+        PixelCoord pushVec;
+        if (pushX) pushVec.x = distance * pushDirection;
+        else       pushVec.y = distance * pushDirection;
+
+        move(mob, pushVec * mob1Weight);
+        move(other, pushVec * -mob2Weight);
     }
 }
 
@@ -58,8 +47,10 @@ void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) {
     for (auto& mob : mobs) {
         mob.colided = false; //TODO: find better way to resolve collisions.
     }
+    for (auto it = mobs.begin(); it != mobs.end(); ++it) {
+        resolveCollisions(*it, it, mobs.end());
+    }
     for (auto& mob : mobs) {
-        resolveCollisions(mob, mobs);
         if (!mob.movingAI)
             continue;
         mob.movingAI->update(mob);
