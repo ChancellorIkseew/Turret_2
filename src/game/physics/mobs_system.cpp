@@ -76,7 +76,7 @@ void mobs::drawMobs(const MobSoA& soa, const Camera& camera, const float tickOfs
     Sprite sprite;
     for (size_t i = 0; i < soa.id.size(); ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
-            return;
+            continue;
         auto& visual = soa.preset[i]->visual;
         sprite.setTexture(*visual.texture);
         sprite.setOrigin(visual.origin);
