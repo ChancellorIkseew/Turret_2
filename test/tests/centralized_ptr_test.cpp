@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../libs/include/CUSTOM_SMART_POINTERS/centralized_ptr.hpp"
+#include "../libs/include/CSP/centralized_ptr.hpp"
 
 struct DestructDetector {
     bool* destroyed;
