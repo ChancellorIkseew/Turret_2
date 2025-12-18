@@ -3,6 +3,7 @@
 #include <optional>
 #include <string>
 
+struct PixelCoord;
 struct TileCoord;
 
 namespace validator {
@@ -17,6 +18,7 @@ namespace validator {
     std::optional<int8_t> toInt8(const std::string& str);
     //
     std::optional<TileCoord> toTileCoord(const std::string& str);
+    std::optional<PixelCoord> toPixelCoord(const std::string& str);
     std::optional<float> toFloat(const std::string& str);
     std::optional<bool> toBool(const std::string& str);
     std::string trimToStdString(const std::u32string& str);

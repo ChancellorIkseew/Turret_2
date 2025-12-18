@@ -6,7 +6,7 @@
 namespace fs = std::filesystem;
 static debug::Logger logger("tin_parser");
 
-void tin::write(fs::path path, const tin::Data& data) {
+void tin::write(fs::path path, const tin::Data& data, const Log log) {
     std::ofstream fout(path);
     if (!fout.is_open()) {
         logger.error() << "Could not open file to write. File: " << path;
@@ -18,10 +18,11 @@ void tin::write(fs::path path, const tin::Data& data) {
         fileText << key << '=' << value << '\n';
     }
     fout << fileText.str();
-    logger.info() << "Writen file: " << path;
+    if (log == Log::error_and_success)
+        logger.info() << "Writen file: " << path;
 }
 
-tin::Data tin::read(fs::path path) {
+tin::Data tin::read(fs::path path, const Log log) {
     std::ifstream fin(path);
     if (!fin.is_open()) {
         logger.error() << "Could not open file to read. File: " << path;
@@ -40,6 +41,7 @@ tin::Data tin::read(fs::path path) {
         std::string value = line.substr(eqv + 1);
         data.emplace(std::move(key), std::move(value));
     }
-    logger.info() << "Readen file: " << path;
+    if (log == Log::error_and_success)
+        logger.info() << "Readen file: " << path;
     return data;
 }
