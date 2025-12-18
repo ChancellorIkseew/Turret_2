@@ -27,9 +27,9 @@ static void spawnMob(int x, int y, TeamID teamID) {
         return;
     }   
     auto team = script_libs::world->getTeams().getTeamByID(teamID);
-    team->spawnMob(cannonBoss, PixelCoord(x, y), 0.0f);
-    team->spawnMob(gatlingBot, PixelCoord(x + 50, y), 0.0f);
-    team->spawnMob(shuttle, PixelCoord(x + 100, y), 0.0f);
+    //team->spawnMob(cannonBoss, PixelCoord(x, y), 0.0f);
+    //team->spawnMob(gatlingBot, PixelCoord(x + 50, y), 0.0f);
+    //team->spawnMob(shuttle, PixelCoord(x + 100, y), 0.0f);
 }
 
 static void spawnShell(int x, int y, TeamID teamID) {
@@ -38,7 +38,7 @@ static void spawnShell(int x, int y, TeamID teamID) {
         return;
     }
     auto team = script_libs::world->getTeams().getTeamByID(teamID);
-    team->spawnShell(cannonShell, PixelCoord(x, y), 0.5f);
+    //team->spawnShell(cannonShell, PixelCoord(x, y), 0.5f);
 }
 
 void script_libs::registerWorld(const ScriptsHandler& scriptsHandler) {

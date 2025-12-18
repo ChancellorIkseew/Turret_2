@@ -142,10 +142,22 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController) {
     Team* playerTeam = world.getTeams().addTeam(U"player");
-    playerTeam->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
-    playerTeam->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
+    //playerTeam->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
+    //playerTeam->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
     playerController.setPlayerTeam(playerTeam);
-    playerController.setTarget(playerTeam->getMobs().front());
+    //playerController.setTarget(playerTeam->getMobs().front());
+    auto& mobs = world.getMobs();
+
+    VisualPreset visual(csp::make_centralized<Texture>("cannoner_bot"),
+        PixelCoord(22.5f, 28.0f),
+        PixelCoord(45, 45));
+
+    addMob(mobs,
+        csp::make_centralized<Preset>(1.0f, 17.0f ,visual),
+        PixelCoord(100, 100),
+        0,
+        playerTeam->getID(),
+        1);
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())
@@ -154,7 +166,7 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
             {
                 std::lock_guard<std::mutex> guard(worldMutex);
                 for (auto& [teamID, team] : world.getTeams()) {
-                    team->interact(world);
+                    //team->interact(world);
                 }
                 currentTickStart = mainWindow.getTime();
             }

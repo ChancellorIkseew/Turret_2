@@ -4,7 +4,7 @@
 #include "game/physics/shells_system.hpp"
 #include "game/world/world.hpp"
 #include "game/physics/mob_ai.hpp"
-
+/*
 void Team::spawnMob(const MobPreset& preset, const PixelCoord position, const float angle) {
     //mobs.emplace_back(std::make_unique<PlayerControlledMoving>(), nullptr, preset, position, angle, Team::ID);
     mobs.emplace_back(std::make_unique<BasicMovingAI>(), nullptr, preset, position, angle, Team::ID);
@@ -30,3 +30,4 @@ void Team::drawAirUnits(const Camera& camera, const float tickOfset) {
 void Team::drawShells(const Camera& camera, const float tickOfset) {
     shells::drawShells(shells, camera, tickOfset);
 }
+*/

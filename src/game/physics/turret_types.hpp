@@ -7,6 +7,6 @@ struct CannonTurret : Turret {
     ~CannonTurret() final = default;
     //
     void shoot(Team& team) final {
-        team.spawnShell(preset.shell, position, angle);
+        //team.spawnShell(preset.shell, position, angle);
     }
 };

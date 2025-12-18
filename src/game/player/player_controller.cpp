@@ -61,10 +61,11 @@ void PlayerController::update(Engine& engine, const float tickOfset) {
 void PlayerController::captureMob(const Input& input, const Camera& camera) {
 	if (!input.jactive(Control_unit))
 		return;
+	/*
 	for (const auto& mob : playerTeam->getMobs()) {
 		if (t1::areCloser(camera.fromMapToScreen(mob.position), input.getMouseCoord(), 20.f))
 			return setTarget(mob);
-	}
+	}*/
 	resetTarget();
 }
 

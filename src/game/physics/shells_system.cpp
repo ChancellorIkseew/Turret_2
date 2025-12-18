@@ -8,6 +8,7 @@ static inline void tryHitBuilding(Shell& shell, TeamsPool& teams) {
 }
 
 static inline void tryHitMob(Shell& shell, TeamsPool& teams) {
+    /*
     for (auto& [teamID, team] : teams) {
         if (shell.teamID == teamID)
             continue;
@@ -19,6 +20,7 @@ static inline void tryHitMob(Shell& shell, TeamsPool& teams) {
             return;
         }
     }
+    */
 }
 
 void shells::processShells(std::list<Shell>& shells, TeamsPool& teams) {
