@@ -5,7 +5,8 @@
 #include "ui_node.hpp"
 
 class Layout : public Node {
-    const float margin = 5.0f;
+    float padding = 3.0f;
+    float margin = 5.0f;
     Orientation orientation;
 protected:
     std::vector<std::shared_ptr<Node>> contents;
@@ -22,6 +23,8 @@ public:
     void arrange();
     void draw() final;
     void clear() { contents.clear(); }
+    void setMargin(const float margin) { this->margin = margin; }
+    void setPadding(const float padding) { this->padding = padding; }
     void setPosition(const PixelCoord position) final {
         Node::setPosition(position);
         arrange();

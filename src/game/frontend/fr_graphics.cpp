@@ -8,34 +8,44 @@
 #include "engine/widgets/label.hpp"
 
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
+constexpr PixelCoord FORM_SIZE(28.0f, 20.0f);
 
-static void aplySettings(Form* fps, Checkbox* fullscreen, Checkbox* inertia, Engine& engine) {
-    Settings::display.FPS = validator::toUint32(fps->getText()).value_or(60U);
-    Settings::display.fullscreen = fullscreen->getValue();
-    Settings::gameplay.cameraInertia = inertia->getValue();
-    Settings::aplySettings(engine);
-    Settings::writeSettings();
-}
+class FrGraphics : public Container {
+    Form* fps;
+    Checkbox* fullscreen;
+    Checkbox* inertia;
+public:
+    FrGraphics(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+        auto main = addNode(new Layout(Orientation::horizontal));
+
+        auto clickable = main->addNode(new Layout(Orientation::vertical));
+        fps        = clickable->addNode(new Form(Settings::display.FPS, new Uint32Validator(15U, 240U), FORM_SIZE));
+        fullscreen = clickable->addNode(new Checkbox(Settings::display.fullscreen));
+        inertia    = clickable->addNode(new Checkbox(Settings::gameplay.cameraInertia));
+
+        auto labels = main->addNode(new Layout(Orientation::vertical));
+        labels->addNode(new Label(U"FPS"));
+        labels->addNode(new Label(U"fullscreen"));
+        labels->addNode(new Label(U"camera inertia"));
+
+        auto lower = addNode(new Layout(Orientation::horizontal));
+        auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
+        auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
+        back->addCallback([&] { close(); });
+        aply->addCallback([&] { aplySettings(engine); });
+
+        arrange();
+    }
+
+    void aplySettings(Engine& engine) {
+        Settings::display.FPS = validator::toUint32(fps->getText()).value_or(60U);
+        Settings::display.fullscreen = fullscreen->getValue();
+        Settings::gameplay.cameraInertia = inertia->getValue();
+        Settings::aplySettings(engine);
+        Settings::writeSettings();
+    }
+};
 
 std::unique_ptr<Container> frontend::initGraphics(Engine& engine) {
-    auto graphics = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto fps        = graphics->addNode(new Layout(Orientation::horizontal));
-    auto fullscreen = graphics->addNode(new Layout(Orientation::horizontal));
-    auto inertia    = graphics->addNode(new Layout(Orientation::horizontal));
-    auto lower      = graphics->addNode(new Layout(Orientation::horizontal));
-
-    fps       ->addNode(new Label(U"FPS"));
-    fullscreen->addNode(new Label(U"fullscreen"));
-    inertia->addNode(new Label(U"camera inertia"));
-    auto fpsF        = fps->addNode(new Form(Settings::display.FPS, new Uint32Validator(15U, 240U)));
-    auto fullscreenC = fullscreen->addNode(new Checkbox(Settings::display.fullscreen));
-    auto inertiaC    = inertia->addNode(new Checkbox(Settings::gameplay.cameraInertia));
-
-    auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
-    auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
-    back->addCallback([container = graphics.get()] { container->close(); });
-    aply->addCallback([=, &engine] { aplySettings(fpsF, fullscreenC, inertiaC, engine); });
-
-    graphics->arrange();
-    return graphics;
+    return std::make_unique<FrGraphics>(engine);
 }

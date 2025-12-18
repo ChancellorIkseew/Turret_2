@@ -10,7 +10,7 @@
 #include "engine/window/input/input.hpp"
 
 static std::mutex mutex;
-constexpr PixelCoord BTN_SIZE(100.0f, 16.0f);
+constexpr PixelCoord BTN_SIZE(100.0f, 20.0f);
 
 static void rebind(Input& input, Button* btn, std::string bindName) { //TODO: refactor to avoid multithreading
     std::lock_guard<std::mutex> guarg(mutex);

@@ -9,7 +9,7 @@
 class GameplayGUI : public GUI {
 public:
     GameplayGUI(Engine& engine) : GUI(engine) {
-        containers.push_back(frontend::initTimer());
+        containers.push_back(frontend::initTimer(engine));
         GUI::relocateContainers();
         GUI::translate();
     }

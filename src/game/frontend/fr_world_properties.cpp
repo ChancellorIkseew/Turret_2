@@ -2,15 +2,14 @@
 //
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
-#include "engine/io/parser/tin_parser.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/render/text.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/form.hpp"
-#include "engine/widgets/label.hpp"
 #include "game/generation/generation.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 
+constexpr uint64_t MAX_SEED = std::numeric_limits<uint64_t>::max();
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
 constexpr PixelCoord ICON_SIZE(0.0f, 20.0f);
 
@@ -54,36 +53,48 @@ public:
     }
 };
 
-static void createWorld(Engine& engine, Form* _seed, Form* width, Form* height, OProps* oprops) {
-    TileCoord mapSize;
-    uint64_t seed = validator::toUint64(_seed->getText()).value_or(0U);
-    mapSize.x = validator::toInt32(width->getText()).value_or(100);
-    mapSize.y = validator::toInt32(height->getText()).value_or(100);
-    const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
-    WorldProperties properties(mapSize, seed, floorPresets, oprops->getPresets());
-    engine.createWorldInGame(properties);
-}
+class FrWorldProperties : public Container {
+    Form* seed   = nullptr;
+    Form* width  = nullptr;
+    Form* height = nullptr;
+    OProps* oProps = nullptr;
+public:
+    ~FrWorldProperties() final = default;
+    FrWorldProperties(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+        auto main = addNode(new Layout(Orientation::horizontal));
+
+        auto labels = main->addNode(new Layout(Orientation::vertical));
+        labels->addNode(new Label(U"Seed"));
+        labels->addNode(new Label(U"Width"));
+        labels->addNode(new Label(U"Height"));
+
+        auto forms = main->addNode(new Layout(Orientation::vertical));
+        seed   = forms->addNode(new Form(0U, new Uint64Validator(0U, MAX_SEED)));
+        width  = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
+        height = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
+
+        oProps = main->addNode(new OProps());
+
+        auto lower = addNode(new Layout(Orientation::horizontal));
+        auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
+        auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
+        back->addCallback([&] { close(); });
+        aply->addCallback([&] { createWorld(engine); });
+
+        arrange();
+    }
+private:
+    void createWorld(Engine& engine) {
+        WorldProperties properties(
+            TileCoord(validator::toInt32(width->getText()).value_or(100),
+                validator::toInt32(height->getText()).value_or(100)),
+            validator::toUint64(seed->getText()).value_or(0U),
+            serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT),
+            oProps->getPresets());
+        engine.createWorldInGame(properties);
+    }
+};
 
 std::unique_ptr<Container> frontend::initWorldProperties(Engine& engine) {
-    auto propsForm = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto parameters = propsForm->addNode(new Layout(Orientation::horizontal));
-    auto lower      = propsForm->addNode(new Layout(Orientation::horizontal));
-    auto labels = parameters->addNode(new Layout(Orientation::vertical));
-    auto forms  = parameters->addNode(new Layout(Orientation::vertical));
-    auto oProps = parameters->addNode(new OProps());
-
-    labels->addNode(new Label(U"Seed"));
-    labels->addNode(new Label(U"Width"));
-    labels->addNode(new Label(U"Height"));
-    auto seedF =   forms->addNode(new Form(0U, new Uint64Validator(0U, std::numeric_limits<uint64_t>::max())));
-    auto widthF =  forms->addNode(new Form(100, new Int32Validator(20, 5000)));
-    auto heightF = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
-
-    auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
-    auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
-    back->addCallback([container = propsForm.get()] { container->close(); });
-    aply->addCallback([=, &engine] { createWorld(engine, seedF, widthF, heightF, oProps); });
-
-    propsForm->arrange();
-    return propsForm;
+    return std::make_unique<FrWorldProperties>(engine);
 }

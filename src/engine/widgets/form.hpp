@@ -11,11 +11,11 @@ class Form : public Clickable, public std::enable_shared_from_this<Form> {
     std::unique_ptr<Validator> validator;
 public:
     template<typename T>
-    Form(T value, Validator* validator) :
-        Clickable(PixelCoord(100, 20)), validator(validator), text(utf8::to_u32string(value)) { }
+    Form(T value, Validator* validator, const PixelCoord size = FORM_SIZE) :
+        Clickable(size), validator(validator), text(utf8::to_u32string(value)) { }
 
-    Form(std::u32string text) : Clickable(FORM_SIZE), text(text) { }
-    Form()                    : Clickable(FORM_SIZE) { }
+    Form(std::u32string text, const PixelCoord size = FORM_SIZE) : Clickable(size), text(text) { }
+    Form(const PixelCoord size = FORM_SIZE)                      : Clickable(size) { }
     ~Form() final = default;
 
     void draw() final;

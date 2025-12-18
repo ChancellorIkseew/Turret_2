@@ -16,5 +16,5 @@ void Label::translate(const tin::Data& translations) {
 }
 
 void Label::resizeBy(const std::u32string& text) {
-    setSize(PixelCoord(static_cast<int>(text.length()) * 8, 16));
+    setSize(PixelCoord(static_cast<int>(text.length()) * 8, 20));
 }
