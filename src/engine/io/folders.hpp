@@ -17,11 +17,7 @@ namespace io::folders {
     extern const fs::path GENERATION_DEFAULT;
 
     using Contents = std::vector<std::string>;
-    enum class ContentsType : uint8_t {
-
-        folder,
-        file
-    };
+    enum class ContentsType : uint8_t { folder, file };
 
     bool isPathValid(const fs::path& path) noexcept;
     bool folderExists(const fs::path& path);
