@@ -1,8 +1,8 @@
 #include "script_libs.hpp"
 //
 #include "engine/debug/logger.hpp"
-#include "game/presets/mob_presets.hpp"
-#include "game/presets/shell_presets.hpp"
+//#include "game/presets/mob_presets.hpp"
+//#include "game/presets/shell_presets.hpp"
 #include "game/world/world.hpp"
 
 static debug::Logger logger("scripts_lib_world");

@@ -15,7 +15,6 @@
 #include "game/script_libs/script_libs.hpp"
 #include "game/player/camera.hpp"
 #include "game/world_drawer/world_drawer.hpp"
-#include "game/presets/mob_presets.hpp"
 
 #include "game/player/player_controller.hpp"
 #include "game/world_saver/world_saver.hpp"
@@ -25,9 +24,6 @@
 #include "engine/settings/settings.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
-//
-#include "game/physics/mob_ai.hpp"
-#include "game/physics/turret_types.hpp"
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)

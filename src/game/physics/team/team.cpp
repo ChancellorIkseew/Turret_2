@@ -1,9 +1,7 @@
 #include "team.hpp"
 //
-#include "game/physics/mobs_system.hpp"
-#include "game/physics/shells_system.hpp"
 #include "game/world/world.hpp"
-#include "game/physics/mob_ai.hpp"
+
 /*
 void Team::spawnMob(const MobPreset& preset, const PixelCoord position, const float angle) {
     //mobs.emplace_back(std::make_unique<PlayerControlledMoving>(), nullptr, preset, position, angle, Team::ID);

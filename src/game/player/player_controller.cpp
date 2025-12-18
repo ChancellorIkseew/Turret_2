@@ -7,7 +7,6 @@
 #include "engine/gui/gui.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/physics/team/team.hpp"
-#include "game/physics/mob_ai.hpp"
 
 void PlayerController::shoot(const Input& input, const Camera& camera) {
 	const auto mouseCoord = camera.fromScreenToMap(input.getMouseCoord());
@@ -41,7 +40,7 @@ void PlayerController::move(const Input& input, Camera& camera, const float tick
 		camera.moveByMouse(input);
 	}
     else if (state == State::control_mob) {
-		camera.setPosition(targetedMob->position + targetedMob->velocity * tickOfset);
+		//camera.setPosition(targetedMob->position + targetedMob->velocity * tickOfset);
 	}
 	camera.scale(input);
 }
@@ -72,16 +71,16 @@ void PlayerController::captureMob(const Input& input, const Camera& camera) {
 void PlayerController::setTarget(const Mob& mob) {
 	resetTarget();
 	targetedMob = const_cast<Mob*>(&mob);
-	targetedMob->movingAI = std::make_unique<PlayerControlledMoving>(*this);
-	targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>(*this);
+	//targetedMob->movingAI = std::make_unique<PlayerControlledMoving>(*this);
+	//targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>(*this);
 	state = State::control_mob;
 }
 
 void PlayerController::resetTarget() {
 	if (!targetedMob)
 		return;
-	targetedMob->movingAI = std::make_unique<BasicMovingAI>();
-	targetedMob->shootingAI = std::make_unique<BasicShootingAI>();
+	//targetedMob->movingAI = std::make_unique<BasicMovingAI>();
+	//targetedMob->shootingAI = std::make_unique<BasicShootingAI>();
 	targetedMob = nullptr;
 	state = State::control_camera;
 }

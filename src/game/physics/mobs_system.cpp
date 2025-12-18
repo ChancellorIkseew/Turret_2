@@ -3,105 +3,86 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/player/camera.hpp"
-#include "team/teams_pool.hpp"
+#include "mob_soa.hpp"
 
-static Sprite hitboxSprite;
-
-static t1_finline void move(Mob& mob, const PixelCoord vector) {
-    mob.position = mob.position + vector;
-    mob.hitbox.move(vector);
+static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord vector) {
+    soa.position[index] = soa.position[index] + vector;
+    soa.hitbox[index].move(vector);
 }
 
-static inline void resolveCollisions(Mob& mob, std::list<Mob>::iterator current, std::list<Mob>::iterator end) {
-    for (auto it = std::next(current); it != end; ++it) {
-        Mob& other = *it;
+static inline void resolveCollisions(MobSoA& soa, const size_t current, const size_t end) {
+    for (size_t other = current + 1; other < end; ++other) {
+        if (!soa.hitbox[current].intersects(soa.hitbox[other])) continue;
 
-        if (!mob.hitbox.intersects(other.hitbox)) continue;
-
-        mob.colided = true;
-        other.colided = true;
-
-        const PixelCoord overlap = mob.hitbox.overlap(other.hitbox);
+        const PixelCoord overlap = soa.hitbox[current].overlap(soa.hitbox[other]);
 
         const bool pushX = (overlap.x < overlap.y);
         const float distance = pushX ? overlap.x : overlap.y;
 
-        const float pushDirection = pushX ? (mob.position.x > other.position.x ? 1.0f : -1.0f)
-            : (mob.position.y > other.position.y ? 1.0f : -1.0f);
+        const float pushDirection = pushX ? (soa.position[current].x > soa.position[other].x ? 1.0f : -1.0f)
+            : (soa.position[current].y > soa.position[other].y ? 1.0f : -1.0f);
 
-        const float totalRadius = mob.preset.hitboxRadius + other.preset.hitboxRadius;
+        const float totalRadius = soa.preset[current]->hitboxRadius + soa.preset[other]->hitboxRadius;
         const float invertedTotalRadius = 1.0f / totalRadius;
-        const float mob1Weight = other.preset.hitboxRadius * invertedTotalRadius;
-        const float mob2Weight = mob.preset.hitboxRadius * invertedTotalRadius;
+        const float mob1Weight = soa.preset[other]->hitboxRadius * invertedTotalRadius;
+        const float mob2Weight = soa.preset[current]->hitboxRadius * invertedTotalRadius;
 
         PixelCoord pushVec;
         if (pushX) pushVec.x = distance * pushDirection;
-        else       pushVec.y = distance * pushDirection;
+        else /*Y*/ pushVec.y = distance * pushDirection;
 
-        move(mob, pushVec * mob1Weight);
-        move(other, pushVec * -mob2Weight);
+        move(soa, current, pushVec * mob1Weight);
+        move(soa, other, pushVec * -mob2Weight);
     }
 }
 
-void mobs::processMobs(std::list<Mob>& mobs, TeamsPool& teams) { 
-    for (auto& mob : mobs) {
-        mob.colided = false; //TODO: find better way to resolve collisions.
-    }
-    for (auto it = mobs.begin(); it != mobs.end(); ++it) {
-        resolveCollisions(*it, it, mobs.end());
-    }
-    for (auto& mob : mobs) {
-        if (!mob.movingAI)
-            continue;
-        mob.movingAI->update(mob);
-        mob.velocity = mob.movingAI->getMotionVector() * mob.preset.speed;
-        mob.angle = mob.movingAI->getMotionAngle();
-        move(mob, mob.velocity);
-    }
-    for (auto& mob : mobs) {
-        if (!mob.turret)
-            continue;
-        mob.shootingAI->update(mob);
-        if (!mob.shootingAI->isFiring())
-            continue;
-        auto aim = mob.shootingAI->getAim();
-        mob.shootingAI->isFiring();
-        mob.turret->position = mob.position;
-        auto delta = aim - mob.position;
-        float angle = atan2f(delta.x, delta.y);
-        mob.turret->angle = angle;
-        mob.turret->shoot(*teams.getTeamByID(mob.teamID));
-    }
-    //
-    mobs.remove_if([](const Mob& mob) { return mob.wasted; });
+static inline void moveByAI(MobSoA& soa, const size_t index) {
+    if (false)
+        return;
+    //updateAI
+    PixelCoord AIVector; //getFromAI
+    Angle AIAngle = 0; //getFromAI
+    soa.velocity[index] = AIVector * soa.preset[index]->maxSpeed;
+    soa.angle[index] = AIAngle;
+    move(soa, index, soa.velocity[index]);
 }
 
-static void drawHitboxes(const std::list<Mob>& mobs, const Camera& camera) {
-    for (auto& mob : mobs) {
-        if (!camera.contains(t1::tile(mob.position)))
+void mobs::processMobs(MobSoA& soa) {
+    size_t end = soa.id.size();
+    for (size_t i = 0; i < end; ++i) {
+        resolveCollisions(soa, i, end);
+    }
+}
+
+static void drawHitboxes(const MobSoA& soa, const Camera& camera) {
+    Sprite sprite;
+    for (size_t i = 0; i < soa.id.size(); ++i) {
+        if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         // TODO: refactoring
-        const float hitboxSize = mob.preset.hitboxRadius * 2.0f;
+        const float hitboxSize = soa.preset[i]->hitboxRadius * 2.0f;
         const PixelCoord hitbox(hitboxSize, hitboxSize);
-        hitboxSprite.setTexture(Texture("fill"));
-        hitboxSprite.setSize(hitbox);
-        hitboxSprite.setOrigin(hitbox / 2.0f);
-        hitboxSprite.setPosition(mob.position);
-        hitboxSprite.draw();
+        sprite.setTexture(Texture("fill"));
+        sprite.setSize(hitbox);
+        sprite.setOrigin(hitbox / 2.0f);
+        sprite.setPosition(soa.position[i]);
+        sprite.draw();
     }
 }
 
-void mobs::drawMobs(std::list<Mob>& mobs, const Camera& camera, const float tickOfset) {
+void mobs::drawMobs(const MobSoA& soa, const Camera& camera, const float tickOfset) {
     if (Settings::gameplay.showHitboxes)
-        drawHitboxes(mobs, camera);
-    for (auto& mob : mobs) {
-        if (!camera.contains(t1::tile(mob.position)))
-            continue;
-        if (mob.colided)
-            mob.sprite.setPosition(mob.position);
-        else
-            mob.sprite.setPosition(mob.position + mob.velocity * tickOfset);
-        mob.sprite.setRotationRad(mob.angle);
-        mob.sprite.draw();
+        drawHitboxes(soa, camera);
+    Sprite sprite;
+    for (size_t i = 0; i < soa.id.size(); ++i) {
+        if (!camera.contains(t1::tile(soa.position[i])))
+            return;
+        auto& visual = soa.preset[i]->visual;
+        sprite.setTexture(*visual.texture);
+        sprite.setOrigin(visual.origin);
+        sprite.setSize(visual.size);
+        sprite.setPosition(soa.position[i] + soa.velocity[i] * tickOfset);
+        sprite.setRotationRad(soa.angle[i]);
+        sprite.draw();
     }
 }
