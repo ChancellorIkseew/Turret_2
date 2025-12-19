@@ -126,13 +126,13 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
             playerController.update(*this, tickOfset);
             worldDrawer.draw(camera, *world, tickOfset);
             Events::reset(); // for editor
+            scriptsHandler.execute();
         }
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
         gui->draw();
         gui->callback();
         mainWindow.render();
-        scriptsHandler.execute();
     }
 }
 
