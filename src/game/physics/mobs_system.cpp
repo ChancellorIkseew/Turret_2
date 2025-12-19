@@ -3,7 +3,7 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/player/camera.hpp"
-#include "mob_soa.hpp"
+#include "mob_manager.hpp"
 
 static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord vector) {
     soa.position[index] = soa.position[index] + vector;

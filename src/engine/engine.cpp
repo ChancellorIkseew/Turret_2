@@ -24,6 +24,8 @@
 #include "engine/settings/settings.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
+#include "game/content/presets.hpp"
+#include "game/physics/mobs_system.hpp"
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
@@ -144,16 +146,9 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
     //playerController.setTarget(playerTeam->getMobs().front());
     auto& mobs = world.getMobs();
 
-    VisualPreset visual(csp::make_centralized<Texture>("cannoner_bot"),
-        PixelCoord(22.5f, 28.0f),
-        PixelCoord(45, 45));
-
-    addMob(mobs,
-        csp::make_centralized<Preset>(1.0f, 17.0f ,visual),
-        PixelCoord(100, 100),
-        0,
-        playerTeam->getID(),
-        1);
+    auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot");
+    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, playerTeam->getID());
+    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, playerTeam->getID());
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())
@@ -161,9 +156,7 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
         else {
             {
                 std::lock_guard<std::mutex> guard(worldMutex);
-                for (auto& [teamID, team] : world.getTeams()) {
-                    //team->interact(world);
-                }
+                mobs::processMobs(mobs.getSoa());
                 currentTickStart = mainWindow.getTime();
             }
             util::sleep(48);

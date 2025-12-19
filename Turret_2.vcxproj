@@ -66,6 +66,7 @@
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\content\indexes.hpp" />
     <ClInclude Include="src\game\content\content.hpp" />
+    <ClInclude Include="src\game\content\presets.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
@@ -73,8 +74,10 @@
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\generation\hash_noise.hpp" />
     <ClInclude Include="src\game\generation\spot_generator.hpp" />
+    <ClInclude Include="src\game\physics\id_manager.hpp" />
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
-    <ClInclude Include="src\game\physics\mob_soa.hpp" />
+    <ClInclude Include="src\game\physics\mob_ai.hpp" />
+    <ClInclude Include="src\game\physics\mob_manager.hpp" />
     <ClInclude Include="src\game\physics\physics_base.hpp" />
     <ClInclude Include="src\game\physics\team\team.hpp" />
     <ClInclude Include="src\game\physics\team\teams_pool.hpp" />
@@ -130,6 +133,7 @@
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\content\indexes.cpp" />
+    <ClCompile Include="src\game\content\presets.cpp" />
     <ClCompile Include="src\game\content\textures.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />
@@ -147,6 +151,8 @@
     <ClCompile Include="src\game\frontend\fr_world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
     <ClCompile Include="src\game\physics\mobs_system.cpp" />
+    <ClCompile Include="src\game\physics\mob_ai.cpp" />
+    <ClCompile Include="src\game\physics\mob_manager.cpp" />
     <ClCompile Include="src\game\physics\team\team.cpp" />
     <ClCompile Include="src\game\player\camera.cpp" />
     <ClCompile Include="src\game\player\player_controller.cpp" />

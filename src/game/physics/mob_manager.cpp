@@ -1,37 +1,13 @@
-#pragma once
-#include <CSP/centralized_ptr.hpp>
-#include <vector>
-#include "engine/coords/transforms.hpp"
-#include "engine/render/sprite.hpp"
-#include "game/player/camera.hpp"
-#include "physics_base.hpp"
+#include "mob_manager.hpp"
+//
+#include "engine/debug/logger.hpp"
 
-using MobID = uint16_t;
-using Angle = float;
+constexpr MobID INVALID_MOB_ID = IDManager<MobID>::INVALID_ID;
+static debug::Logger logger("mob_manager");
 
-struct VisualPreset {
-    csp::centralized_ptr<Texture> texture;
-    const PixelCoord origin;
-    const PixelCoord size;
-};
+void MobManager::fillIndexes() { soaIndexByMobID.fill(INVALID_MOB_ID); }
 
-struct Preset {
-    const float maxSpeed;
-    const float hitboxRadius;
-    const VisualPreset visual;
-};
-
-struct MobSoA {
-    std::vector<Hitbox> hitbox;
-    std::vector<PixelCoord> position;
-    std::vector<PixelCoord> velocity;
-    std::vector<Angle> angle;
-    std::vector<csp::centralized_ptr<Preset>> preset;
-    std::vector<MobID> id;
-    std::vector<TeamID> teamID;
-};
-
-inline void reserve(MobSoA& soa, const size_t capacity) {
+void MobManager::reserve(const size_t capacity) {
     soa.id.reserve(capacity);
     soa.position.reserve(capacity);
     soa.velocity.reserve(capacity);
@@ -41,12 +17,17 @@ inline void reserve(MobSoA& soa, const size_t capacity) {
     soa.hitbox.reserve(capacity);
 }
 
-inline size_t addMob(MobSoA& soa,
-    const csp::centralized_ptr<Preset>& preset,
+size_t MobManager::addMob(
+    const csp::centralized_ptr<MobPreset>& preset,
     const PixelCoord pos,
     const Angle angle,
-    const TeamID teamID,
-    const MobID mobID) {
+    const TeamID teamID) {
+    const MobID mobID = idManager.getNext();
+
+    if (mobID == INVALID_MOB_ID) {
+        logger.warning() << "Could not add mob to SoA. No more avaliable free MobID.";
+        return INVALID_MOB_ID;
+    }
 
     soa.id.push_back(mobID);
     soa.position.push_back(pos);
@@ -56,11 +37,16 @@ inline size_t addMob(MobSoA& soa,
     soa.preset.push_back(preset);
     soa.hitbox.push_back(Hitbox(pos, preset->hitboxRadius));
 
-    return soa.id.size() - 1; // Возвращаем текущий индекс
+    const size_t last = soa.id.size() - 1;
+    soaIndexByMobID[last] = mobID;
+    return last;
 }
 
-inline void removeMob(MobSoA& soa, size_t index) {
+void MobManager::removeMob(size_t index) {
     const size_t last = soa.id.size() - 1;
+    soaIndexByMobID[index] = soaIndexByMobID[last];
+    soaIndexByMobID[last] = INVALID_MOB_ID;
+    idManager.setFree(soa.id[index]);
 
     if (index != last) {
         soa.id[index] = std::move(soa.id[last]);
