@@ -156,6 +156,7 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
         else {
             {
                 std::lock_guard<std::mutex> guard(worldMutex);
+                world.getChunks().update(mobs.getSoa());
                 mobs::processMobs(mobs.getSoa());
                 currentTickStart = mainWindow.getTime();
             }

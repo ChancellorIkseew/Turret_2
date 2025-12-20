@@ -74,6 +74,7 @@
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\generation\hash_noise.hpp" />
     <ClInclude Include="src\game\generation\spot_generator.hpp" />
+    <ClInclude Include="src\game\physics\chunk_grid.hpp" />
     <ClInclude Include="src\game\physics\id_manager.hpp" />
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
     <ClInclude Include="src\game\physics\mob_ai.hpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
     <ClCompile Include="src\game\frontend\fr_world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
+    <ClCompile Include="src\game\physics\chunk_grid.cpp" />
     <ClCompile Include="src\game\physics\mobs_system.cpp" />
     <ClCompile Include="src\game\physics\mob_ai.cpp" />
     <ClCompile Include="src\game\physics\mob_manager.cpp" />
