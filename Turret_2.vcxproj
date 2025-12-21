@@ -99,7 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\coords\math.cpp" />
-    <ClCompile Include="src\engine\coords\transforms.cpp" />
     <ClCompile Include="src\engine\debug\console.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />

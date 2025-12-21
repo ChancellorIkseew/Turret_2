@@ -18,7 +18,7 @@ public:
         recycledIDs.reserve(recycledIDsCapacity);
     }
     //
-    ID getNext() {
+    ID getNext() noexcept {
         if (!recycledIDs.empty()) {
             ID id = recycledIDs.back();
             recycledIDs.pop_back();

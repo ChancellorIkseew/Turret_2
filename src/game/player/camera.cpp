@@ -79,9 +79,9 @@ void Camera::updateMapRegion(const PixelCoord windowSize) {
         endTile.y = tileMapSize.y;
 }
 
-PixelCoord Camera::fromMapToScreen(const PixelCoord mapCoord) const {
+PixelCoord Camera::fromMapToScreen(const PixelCoord mapCoord) const noexcept {
     return (mapCoord - cameraUpperLeftCorner) * mapScale;
 }
-PixelCoord Camera::fromScreenToMap(const PixelCoord screenCoord) const {
+PixelCoord Camera::fromScreenToMap(const PixelCoord screenCoord) const noexcept {
     return cameraUpperLeftCorner + screenCoord / mapScale;
 }

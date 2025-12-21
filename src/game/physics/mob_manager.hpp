@@ -43,7 +43,7 @@ public:
     MobManager(const size_t capacity) { fillIndexes(); reserve(capacity); }
     MobManager() { fillIndexes(); }
     //
-    t1_finline size_t getSoaIndexByMobID(const MobID mobID) { return soaIndexByMobID[mobID]; }
+    t1_finline size_t getSoaIndexByMobID(const MobID mobID) const noexcept { return soaIndexByMobID[mobID]; }
     t1_finline const MobSoA& getSoa() const noexcept { return soa; }
     t1_finline MobSoA& getSoa() noexcept { return soa; }
     //

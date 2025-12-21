@@ -7,36 +7,36 @@ constexpr float MINIMAL_FLOAT = std::numeric_limits<float>::lowest();
 struct PixelCoord {
     float x = 0.0f, y = 0.0f;
     
-    PixelCoord(const int x, const int y) : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
-    constexpr PixelCoord(const float x, const float y) : x(x), y(y) {}
-    PixelCoord() = default;
+    PixelCoord(const int x, const int y) noexcept : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
+    constexpr PixelCoord(const float x, const float y) noexcept : x(x), y(y) {}
+    PixelCoord() noexcept = default;
     
-    bool valid() const { return x > MINIMAL_FLOAT + epsilon; }
+    bool valid() const noexcept { return x > MINIMAL_FLOAT + epsilon; }
     
-    bool operator==(const PixelCoord& rhs) const {
+    bool operator==(const PixelCoord& rhs) const noexcept {
         return std::abs(x - rhs.x) <= epsilon && std::abs(y - rhs.y) <= epsilon;
     }
-    bool operator!=(const PixelCoord& rhs) const {
+    bool operator!=(const PixelCoord& rhs) const noexcept {
         return std::abs(x - rhs.x) > epsilon || std::abs(y - rhs.y) > epsilon;
     }
     
-    PixelCoord operator+(const PixelCoord& rhs) const {
+    PixelCoord operator+(const PixelCoord& rhs) const noexcept {
         return PixelCoord(x + rhs.x, y + rhs.y);
     }
-    PixelCoord operator-(const PixelCoord& rhs) const {
+    PixelCoord operator-(const PixelCoord& rhs) const noexcept {
         return PixelCoord(x - rhs.x, y - rhs.y);
     }
-    PixelCoord operator*(const float value) const {
+    PixelCoord operator*(const float value) const noexcept {
         return PixelCoord(x * value, y * value);
     }
-    PixelCoord operator/(const float value) const {
+    PixelCoord operator/(const float value) const noexcept {
         return PixelCoord(x / value, y / value);
     }
-    PixelCoord operator*(const int value) const {
+    PixelCoord operator*(const int value) const noexcept {
         const float floatValue = static_cast<float>(value);
         return PixelCoord(x * floatValue, y * floatValue);
     }
-    PixelCoord operator/(const int value) const {
+    PixelCoord operator/(const int value) const noexcept {
         const float floatValue = static_cast<float>(value);
         return PixelCoord(x / floatValue, y / floatValue);
     }

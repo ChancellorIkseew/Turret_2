@@ -1,5 +1,6 @@
 #include "ui_node.hpp"
 //
+#include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
 
 void Node::draw() {
@@ -7,9 +8,7 @@ void Node::draw() {
 }
 
 bool Node::containsMouse(const Input& input) const {
-    const PixelCoord mouse = input.getMouseCoord();
     const PixelCoord start = sprite.getPosition();
     const PixelCoord end = start + sprite.getSize();
-    return mouse.x >= start.x && mouse.x <= end.x &&
-           mouse.y >= start.y && mouse.y <= end.y;
+    return t1::contains(start, end, input.getMouseCoord());
 }

@@ -35,7 +35,7 @@ public:
     ChunkGrid(const TileCoord mapSize);
     void update(const MobSoA& soa);
     //
-    t1_finline Chunk* getChunkAt(const TileCoord tile) {
+    t1_finline Chunk* getChunkAt(const TileCoord tile) noexcept {
         const t1_cgp::IntPoint chunk = tile / t1_cgp::CHUNK_SIDE_SIZE;
         if (chunk.x < 0 || chunk.x >= gridSize.x || chunk.y < 0 || chunk.y >= gridSize.y)
             return nullptr;
@@ -44,12 +44,11 @@ public:
             return nullptr;
         return &chunks[chunksFind[addrIndex]];
     }
-    t1_finline Chunk* getChunkAt(const PixelCoord pixel) {
-        int cx = static_cast<int>(pixel.x) / TILE;
-        int cy = static_cast<int>(pixel.y) / TILE;
+    t1_finline Chunk* getChunkAt(const PixelCoord pixel) noexcept {
+        return getChunkAt(t1::tile(pixel));
     }
 private:
-    t1_finline ChunkAddrIndex getAddrIndex(const t1_cgp::IntPoint chunk) const {
+    t1_finline ChunkAddrIndex getAddrIndex(const t1_cgp::IntPoint chunk) const noexcept {
         return static_cast<ChunkAddrIndex>(chunk.y* gridSize.x + chunk.x);
     }
 };

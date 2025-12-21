@@ -2,14 +2,8 @@
 //
 #include "mob_manager.hpp"
 
-using namespace t1_cgp;
-
-static t1_finline IntPoint toIntPoint(const PixelCoord pixelCoord) {
-    return IntPoint(static_cast<int>(pixelCoord.x), static_cast<int>(pixelCoord.y));
-}
-
 ChunkGrid::ChunkGrid(const TileCoord mapSize) { // move to cpp
-    gridSize = (mapSize + CHUNK_SIZE - TileCoord(1, 1)) / CHUNK_SIDE_SIZE;
+    gridSize = (mapSize + t1_cgp::CHUNK_SIZE - TileCoord(1, 1)) / t1_cgp::CHUNK_SIDE_SIZE;
     chunksFind.assign(static_cast<size_t>(gridSize.x * gridSize.y), INVALID_CHUNK_ADDR);
 }
 
@@ -21,7 +15,7 @@ void ChunkGrid::update(const MobSoA& soa) {
     chunks.clear();
 
     for (size_t i = 0; i < soa.id.size(); ++i) {
-        IntPoint chunk = toIntPoint(soa.position[i]) / (CHUNK_SIDE_SIZE * TILE);
+        t1_cgp::IntPoint chunk = t1::tile(soa.position[i]) / t1_cgp::CHUNK_SIDE_SIZE;;
         chunk.x = std::clamp(chunk.x, 0, gridSize.x - 1);
         chunk.y = std::clamp(chunk.y, 0, gridSize.y - 1);
         ChunkAddrIndex addrIndex = getAddrIndex(chunk);
