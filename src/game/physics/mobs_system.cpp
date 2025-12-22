@@ -20,7 +20,7 @@ static inline void resolveCollisions(MobSoA& soa, const size_t current, const si
         const float distance = pushX ? overlap.x : overlap.y;
 
         const float pushDirection = pushX ? (soa.position[current].x > soa.position[other].x ? 1.0f : -1.0f)
-            : (soa.position[current].y > soa.position[other].y ? 1.0f : -1.0f);
+                                          : (soa.position[current].y > soa.position[other].y ? 1.0f : -1.0f);
 
         const float totalRadius = soa.preset[current]->hitboxRadius + soa.preset[other]->hitboxRadius;
         const float invertedTotalRadius = 1.0f / totalRadius;
@@ -41,7 +41,7 @@ static inline void moveByAI(MobSoA& soa, const size_t index) {
         return;
     //updateAI
     PixelCoord AIVector; //getFromAI
-    Angle AIAngle = 0; //getFromAI
+    AngleRad AIAngle = 0; //getFromAI
     soa.velocity[index] = AIVector * soa.preset[index]->maxSpeed;
     soa.angle[index] = AIAngle;
     move(soa, index, soa.velocity[index]);
@@ -51,6 +51,17 @@ void mobs::processMobs(MobSoA& soa) {
     size_t end = soa.id.size();
     for (size_t i = 0; i < end; ++i) {
         resolveCollisions(soa, i, end);
+    }
+}
+
+void mobs::cleanupMobs(MobManager& manager/*, Explosions& explosions*/) {
+    const auto& soa = manager.getSoa();
+    for (size_t i = 0; i < soa.position.size(); ++i) {
+        if (soa.health[i] > 0)
+            continue;
+        // if (soa.presets->explosion.damage != 0)
+        //     explosions.push(soa.presets->explosion);
+        manager.removeMob(i);
     }
 }
 

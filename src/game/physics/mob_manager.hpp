@@ -8,9 +8,8 @@
 #include "physics_base.hpp"
 
 using MobID = uint16_t;
-using Angle = float;
 
-struct VisualPreset {
+struct MobVisualPreset {
     csp::centralized_ptr<Texture> texture;
     const PixelCoord origin;
     const PixelCoord size;
@@ -19,16 +18,18 @@ struct VisualPreset {
 struct MobPreset {
     const float maxSpeed;
     const float hitboxRadius;
+    const Health maxHealth;
     const MobMovingAI defaultMovingAI;
     const MobShootingAI defaultShootingAI;
-    const VisualPreset visual;
+    const MobVisualPreset visual;
 };
 
 struct MobSoA {
     std::vector<Hitbox> hitbox;
     std::vector<PixelCoord> position;
     std::vector<PixelCoord> velocity;
-    std::vector<Angle> angle;
+    std::vector<AngleRad> angle;
+    std::vector<Health> health;
     std::vector<csp::centralized_ptr<MobPreset>> preset;
     std::vector<MobID> id;
     std::vector<TeamID> teamID;
@@ -48,10 +49,11 @@ public:
     t1_finline MobSoA& getSoa() noexcept { return soa; }
     //
     void reserve(const size_t capacity);
-    void removeMob(size_t index);
+    void removeMob(const size_t index);
     size_t addMob(
         const csp::centralized_ptr<MobPreset>& preset,
-        const PixelCoord pos,
-        const Angle angle,
+        const PixelCoord position,
+        const AngleRad angle,
+        const Health health,
         const TeamID teamID);
 };

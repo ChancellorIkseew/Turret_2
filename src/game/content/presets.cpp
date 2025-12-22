@@ -9,7 +9,7 @@ static debug::Logger logger("presets");
 std::unordered_map<std::string, csp::centralized_ptr<MobPreset>> content::Presets::mobPresets;
 
 static csp::centralized_ptr<MobPreset> createPreset(const tin::Data& data) {
-    VisualPreset visual(
+    MobVisualPreset visual(
         csp::make_centralized<Texture>(data.getString("texture").value()),
         data.getPixelCoord("origin").value(),
         data.getPixelCoord("size").value()
@@ -17,6 +17,7 @@ static csp::centralized_ptr<MobPreset> createPreset(const tin::Data& data) {
     return csp::make_centralized<MobPreset>(
         data.getFloat("max_speed").value(),
         data.getFloat("hitbox_radius").value(),
+        data.getInt64("max_health").value(),
         mob_ai::getMovingAI(data.getString("moving_ai").value()),
         mob_ai::getShootingAI(data.getString("shooting_ai").value()),
         visual

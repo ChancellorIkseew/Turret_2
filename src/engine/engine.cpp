@@ -147,8 +147,8 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
     auto& mobs = world.getMobs();
 
     auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot");
-    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, playerTeam->getID());
-    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, playerTeam->getID());
+    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID());
+    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID());
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())
@@ -158,6 +158,8 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
                 std::lock_guard<std::mutex> guard(worldMutex);
                 world.getChunks().update(mobs.getSoa());
                 mobs::processMobs(mobs.getSoa());
+                // Clean up only after all processing.
+                mobs::cleanupMobs(mobs);
                 currentTickStart = mainWindow.getTime();
             }
             util::sleep(48);

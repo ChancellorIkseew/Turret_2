@@ -19,8 +19,9 @@ void MobManager::reserve(const size_t capacity) {
 
 size_t MobManager::addMob(
     const csp::centralized_ptr<MobPreset>& preset,
-    const PixelCoord pos,
-    const Angle angle,
+    const PixelCoord position,
+    const AngleRad angle,
+    const Health health,
     const TeamID teamID) {
     const MobID mobID = idManager.getNext();
 
@@ -30,19 +31,20 @@ size_t MobManager::addMob(
     }
 
     soa.id.push_back(mobID);
-    soa.position.push_back(pos);
+    soa.position.push_back(position);
     soa.velocity.push_back(PixelCoord(0, 0));
     soa.angle.push_back(angle);
+    soa.health.push_back(health);
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
-    soa.hitbox.push_back(Hitbox(pos, preset->hitboxRadius));
+    soa.hitbox.push_back(Hitbox(position, preset->hitboxRadius));
 
     const size_t last = soa.id.size() - 1;
     soaIndexByMobID[last] = mobID;
     return last;
 }
 
-void MobManager::removeMob(size_t index) {
+void MobManager::removeMob(const size_t index) {
     const size_t last = soa.id.size() - 1;
     soaIndexByMobID[index] = soaIndexByMobID[last];
     soaIndexByMobID[last] = INVALID_MOB_ID;
@@ -53,6 +55,7 @@ void MobManager::removeMob(size_t index) {
         soa.position[index] = std::move(soa.position[last]);
         soa.velocity[index] = std::move(soa.velocity[last]);
         soa.angle[index] = std::move(soa.angle[last]);
+        soa.health[index] = std::move(soa.health[last]);
         soa.teamID[index] = std::move(soa.teamID[last]);
         soa.preset[index] = std::move(soa.preset[last]);
         soa.hitbox[index] = std::move(soa.hitbox[last]);
@@ -62,6 +65,7 @@ void MobManager::removeMob(size_t index) {
     soa.position.pop_back();
     soa.velocity.pop_back();
     soa.angle.pop_back();
+    soa.health.pop_back();
     soa.teamID.pop_back();
     soa.preset.pop_back();
     soa.hitbox.pop_back();

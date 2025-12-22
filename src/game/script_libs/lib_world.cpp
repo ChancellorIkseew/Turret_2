@@ -30,7 +30,7 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
         return;
     }
     auto& preset = content::Presets::getMobs().at(presetName);
-    script_libs::world->getMobs().addMob(preset, PixelCoord(x, y), 0.f, teamID);
+    script_libs::world->getMobs().addMob(preset, PixelCoord(x, y), 0.f, preset->maxHealth, teamID);
 }
 
 static void spawnShell(int x, int y, TeamID teamID) {
