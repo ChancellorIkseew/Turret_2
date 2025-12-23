@@ -158,7 +158,7 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
         else {
             {
                 std::lock_guard<std::mutex> guard(worldMutex);
-                world.getChunks().update(mobs.getSoa());
+                // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
                 shells::processShells(shells.getSoa(), mobs.getSoa());
                 mobs::processMobs(mobs.getSoa());
                 // Clean up only after all processing.

@@ -1,36 +1,37 @@
 #include "shells_system.hpp"
 //
 #include "game/player/camera.hpp"
-#include"game/physics/mob_manager.hpp"
-#include"game/physics/shell_manager.hpp"
+#include "game/physics/mob_manager.hpp"
+#include "game/physics/shell_manager.hpp"
 
 static inline void countShellsLife(ShellSoA& soa) {
-    for (size_t i = 0; i < soa.restLifeTime.size(); ++i) {
-        --soa.restLifeTime[i];
+    for (auto& time : soa.restLifeTime) {
+        --time;
     }
 }
 
 static inline void moveShells(ShellSoA& soa) {
-    for (size_t i = 0; i < soa.position.size(); ++i) {
+    const size_t shellCount = soa.position.size();
+    for (size_t i = 0; i < shellCount; ++i) {
         soa.position[i] = soa.position[i] + soa.velocity[i];
     }
 }
 
 static inline void hitMobs(ShellSoA& shells, MobSoA& mobs) {
-    for (size_t mob = 0; mob < mobs.id.size(); ++mob) {
-        for (size_t shell = 0; shell < shells.position.size(); ++shell) {
+    const size_t mobCount = mobs.teamID.size();
+    const size_t shellCount = shells.teamID.size();
+    for (size_t mob = 0; mob < mobCount; ++mob) {
+        for (size_t shell = 0; shell < shellCount; ++shell) {
+            if (shells.restDamage[shell] < 1)
+                continue;
             if (mobs.teamID[mob] == shells.teamID[shell])
                 continue;
             if (!mobs.hitbox[mob].contains(shells.position[shell]))
                 continue;
-            if (mobs.health[mob] >= shells.restDamage[shell]) {
-                mobs.health[mob] -= shells.restDamage[shell];
-                shells.restDamage[shell] = 0;
-            }
-            else /*(health < restDamade)*/ {
-                shells.restDamage[shell] -= mobs.health[mob];
-                mobs.health[mob] = 0;
-            }
+            const Health takenDamage = std::min(mobs.health[mob], shells.restDamage[shell]);
+            shells.restDamage[shell] -= takenDamage;
+            mobs.health[mob] -= takenDamage;
+            break;
         }
     }
 }

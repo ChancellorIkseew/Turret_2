@@ -14,6 +14,7 @@ namespace t1_cgp {
 
 struct Chunk {
     std::vector<size_t> mobIndexes;
+    // TODO: std::vector<size_t> shellIndexes;
     t1_cgp::IntPoint position, start, end;
     Chunk(const t1_cgp::IntPoint position) :
         position(position),
@@ -47,6 +48,11 @@ public:
     t1_finline Chunk* getChunkAt(const PixelCoord pixel) noexcept {
         return getChunkAt(t1::tile(pixel));
     }
+    //
+    const auto cbegin() const noexcept { return chunks.cbegin(); }
+    const auto begin()  const noexcept { return chunks.begin(); }
+    const auto cend()   const noexcept { return chunks.cend(); }
+    const auto end()    const noexcept { return chunks.end(); }
 private:
     t1_finline ChunkAddrIndex getAddrIndex(const t1_cgp::IntPoint chunk) const noexcept {
         return static_cast<ChunkAddrIndex>(chunk.y* gridSize.x + chunk.x);

@@ -1,7 +1,6 @@
 #pragma once
 #include <CSP/centralized_ptr.hpp>
-#include <cstdint>
-#include "engine/coords/pixel_coord.hpp"
+#include <vector>
 #include "engine/render/sprite.hpp"
 #include "physics_base.hpp"
 
