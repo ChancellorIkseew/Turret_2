@@ -19,6 +19,7 @@ namespace io::folders {
     using Contents = std::vector<std::string>;
     enum class ContentsType : uint8_t { folder, file };
 
+    std::string trimExtensions(const std::string& filename);
     bool isPathValid(const fs::path& path) noexcept;
     bool folderExists(const fs::path& path);
     bool fileExists(const fs::path& path);

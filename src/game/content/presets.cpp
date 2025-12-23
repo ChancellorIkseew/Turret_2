@@ -30,7 +30,7 @@ void content::Presets::load() {
     for (const auto& file : contents) {
         const auto data = tin::read(path / file, tin::Log::only_error);
         try {
-            mobPresets.emplace(file.substr(0, file.length() - 4), createPreset(data));
+            mobPresets.emplace(io::folders::trimExtensions(file), createPreset(data));
             logger.debug() << "Mob preset created: " << file;
         }
         catch (const std::bad_optional_access&) {
