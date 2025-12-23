@@ -26,6 +26,7 @@
 #include "game/world_saver/gen_preset_saver.hpp"
 #include "game/content/presets.hpp"
 #include "game/physics/mobs_system.hpp"
+#include "game/physics/shells_system.hpp"
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
@@ -145,8 +146,9 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
     playerController.setPlayerTeam(playerTeam);
     //playerController.setTarget(playerTeam->getMobs().front());
     auto& mobs = world.getMobs();
+    auto& shells = world.getShells();
 
-    auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot");
+    auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
     mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID());
     mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID());
 
@@ -157,8 +159,10 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
             {
                 std::lock_guard<std::mutex> guard(worldMutex);
                 world.getChunks().update(mobs.getSoa());
+                shells::processShells(shells.getSoa(), mobs.getSoa());
                 mobs::processMobs(mobs.getSoa());
                 // Clean up only after all processing.
+                shells::cleanupShells(shells);
                 mobs::cleanupMobs(mobs);
                 currentTickStart = mainWindow.getTime();
             }

@@ -1,0 +1,11 @@
+#visual
+texture=cannon_shell
+origin=1.5|3.0
+size=3.0|7.0
+#logic
+speed=3.0
+damage=15
+life_time=180
+explosion_damage=10
+explosion_radius=1
+explosion_fading=0.0

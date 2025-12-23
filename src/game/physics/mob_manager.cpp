@@ -17,7 +17,7 @@ void MobManager::reserve(const size_t capacity) {
     soa.hitbox.reserve(capacity);
 }
 
-size_t MobManager::addMob(
+MobID MobManager::addMob(
     const csp::centralized_ptr<MobPreset>& preset,
     const PixelCoord position,
     const AngleRad angle,
@@ -41,7 +41,7 @@ size_t MobManager::addMob(
 
     const size_t last = soa.id.size() - 1;
     soaIndexByMobID[last] = mobID;
-    return last;
+    return mobID;
 }
 
 void MobManager::removeMob(const size_t index) {

@@ -56,12 +56,14 @@ void mobs::processMobs(MobSoA& soa) {
 
 void mobs::cleanupMobs(MobManager& manager/*, Explosions& explosions*/) {
     const auto& soa = manager.getSoa();
-    for (size_t i = 0; i < soa.position.size(); ++i) {
-        if (soa.health[i] > 0)
+    // Reverse itaretion to avoid bugs with "swap and pop".
+    for (size_t i = soa.position.size(); i > 0; --i) {
+        size_t index = i - 1;
+        if (soa.health[index] > 0)
             continue;
         // if (soa.presets->explosion.damage != 0)
         //     explosions.push(soa.presets->explosion);
-        manager.removeMob(i);
+        manager.removeMob(index);
     }
 }
 

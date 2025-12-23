@@ -50,7 +50,7 @@ public:
     //
     void reserve(const size_t capacity);
     void removeMob(const size_t index);
-    size_t addMob(
+    MobID addMob(
         const csp::centralized_ptr<MobPreset>& preset,
         const PixelCoord position,
         const AngleRad angle,
