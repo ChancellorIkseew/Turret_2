@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdint>
 
 enum class CursorType : uint8_t {

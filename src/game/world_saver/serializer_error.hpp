@@ -1,3 +1,4 @@
+#pragma once
 #include <stdexcept>
 
 class SerializerError : public std::runtime_error {

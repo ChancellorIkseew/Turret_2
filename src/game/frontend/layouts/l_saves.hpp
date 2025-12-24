@@ -1,3 +1,4 @@
+#pragma once
 #include "engine/widgets/selector.hpp"
 
 namespace frontend {
