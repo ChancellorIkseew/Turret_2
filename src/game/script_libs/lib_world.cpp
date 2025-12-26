@@ -30,7 +30,9 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
         return;
     }
     auto& preset = content::Presets::getMobs().at(presetName);
-    script_libs::world->getMobs().addMob(preset, PixelCoord(x, y), 0.f, preset->maxHealth, teamID);
+    MotionData mData(preset->defaultMovingAI, 0, PixelCoord(400, 1000));
+    ShootingData sData;
+    script_libs::world->getMobs().addMob(preset, PixelCoord(x, y), 0.f, preset->maxHealth, teamID, mData, sData);
 }
 
 static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TeamID teamID) {

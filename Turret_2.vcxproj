@@ -79,6 +79,7 @@
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
     <ClInclude Include="src\game\physics\mob_ai.hpp" />
     <ClInclude Include="src\game\physics\mob_manager.hpp" />
+    <ClInclude Include="src\game\physics\ai_system.hpp" />
     <ClInclude Include="src\game\physics\physics_base.hpp" />
     <ClInclude Include="src\game\physics\shell_manager.hpp" />
     <ClInclude Include="src\game\physics\shells_system.hpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="src\game\physics\mobs_system.cpp" />
     <ClCompile Include="src\game\physics\mob_ai.cpp" />
     <ClCompile Include="src\game\physics\mob_manager.cpp" />
+    <ClCompile Include="src\game\physics\moving_ai_system.cpp" />
     <ClCompile Include="src\game\physics\shell_manager.cpp" />
     <ClCompile Include="src\game\physics\shells_system.cpp" />
     <ClCompile Include="src\game\physics\team\team.cpp" />

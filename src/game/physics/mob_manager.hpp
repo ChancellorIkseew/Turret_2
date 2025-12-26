@@ -19,8 +19,8 @@ struct MobPreset {
     const float maxSpeed;
     const float hitboxRadius;
     const Health maxHealth;
-    const MobMovingAI defaultMovingAI;
-    const MobShootingAI defaultShootingAI;
+    const MovingAI defaultMovingAI;
+    const ShootingAI defaultShootingAI;
     const MobVisualPreset visual;
 };
 
@@ -33,6 +33,8 @@ struct MobSoA {
     std::vector<csp::centralized_ptr<MobPreset>> preset;
     std::vector<MobID> id;
     std::vector<TeamID> teamID;
+    std::vector<MotionData> motionData;
+    std::vector<ShootingData> shootingData;
 };
 
 class MobManager {
@@ -55,5 +57,7 @@ public:
         const PixelCoord position,
         const AngleRad angle,
         const Health health,
-        const TeamID teamID);
+        const TeamID teamID,
+        const MotionData motionData,
+        const ShootingData shootingData);
 };

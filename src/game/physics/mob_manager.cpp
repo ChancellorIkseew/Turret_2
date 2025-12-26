@@ -15,6 +15,8 @@ void MobManager::reserve(const size_t capacity) {
     soa.teamID.reserve(capacity);
     soa.preset.reserve(capacity);
     soa.hitbox.reserve(capacity);
+    soa.motionData.reserve(capacity);
+    soa.shootingData.reserve(capacity);
 }
 
 MobID MobManager::addMob(
@@ -22,7 +24,9 @@ MobID MobManager::addMob(
     const PixelCoord position,
     const AngleRad angle,
     const Health health,
-    const TeamID teamID) {
+    const TeamID teamID,
+    const MotionData motionData,
+    const ShootingData shootingData) {
     const MobID mobID = idManager.getNext();
 
     if (mobID == INVALID_MOB_ID) {
@@ -38,6 +42,8 @@ MobID MobManager::addMob(
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
     soa.hitbox.push_back(Hitbox(position, preset->hitboxRadius));
+    soa.motionData.push_back(motionData);
+    soa.shootingData.push_back(shootingData);
 
     const size_t last = soa.id.size() - 1;
     soaIndexByMobID[last] = mobID;
@@ -59,6 +65,8 @@ void MobManager::removeMob(const size_t index) {
         soa.teamID[index] = std::move(soa.teamID[last]);
         soa.preset[index] = std::move(soa.preset[last]);
         soa.hitbox[index] = std::move(soa.hitbox[last]);
+        soa.motionData[index] = std::move(soa.motionData[last]);
+        soa.shootingData[index] = std::move(soa.shootingData[last]);
     }
 
     soa.id.pop_back();
@@ -69,4 +77,6 @@ void MobManager::removeMob(const size_t index) {
     soa.teamID.pop_back();
     soa.preset.pop_back();
     soa.hitbox.pop_back();
+    soa.motionData.pop_back();
+    soa.shootingData.pop_back();
 }

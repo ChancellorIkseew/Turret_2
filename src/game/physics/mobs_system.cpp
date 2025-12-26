@@ -36,18 +36,23 @@ static inline void resolveCollisions(MobSoA& soa, const size_t current, const si
     }
 }
 
-static inline void moveByAI(MobSoA& soa, const size_t index) {
-    if (false)
+static inline void moveByAI(MobSoA& soa) {
+    /*if (false)
         return;
     //updateAI
     PixelCoord AIVector; //getFromAI
     AngleRad AIAngle = 0; //getFromAI
     soa.velocity[index] = AIVector * soa.preset[index]->maxSpeed;
     soa.angle[index] = AIAngle;
-    move(soa, index, soa.velocity[index]);
+    move(soa, index, soa.velocity[index]);*/
+    const size_t mobCount = soa.position.size();
+    for (size_t i = 0; i < mobCount; ++i) {
+        move(soa, i, soa.velocity[i]);
+    }
 }
 
 void mobs::processMobs(MobSoA& soa) {
+    moveByAI(soa);
     size_t end = soa.id.size();
     for (size_t i = 0; i < end; ++i) {
         resolveCollisions(soa, i, end);

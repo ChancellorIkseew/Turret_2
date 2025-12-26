@@ -1,13 +1,15 @@
 #include "mob_ai.hpp"
 
-MobMovingAI mob_ai::getMovingAI(const std::string& name) {
-    if (name == "basic") return MobMovingAI::basic;
-    if (name == "player_controlled") return MobMovingAI::player_controlled;
-    return MobMovingAI::none;
+MovingAI mob_ai::getMovingAI(const std::string& name) {
+    if (name == "none") return MovingAI::none;
+    if (name == "basic") return MovingAI::basic;
+    if (name == "player_controlled") return MovingAI::player_controlled;
+    return MovingAI::none;
 }
 
-MobShootingAI mob_ai::getShootingAI(const std::string& name) {
-    if (name == "basic") return MobShootingAI::basic;
-    if (name == "player_controlled") return MobShootingAI::player_controlled;
-    return MobShootingAI::none;
+ShootingAI mob_ai::getShootingAI(const std::string& name) {
+    if (name == "none") return ShootingAI::none;
+    if (name == "basic") return ShootingAI::basic;
+    if (name == "player_controlled") return ShootingAI::player_controlled;
+    return ShootingAI::none;
 }

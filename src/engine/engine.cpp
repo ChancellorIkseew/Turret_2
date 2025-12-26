@@ -25,6 +25,7 @@
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 #include "game/content/presets.hpp"
+#include "game/physics/ai_system.hpp"
 #include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
 
@@ -149,8 +150,10 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
     auto& shells = world.getShells();
 
     auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
-    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID());
-    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID());
+    MotionData mData(MovingAI::basic, 0, PixelCoord(400, 1000));
+    ShootingData sData;
+    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData);
+    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData);
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())
@@ -161,6 +164,7 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
                 // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
                 shells::processShells(shells.getSoa(), mobs.getSoa());
                 mobs::processMobs(mobs.getSoa());
+                ai::updateMobAI(mobs.getSoa(), playerController);
                 // Clean up only after all processing.
                 shells::cleanupShells(shells);
                 mobs::cleanupMobs(mobs);
