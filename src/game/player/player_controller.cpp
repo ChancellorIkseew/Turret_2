@@ -1,9 +1,8 @@
 #include "player_controller.hpp"
 //
-#include <cmath>
 #include "camera.hpp"
-#include "engine/engine.hpp"
 #include "engine/coords/transforms.hpp"
+#include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/physics/team/team.hpp"
@@ -20,9 +19,7 @@ void PlayerController::mine() {
 
 }
 
-void PlayerController::move(const Input& input, Camera& camera, const float tickOfset) {
-    if (guiActive)
-        return;
+void PlayerController::move(const Input& input, Camera& camera, const MobManager& mobs, const float tickOfset) {
     PixelCoord delta(0.0f, 0.0f);
 
     if (input.active(Move_up))
@@ -40,47 +37,56 @@ void PlayerController::move(const Input& input, Camera& camera, const float tick
         camera.moveByMouse(input);
     }
     else if (state == State::control_mob) {
-        //camera.setPosition(targetedMob->position + targetedMob->velocity * tickOfset);
+        const size_t index = mobs.getSoaIndexByMobID(targetMobID);
+        camera.setPosition(mobs.getSoa().position[index] + mobs.getSoa().velocity[index] * tickOfset);
     }
     camera.scale(input);
 }
 
-void PlayerController::update(Engine& engine, const float tickOfset) {
+void PlayerController::update(Engine& engine, MobManager& mobs, const float tickOfset) {
     const Input& input = engine.getMainWindow().getInput();
     Camera& camera = engine.getCamera();
     const GUI& gui = engine.getGUI();
 
-    guiActive = gui.hasOverlaped() || !gui.isMouseFree();
-    move(engine.getMainWindow().getInput(), camera, tickOfset);
+    if (gui.hasOverlaped() || !gui.isMouseFree())
+        return;
+    move(engine.getMainWindow().getInput(), camera, mobs, tickOfset);
     shoot(input, camera);
     mine();
-    captureMob(input, camera);
+    captureMob(input, camera, mobs);
 }
 
-void PlayerController::captureMob(const Input& input, const Camera& camera) {
-    if (!input.jactive(Control_unit))
+void PlayerController::captureMob(const Input& input, const Camera& camera, MobManager& mobs) {
+    if (state == State::no_control || !input.jactive(Control_unit))
         return;
-    /*
-    for (const auto& mob : playerTeam->getMobs()) {
-        if (t1::areCloser(camera.fromMapToScreen(mob.position), input.getMouseCoord(), 20.f))
-            return setTarget(mob);
-    }*/
-    resetTarget();
+    const auto& soa = mobs.getSoa();
+    const size_t mobCount = soa.position.size();
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (soa.teamID[i] != playerTeam->getID())
+            continue;
+        if (t1::areCloser(camera.fromMapToScreen(soa.position[i]), input.getMouseCoord(), 20.f))
+            return setTarget(mobs, soa.id[i]);     
+    }
+    resetTarget(mobs);
 }
 
-void PlayerController::setTarget(const Mob& mob) {
-    resetTarget();
-    targetedMob = const_cast<Mob*>(&mob);
-    //targetedMob->movingAI = std::make_unique<PlayerControlledMoving>(*this);
-    //targetedMob->shootingAI = std::make_unique<PlayerControlledShooting>(*this);
+void PlayerController::setTarget(MobManager& mobs, const MobID mobID) {
+    resetTarget(mobs); // Reset current target before set new.
+    if (mobID == IDManager<MobID>::INVALID_ID)
+        return;
+    const size_t index = mobs.getSoaIndexByMobID(mobID);
+    mobs.getSoa().motionData[index].aiType = MovingAI::player_controlled;
+    mobs.getSoa().shootingData[index].aiType = ShootingAI::player_controlled;
+    targetMobID = mobID;
     state = State::control_mob;
 }
 
-void PlayerController::resetTarget() {
-    if (!targetedMob)
+void PlayerController::resetTarget(MobManager& mobs) {
+    if (targetMobID == IDManager<MobID>::INVALID_ID)
         return;
-    //targetedMob->movingAI = std::make_unique<BasicMovingAI>();
-    //targetedMob->shootingAI = std::make_unique<BasicShootingAI>();
-    targetedMob = nullptr;
+    const size_t index = mobs.getSoaIndexByMobID(targetMobID);
+    mobs.getSoa().motionData[index].aiType = mobs.getSoa().preset[index]->defaultMovingAI;
+    mobs.getSoa().shootingData[index].aiType = mobs.getSoa().preset[index]->defaultShootingAI;
+    targetMobID = IDManager<MobID>::INVALID_ID;
     state = State::control_camera;
 }

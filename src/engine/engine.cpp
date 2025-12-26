@@ -127,7 +127,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
                 tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
             else
                 tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
-            playerController.update(*this, tickOfset);
+            playerController.update(*this, world->getMobs(), tickOfset);
             worldDrawer.draw(camera, *world, tickOfset);
             Events::reset(); // for editor
             scriptsHandler.execute();
@@ -142,10 +142,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController) {
     Team* playerTeam = world.getTeams().addTeam(U"player");
-    //playerTeam->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
-    //playerTeam->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
     playerController.setPlayerTeam(playerTeam);
-    //playerController.setTarget(playerTeam->getMobs().front());
     auto& mobs = world.getMobs();
     auto& shells = world.getShells();
 
