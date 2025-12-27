@@ -3,8 +3,8 @@ texture=shuttle
 origin=13.5|13.5
 size=27|27
 #logic
-max_speed=8.0
+speed=8.0
 hitbox_radius=10.5
-max_health=20
+health=20
 moving_ai=basic
 shooting_ai=basic

@@ -12,8 +12,7 @@ class Team;
 class PlayerController {
     enum class State : uint8_t {
         control_camera,
-        control_mob,
-        no_control
+        control_mob
     };
 
     State state = State::control_camera;

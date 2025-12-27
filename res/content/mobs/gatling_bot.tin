@@ -3,8 +3,8 @@ texture=gatling_bot
 origin=11.5|9.0
 size=23|18
 #logic
-max_speed=1.0
+speed=1.0
 hitbox_radius=10.0
-max_health=50
+health=50
 moving_ai=basic
 shooting_ai=basic

@@ -17,9 +17,9 @@ static auto createMobPreset(const tin::Data& data) {
         data.getPixelCoord("size").value()
     );
     return csp::make_centralized<MobPreset>(
-        data.getFloat("max_speed").value(),
+        data.getFloat("speed").value(),
         data.getFloat("hitbox_radius").value(),
-        data.getInt64("max_health").value(),
+        data.getInt64("health").value(),
         mob_ai::getMovingAI(data.getString("moving_ai").value()),
         mob_ai::getShootingAI(data.getString("shooting_ai").value()),
         visual

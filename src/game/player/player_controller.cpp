@@ -36,7 +36,7 @@ void PlayerController::move(const Input& input, Camera& camera, const MobManager
         camera.move(delta);
         camera.moveByMouse(input);
     }
-    else if (state == State::control_mob) {
+    else /*State::control_mob*/ {
         const size_t index = mobs.getSoaIndexByMobID(targetMobID);
         camera.setPosition(mobs.getSoa().position[index] + mobs.getSoa().velocity[index] * tickOfset);
     }
@@ -44,12 +44,11 @@ void PlayerController::move(const Input& input, Camera& camera, const MobManager
 }
 
 void PlayerController::update(Engine& engine, MobManager& mobs, const float tickOfset) {
+    if (engine.getGUI().hasOverlaped() || !engine.getGUI().isMouseFree())
+        return;
     const Input& input = engine.getMainWindow().getInput();
     Camera& camera = engine.getCamera();
-    const GUI& gui = engine.getGUI();
 
-    if (gui.hasOverlaped() || !gui.isMouseFree())
-        return;
     move(engine.getMainWindow().getInput(), camera, mobs, tickOfset);
     shoot(input, camera);
     mine();
@@ -57,7 +56,7 @@ void PlayerController::update(Engine& engine, MobManager& mobs, const float tick
 }
 
 void PlayerController::captureMob(const Input& input, const Camera& camera, MobManager& mobs) {
-    if (state == State::no_control || !input.jactive(Control_unit))
+    if (!input.jactive(Control_unit))
         return;
     const auto& soa = mobs.getSoa();
     const size_t mobCount = soa.position.size();
