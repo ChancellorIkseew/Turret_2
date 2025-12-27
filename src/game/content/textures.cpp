@@ -4,10 +4,12 @@
 #include "engine/render/atlas.hpp"
 #include "engine/render/text.hpp"
 #include "indexes.hpp"
+#include "presets.hpp"
 
 void content::load() {
     loadTextures();
     Indexes::load();
+    Presets::load();
 }
 
 void content::loadTextures() {

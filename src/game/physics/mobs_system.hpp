@@ -1,11 +1,11 @@
 #pragma once
-#include <list>
 
-struct Mob;
+struct MobSoA;
 class Camera;
-class TeamsPool;
+class MobManager;
 
 namespace mobs {
-    void processMobs(std::list<Mob>& mobs, TeamsPool& teams);
-    void drawMobs(std::list<Mob>& mobs, const Camera& camera, const float tickOfset);
+    void processMobs(MobSoA& soa);
+    void cleanupMobs(MobManager& manager);
+    void drawMobs(const MobSoA& soa, const Camera& camera, const float tickOfset);
 }

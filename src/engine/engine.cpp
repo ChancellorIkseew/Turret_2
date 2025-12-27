@@ -15,7 +15,6 @@
 #include "game/script_libs/script_libs.hpp"
 #include "game/player/camera.hpp"
 #include "game/world_drawer/world_drawer.hpp"
-#include "game/presets/mob_presets.hpp"
 
 #include "game/player/player_controller.hpp"
 #include "game/world_saver/world_saver.hpp"
@@ -25,9 +24,10 @@
 #include "engine/settings/settings.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
-//
-#include "game/physics/mob_ai.hpp"
-#include "game/physics/turret_types.hpp"
+#include "game/content/presets.hpp"
+#include "game/physics/ai_system.hpp"
+#include "game/physics/mobs_system.hpp"
+#include "game/physics/shells_system.hpp"
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
@@ -127,25 +127,30 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
                 tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
             else
                 tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
-            playerController.update(*this, tickOfset);
+            playerController.update(*this, world->getMobs(), tickOfset);
             worldDrawer.draw(camera, *world, tickOfset);
             Events::reset(); // for editor
+            scriptsHandler.execute();
         }
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
         gui->draw();
         gui->callback();
         mainWindow.render();
-        scriptsHandler.execute();
     }
 }
 
 void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController) {
     Team* playerTeam = world.getTeams().addTeam(U"player");
-    playerTeam->spawnMob(cannonBoss, PixelCoord(64, 64), 0.0f);
-    playerTeam->getMobs().begin()->turret = std::make_unique<CannonTurret>(CTPreset);
     playerController.setPlayerTeam(playerTeam);
-    playerController.setTarget(playerTeam->getMobs().front());
+    auto& mobs = world.getMobs();
+    auto& shells = world.getShells();
+
+    auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
+    MotionData mData(MovingAI::basic, 0, PixelCoord(400, 1000));
+    ShootingData sData;
+    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData);
+    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData);
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())
@@ -153,9 +158,13 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
         else {
             {
                 std::lock_guard<std::mutex> guard(worldMutex);
-                for (auto& [teamID, team] : world.getTeams()) {
-                    team->interact(world);
-                }
+                // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
+                shells::processShells(shells.getSoa(), mobs.getSoa());
+                mobs::processMobs(mobs.getSoa());
+                ai::updateMobAI(mobs.getSoa(), playerController);
+                // Clean up only after all processing.
+                shells::cleanupShells(shells);
+                mobs::cleanupMobs(mobs);
                 currentTickStart = mainWindow.getTime();
             }
             util::sleep(48);

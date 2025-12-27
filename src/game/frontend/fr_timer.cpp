@@ -4,23 +4,27 @@
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/label.hpp"
+#include "game/world/world.hpp"
 
 constexpr PixelCoord BTN_SIZE(200.0f, 50.0f);
 
 class FrTimer : public Container {
     Engine& engine;
     Label* time;
+    Label* mobCount;
 public:
     ~FrTimer() final = default;
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
         addNode(new Button(BTN_SIZE, U"Next wave"));
         time = addNode(new Label(U"", false));
+        mobCount = addNode(new Label(U"", false));
         arrange();
     }
 
     void callback(const Input& input) final {
         Container::callback(input);
         time->setText(utf8::to_u32string(engine.getMainWindow().getTime()));
+        mobCount->setText(utf8::to_u32string(engine.getWorld().getMobs().getSoa().id.size()));
     }
 };
 

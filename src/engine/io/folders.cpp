@@ -3,8 +3,12 @@
 #include "engine/debug/logger.hpp"
 
 namespace fs = std::filesystem;
+constexpr std::string_view FS_EXCEPTION = " std::filesystem exception : ";
 static debug::Logger logger("io_folders");
 
+std::string io::folders::trimExtensions(const std::string& filename) {
+    return filename.substr(0, filename.find_first_of('.'));
+}
 bool io::folders::isPathValid(const fs::path& path) noexcept {
     return !path.empty() && path.string().find_first_of(" \t\n\r\f\v\"*?<>|") == std::string::npos;
 }
@@ -32,7 +36,7 @@ bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
         return true;
     }
     catch (const fs::filesystem_error& exception) {
-        logger.error() << "Failed to create directory: std::filesystem exception: " << exception.what();
+        logger.error() << "Failed to create directory:" << path << FS_EXCEPTION << exception.what();
         return false;
     }
 }
@@ -62,6 +66,6 @@ void io::folders::deleteFolder(const std::filesystem::path& path) {
         logger.info() << "Deleted directory: " << path;
     }
     catch (const fs::filesystem_error& exception) {
-        logger.error() << "Failed to delete directory: " << path << "std::filesystem exception : " << exception.what();
+        logger.error() << "Failed to delete directory: " << path << FS_EXCEPTION << exception.what();
     }
 }

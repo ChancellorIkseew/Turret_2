@@ -15,7 +15,7 @@ public:
 
     void draw(const Camera& camera, const World& world, const float tickOfset) {
         mapDrawer.draw(camera, world.getMap());
-        entitiesDrawer.draw(camera, world.getTeams(), tickOfset);
+        entitiesDrawer.draw(camera, world.getMobs().getSoa(), world.getShells().getSoa(), tickOfset);
         // TODO: weatherDrawer.draw();
     }
 };

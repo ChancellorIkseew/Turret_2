@@ -1,0 +1,10 @@
+#visual
+texture=shuttle
+origin=13.5|13.5
+size=27|27
+#logic
+speed=8.0
+hitbox_radius=10.5
+health=20
+moving_ai=basic
+shooting_ai=basic

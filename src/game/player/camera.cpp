@@ -63,25 +63,17 @@ void Camera::updateMapRegion(const PixelCoord windowSize) {
     buildingsStartTile = startTile - MAX_MAP_STRUCTURE_SIZE;
     // Correction is needed to correct big_buildings drawing.
 
-    if (startTile.x < 0)
-        startTile.x = 0;
-    if (startTile.y < 0)
-        startTile.y = 0;
-
-    if (buildingsStartTile.x < 0)
-        buildingsStartTile.x = 0;
-    if (buildingsStartTile.y < 0)
-        buildingsStartTile.y = 0;
-
-    if (endTile.x > tileMapSize.x)
-        endTile.x = tileMapSize.x;
-    if (endTile.y > tileMapSize.y)
-        endTile.y = tileMapSize.y;
+    startTile.x = std::max(startTile.x, 0);
+    startTile.y = std::max(startTile.y, 0);
+    buildingsStartTile.x = std::max(buildingsStartTile.x, 0);
+    buildingsStartTile.y = std::max(buildingsStartTile.y, 0);
+    endTile.x = std::min(endTile.x, tileMapSize.x);
+    endTile.y = std::min(endTile.y, tileMapSize.y);
 }
 
-PixelCoord Camera::fromMapToScreen(const PixelCoord mapCoord) const {
+PixelCoord Camera::fromMapToScreen(const PixelCoord mapCoord) const noexcept {
     return (mapCoord - cameraUpperLeftCorner) * mapScale;
 }
-PixelCoord Camera::fromScreenToMap(const PixelCoord screenCoord) const {
+PixelCoord Camera::fromScreenToMap(const PixelCoord screenCoord) const noexcept {
     return cameraUpperLeftCorner + screenCoord / mapScale;
 }

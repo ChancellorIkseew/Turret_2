@@ -1,10 +1,11 @@
 #pragma once
 
+struct MobSoA;
+struct ShellSoA;
 class Camera;
-class TeamsPool;
 
 class EntitiesDrawer {
 public:
     EntitiesDrawer() = default;
-    void draw(const Camera& camera, const TeamsPool& teams, const float tickOfset);
+    void draw(const Camera& camera, const MobSoA& mobs, const ShellSoA& shells, const float tickOfset);
 };

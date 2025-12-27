@@ -1,0 +1,10 @@
+#visual
+texture=gatling_bot
+origin=11.5|9.0
+size=23|18
+#logic
+speed=1.0
+hitbox_radius=10.0
+health=50
+moving_ai=basic
+shooting_ai=basic

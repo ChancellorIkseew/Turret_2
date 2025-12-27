@@ -1,7 +1,6 @@
 #pragma once
 #include "config.hpp"
-#include "engine/coords/pixel_coord.hpp"
-#include "engine/coords/tile_coord.hpp"
+#include "engine/coords/transforms.hpp"
 
 class Input;
 
@@ -24,18 +23,17 @@ public:
     void setPosition(const PixelCoord position) { cameraCentre = position; }
 
     ///@brief applies correction for building max size
-    TileCoord getBuildingsStartTile() const { return buildingsStartTile; }
-    TileCoord getStartTile() const { return startTile; }
-    TileCoord getEndTile() const { return endTile; }
-    PixelCoord getPosition() const { return cameraUpperLeftCorner; }
-    float getMapScale() const { return mapScale; }
+    TileCoord getBuildingsStartTile() const noexcept { return buildingsStartTile; }
+    TileCoord getStartTile() const noexcept { return startTile; }
+    TileCoord getEndTile() const noexcept { return endTile; }
+    PixelCoord getPosition() const noexcept { return cameraUpperLeftCorner; }
+    float getMapScale() const noexcept { return mapScale; }
 
-    PixelCoord fromMapToScreen(const PixelCoord mapCoord) const;
-    PixelCoord fromScreenToMap(const PixelCoord screenCoord) const;
+    PixelCoord fromMapToScreen(const PixelCoord mapCoord) const noexcept;
+    PixelCoord fromScreenToMap(const PixelCoord screenCoord) const noexcept;
 
     t1_finline bool contains(const TileCoord tile) const noexcept {
-        return tile.x >= startTile.x && tile.x <= endTile.x &&
-               tile.y >= startTile.y && tile.y <= endTile.y;
+        return t1::contains(startTile, endTile, tile);
     }
 private:
     void avoidEscapeFromMap();

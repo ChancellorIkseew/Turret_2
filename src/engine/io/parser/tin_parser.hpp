@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include "validator.hpp"
+#include "engine/coords/pixel_coord.hpp"
 #include "engine/coords/tile_coord.hpp"
 #include "engine/io/utf8/utf8.hpp"
 
@@ -72,6 +73,10 @@ namespace tin {
             if (!data.contains(key)) return std::nullopt;
             return validator::toTileCoord(data.at(key));
         }
+        std::optional<PixelCoord> getPixelCoord(const std::string& key) const {
+            if (!data.contains(key)) return std::nullopt;
+            return validator::toPixelCoord(data.at(key));
+        }
 
         std::vector<std::string> getList(const std::string& key) const {
             std::vector<std::string> list;
@@ -93,6 +98,7 @@ namespace tin {
         auto end()    noexcept { return data.end(); }
     };
 
-    void write(std::filesystem::path path, const Data& data);
-    Data read(std::filesystem::path path);
+    enum class Log : uint8_t { only_error, error_and_success };
+    void write(std::filesystem::path path, const Data& data, const Log log = Log::error_and_success);
+    Data read(std::filesystem::path path, const Log log = Log::error_and_success);
 }

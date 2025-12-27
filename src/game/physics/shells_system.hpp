@@ -1,11 +1,12 @@
 #pragma once
-#include <list>
 
-struct Shell;
+struct MobSoA;
+struct ShellSoA;
 class Camera;
-class TeamsPool;
+class ShellManager;
 
 namespace shells {
-    void processShells(std::list<Shell>& shells, TeamsPool& teams);
-    void drawShells(std::list<Shell>& shells, const Camera& camera, const float tickOfset);
+    void processShells(ShellSoA& soa, MobSoA& mobs);
+    void cleanupShells(ShellManager& manager);
+    void drawShells(const ShellSoA& soa, const Camera& camera, const float tickOfset);
 }
