@@ -47,6 +47,7 @@ MobID MobManager::addMob(
 
     const size_t last = soa.id.size() - 1;
     soaIndexByMobID[last] = mobID;
+    ++soa.mobCount;
     return mobID;
 }
 
@@ -55,6 +56,7 @@ void MobManager::removeMob(const size_t index) {
     soaIndexByMobID[index] = soaIndexByMobID[last];
     soaIndexByMobID[last] = INVALID_MOB_ID;
     idManager.setFree(soa.id[index]);
+    --soa.mobCount;
 
     if (index != last) {
         soa.id[index] = std::move(soa.id[last]);

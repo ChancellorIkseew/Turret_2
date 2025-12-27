@@ -4,22 +4,20 @@
 #include "game/physics/mob_manager.hpp"
 #include "game/physics/shell_manager.hpp"
 
-static inline void countShellsLife(ShellSoA& soa) {
+static inline void reduceShellsLifeTime(ShellSoA& soa) {
     for (auto& time : soa.restLifeTime) {
         --time;
     }
 }
 
-static inline void moveShells(ShellSoA& soa) {
-    const size_t shellCount = soa.position.size();
+static inline void moveShells(ShellSoA& soa, const size_t shellCount) {
     for (size_t i = 0; i < shellCount; ++i) {
         soa.position[i] = soa.position[i] + soa.velocity[i];
     }
 }
 
-static inline void hitMobs(ShellSoA& shells, MobSoA& mobs) {
-    const size_t mobCount = mobs.teamID.size();
-    const size_t shellCount = shells.teamID.size();
+static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCount) {
+    const size_t mobCount = mobs.mobCount;
     for (size_t mob = 0; mob < mobCount; ++mob) {
         for (size_t shell = 0; shell < shellCount; ++shell) {
             if (shells.restDamage[shell] < 1)
@@ -37,15 +35,16 @@ static inline void hitMobs(ShellSoA& shells, MobSoA& mobs) {
 }
 
 void shells::processShells(ShellSoA& shells, MobSoA& mobs) {
-    countShellsLife(shells);
-    moveShells(shells);
-    hitMobs(shells, mobs);
+    const size_t shellCount = shells.shellCount;
+    reduceShellsLifeTime(shells);
+    moveShells(shells, shellCount);
+    hitMobs(shells, mobs, shellCount);
 }
 
 void shells::cleanupShells(ShellManager& manager/*, Explosions& explosions*/) {
     const auto& soa = manager.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
-    for (size_t i = soa.position.size(); i > 0; --i) {
+    for (size_t i = soa.shellCount; i > 0; --i) {
         size_t index = i - 1;
         if (soa.restLifeTime[index] > 0 && soa.restDamage[index] > 0)
             continue;
@@ -57,7 +56,8 @@ void shells::cleanupShells(ShellManager& manager/*, Explosions& explosions*/) {
 
 void shells::drawShells(const ShellSoA& soa, const Camera& camera, const float tickOfset) {
     Sprite sprite;
-    for (size_t i = 0; i < soa.position.size(); ++i) {
+    const size_t shellCount = soa.shellCount;
+    for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = soa.preset[i]->visual;

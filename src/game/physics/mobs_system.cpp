@@ -10,8 +10,8 @@ static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord ve
     soa.hitbox[index].move(vector);
 }
 
-static inline void resolveCollisions(MobSoA& soa, const size_t current, const size_t end) {
-    for (size_t other = current + 1; other < end; ++other) {
+static inline void resolveCollisions(MobSoA& soa, const size_t current, const size_t mobCount) {
+    for (size_t other = current + 1; other < mobCount; ++other) {
         if (!soa.hitbox[current].intersects(soa.hitbox[other])) continue;
 
         const PixelCoord overlap = soa.hitbox[current].overlap(soa.hitbox[other]);
@@ -36,33 +36,24 @@ static inline void resolveCollisions(MobSoA& soa, const size_t current, const si
     }
 }
 
-static inline void moveByAI(MobSoA& soa) {
-    /*if (false)
-        return;
-    //updateAI
-    PixelCoord AIVector; //getFromAI
-    AngleRad AIAngle = 0; //getFromAI
-    soa.velocity[index] = AIVector * soa.preset[index]->maxSpeed;
-    soa.angle[index] = AIAngle;
-    move(soa, index, soa.velocity[index]);*/
-    const size_t mobCount = soa.position.size();
+static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
     for (size_t i = 0; i < mobCount; ++i) {
         move(soa, i, soa.velocity[i]);
     }
 }
 
 void mobs::processMobs(MobSoA& soa) {
-    moveByAI(soa);
-    size_t end = soa.id.size();
-    for (size_t i = 0; i < end; ++i) {
-        resolveCollisions(soa, i, end);
+    const size_t mobCount = soa.mobCount;
+    moveByAI(soa, mobCount);
+    for (size_t i = 0; i < mobCount; ++i) {
+        resolveCollisions(soa, i, mobCount);
     }
 }
 
 void mobs::cleanupMobs(MobManager& manager/*, Explosions& explosions*/) {
     const auto& soa = manager.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
-    for (size_t i = soa.position.size(); i > 0; --i) {
+    for (size_t i = soa.mobCount; i > 0; --i) {
         size_t index = i - 1;
         if (soa.health[index] > 0)
             continue;
@@ -92,7 +83,8 @@ void mobs::drawMobs(const MobSoA& soa, const Camera& camera, const float tickOfs
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(soa, camera);
     Sprite sprite;
-    for (size_t i = 0; i < soa.id.size(); ++i) {
+    const size_t mobCount = soa.mobCount;
+    for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = soa.preset[i]->visual;

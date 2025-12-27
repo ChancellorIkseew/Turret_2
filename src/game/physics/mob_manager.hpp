@@ -1,6 +1,7 @@
 #pragma once
 #include <CSP/centralized_ptr.hpp>
 #include <array>
+#include <cassert>
 #include <vector>
 #include "engine/render/sprite.hpp"
 #include "id_manager.hpp"
@@ -35,6 +36,7 @@ struct MobSoA {
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
     std::vector<ShootingData> shootingData;
+    size_t mobCount = 0;
 };
 
 class MobManager {
@@ -46,9 +48,12 @@ public:
     MobManager(const size_t capacity) { fillIndexes(); reserve(capacity); }
     MobManager() { fillIndexes(); }
     //
-    t1_finline size_t getSoaIndexByMobID(const MobID mobID) const noexcept { return soaIndexByMobID[mobID]; }
     t1_finline const MobSoA& getSoa() const noexcept { return soa; }
     t1_finline MobSoA& getSoa() noexcept { return soa; }
+    t1_finline size_t getSoaIndexByMobID(const MobID mobID) const noexcept {
+        assert(mobID != IDManager<MobID>::INVALID_ID);
+        return soaIndexByMobID[mobID];
+    }
     //
     void reserve(const size_t capacity);
     void removeMob(const size_t index);

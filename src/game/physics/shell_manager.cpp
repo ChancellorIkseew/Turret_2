@@ -26,6 +26,7 @@ void ShellManager::addShell(
     soa.restLifeTime.push_back(restLifeTime);
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
+    ++soa.shellCount;
 }
 
 void ShellManager::removeShell(const size_t index) {
@@ -48,4 +49,5 @@ void ShellManager::removeShell(const size_t index) {
     soa.restLifeTime.pop_back();
     soa.teamID.pop_back();
     soa.preset.pop_back();
+    --soa.shellCount;
 }

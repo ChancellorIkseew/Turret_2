@@ -28,6 +28,7 @@ struct ShellSoA {
     std::vector<ShellTickCount> restLifeTime;
     std::vector<csp::centralized_ptr<ShellPreset>> preset;
     std::vector<TeamID> teamID;
+    size_t shellCount = 0;
 };
 
 class ShellManager {
