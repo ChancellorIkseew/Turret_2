@@ -57,4 +57,4 @@ if __name__ == "__main__":
     
     print(f"Starting processing in: {target_dir}")
     process_directory(target_dir)
-    print("processing end")
+    print("Processing end")
