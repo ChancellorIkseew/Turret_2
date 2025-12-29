@@ -255,6 +255,9 @@
     <ClInclude Include="src\game\physics\ai_system.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\physics\turrets_system.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">
@@ -480,6 +483,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\physics\moving_ai_system.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\physics\turrets_system.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

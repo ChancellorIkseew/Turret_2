@@ -15,7 +15,7 @@ void ShellManager::addShell(
     const PixelCoord position,
     const AngleRad angle,
     const Health restDamage,
-    const ShellTickCount restLifeTime,
+    const TickCount restLifeTime,
     const TeamID teamID) {
     const PixelCoord velocity = PixelCoord(sinf(angle), cosf(angle)) * preset->speed;
 

@@ -85,6 +85,7 @@
     <ClInclude Include="src\game\physics\shells_system.hpp" />
     <ClInclude Include="src\game\physics\team\team.hpp" />
     <ClInclude Include="src\game\physics\team\teams_pool.hpp" />
+    <ClInclude Include="src\game\physics\turrets_system.hpp" />
     <ClInclude Include="src\game\player\camera.hpp" />
     <ClInclude Include="src\game\player\player_controller.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="src\game\physics\shell_manager.cpp" />
     <ClCompile Include="src\game\physics\shells_system.cpp" />
     <ClCompile Include="src\game\physics\team\team.cpp" />
+    <ClCompile Include="src\game\physics\turrets_system.cpp" />
     <ClCompile Include="src\game\player\camera.cpp" />
     <ClCompile Include="src\game\player\player_controller.cpp" />
     <ClCompile Include="src\game\script_libs\lib_input.cpp" />
