@@ -51,6 +51,7 @@ struct MobSoA {
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
     std::vector<TickCount> restReloadTime;
+    std::vector<uint8_t> currentBarrel;
     size_t mobCount = 0;
 };
 

@@ -2,6 +2,7 @@
 //
 #include "mob_manager.hpp"
 #include "shell_manager.hpp"
+#include <iostream>
 
 using ItemType = uint16_t;
 struct ItemStack {
@@ -22,11 +23,18 @@ static inline void shoot(MobSoA& soa, ShellManager& shells, const size_t mobCoun
             continue;
         soa.restReloadTime[i] = soa.preset[i]->turret->reload;
         const auto& preset = soa.preset[i]->turret->shell;
-        PixelCoord position = soa.position[i];
         const AngleRad angle = soa.angle[i];
+        const PixelCoord localMuzzle = soa.preset[i]->turret->barrels[soa.currentBarrel[i]];
+        PixelCoord position = soa.position[i];
 
+        ++soa.currentBarrel[i];
+        if (soa.currentBarrel[i] >= soa.preset[i]->turret->barrelsCount)
+            soa.currentBarrel[i] = 0;
 
-        position = position + soa.preset[i]->turret->barrels[0];
+        const float sin = sinf(angle);
+        const float cos = cosf(angle);
+        position.x +=  localMuzzle.x * cos + localMuzzle.y * sin;
+        position.y += -localMuzzle.x * sin + localMuzzle.y * cos;
         shells.addShell(preset, position, angle, preset->damage, preset->maxLifeTime, soa.teamID[i]);
     }
 }

@@ -1,9 +1,9 @@
 #visual
 texture=cannoner_bot_turret
-origin=22.5|28.0
+origin=21.5|28.0
 size=43|43
 #logic
 reload=15
 shooting_ai=basic
 shell=cannon_shell
-barrels=10|0,-10|0
+barrels=15|29,-15|29

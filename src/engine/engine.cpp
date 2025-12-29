@@ -152,8 +152,8 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
     ShootingData sData;
     mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData,
         cannonerBot->turret->reload);
-    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData,
-        cannonerBot->turret->reload);
+    //mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData,
+        //cannonerBot->turret->reload);
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())

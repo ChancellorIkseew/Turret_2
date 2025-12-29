@@ -1,6 +1,6 @@
 #visual
 texture=cannoner_bot
-origin=22.5|28.0
+origin=21.5|28.0
 size=43|43
 #logic
 speed=1.0
