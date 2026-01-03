@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL3/SDL.h>
-#include <atomic>
 #include <filesystem>
 #include <string>
 #include "cursor.hpp"
@@ -15,15 +14,15 @@ class MainWindow {
     Cursor cursor;
     Uint32 FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
     bool resized = false, fullscreen = false;
-    std::atomic_bool open = true;
+    bool open = true;
 public:
     MainWindow(const std::string& title);
     ~MainWindow();
     //
-    void close() { open.store(false, std::memory_order_seq_cst); }
+    void close() { open = false; }
     void setFullscreen(const bool flag);
     void setFPS(const Uint32 FPS);
-    bool isOpen() const { return open.load(std::memory_order_relaxed); }
+    bool isOpen() const { return open; }
     bool isFullscreen() const { return fullscreen; }
     bool justResized() const { return resized; }
     Uint32 getFPS() const { return FPS; }

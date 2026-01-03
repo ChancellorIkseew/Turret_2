@@ -3,7 +3,7 @@ texture=cannoner_bot
 origin=21.5|28.0
 size=43|43
 #logic
-speed=1.0
+speed=0.4
 hitbox_radius=17.0
 health=100
 moving_ai=basic

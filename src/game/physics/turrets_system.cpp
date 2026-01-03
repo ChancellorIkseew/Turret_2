@@ -45,7 +45,7 @@ void turrets::processTurrets(MobSoA& soa, ShellManager& shells) {
     shoot(soa, shells, mobCount);
 }
 
-void turrets::drawTurrets(const MobSoA& soa, const Camera& camera, const float tickOfset) {
+void turrets::drawTurrets(const MobSoA& soa, const Camera& camera) {
     Sprite sprite;
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
@@ -55,7 +55,7 @@ void turrets::drawTurrets(const MobSoA& soa, const Camera& camera, const float t
         sprite.setTexture(*visual.texture);
         sprite.setOrigin(visual.origin);
         sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i] + soa.velocity[i] * tickOfset);
+        sprite.setPosition(soa.position[i]);
         sprite.setRotationRad(soa.turretAngle[i]);
         sprite.draw();
     }

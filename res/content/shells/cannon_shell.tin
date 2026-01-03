@@ -3,7 +3,7 @@ texture=cannon_shell
 origin=1.5|3.0
 size=3.0|7.0
 #logic
-speed=3.0
+speed=1.5
 damage=15
 life_time=180
 explosion_damage=10

@@ -8,18 +8,15 @@
 #include "game/physics/team/team.hpp"
 
 void PlayerController::shoot(const Input& input, const Camera& camera) {
-    const auto mouseCoord = camera.fromScreenToMap(input.getMouseCoord());
-    aimCoord.store(mouseCoord, std::memory_order_relaxed);
-
-    const bool flag = input.active(Shoot);
-    shooting.store(flag, std::memory_order_relaxed);
+    aimCoord = camera.fromScreenToMap(input.getMouseCoord());
+    shooting = input.active(Shoot);
 }
 
 void PlayerController::mine() {
 
 }
 
-void PlayerController::move(const Input& input, Camera& camera, const MobManager& mobs, const float tickOfset) {
+void PlayerController::move(const Input& input, Camera& camera, const MobManager& mobs) {
     PixelCoord delta(0.0f, 0.0f);
 
     if (input.active(Move_up))
@@ -31,25 +28,25 @@ void PlayerController::move(const Input& input, Camera& camera, const MobManager
     if (input.active(Move_right))
         delta.x += 1.0f;
 
-    motionVector.store(delta, std::memory_order_relaxed);
+    motionVector = delta;
     if (state == State::control_camera) {
         camera.move(delta);
         camera.moveByMouse(input);
     }
     else /*State::control_mob*/ {
         const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-        camera.setPosition(mobs.getSoa().position[index] + mobs.getSoa().velocity[index] * tickOfset);
+        camera.setPosition(mobs.getSoa().position[index]);
     }
     camera.scale(input);
 }
 
-void PlayerController::update(Engine& engine, MobManager& mobs, const float tickOfset) {
+void PlayerController::update(Engine& engine, MobManager& mobs) {
     if (engine.getGUI().hasOverlaped() || !engine.getGUI().isMouseFree())
         return;
     const Input& input = engine.getMainWindow().getInput();
     Camera& camera = engine.getCamera();
 
-    move(engine.getMainWindow().getInput(), camera, mobs, tickOfset);
+    move(engine.getMainWindow().getInput(), camera, mobs);
     shoot(input, camera);
     mine();
     captureMob(input, camera, mobs);

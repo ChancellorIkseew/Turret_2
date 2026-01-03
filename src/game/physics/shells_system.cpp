@@ -54,7 +54,7 @@ void shells::cleanupShells(ShellManager& manager/*, Explosions& explosions*/) {
     }
 }
 
-void shells::drawShells(const ShellSoA& soa, const Camera& camera, const float tickOfset) {
+void shells::drawShells(const ShellSoA& soa, const Camera& camera) {
     Sprite sprite;
     const size_t shellCount = soa.shellCount;
     for (size_t i = 0; i < shellCount; ++i) {
@@ -64,7 +64,7 @@ void shells::drawShells(const ShellSoA& soa, const Camera& camera, const float t
         sprite.setTexture(*visual.texture);
         sprite.setOrigin(visual.origin);
         sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i] + soa.velocity[i] * tickOfset);
+        sprite.setPosition(soa.position[i]);
         sprite.setRotationRad(soa.angle[i]);
         sprite.draw();
     }

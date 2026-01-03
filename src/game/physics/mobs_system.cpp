@@ -79,7 +79,7 @@ static void drawHitboxes(const MobSoA& soa, const Camera& camera) {
     }
 }
 
-void mobs::drawMobs(const MobSoA& soa, const Camera& camera, const float tickOfset) {
+void mobs::drawMobs(const MobSoA& soa, const Camera& camera) {
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(soa, camera);
     Sprite sprite;
@@ -91,7 +91,7 @@ void mobs::drawMobs(const MobSoA& soa, const Camera& camera, const float tickOfs
         sprite.setTexture(*visual.texture);
         sprite.setOrigin(visual.origin);
         sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i] + soa.velocity[i] * tickOfset);
+        sprite.setPosition(soa.position[i]);
         sprite.setRotationRad(soa.angle[i]);
         sprite.draw();
     }

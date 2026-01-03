@@ -13,9 +13,9 @@ class WorldDrawer {
 public:
     WorldDrawer() = default;
 
-    void draw(const Camera& camera, const World& world, const float tickOfset) {
+    void draw(const Camera& camera, const World& world) {
         mapDrawer.draw(camera, world.getMap());
-        entitiesDrawer.draw(camera, world.getMobs().getSoa(), world.getShells().getSoa(), tickOfset);
+        entitiesDrawer.draw(camera, world.getMobs().getSoa(), world.getShells().getSoa());
         // TODO: weatherDrawer.draw();
     }
 };

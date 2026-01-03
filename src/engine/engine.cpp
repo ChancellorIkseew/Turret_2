@@ -93,9 +93,6 @@ void Engine::openMainMenu() {
 }
 
 void Engine::createScene(const std::string& folder, WorldProperties& properties) {
-    int tickSpeed = 1;
-    float tickTime = 48.0f;
-    float tickOfset = 0.0f;
     paused = Settings::gameplay.pauseOnWorldOpen;
     std::mutex worldMutex;
     
@@ -114,66 +111,49 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     script_libs::initNewGame(*this);
 
     worldOpen = true;
-    std::jthread simulation([&] { startSimulation(*world, worldMutex, playerController); });
     //TODO: std::jthread network([&] { startNet(); }); 
-    while (mainWindow.isOpen() && isWorldOpen()) {
-        mainWindow.pollEvents();
-        mainWindow.clear();
-        camera.update(mainWindow.getSize());
-        mainWindow.setRenderScale(camera.getMapScale());
-        mainWindow.setRenderTranslation(camera.getPosition());
-        {
-            std::lock_guard<std::mutex> guard(worldMutex);
-            if (isPaused())
-                tickOfset = static_cast<float>(pauseStart - currentTickStart) / tickTime;
-            else
-                tickOfset = static_cast<float>(mainWindow.getTime() - currentTickStart) / tickTime;
-            playerController.update(*this, world->getMobs(), tickOfset);
-            worldDrawer.draw(camera, *world, tickOfset);
-            Events::reset(); // for editor
-            scriptsHandler.execute();
-        }
-        mainWindow.setRenderScale(1.0f);
-        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        gui->draw();
-        gui->callback();
-        mainWindow.render();
-    }
-}
 
-void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController) {
-    Team* playerTeam = world.getTeams().addTeam(U"player");
+    //sim
+    Team* playerTeam = world->getTeams().addTeam(U"player");
     playerController.setPlayerTeam(playerTeam);
-    auto& mobs = world.getMobs();
-    auto& shells = world.getShells();
+    auto& mobs = world->getMobs();
+    auto& shells = world->getShells();
 
     auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
     MotionData mData(MovingAI::basic, 0, PixelCoord(400, 1000));
     ShootingData sData(ShootingAI::basic, false, PixelCoord(0, 0));
     mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
         cannonerBot->turret->reload, 0.f);
-    //mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
-        //cannonerBot->turret->reload, 0.f);
-
+    //
     while (mainWindow.isOpen() && isWorldOpen()) {
-        if (isPaused())
-            util::sleep(1);
-        else {
-            {
-                std::lock_guard<std::mutex> guard(worldMutex);
-                // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
-                shells::processShells(shells.getSoa(), mobs.getSoa());
-                mobs::processMobs(mobs.getSoa());
-                ai::updateMovingAI(mobs.getSoa(), playerController);
-                ai::updateShootingAI(mobs.getSoa(), playerController);
-                turrets::processTurrets(mobs.getSoa(), shells);
-                // Clean up only after all processing.
-                shells::cleanupShells(shells);
-                mobs::cleanupMobs(mobs);
-                currentTickStart = mainWindow.getTime();
-            }
-            util::sleep(48);
+        mainWindow.pollEvents();
+        mainWindow.clear();
+        playerController.update(*this, world->getMobs());
+        camera.update(mainWindow.getSize());
+        mainWindow.setRenderScale(camera.getMapScale());
+        mainWindow.setRenderTranslation(camera.getPosition());
+        //
+        if (!isPaused()) {
+            // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
+            shells::processShells(shells.getSoa(), mobs.getSoa());
+            mobs::processMobs(mobs.getSoa());
+            ai::updateMovingAI(mobs.getSoa(), playerController);
+            ai::updateShootingAI(mobs.getSoa(), playerController);
+            turrets::processTurrets(mobs.getSoa(), shells);
+            // Clean up only after all processing.
+            shells::cleanupShells(shells);
+            mobs::cleanupMobs(mobs);
         }
+        //
+        worldDrawer.draw(camera, *world);
+        Events::reset(); // for editor
+        scriptsHandler.execute();
+        //
+        mainWindow.setRenderScale(1.0f);
+        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
+        gui->draw();
+        gui->callback();
+        mainWindow.render();
     }
 }
 
