@@ -9,11 +9,7 @@ class Input;
 class Team;
 
 class PlayerController {
-    enum class State : uint8_t {
-        control_camera,
-        control_mob
-    };
-
+    enum class State : uint8_t { control_camera, control_mob };
     State state = State::control_camera;
 
     Team* playerTeam = nullptr;
@@ -22,7 +18,7 @@ class PlayerController {
     PixelCoord aimCoord;
     std::atomic_bool shooting = false;
 
-    void move(const Input& input, Camera& camera, const MobManager& mobs);
+    void move(const Input& input, Camera& camera, const MobManager& mobs, const bool isPaused);
     void mine();
     void shoot(const Input& input, const Camera& camera);
 public:

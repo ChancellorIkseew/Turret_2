@@ -16,7 +16,7 @@ void PlayerController::mine() {
 
 }
 
-void PlayerController::move(const Input& input, Camera& camera, const MobManager& mobs) {
+void PlayerController::move(const Input& input, Camera& camera, const MobManager& mobs, const bool isPaused) {
     PixelCoord delta(0.0f, 0.0f);
 
     if (input.active(Move_up))
@@ -29,7 +29,7 @@ void PlayerController::move(const Input& input, Camera& camera, const MobManager
         delta.x += 1.0f;
 
     motionVector = delta;
-    if (state == State::control_camera) {
+    if (state == State::control_camera || isPaused) {
         camera.move(delta);
         camera.moveByMouse(input);
     }
@@ -46,7 +46,7 @@ void PlayerController::update(Engine& engine, MobManager& mobs) {
     const Input& input = engine.getMainWindow().getInput();
     Camera& camera = engine.getCamera();
 
-    move(engine.getMainWindow().getInput(), camera, mobs);
+    move(engine.getMainWindow().getInput(), camera, mobs, engine.isPaused());
     shoot(input, camera);
     mine();
     captureMob(input, camera, mobs);
