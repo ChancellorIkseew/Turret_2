@@ -31,7 +31,7 @@ static inline void updateBasic(MobSoA& soa, const size_t index) {
     }
 }
 
-void ai::updateMobAI(MobSoA& soa, const PlayerController& playerController) {
+void ai::updateMovingAI(MobSoA& soa, const PlayerController& playerController) {
     const size_t mobCount = soa.id.size();
     for (size_t i = 0; i < mobCount; ++i) {
         switch (soa.motionData[i].aiType) {

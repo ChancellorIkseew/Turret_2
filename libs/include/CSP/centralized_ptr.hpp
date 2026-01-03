@@ -10,14 +10,14 @@ START_NAMESPACE_CSP_PRIVATE
 template<class DataType>
 class _CentralizedControlBlock {
     std::function<void()> _freeData;
-    std::atomic_size_t count;
+    std::atomic_size_t _count;
 public:
     DataType* data;
     _CentralizedControlBlock(DataType* data, const std::function<void()>& freeData) :
-        _freeData(freeData), data(data), count(1) { }
+        _freeData(freeData), data(data), _count(1) { }
     ~_CentralizedControlBlock() { reset(); }
-    void increment() { count.fetch_add(1, std::memory_order_relaxed); }
-    bool decrement() { return count.fetch_sub(1, std::memory_order_acq_rel) == 1; }
+    void increment() { _count.fetch_add(1, std::memory_order_relaxed); }
+    bool decrement() { return _count.fetch_sub(1, std::memory_order_acq_rel) == 1; }
     void reset() {
         if (data) {
             if (_freeData) {
@@ -34,14 +34,14 @@ END_NAMESPACE_CSP_PRIVATE
 
 template<class DataType>
 class centralized_ptr {
-    template<class T> friend class centralized_ptr;
+    template<class OtherDataType> friend class centralized_ptr;
     priv::_CentralizedControlBlock<DataType>* _controlBlock = nullptr;
 public:
     centralized_ptr() = default;
-    template<class OtherType>
-    centralized_ptr(const centralized_ptr<OtherType>& other) noexcept :
+    template<class OtherDataType>
+    centralized_ptr(const centralized_ptr<OtherDataType>& other) noexcept :
         _controlBlock(reinterpret_cast<priv::_CentralizedControlBlock<DataType>*>(other._controlBlock)) {
-        static_assert(std::is_convertible_v<OtherType*, DataType*>, "Inconvertible types.");
+        static_assert(std::is_convertible_v<OtherDataType*, DataType*>, "Inconvertible types.");
         _increment();
     }
     centralized_ptr(DataType* data, const std::function<void()>& freeData = nullptr) :

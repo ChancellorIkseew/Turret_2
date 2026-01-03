@@ -7,6 +7,7 @@
 #include "id_manager.hpp"
 #include "mob_ai.hpp"
 #include "physics_base.hpp"
+#include "shell_manager.hpp"
 
 using MobID = uint16_t;
 
@@ -16,12 +17,28 @@ struct MobVisualPreset {
     const PixelCoord size;
 };
 
+struct TurretVisualPreset {
+    csp::centralized_ptr<Texture> texture;
+    const PixelCoord origin;
+    const PixelCoord size;
+};
+
+struct TurretPreset {
+    const TickCount reload;
+    const AngleRad rotationSpeed;
+    const size_t barrelsCount;
+    const std::array<PixelCoord, 4> barrels;
+    csp::centralized_ptr<ShellPreset> shell;
+    const TurretVisualPreset visual;
+};
+
 struct MobPreset {
     const float maxSpeed;
     const float hitboxRadius;
     const Health maxHealth;
     const MovingAI defaultMovingAI;
     const ShootingAI defaultShootingAI;
+    csp::centralized_ptr<TurretPreset> turret;
     const MobVisualPreset visual;
 };
 
@@ -36,6 +53,9 @@ struct MobSoA {
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
     std::vector<ShootingData> shootingData;
+    std::vector<TickCount> restReloadTime;
+    std::vector<uint8_t> currentBarrel;
+    std::vector<AngleRad> turretAngle;
     size_t mobCount = 0;
 };
 
@@ -64,5 +84,7 @@ public:
         const Health health,
         const TeamID teamID,
         const MotionData motionData,
-        const ShootingData shootingData);
+        const ShootingData shootingData,
+        const TickCount restReloadTime,
+        const AngleRad turretAngle);
 };

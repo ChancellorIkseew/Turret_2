@@ -28,6 +28,7 @@
 #include "game/physics/ai_system.hpp"
 #include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
+#include "game/physics/turrets_system.hpp"
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
@@ -148,9 +149,11 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
 
     auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
     MotionData mData(MovingAI::basic, 0, PixelCoord(400, 1000));
-    ShootingData sData;
-    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData);
-    mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData);
+    ShootingData sData(ShootingAI::basic, false, PixelCoord(0, 0));
+    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
+        cannonerBot->turret->reload, 0.f);
+    //mobs.addMob(cannonerBot, PixelCoord(110, 110), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
+        //cannonerBot->turret->reload, 0.f);
 
     while (mainWindow.isOpen() && isWorldOpen()) {
         if (isPaused())
@@ -161,7 +164,9 @@ void Engine::startSimulation(World& world, std::mutex& worldMutex, PlayerControl
                 // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
                 shells::processShells(shells.getSoa(), mobs.getSoa());
                 mobs::processMobs(mobs.getSoa());
-                ai::updateMobAI(mobs.getSoa(), playerController);
+                ai::updateMovingAI(mobs.getSoa(), playerController);
+                ai::updateShootingAI(mobs.getSoa(), playerController);
+                turrets::processTurrets(mobs.getSoa(), shells);
                 // Clean up only after all processing.
                 shells::cleanupShells(shells);
                 mobs::cleanupMobs(mobs);

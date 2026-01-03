@@ -4,8 +4,6 @@
 #include "engine/render/sprite.hpp"
 #include "physics_base.hpp"
 
-using ShellTickCount = uint16_t;
-
 struct ShellVisualPreset {
     csp::centralized_ptr<Texture> texture;
     const PixelCoord origin;
@@ -15,7 +13,7 @@ struct ShellVisualPreset {
 struct ShellPreset {
     const float speed;
     const Health damage;
-    const ShellTickCount maxLifeTime;
+    const TickCount maxLifeTime;
     const Explosion explosion;
     const ShellVisualPreset visual;
 };
@@ -25,7 +23,7 @@ struct ShellSoA {
     std::vector<PixelCoord> velocity;
     std::vector<AngleRad> angle;
     std::vector<Health> restDamage;
-    std::vector<ShellTickCount> restLifeTime;
+    std::vector<TickCount> restLifeTime;
     std::vector<csp::centralized_ptr<ShellPreset>> preset;
     std::vector<TeamID> teamID;
     size_t shellCount = 0;
@@ -47,6 +45,6 @@ public:
         const PixelCoord position,
         const AngleRad angle,
         const Health restDamage,
-        const ShellTickCount restLifeTime,
+        const TickCount restLifeTime,
         const TeamID teamID);
 };

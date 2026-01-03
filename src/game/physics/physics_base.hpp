@@ -6,6 +6,7 @@
 using TeamID = uint8_t;
 using Health = int64_t;
 using AngleRad = float;
+using TickCount = uint16_t;
 
 struct Explosion {
     Health damage;

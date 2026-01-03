@@ -1,0 +1,10 @@
+#visual
+texture=cannoner_bot_turret
+origin=21.5|28.0
+size=43|43
+#logic
+reload=15
+rotation_speed=0.02
+shooting_ai=basic
+shell=cannon_shell
+barrels=15|30,-15|30

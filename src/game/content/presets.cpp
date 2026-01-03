@@ -7,8 +7,9 @@
 #include "game/physics/shell_manager.hpp"
 
 static debug::Logger logger("presets");
-std::unordered_map<std::string, csp::centralized_ptr<MobPreset>> content::Presets::mobPresets;
-std::unordered_map<std::string, csp::centralized_ptr<ShellPreset>> content::Presets::shellPresets;
+std::unordered_map<std::string, csp::centralized_ptr<MobPreset>>    content::Presets::mobPresets;
+std::unordered_map<std::string, csp::centralized_ptr<ShellPreset>>  content::Presets::shellPresets;
+std::unordered_map<std::string, csp::centralized_ptr<TurretPreset>> content::Presets::turretPresets;
 
 static auto createMobPreset(const tin::Data& data) {
     MobVisualPreset visual(
@@ -22,6 +23,7 @@ static auto createMobPreset(const tin::Data& data) {
         data.getInt64("health").value(),
         mob_ai::getMovingAI(data.getString("moving_ai").value()),
         mob_ai::getShootingAI(data.getString("shooting_ai").value()),
+        content::Presets::getTurrets().at(data.getString("turret").value()),
         visual
     );
 }
@@ -46,30 +48,51 @@ static auto createShellPreset(const tin::Data& data) {
     );
 }
 
-void content::Presets::load() {
-    const auto path = io::folders::CONTENT / "mobs";
+static auto createTurretPreset(const tin::Data& data) {
+    auto b = data.getList("barrels");
+    const size_t barrelsCount = b.size();
+    std::array<PixelCoord, 4> barrels;
+    for (size_t i = 0; i < barrelsCount; ++i) {
+        barrels[i] = validator::toPixelCoord(b[i]).value();
+    }
+    TurretVisualPreset visual(
+        csp::make_centralized<Texture>(data.getString("texture").value()),
+        data.getPixelCoord("origin").value(),
+        data.getPixelCoord("size").value()
+    );
+    return csp::make_centralized<TurretPreset>(
+        data.getUint16("reload").value(),
+        data.getFloat("rotation_speed").value(),
+        barrelsCount,
+        barrels,
+        content::Presets::getShells().at(data.getString("shell").value()),
+        visual
+    );
+}
+
+template<typename Preset>
+static void loadPresets(std::unordered_map<std::string, csp::centralized_ptr<Preset>>& presets, const std::string& folder) {
+    const auto path = io::folders::CONTENT / folder;
     const auto contents = io::folders::getContents(path, io::folders::ContentsType::file);
     for (const auto& file : contents) {
         const auto data = tin::read(path / file, tin::Log::only_error);
         try {
-            mobPresets.emplace(io::folders::trimExtensions(file), createMobPreset(data));
-            logger.debug() << "Mob preset created: " << file;
+            if constexpr (std::is_same_v<Preset, MobPreset>)
+                presets.emplace(io::folders::trimExtensions(file), createMobPreset(data));
+            if constexpr (std::is_same_v<Preset, ShellPreset>)
+                presets.emplace(io::folders::trimExtensions(file), createShellPreset(data));
+            if constexpr (std::is_same_v<Preset, TurretPreset>)
+                presets.emplace(io::folders::trimExtensions(file), createTurretPreset(data));
+            logger.debug() << "Preset created: " << file;
         }
         catch (const std::bad_optional_access&) {
-            logger.error() << "Failed to create mob preset: " << file;
+            logger.error() << "Failed to create preset: " << file;
         }
     }
+}
 
-    const auto path2 = io::folders::CONTENT / "shells";
-    const auto contents2 = io::folders::getContents(path2, io::folders::ContentsType::file);
-    for (const auto& file : contents2) {
-        const auto data = tin::read(path2 / file, tin::Log::only_error);
-        try {
-            shellPresets.emplace(io::folders::trimExtensions(file), createShellPreset(data));
-            logger.debug() << "Shell preset created: " << file;
-        }
-        catch (const std::bad_optional_access&) {
-            logger.error() << "Failed to create shell preset: " << file;
-        }
-    }
+void content::Presets::load() {
+    loadPresets(shellPresets, "shells");
+    loadPresets(turretPresets, "turrets");
+    loadPresets(mobPresets, "mobs");
 }
