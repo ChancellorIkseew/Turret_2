@@ -1,9 +1,8 @@
 #include "turrets_system.hpp"
 //
+#include "game/player/camera.hpp"
 #include "mob_manager.hpp"
 #include "shell_manager.hpp"
-#include <iostream>
-#include "game/player/camera.hpp"
 
 using ItemType = uint16_t;
 struct ItemStack {
