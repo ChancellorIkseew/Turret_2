@@ -75,7 +75,7 @@ void PlayerController::setTarget(MobManager& mobs, const MobID mobID) {
         return;
     const size_t index = mobs.getSoaIndexByMobID(mobID);
     mobs.getSoa().motionData[index].aiType = MovingAI::player_controlled;
-    //mobs.getSoa().shootingData[index].aiType = ShootingAI::player_controlled;
+    mobs.getSoa().shootingData[index].aiType = ShootingAI::player_controlled;
     targetMobID = mobID;
     state = State::control_mob;
 }
@@ -85,7 +85,7 @@ void PlayerController::resetTarget(MobManager& mobs) {
         return;
     const size_t index = mobs.getSoaIndexByMobID(targetMobID);
     mobs.getSoa().motionData[index].aiType = mobs.getSoa().preset[index]->defaultMovingAI;
-    //mobs.getSoa().shootingData[index].aiType = mobs.getSoa().preset[index]->defaultShootingAI;
+    mobs.getSoa().shootingData[index].aiType = mobs.getSoa().preset[index]->defaultShootingAI;
     targetMobID = IDManager<MobID>::INVALID_ID;
     state = State::control_camera;
 }

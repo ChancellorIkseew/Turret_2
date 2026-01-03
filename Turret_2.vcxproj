@@ -161,6 +161,7 @@
     <ClCompile Include="src\game\physics\moving_ai_system.cpp" />
     <ClCompile Include="src\game\physics\shell_manager.cpp" />
     <ClCompile Include="src\game\physics\shells_system.cpp" />
+    <ClCompile Include="src\game\physics\shooting_ai_system.cpp" />
     <ClCompile Include="src\game\physics\team\team.cpp" />
     <ClCompile Include="src\game\physics\turrets_system.cpp" />
     <ClCompile Include="src\game\player\camera.cpp" />

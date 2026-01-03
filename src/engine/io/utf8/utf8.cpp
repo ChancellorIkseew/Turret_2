@@ -55,7 +55,7 @@ std::u32string utf8::to_u32string(const char* cStr) {
     return result;
 }
 
-static void appendUTF8Char(std::string& result, char32_t cp) {
+static inline void appendUTF8Char(std::string& result, char32_t cp) {
     if (cp < 0x00000000 || cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF))
         return;
 

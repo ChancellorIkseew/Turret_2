@@ -7,4 +7,5 @@ speed=1.0
 hitbox_radius=17.0
 health=100
 moving_ai=basic
+shooting_ai=basic
 turret=cannoner_bot_turret

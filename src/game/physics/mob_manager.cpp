@@ -16,8 +16,10 @@ void MobManager::reserve(const size_t capacity) {
     soa.preset.reserve(capacity);
     soa.hitbox.reserve(capacity);
     soa.motionData.reserve(capacity);
+    soa.shootingData.reserve(capacity);
     soa.restReloadTime.reserve(capacity);
     soa.currentBarrel.reserve(capacity);
+    soa.turretAngle.reserve(capacity);
 }
 
 MobID MobManager::addMob(
@@ -27,7 +29,9 @@ MobID MobManager::addMob(
     const Health health,
     const TeamID teamID,
     const MotionData motionData,
-    const TickCount restReloadTime) {
+    const ShootingData shootingData,
+    const TickCount restReloadTime,
+    const AngleRad turretAngle) {
     const MobID mobID = idManager.getNext();
 
     if (mobID == INVALID_MOB_ID) {
@@ -44,8 +48,10 @@ MobID MobManager::addMob(
     soa.preset.push_back(preset);
     soa.hitbox.push_back(Hitbox(position, preset->hitboxRadius));
     soa.motionData.push_back(motionData);
+    soa.shootingData.push_back(shootingData);
     soa.restReloadTime.push_back(restReloadTime);
     soa.currentBarrel.push_back(0);
+    soa.turretAngle.push_back(turretAngle);
 
     const size_t last = soa.id.size() - 1;
     soaIndexByMobID[last] = mobID;
@@ -70,8 +76,10 @@ void MobManager::removeMob(const size_t index) {
         soa.preset[index] = std::move(soa.preset[last]);
         soa.hitbox[index] = std::move(soa.hitbox[last]);
         soa.motionData[index] = std::move(soa.motionData[last]);
+        soa.shootingData[index] = std::move(soa.shootingData[last]);
         soa.restReloadTime[index] = std::move(soa.restReloadTime[last]);
         soa.currentBarrel[index] = std::move(soa.currentBarrel[last]);
+        soa.turretAngle[index] = std::move(soa.turretAngle[last]);
     }
 
     soa.id.pop_back();
@@ -83,6 +91,8 @@ void MobManager::removeMob(const size_t index) {
     soa.preset.pop_back();
     soa.hitbox.pop_back();
     soa.motionData.pop_back();
+    soa.shootingData.pop_back();
     soa.restReloadTime.pop_back();
     soa.currentBarrel.pop_back();
+    soa.turretAngle.pop_back();
 }

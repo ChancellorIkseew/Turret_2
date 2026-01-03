@@ -22,6 +22,7 @@ static auto createMobPreset(const tin::Data& data) {
         data.getFloat("hitbox_radius").value(),
         data.getInt64("health").value(),
         mob_ai::getMovingAI(data.getString("moving_ai").value()),
+        mob_ai::getShootingAI(data.getString("shooting_ai").value()),
         content::Presets::getTurrets().at(data.getString("turret").value()),
         visual
     );
@@ -61,6 +62,7 @@ static auto createTurretPreset(const tin::Data& data) {
     );
     return csp::make_centralized<TurretPreset>(
         data.getUint16("reload").value(),
+        data.getFloat("rotation_speed").value(),
         barrelsCount,
         barrels,
         content::Presets::getShells().at(data.getString("shell").value()),

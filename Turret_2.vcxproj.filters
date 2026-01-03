@@ -488,6 +488,9 @@
     <ClCompile Include="src\game\physics\turrets_system.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\physics\shooting_ai_system.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\engine\debug\color_format.inl">

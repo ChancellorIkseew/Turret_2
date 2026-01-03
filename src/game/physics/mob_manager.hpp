@@ -25,6 +25,7 @@ struct TurretVisualPreset {
 
 struct TurretPreset {
     const TickCount reload;
+    const AngleRad rotationSpeed;
     const size_t barrelsCount;
     const std::array<PixelCoord, 4> barrels;
     csp::centralized_ptr<ShellPreset> shell;
@@ -36,6 +37,7 @@ struct MobPreset {
     const float hitboxRadius;
     const Health maxHealth;
     const MovingAI defaultMovingAI;
+    const ShootingAI defaultShootingAI;
     csp::centralized_ptr<TurretPreset> turret;
     const MobVisualPreset visual;
 };
@@ -50,8 +52,10 @@ struct MobSoA {
     std::vector<MobID> id;
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
+    std::vector<ShootingData> shootingData;
     std::vector<TickCount> restReloadTime;
     std::vector<uint8_t> currentBarrel;
+    std::vector<AngleRad> turretAngle;
     size_t mobCount = 0;
 };
 
@@ -80,5 +84,7 @@ public:
         const Health health,
         const TeamID teamID,
         const MotionData motionData,
-        const TickCount restReloadTime);
+        const ShootingData shootingData,
+        const TickCount restReloadTime,
+        const AngleRad turretAngle);
 };
