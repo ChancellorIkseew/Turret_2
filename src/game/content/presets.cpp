@@ -15,7 +15,8 @@ static auto createMobPreset(const tin::Data& data) {
     MobVisualPreset visual(
         csp::make_centralized<Texture>(data.getString("texture").value()),
         data.getPixelCoord("origin").value(),
-        data.getPixelCoord("size").value()
+        data.getPixelCoord("size").value(),
+        data.getUint8("frame_count").value()
     );
     return csp::make_centralized<MobPreset>(
         data.getFloat("speed").value(),
@@ -58,7 +59,8 @@ static auto createTurretPreset(const tin::Data& data) {
     TurretVisualPreset visual(
         csp::make_centralized<Texture>(data.getString("texture").value()),
         data.getPixelCoord("origin").value(),
-        data.getPixelCoord("size").value()
+        data.getPixelCoord("size").value(),
+        data.getUint8("frame_count").value()
     );
     return csp::make_centralized<TurretPreset>(
         data.getUint16("reload").value(),

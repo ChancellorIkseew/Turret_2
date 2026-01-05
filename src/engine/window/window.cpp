@@ -7,6 +7,7 @@
 #include "engine/render/atlas.hpp"
 #include "engine/render/sprite.hpp"
 #include "engine/render/text.hpp"
+#include "engine/render/animation.hpp"
 
 static std::filesystem::path ICON_PATH = io::folders::RES / "icon.bmp";
 static debug::Logger logger("main_window");
@@ -42,6 +43,7 @@ MainWindow::MainWindow(const std::string& title) {
 
     input.setWindow(sdlWindow);
     Sprite::setRenderer(sdlRenderer);
+    ASprite::setRenderer(sdlRenderer);
     Atlas::setRenderer(sdlRenderer);
     text::setRenderer(sdlRenderer);
 }
@@ -64,6 +66,7 @@ void MainWindow::setFullscreen(const bool flag) {
 
 void MainWindow::setRenderTranslation(const PixelCoord translation) {
     Sprite::setTranslation(translation);
+    ASprite::setTranslation(translation);
 }
 
 void MainWindow::pollEvents() {

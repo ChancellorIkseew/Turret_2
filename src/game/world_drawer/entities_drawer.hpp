@@ -7,5 +7,5 @@ class Camera;
 class EntitiesDrawer {
 public:
     EntitiesDrawer() = default;
-    void draw(const Camera& camera, const MobSoA& mobs, const ShellSoA& shells);
+    void draw(const Camera& camera, MobSoA& mobs, const ShellSoA& shells);
 };

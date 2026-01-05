@@ -13,7 +13,7 @@ class WorldDrawer {
 public:
     WorldDrawer() = default;
 
-    void draw(const Camera& camera, const World& world) {
+    void draw(const Camera& camera, World& world) {
         mapDrawer.draw(camera, world.getMap());
         entitiesDrawer.draw(camera, world.getMobs().getSoa(), world.getShells().getSoa());
         // TODO: weatherDrawer.draw();

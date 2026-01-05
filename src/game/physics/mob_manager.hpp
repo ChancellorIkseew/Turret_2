@@ -15,12 +15,14 @@ struct MobVisualPreset {
     csp::centralized_ptr<Texture> texture;
     const PixelCoord origin;
     const PixelCoord size;
+    const uint8_t frameCount;
 };
 
 struct TurretVisualPreset {
     csp::centralized_ptr<Texture> texture;
     const PixelCoord origin;
     const PixelCoord size;
+    const uint8_t frameCount;
 };
 
 struct TurretPreset {
@@ -56,6 +58,8 @@ struct MobSoA {
     std::vector<TickCount> restReloadTime;
     std::vector<uint8_t> currentBarrel;
     std::vector<AngleRad> turretAngle;
+    std::vector<uint8_t> chassisFrame;
+    std::vector<uint8_t> turretFrame;
     size_t mobCount = 0;
 };
 

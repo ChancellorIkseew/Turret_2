@@ -7,5 +7,5 @@ class MobManager;
 namespace mobs {
     void processMobs(MobSoA& soa);
     void cleanupMobs(MobManager& manager);
-    void drawMobs(const MobSoA& soa, const Camera& camera);
+    void drawMobs(MobSoA& soa, const Camera& camera);
 }

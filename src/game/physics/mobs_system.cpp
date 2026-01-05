@@ -4,6 +4,7 @@
 #include "engine/settings/settings.hpp"
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
+#include "engine/render/animation.hpp"
 
 static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord vector) {
     soa.position[index] = soa.position[index] + vector;
@@ -79,20 +80,29 @@ static void drawHitboxes(const MobSoA& soa, const Camera& camera) {
     }
 }
 
-void mobs::drawMobs(const MobSoA& soa, const Camera& camera) {
+static uint64_t c = 0;
+
+void mobs::drawMobs(MobSoA& soa, const Camera& camera) {
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(soa, camera);
-    Sprite sprite;
+    ASprite sprite;
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
+        ++c;
+        if (c % 3 == 0 && soa.velocity[i] != PixelCoord(0.0f, 0.0f)) {
+            ++soa.chassisFrame[i];
+            if (soa.chassisFrame[i] >= soa.preset[i]->visual.frameCount)
+                soa.chassisFrame[i] = 0;
+        }
         auto& visual = soa.preset[i]->visual;
         sprite.setTexture(*visual.texture);
         sprite.setOrigin(visual.origin);
         sprite.setSize(visual.size);
         sprite.setPosition(soa.position[i]);
         sprite.setRotationRad(soa.angle[i]);
+        sprite.setFrame(soa.chassisFrame[i]);
         sprite.draw();
     }
 }
