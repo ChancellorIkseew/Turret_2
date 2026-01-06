@@ -1,6 +1,5 @@
 #include "atlas.hpp"
 //
-#include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
 #include <unordered_map>
 #include "engine/debug/logger.hpp"
@@ -31,7 +30,7 @@ void Atlas::addTexture(const fs::path& path) {
         logger.warning() << "Texture with name \"" << name << "\" already exists.";
         return;
     }
-    SDL_Surface* surface = IMG_Load(path.string().c_str());
+    SDL_Surface* surface = SDL_LoadPNG(path.string().c_str());
     if (!surface) {
         logger.error() << "Texture was not created. File: " << path << " " << SDL_GetError();
         return;
