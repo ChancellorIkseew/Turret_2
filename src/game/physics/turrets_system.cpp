@@ -3,6 +3,7 @@
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
 #include "shell_manager.hpp"
+#include "engine/audio/audio.hpp"
 
 using ItemType = uint16_t;
 struct ItemStack {
@@ -17,7 +18,7 @@ static inline void reduceRestReload(MobSoA& soa) {
     }
 }
 
-static inline void shoot(MobSoA& soa, ShellManager& shells, const size_t mobCount) {
+static inline void shoot(MobSoA& soa, ShellManager& shells, const size_t mobCount, const Camera& camera, Audio& audioManager) {
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.restReloadTime[i] > 0 || !soa.shootingData[i].isShooting)
             continue;
@@ -36,13 +37,15 @@ static inline void shoot(MobSoA& soa, ShellManager& shells, const size_t mobCoun
         position.x +=  localMuzzle.x * cos + localMuzzle.y * sin;
         position.y += -localMuzzle.x * sin + localMuzzle.y * cos;
         shells.addShell(preset, position, angle, preset->damage, preset->maxLifeTime, soa.teamID[i]);
+        if (camera.contains(t1::tile(position)))
+            audioManager.playDiegetic("cannon_shot", position, camera);
     }
 }
 
-void turrets::processTurrets(MobSoA& soa, ShellManager& shells) {
+void turrets::processTurrets(MobSoA& soa, ShellManager& shells, const Camera& camera, Audio& audioManager) {
     const size_t mobCount = soa.mobCount;
     reduceRestReload(soa);
-    shoot(soa, shells, mobCount);
+    shoot(soa, shells, mobCount, camera, audioManager);
 }
 
 void turrets::drawTurrets(const MobSoA& soa, const Camera& camera) {

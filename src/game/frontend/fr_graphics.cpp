@@ -29,10 +29,8 @@ public:
         labels->addNode(new Label(U"camera inertia"));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
-        auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
-        back->addCallback([&] { close(); });
-        aply->addCallback([&] { aplySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, U"Aply"))->addCallback([&] { aplySettings(engine); });
 
         arrange();
     }

@@ -19,5 +19,6 @@ namespace frontend {
     std::unique_ptr<Container> initHint(TileData& tileData);
     std::unique_ptr<Container> initLanguages(Engine& engine);
     std::unique_ptr<Container> initGraphics(Engine& engine);
+    std::unique_ptr<Container> initAudio(Engine& engine);
     std::unique_ptr<Container> initGUI(Engine& engine);
 }

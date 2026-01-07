@@ -27,6 +27,7 @@ public:
     TileCoord getStartTile() const noexcept { return startTile; }
     TileCoord getEndTile() const noexcept { return endTile; }
     PixelCoord getPosition() const noexcept { return cameraUpperLeftCorner; }
+    PixelCoord getCenter() const noexcept { return cameraCentre; }
     float getMapScale() const noexcept { return mapScale; }
 
     PixelCoord fromMapToScreen(const PixelCoord mapCoord) const noexcept;

@@ -12,6 +12,12 @@ static debug::Logger logger("settings");
 
 void Settings::writeSettings() {
     tin::Data data;
+    data.emplace("volume_master", std::to_string(audio.master));
+    data.emplace("volume_world",  std::to_string(audio.world));
+    data.emplace("volume_ui",     std::to_string(audio.ui));
+    data.emplace("volume_music",  std::to_string(audio.music));
+    data.emplace("toggle_sound",  std::to_string(audio.toggleSound));
+    //
     data.emplace("FPS", std::to_string(display.FPS));
     data.emplace("fullscreen", std::to_string(display.fullscreen));
     //
@@ -32,6 +38,12 @@ void Settings::readSettings() {
         logger.info() << "Saved file with default settings. File: settings.tin";
         return;
     }
+    audio.master = data.getUint16("volume_master").value_or(50U);
+    audio.world  = data.getUint16("volume_world").value_or(100U);
+    audio.ui     = data.getUint16("volume_ui").value_or(100U);
+    audio.music  = data.getUint16("volume_music").value_or(100U);
+    audio.toggleSound = data.getBool("toggle_sound").value_or(true);
+    //
     display.FPS = data.getUint32("FPS").value_or(60U);
     display.fullscreen = data.getBool("fullscreen").value_or(false);
     //
@@ -44,7 +56,14 @@ void Settings::readSettings() {
     gui.showConsole = data.getBool("show_console").value_or(false);
 }
 
-void Settings::aplySettings(Engine& engine) { 
+void Settings::aplySettings(Engine& engine) {
+    float master = static_cast<float>(audio.master) / 100.f;
+    engine.getAudio().setMasterVolume(audio.toggleSound ? master : 0.0f);
+    engine.getAudio().setWorldVolume(static_cast<float>(audio.world) / 100.f);
+    engine.getAudio().setUIVolume(static_cast<float>(audio.ui) / 100.f);
+    engine.getAudio().setMusicVolume(static_cast<float>(audio.music) / 100.f);
+    engine.getAudio().updateVolume();
+    //
     engine.getMainWindow().setFPS(display.FPS);
     engine.getMainWindow().setFullscreen(display.fullscreen);
     // "camera_inertia" not imlemented

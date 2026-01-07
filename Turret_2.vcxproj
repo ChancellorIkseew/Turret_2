@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp" />
+    <ClInclude Include="src\engine\audio\audio.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\math.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="src\engine\io\parser\tin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\validator.hpp" />
     <ClInclude Include="src\engine\io\utf8\utf8.hpp" />
+    <ClInclude Include="src\engine\render\animation.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\sprite.hpp" />
@@ -102,6 +104,7 @@
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\audio\audio.cpp" />
     <ClCompile Include="src\engine\coords\math.cpp" />
     <ClCompile Include="src\engine\debug\console.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
@@ -139,6 +142,7 @@
     <ClCompile Include="src\game\content\indexes.cpp" />
     <ClCompile Include="src\game\content\presets.cpp" />
     <ClCompile Include="src\game\content\textures.cpp" />
+    <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />
     <ClCompile Include="src\game\frontend\fr_languages.cpp" />

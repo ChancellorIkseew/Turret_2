@@ -1,5 +1,6 @@
 #pragma once
 #include "engine_command.hpp"
+#include "engine/audio/audio.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "engine/window/window.hpp"
 #include "game/generation/generation.hpp"
@@ -11,6 +12,7 @@ class World;
 
 class Engine {
     MainWindow mainWindow;
+    Audio audio;
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
     std::string worldFolder;
@@ -43,6 +45,7 @@ public:
     Camera& getCamera() { return *_camera; }
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
+    Audio& getAudio() { return audio; }
     //
     bool isWorldOpen() const { return worldOpen; }
     bool isPaused() const { return paused; }

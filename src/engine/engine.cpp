@@ -29,6 +29,7 @@
 #include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
 #include "game/physics/turrets_system.hpp"
+#include <iostream>
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
@@ -51,6 +52,8 @@ static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engin
 }
 
 void Engine::run() {
+    audio.loadSound("cannon_shot", io::folders::SOUNDS / "cannon_shot.wav");
+
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
     content::load();
@@ -139,7 +142,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
             mobs::processMobs(mobs.getSoa());
             ai::updateMovingAI(mobs.getSoa(), playerController);
             ai::updateShootingAI(mobs.getSoa(), playerController);
-            turrets::processTurrets(mobs.getSoa(), shells);
+            turrets::processTurrets(mobs.getSoa(), shells, camera, audio);
             // Clean up only after all processing.
             shells::cleanupShells(shells);
             mobs::cleanupMobs(mobs);
