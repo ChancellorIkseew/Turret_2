@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\config.hpp" />
     <ClInclude Include="src\engine\audio\audio.hpp" />
+    <ClInclude Include="src\engine\audio\sound_queue.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\math.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />

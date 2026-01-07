@@ -49,5 +49,5 @@ public:
     //
     bool isWorldOpen() const { return worldOpen; }
     bool isPaused() const { return paused; }
-    void setPaused(const bool flag) { paused = flag; }
+    void setPaused(const bool flag);
 };

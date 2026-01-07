@@ -36,7 +36,7 @@ public:
     //
     void setMasterVolume(const float volume) noexcept { masterVolume = volume; }
     void setWorldVolume(const float volume)  noexcept {  worldVolume = volume; }
-    void setUIVolume(const float volume)    noexcept {     uiVolume = volume; }
+    void setUIVolume(const float volume)     noexcept {     uiVolume = volume; }
     void setMusicVolume(const float volume)  noexcept {  musicVolume = volume; }
     void updateVolume();
 };

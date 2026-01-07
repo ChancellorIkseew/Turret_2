@@ -3,9 +3,9 @@
 struct MobSoA;
 class Camera;
 class ShellManager;
-class Audio;
+class SoundQueue;
 
 namespace turrets {
-    void processTurrets(MobSoA& soa, ShellManager& shells, const Camera& camera, Audio& audioManager);
+    void processTurrets(MobSoA& soa, ShellManager& shells, SoundQueue& sounds, const Camera& camera);
     void drawTurrets(const MobSoA& soa, const Camera& camera);
 }

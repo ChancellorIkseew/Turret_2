@@ -29,7 +29,7 @@
 #include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
 #include "game/physics/turrets_system.hpp"
-#include <iostream>
+#include "engine/audio/sound_queue.hpp"
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
@@ -106,6 +106,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
     PlayerController playerController;
     WorldDrawer worldDrawer;
+    SoundQueue worldSounds;
 
     _world = world.get();
     _gui = gui.get();
@@ -142,13 +143,14 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
             mobs::processMobs(mobs.getSoa());
             ai::updateMovingAI(mobs.getSoa(), playerController);
             ai::updateShootingAI(mobs.getSoa(), playerController);
-            turrets::processTurrets(mobs.getSoa(), shells, camera, audio);
+            turrets::processTurrets(mobs.getSoa(), shells, worldSounds, camera);
             // Clean up only after all processing.
             shells::cleanupShells(shells);
             mobs::cleanupMobs(mobs);
         }
         //
         worldDrawer.draw(camera, *world);
+        worldSounds.play(audio, camera);
         Events::reset(); // for editor
         scriptsHandler.execute();
         //
@@ -164,4 +166,10 @@ void Engine::startNet() {
     while (mainWindow.isOpen() && isWorldOpen()) {
         util::sleep(48);
     }
+}
+
+void Engine::setPaused(const bool flag) {
+    paused = flag;
+    if (paused) audio.pauseWorldSounds();
+    else        audio.resumeWorldSounds();
 }

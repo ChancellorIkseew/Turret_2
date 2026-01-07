@@ -9,6 +9,7 @@
 
 constexpr float BASE_CAMERA_ALTITUDE = 10.0f;
 constexpr Sint64 FADING_FRAME_COUNT = 2;
+static std::string SDL_MIXER_ERROR = "SDL_Mixer error. ";
 static debug::Logger logger("audio");
 
 static void freePool(std::span<MIX_Track*> trackPool) {
@@ -22,16 +23,16 @@ static void fillPool(std::span<MIX_Track*> trackPool, MIX_Mixer* mixer) {
         track = nullptr;
         track = MIX_CreateTrack(mixer);
         if (!track)
-            throw std::runtime_error(SDL_GetError());
+            throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());   
     }
 }
 
 Audio::Audio() {
     if (!MIX_Init())
-        throw std::runtime_error(SDL_GetError());
+        throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
     mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
     if (!mixer)
-        throw std::runtime_error(SDL_GetError());
+        throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
     fillPool(worldTrackPool, mixer);
     fillPool(uiTrackPool, mixer);
     fillPool(musicTrackPool, mixer);
