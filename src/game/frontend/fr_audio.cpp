@@ -36,18 +36,18 @@ public:
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, U"Aply"))->addCallback([&] { aplySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
 
         arrange();
     }
 
-    void aplySettings(Engine& engine) {
-        Settings::audio.master = validator::toUint8(master->getText()).value_or(50U);
-        Settings::audio.world  = validator::toUint8(world ->getText()).value_or(100U);
-        Settings::audio.ui     = validator::toUint8(ui    ->getText()).value_or(100U);
-        Settings::audio.music  = validator::toUint8(music ->getText()).value_or(100U);
+    void applySettings(Engine& engine) {
+        Settings::audio.master = validator::toUint16(master->getText()).value_or(50U);
+        Settings::audio.world  = validator::toUint16(world ->getText()).value_or(100U);
+        Settings::audio.ui     = validator::toUint16(ui    ->getText()).value_or(100U);
+        Settings::audio.music  = validator::toUint16(music ->getText()).value_or(100U);
         Settings::audio.toggleSound = toggleSound->getValue();;
-        Settings::aplySettings(engine);
+        Settings::applySettings(engine);
         Settings::writeSettings();
     }
 };

@@ -30,16 +30,16 @@ public:
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, U"Aply"))->addCallback([&] { aplySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
 
         arrange();
     }
 
-    void aplySettings(Engine& engine) {
+    void applySettings(Engine& engine) {
         Settings::display.FPS = validator::toUint32(fps->getText()).value_or(60U);
         Settings::display.fullscreen = fullscreen->getValue();
         Settings::gameplay.cameraInertia = inertia->getValue();
-        Settings::aplySettings(engine);
+        Settings::applySettings(engine);
         Settings::writeSettings();
     }
 };

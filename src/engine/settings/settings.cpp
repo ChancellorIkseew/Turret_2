@@ -56,7 +56,7 @@ void Settings::readSettings() {
     gui.showConsole = data.getBool("show_console").value_or(false);
 }
 
-void Settings::aplySettings(Engine& engine) {
+void Settings::applySettings(Engine& engine) {
     float master = static_cast<float>(audio.master) / 100.f;
     engine.getAudio().setMasterVolume(audio.toggleSound ? master : 0.0f);
     engine.getAudio().setWorldVolume(static_cast<float>(audio.world) / 100.f);

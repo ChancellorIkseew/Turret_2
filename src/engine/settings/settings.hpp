@@ -38,5 +38,5 @@ public:
     static inline t1_sp::_GUI gui;
     static void writeSettings();
     static void readSettings();
-    static void aplySettings(Engine& engine);
+    static void applySettings(Engine& engine);
 };
