@@ -1,5 +1,6 @@
 #include "frontend.hpp"
 //
+#include "engine/engine.hpp"
 #include "engine/gui/gui_util/tile_data.hpp"
 #include "engine/widgets/image_button.hpp"
 #include "game/content/indexes.hpp"
@@ -8,13 +9,13 @@
 constexpr int ROW_SIZE = 6;
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
 
-std::unique_ptr<Container> frontend::initJEI(TileData& tileData) {
+std::unique_ptr<Container> frontend::initJEI(Engine& engine, TileData& tileData) {
     auto jei = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);
     int btns = 0;
     auto line = std::make_unique<Layout>(Orientation::horizontal);
 
     auto addButton = [&](const std::string& name, int id, TileComponent component) {
-        auto btn = line->addNode(new ImageButton(BTN_SIZE, name));
+        auto btn = line->addNode(new ImageButton(BTN_SIZE, engine.getAtlas().at(name)));
         btn->addCallback([id, component, &tileData]() {
             tileData.id = id;
             tileData.component = component;
@@ -40,5 +41,6 @@ std::unique_ptr<Container> frontend::initJEI(TileData& tileData) {
     if (btns != 0)
         jei->addNode(line.release());
     jei->arrange();
+    
     return jei;
 }

@@ -1,25 +1,26 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "config.hpp"
 #include "engine/coords/tile_coord.hpp"
-#include "engine/render/sprite.hpp"
+#include "engine/render/texture.hpp"
 #include "engine/coords/transforms.hpp"
 
 class Block {
-    Sprite shadow;
-    Sprite base;
+    //Sprite shadow;
+    //Sprite base;
     const TileCoord tile;
 public:
-    Block(const std::string& shadow, const std::string& base, const TileCoord tile) :
-        shadow(shadow), base(base), tile(tile) {
-        this->shadow.setSize(PixelCoord(40, 40));
-        this->base.setSize(PixelCoord(32, 32));
-        this->shadow.setPosition(t1::pixel(tile) - PixelCoord(4, 4));
-        this->base.setPosition(t1::pixel(tile));
+    Block(const std::string& shadow, const std::string& base, const TileCoord tile) //:
+        /*shadow(shadow), base(base), tile(tile)*/ {
+        //this->shadow.setSize(PixelCoord(40, 40));
+        //this->base.setSize(PixelCoord(32, 32));
+        //this->shadow.setPosition(t1::pixel(tile) - PixelCoord(4, 4));
+        //this->base.setPosition(t1::pixel(tile));
     }
     void draw() {
-        shadow.draw();
-        base.draw();
+        //shadow.draw();
+        //base.draw();
     }
 };
 

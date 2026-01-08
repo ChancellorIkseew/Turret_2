@@ -1,25 +1,22 @@
 #include "form_editor.hpp" 
 //
+#include "engine/render/renderer.hpp"
 #include "engine/widgets/form.hpp"
 #include "engine/window/input/input.hpp"
 
 static std::weak_ptr<Form> targetForm;
-static Sprite carriage;
 static size_t carPos = 0;
 constexpr int INPUT_RELOAD = 120;
+constexpr uint32_t CARRIGE_COLOR = 0xFF'FF'FF'FF;
+constexpr PixelCoord CARRIGE_SIZE(1.0f, 16.0f);
 static int inputTimer = 0;
 
-void FormEditor::init() {
-    carriage = Sprite("input_carriage", PixelCoord(1, 16), PixelCoord(0, 0));
-}
-
-void FormEditor::drawCarriage() {
+void FormEditor::drawCarriage(const Renderer& renderer) {
     if (!targetForm.lock())
         return;
-    auto p = targetForm.lock()->getPosition();
-    p.x += carPos * 8;
-    carriage.setPosition(p);
-    carriage.drawFast();
+    auto position = targetForm.lock()->getPosition();
+    position.x += carPos * 8;
+    renderer.drawRect(CARRIGE_COLOR, position, CARRIGE_SIZE);
 }
 
 void FormEditor::setForm(const Input& input, std::weak_ptr<Form> form) {

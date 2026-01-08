@@ -1,7 +1,7 @@
 #pragma once
 #include <CSP/centralized_ptr.hpp>
 #include <vector>
-#include "engine/render/sprite.hpp"
+#include "engine/render/texture.hpp"
 #include "physics_base.hpp"
 
 struct ShellVisualPreset {

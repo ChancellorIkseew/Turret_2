@@ -5,15 +5,16 @@
 #include "engine/debug/logger.hpp"
 #include "game/physics/mob_manager.hpp"
 #include "game/physics/shell_manager.hpp"
+#include "engine/render/atlas.hpp"
 
 static debug::Logger logger("presets");
 std::unordered_map<std::string, csp::centralized_ptr<MobPreset>>    content::Presets::mobPresets;
 std::unordered_map<std::string, csp::centralized_ptr<ShellPreset>>  content::Presets::shellPresets;
 std::unordered_map<std::string, csp::centralized_ptr<TurretPreset>> content::Presets::turretPresets;
 
-static auto createMobPreset(const tin::Data& data) {
+static auto createMobPreset(const tin::Data& data, Atlas& atlas) {
     MobVisualPreset visual(
-        csp::make_centralized<Texture>(data.getString("texture").value()),
+        csp::make_centralized<Texture>(atlas.at(data.getString("texture").value())),
         data.getPixelCoord("origin").value(),
         data.getPixelCoord("size").value(),
         data.getUint8("frame_count").value()
@@ -29,9 +30,9 @@ static auto createMobPreset(const tin::Data& data) {
     );
 }
 
-static auto createShellPreset(const tin::Data& data) {
+static auto createShellPreset(const tin::Data& data, Atlas& atlas) {
     ShellVisualPreset visual(
-        csp::make_centralized<Texture>(data.getString("texture").value()),
+        csp::make_centralized<Texture>(atlas.at(data.getString("texture").value())),
         data.getPixelCoord("origin").value(),
         data.getPixelCoord("size").value()
     );
@@ -49,7 +50,7 @@ static auto createShellPreset(const tin::Data& data) {
     );
 }
 
-static auto createTurretPreset(const tin::Data& data) {
+static auto createTurretPreset(const tin::Data& data, Atlas& atlas) {
     auto b = data.getList("barrels");
     const size_t barrelsCount = b.size();
     std::array<PixelCoord, 4> barrels;
@@ -57,7 +58,7 @@ static auto createTurretPreset(const tin::Data& data) {
         barrels[i] = validator::toPixelCoord(b[i]).value();
     }
     TurretVisualPreset visual(
-        csp::make_centralized<Texture>(data.getString("texture").value()),
+        csp::make_centralized<Texture>(atlas.at(data.getString("texture").value())),
         data.getPixelCoord("origin").value(),
         data.getPixelCoord("size").value(),
         data.getUint8("frame_count").value()
@@ -73,18 +74,19 @@ static auto createTurretPreset(const tin::Data& data) {
 }
 
 template<typename Preset>
-static void loadPresets(std::unordered_map<std::string, csp::centralized_ptr<Preset>>& presets, const std::string& folder) {
+static void loadPresets(std::unordered_map<std::string, csp::centralized_ptr<Preset>>& presets,
+    const std::string& folder, Atlas& atlas) {
     const auto path = io::folders::CONTENT / folder;
     const auto contents = io::folders::getContents(path, io::folders::ContentsType::file);
     for (const auto& file : contents) {
         const auto data = tin::read(path / file, tin::Log::only_error);
         try {
             if constexpr (std::is_same_v<Preset, MobPreset>)
-                presets.emplace(io::folders::trimExtensions(file), createMobPreset(data));
+                presets.emplace(io::folders::trimExtensions(file), createMobPreset(data, atlas));
             if constexpr (std::is_same_v<Preset, ShellPreset>)
-                presets.emplace(io::folders::trimExtensions(file), createShellPreset(data));
+                presets.emplace(io::folders::trimExtensions(file), createShellPreset(data, atlas));
             if constexpr (std::is_same_v<Preset, TurretPreset>)
-                presets.emplace(io::folders::trimExtensions(file), createTurretPreset(data));
+                presets.emplace(io::folders::trimExtensions(file), createTurretPreset(data, atlas));
             logger.debug() << "Preset created: " << file;
         }
         catch (const std::bad_optional_access&) {
@@ -93,8 +95,8 @@ static void loadPresets(std::unordered_map<std::string, csp::centralized_ptr<Pre
     }
 }
 
-void content::Presets::load() {
-    loadPresets(shellPresets, "shells");
-    loadPresets(turretPresets, "turrets");
-    loadPresets(mobPresets, "mobs");
+void content::Presets::load(Atlas& atlas) {
+    loadPresets(shellPresets, "shells", atlas);
+    loadPresets(turretPresets, "turrets", atlas);
+    loadPresets(mobPresets, "mobs", atlas);
 }

@@ -3,10 +3,6 @@
 #include <stdexcept>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
-#include "engine/render/atlas.hpp"
-#include "engine/render/sprite.hpp"
-#include "engine/render/text.hpp"
-#include "engine/render/animation.hpp"
 
 static std::filesystem::path ICON_PATH = io::folders::RES / "icon.png";
 static debug::Logger logger("main_window");
@@ -39,12 +35,8 @@ MainWindow::MainWindow(const std::string& title) {
     }
 
     loadIcon(sdlWindow);
-
     input.setWindow(sdlWindow);
-    Sprite::setRenderer(sdlRenderer);
-    ASprite::setRenderer(sdlRenderer);
-    Atlas::setRenderer(sdlRenderer);
-    text::setRenderer(sdlRenderer);
+    renderer.setRawSDLRenderer(sdlRenderer);
 }
 
 MainWindow::~MainWindow() {
@@ -61,11 +53,6 @@ void MainWindow::setFPS(const Uint32 FPS) {
 void MainWindow::setFullscreen(const bool flag) {
     fullscreen = flag;
     SDL_SetWindowFullscreen(sdlWindow, flag);
-}
-
-void MainWindow::setRenderTranslation(const PixelCoord translation) {
-    Sprite::setTranslation(translation);
-    ASprite::setTranslation(translation);
 }
 
 void MainWindow::pollEvents() {

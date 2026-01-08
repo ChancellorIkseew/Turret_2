@@ -6,8 +6,6 @@
 #include "engine/widgets/container.hpp"
 #include "engine/widgets/label.hpp"
 
-class MainWindow;
-
 class GUI {
 protected:
     std::vector<std::unique_ptr<Container>> containers;
@@ -22,7 +20,7 @@ public:
         mainWindow(engine.getMainWindow()), input(mainWindow.getInput()) {}
     virtual ~GUI() = default;
 
-    void draw();
+    void draw(const Renderer& renderer);
     void translate();
     virtual void callback();
     void addOverlaped(std::unique_ptr<Container> container);

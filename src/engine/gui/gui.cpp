@@ -12,28 +12,28 @@
 
 static tin::Data langTranslations;
 
-static void drawDebugText(const MainWindow& mainWindow, Label& debugText) {
+static void drawDebugText(MainWindow& mainWindow, Label& debugText) {
     debugText.setText(U"FPS: " + utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()));
     debugText.setPosition(PixelCoord(mainWindow.getSize().x - 100.0f, 20.0f));
-    debugText.draw();
+    debugText.draw(mainWindow.getRenderer());
 }
 
-void GUI::draw() {
+void GUI::draw(const Renderer& renderer) {
     if (mainWindow.justResized())
         relocateContainers();
     //
     if (showGUI) {
         for (const auto& it : containers) {
-            it->draw();
+            it->draw(renderer);
         }
         if (!overlaped.empty())
-            overlaped.back()->draw();
-        FormEditor::drawCarriage();
+            overlaped.back()->draw(renderer);
+        FormEditor::drawCarriage(renderer);
     }
     if (showFPS)
         drawDebugText(mainWindow, debugText);
     if (showAtlas)
-        Atlas::testDraw();
+        renderer.drawFast(engine.getAtlas().getComonTexture(), PixelCoord(0, 0), engine.getAtlas().getSize());
 }
 
 void GUI::translate() {

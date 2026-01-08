@@ -1,5 +1,6 @@
 #include "chunk_grid.hpp"
 //
+#include <algorithm>
 #include "mob_manager.hpp"
 
 ChunkGrid::ChunkGrid(const TileCoord mapSize) { // move to cpp

@@ -7,9 +7,10 @@ protected:
     ButtonState state = ButtonState::idle;
 public:
     Clickable(const PixelCoord size, const ButtonState state) : Node(size) { setState(state); }
-    Clickable(const PixelCoord size)                          : Node(size, BTN_IDLE) { }
+    Clickable(const PixelCoord size)                          : Node(size, UIColor::idle) { }
     ~Clickable() override = default;
     //
     void callback(const Input& input) override;
     void setState(const ButtonState newState);
+    const ButtonState getState() const { return state; }
 };

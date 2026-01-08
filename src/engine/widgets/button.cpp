@@ -8,9 +8,9 @@ void Button::callback(const Input& input) {
         action();
 }
 
-void Button::draw() {
-    Node::draw();
-    label.draw();
+void Button::draw(const Renderer& renderer) {
+    Node::draw(renderer);
+    label.draw(renderer);
 }
 
 void Button::setPosition(const PixelCoord position) {

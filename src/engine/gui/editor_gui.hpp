@@ -16,7 +16,7 @@ class EditorGUI : public GUI {
 public:
     EditorGUI(Engine& engine, WorldMap& map, const Camera& camera) :
         GUI(engine), map(map), camera(camera) {
-        containers.push_back(frontend::initJEI(tileData));
+        containers.push_back(frontend::initJEI(engine, tileData));
         GUI::relocateContainers();
         GUI::translate();
     }

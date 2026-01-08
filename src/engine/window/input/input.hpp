@@ -1,5 +1,4 @@
 #pragma once
-#include <atomic>
 #include <optional>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
@@ -10,7 +9,7 @@ class MainWindow;
 
 class Input {
     SDL_Window* sdlWindow;
-    std::atomic<std::optional<Binding>> lastKeyPressed;
+    std::optional<Binding> lastKeyPressed;
     std::optional<char32_t> symbolJustEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
@@ -30,7 +29,6 @@ public:
     ///@brief Int code and input type(keyboard/mouse) of the last key/button press.
     /// Is used for controls rebinding, but can have other usages.
     std::optional<Binding> getLastKeyPressed() const;
-    void resetLastKeyPressed();
     ///@brief Last symbol entered in any text field.
     std::optional<char32_t> getLastSymbolEntered() const;
     ///@brief Start/stop checking.

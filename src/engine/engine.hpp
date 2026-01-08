@@ -1,6 +1,7 @@
 #pragma once
 #include "engine_command.hpp"
 #include "engine/audio/audio.hpp"
+#include "engine/render/atlas.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "engine/window/window.hpp"
 #include "game/generation/generation.hpp"
@@ -12,6 +13,7 @@ class World;
 
 class Engine {
     MainWindow mainWindow;
+    Atlas atlas;
     Audio audio;
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
@@ -45,6 +47,7 @@ public:
     Camera& getCamera() { return *_camera; }
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
+    Atlas& getAtlas() { return atlas; }
     Audio& getAudio() { return audio; }
     //
     bool isWorldOpen() const { return worldOpen; }

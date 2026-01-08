@@ -3,7 +3,7 @@
 #include <array>
 #include <cassert>
 #include <vector>
-#include "engine/render/sprite.hpp"
+#include "engine/render/texture.hpp"
 #include "id_manager.hpp"
 #include "mob_ai.hpp"
 #include "physics_base.hpp"

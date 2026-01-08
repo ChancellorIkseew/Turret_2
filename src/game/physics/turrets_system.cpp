@@ -1,9 +1,10 @@
 #include "turrets_system.hpp"
 //
+#include "engine/audio/sound_queue.hpp"
+#include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
 #include "shell_manager.hpp"
-#include "engine/audio/sound_queue.hpp"
 
 using ItemType = uint16_t;
 struct ItemStack {
@@ -48,18 +49,12 @@ void turrets::processTurrets(MobSoA& soa, ShellManager& shells, SoundQueue& soun
     shoot(soa, shells, mobCount, sounds, camera);
 }
 
-void turrets::drawTurrets(const MobSoA& soa, const Camera& camera) {
-    Sprite sprite;
+void turrets::drawTurrets(const MobSoA& soa, const Camera& camera, const Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = soa.preset[i]->turret->visual;
-        sprite.setTexture(*visual.texture);
-        sprite.setOrigin(visual.origin);
-        sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i]);
-        sprite.setRotationRad(soa.turretAngle[i]);
-        sprite.draw();
+        renderer.draw(*visual.texture, soa.position[i], visual.size, visual.origin, soa.turretAngle[i]);
     }
 }

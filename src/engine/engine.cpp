@@ -22,7 +22,6 @@
 //
 #include "engine/io/folders.hpp"
 #include "engine/settings/settings.hpp"
-#include "engine/widgets/form_editor/form_editor.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 #include "game/content/presets.hpp"
 #include "game/physics/ai_system.hpp"
@@ -56,13 +55,11 @@ void Engine::run() {
 
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
-    content::load();
-    FormEditor::init();
+    content::load(atlas, mainWindow.getRenderer());
     openMainMenu();
     while (mainWindow.isOpen()) {
         createScene(worldFolder, worldProperties);
     }
-    Atlas::clear();
 }
 
 void Engine::loadWorldInGame(const std::string& folder) {
@@ -105,7 +102,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     Camera camera(world->getMap().getSize());
     std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
     PlayerController playerController;
-    WorldDrawer worldDrawer;
+    WorldDrawer worldDrawer(atlas);
     SoundQueue worldSounds;
 
     _world = world.get();
@@ -149,14 +146,14 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
             mobs::cleanupMobs(mobs);
         }
         //
-        worldDrawer.draw(camera, *world);
+        worldDrawer.draw(camera, mainWindow.getRenderer(), *world);
         worldSounds.play(audio, camera);
         Events::reset(); // for editor
         scriptsHandler.execute();
         //
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        gui->draw();
+        gui->draw(mainWindow.getRenderer());
         gui->callback();
         mainWindow.render();
     }

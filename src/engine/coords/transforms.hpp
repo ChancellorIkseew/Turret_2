@@ -5,6 +5,7 @@
 
 namespace t1 {
     constexpr int TILE = 32;
+    constexpr float TILE_F = 32.0f;
     constexpr int HALF_TILE = 16;
 
     // pixel_to_tile

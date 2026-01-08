@@ -3,11 +3,12 @@
 #include <filesystem>
 #include <string>
 #include "cursor.hpp"
-#include "engine/coords/pixel_coord.hpp"
+#include "engine/render/renderer.hpp"
 #include "engine/window/input/input.hpp"
 
 class MainWindow {
     Input input;
+    Renderer renderer;
     SDL_Window* sdlWindow;
     SDL_Renderer* sdlRenderer;
     SDL_Event event = SDL_Event(0);
@@ -39,11 +40,14 @@ public:
             cursor = Cursor(type);
     }
     CursorType getCursor() const { return cursor.getType(); }
+    Renderer& getRenderer() { return renderer; }
     Input& getInput() { return input; }
     //
     void takeScreenshot(const std::filesystem::path& path) const;
     void pollEvents();
-    void setRenderTranslation(const PixelCoord translation);
+    void setRenderTranslation(const PixelCoord translation) {
+        renderer.setTranslation(translation);
+    }
     void setRenderScale(const float scale) {
         SDL_SetRenderScale(sdlRenderer, scale, scale);
     }

@@ -6,6 +6,7 @@
 struct MobPreset;
 struct ShellPreset;
 struct TurretPreset;
+class Atlas;
 
 namespace content {
     class Presets {
@@ -16,6 +17,6 @@ namespace content {
         static const auto& getMobs()    { return mobPresets; }
         static const auto& getShells()  { return shellPresets; }
         static const auto& getTurrets() { return turretPresets; }
-        static void load();
+        static void load(Atlas& atlas);
     };
 }

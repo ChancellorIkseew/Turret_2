@@ -40,11 +40,11 @@
     <ClInclude Include="src\engine\io\parser\tin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\validator.hpp" />
     <ClInclude Include="src\engine\io\utf8\utf8.hpp" />
-    <ClInclude Include="src\engine\render\animation.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
-    <ClInclude Include="src\engine\render\sprite.hpp" />
+    <ClInclude Include="src\engine\render\renderer.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
+    <ClInclude Include="src\engine\render\texture.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
     <ClInclude Include="src\engine\settings\settings.hpp" />
     <ClInclude Include="src\engine\util\time.hpp" />

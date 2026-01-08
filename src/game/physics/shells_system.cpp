@@ -1,5 +1,6 @@
 #include "shells_system.hpp"
 //
+#include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"
 #include "game/physics/mob_manager.hpp"
 #include "game/physics/shell_manager.hpp"
@@ -54,18 +55,12 @@ void shells::cleanupShells(ShellManager& manager/*, Explosions& explosions*/) {
     }
 }
 
-void shells::drawShells(const ShellSoA& soa, const Camera& camera) {
-    Sprite sprite;
+void shells::drawShells(const ShellSoA& soa, const Camera& camera, const Renderer& renderer) {
     const size_t shellCount = soa.shellCount;
     for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = soa.preset[i]->visual;
-        sprite.setTexture(*visual.texture);
-        sprite.setOrigin(visual.origin);
-        sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i]);
-        sprite.setRotationRad(soa.angle[i]);
-        sprite.draw();
+        renderer.draw(*visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i]);
     }
 }

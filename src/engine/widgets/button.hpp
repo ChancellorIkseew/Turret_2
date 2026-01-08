@@ -11,7 +11,7 @@ public:
         : Clickable(size), label(name, translateble) { }
     ~Button() final = default;
     //
-    void draw() final;
+    void draw(const Renderer& renderer) final;
     void callback(const Input& input) final;
     void setPosition(const PixelCoord position) final;
     void setText(const std::u32string& name);

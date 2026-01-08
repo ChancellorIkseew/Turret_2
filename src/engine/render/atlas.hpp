@@ -2,18 +2,30 @@
 #include <SDL3/SDL_render.h>
 #include <filesystem>
 #include <string>
+#include <unordered_map>
+#include "engine/coords/transforms.hpp"
+#include "texture.hpp"
+
+class Renderer;
 
 class Atlas {
-    static inline SDL_Texture* comonTexture = nullptr;
-    static inline SDL_Renderer* renderer = nullptr;
+    SDL_Texture* comonTexture = nullptr;
+    SDL_Point size;
+    std::unordered_map <std::string, SDL_Rect> atlas;
+    std::unordered_map <std::string, SDL_Surface*> temporarySurfaces;
 public:
-    static void clear();
-    static void build();
-    static void addTexture(const std::filesystem::path& path);
-    static void testDraw();
-    static SDL_Texture* rawSDL() { return comonTexture; }
-    static SDL_FRect at(const std::string& name);
-    static void setRenderer(SDL_Renderer* renderer) {
-        Atlas::renderer = renderer;
-    }
+    Atlas() = default;
+    ~Atlas() { clear(); }
+    //
+    void clear();
+    void build(Renderer& renderer);
+    void addTexture(const std::filesystem::path& path);
+    Texture at(const std::string& name);
+    Texture getComonTexture() const;
+    PixelCoord getSize() const { return PixelCoord(size.x, size.y); }
+private:
+    Atlas(const Atlas&) = delete;
+    Atlas(Atlas&&) = delete;
+    Atlas& operator=(const Atlas&) = delete;
+    Atlas& operator=(Atlas&&) = delete;
 };

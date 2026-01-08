@@ -1,10 +1,12 @@
 #include "mobs_system.hpp"
 //
+#include "engine/render/renderer.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
-#include "engine/render/animation.hpp"
+
+constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
 
 static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord vector) {
     soa.position[index] = soa.position[index] + vector;
@@ -64,28 +66,21 @@ void mobs::cleanupMobs(MobManager& manager/*, Explosions& explosions*/) {
     }
 }
 
-static void drawHitboxes(const MobSoA& soa, const Camera& camera) {
-    Sprite sprite;
+static void drawHitboxes(const MobSoA& soa, const Camera& camera, const Renderer& renderer) {
     for (size_t i = 0; i < soa.id.size(); ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        // TODO: refactoring
-        const float hitboxSize = soa.preset[i]->hitboxRadius * 2.0f;
+        const float hitboxSize= soa.preset[i]->hitboxRadius * 2.0f;
         const PixelCoord hitbox(hitboxSize, hitboxSize);
-        sprite.setTexture(Texture("fill"));
-        sprite.setSize(hitbox);
-        sprite.setOrigin(hitbox / 2.0f);
-        sprite.setPosition(soa.position[i]);
-        sprite.draw();
+        renderer.drawRect(HITBOX_COLOR, soa.position[i] - hitbox / 2.0f, hitbox);
     }
 }
 
 static uint64_t c = 0;
 
-void mobs::drawMobs(MobSoA& soa, const Camera& camera) {
+void mobs::drawMobs(MobSoA& soa, const Camera& camera, const Renderer& renderer) {
     if (Settings::gameplay.showHitboxes)
-        drawHitboxes(soa, camera);
-    ASprite sprite;
+        drawHitboxes(soa, camera, renderer);
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
@@ -97,12 +92,7 @@ void mobs::drawMobs(MobSoA& soa, const Camera& camera) {
                 soa.chassisFrame[i] = 0;
         }
         auto& visual = soa.preset[i]->visual;
-        sprite.setTexture(*visual.texture);
-        sprite.setOrigin(visual.origin);
-        sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i]);
-        sprite.setRotationRad(soa.angle[i]);
-        sprite.setFrame(soa.chassisFrame[i]);
-        sprite.draw();
+        renderer.drawAnimated(*visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i],
+            soa.chassisFrame[i], visual.frameCount);
     }
 }
