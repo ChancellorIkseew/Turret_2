@@ -17,6 +17,7 @@ namespace script_libs {
     }
 
     inline debug::Logger logger("scripts_libs");
+    inline Assets* assets;
     inline Camera* camera;
     inline GUI*    gui;
     inline Input*  input;
@@ -24,6 +25,7 @@ namespace script_libs {
     inline PlayerController* playerController;
 
     inline void initNewGame(Engine& engine) {
+        assets = &engine.getAssets();
         camera = &engine.getCamera();
         gui    = &engine.getGUI();
         input  = &engine.getMainWindow().getInput();

@@ -27,10 +27,11 @@
 #include "game/physics/turrets_system.hpp"
 #include "engine/audio/sound_queue.hpp"
 
-static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder, WorldProperties& properties) {
+static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder,
+    WorldProperties& properties, const Assets& assets) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
         return serializer::loadWorld(folder);
-    return gen::generateWorld(properties);
+    return gen::generateWorld(properties, assets.getIndexes());
 }
 
 static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engine, WorldMap& map, const Camera& camera) {
@@ -91,7 +92,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     paused = Settings::gameplay.pauseOnWorldOpen;
     std::mutex worldMutex;
     
-    std::unique_ptr<World> world = createWorld(command, folder, properties);
+    std::unique_ptr<World> world = createWorld(command, folder, properties, assets);
     if (!world)
         return openMainMenu();
     Camera camera(world->getMap().getSize());

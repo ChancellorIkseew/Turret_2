@@ -2,8 +2,8 @@
 //
 #include <algorithm>
 #include <vector>
+#include "engine/assets/indexes.hpp"
 #include "engine/debug/logger.hpp"
-//#include "game/content/indexes.hpp"
 #include "game/world/world.hpp"
 #include "hash_noise.hpp"
 #include "perlin_noise.hpp"
@@ -26,21 +26,21 @@ static uint8_t calculateTileType(const float height, const std::vector<Pair>& va
     return 0U;
 }
 
-static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets) {
+static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets, const Indexes& indexes) {
     std::vector<Pair> vals;
     for (const auto& [name, height] : floorPresets) {
-        //vals.emplace_back(height, content::Indexes::getFloor().at(name));
+        vals.emplace_back(height, indexes.getFloor().at(name));
     }
     std::sort(vals.begin(), vals.end(), fromMaxToMin);
     return vals;
 }
 
-static WorldMap generateMap(const WorldProperties& properties) {
+static WorldMap generateMap(const WorldProperties& properties, const Indexes& indexes) {
     const auto mapSize = properties.mapSize;
     PerlinNoise2D mainNoise(properties.seed);
     PerlinNoise2D supportNoise(properties.seed + 100U);
     WorldMap map(mapSize);
-    const auto vals = processFloorPresets(properties.floorPresets);
+    const auto vals = processFloorPresets(properties.floorPresets, indexes);
 
     SpotGenerator2D spotGenerator(properties.seed);
 
@@ -58,15 +58,15 @@ static WorldMap generateMap(const WorldProperties& properties) {
             map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, vals);
  
             for (const auto& [id, frequency, deposite] : properties.overlayPresets) {
-                //if (hashNoises.at(id).createTile(x, y, frequency))
-                    //spotGenerator.generateSpot(map, TileCoord(x, y), content::Indexes::getOverlay().at(id), deposite);
+                if (hashNoises.at(id).createTile(x, y, frequency))
+                    spotGenerator.generateSpot(map, TileCoord(x, y), indexes.getOverlay().at(id), deposite);
             }
         }
     }
     return map;
 }
 
-std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties) {
-    auto map = generateMap(properties);
+std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Indexes& indexes) {
+    auto map = generateMap(properties, indexes);
     return std::make_unique<World>(map);
 }

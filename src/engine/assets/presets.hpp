@@ -23,6 +23,16 @@ class Presets {
     PresetID  nextShellID = 0;
     PresetID nextTurretID = 0;
 public:
+    void load(const Atlas& atlas);
+
+    bool hasMob(const std::string& name) const { return mobIDByName.contains(name); }
+    bool hasShell(const std::string& name) const { return shellIDByName.contains(name); }
+    bool hasTurret(const std::string& name) const { return turretIDByName.contains(name); }
+
+    PresetID getMob(const std::string& name) const { return mobIDByName.at(name); }
+    PresetID getShell(const std::string& name) const { return shellIDByName.at(name); }
+    PresetID getTurret(const std::string& name) const { return turretIDByName.at(name); }
+
     const MobPreset& getMob(PresetID id) const noexcept {
         return mobStore[id];
     }
@@ -32,9 +42,6 @@ public:
     const TurretPreset& getTurret(PresetID id) const noexcept {
         return turretStore[id];
     }
-
-    void load(const Atlas& atlas);
-
 private:
     template<class PresetType>
     void loadPresets(const std::string& folder, const Atlas& atlas);
