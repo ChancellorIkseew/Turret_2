@@ -15,7 +15,7 @@ static inline void loadIcon(SDL_Window* window) {
     SDL_DestroySurface(iconSurface);
 }
 
-MainWindow::MainWindow(const std::string& title) {
+SDLContext::SDLContext(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))
         throw std::runtime_error("Could not init SDL");
 
@@ -33,16 +33,17 @@ MainWindow::MainWindow(const std::string& title) {
         SDL_Quit();
         throw std::runtime_error("SDL_CreateRenderer Error: " + error);
     }
-
-    loadIcon(sdlWindow);
-    input.setWindow(sdlWindow);
-    renderer.setRawSDLRenderer(sdlRenderer);
 }
 
-MainWindow::~MainWindow() {
+SDLContext::~SDLContext() {
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
+}
+
+MainWindow::MainWindow(const std::string& title) :
+    SDLContext(title), input(sdlWindow), renderer(sdlRenderer) {
+    loadIcon(sdlWindow);
 }
 
 void MainWindow::setFPS(const Uint32 FPS) {

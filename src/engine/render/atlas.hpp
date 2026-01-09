@@ -9,7 +9,6 @@
 class Renderer;
 
 class Atlas {
-    SDL_Texture* comonTexture = nullptr;
     SDL_Point size = SDL_Point{ 0, 0 };
     std::unordered_map <std::string, SDL_Rect> atlas;
     std::unordered_map <std::string, SDL_Surface*> temporarySurfaces;

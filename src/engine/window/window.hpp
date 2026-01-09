@@ -6,19 +6,22 @@
 #include "engine/render/renderer.hpp"
 #include "engine/window/input/input.hpp"
 
-class MainWindow {
+struct SDLContext {
+    SDL_Window* sdlWindow = nullptr;
+    SDL_Renderer* sdlRenderer = nullptr;
+    SDL_Event event = SDL_Event{ };
+    SDLContext(const std::string& title);
+    ~SDLContext(); // Not virtual because of no polymorphism.
+};
+
+class MainWindow : private SDLContext {
     Input input;
     Renderer renderer;
-    SDL_Window* sdlWindow;
-    SDL_Renderer* sdlRenderer;
-    SDL_Event event = SDL_Event(0);
     Cursor cursor;
     Uint32 FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
-    bool resized = false, fullscreen = false;
-    bool open = true;
+    bool open = true, resized = false, fullscreen = false;
 public:
     MainWindow(const std::string& title);
-    ~MainWindow();
     //
     void close() { open = false; }
     void setFullscreen(const bool flag);

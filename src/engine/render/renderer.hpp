@@ -5,13 +5,22 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "texture.hpp"
 
+enum class ScaleMode : uint8_t {
+    nearest  = SDL_SCALEMODE_NEAREST,
+    linear   = SDL_SCALEMODE_LINEAR,
+    pixelart = SDL_SCALEMODE_PIXELART
+};
+
 class Renderer {
     static constexpr SDL_FColor WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
     SDL_Renderer* sdlRenderer = nullptr;
     SDL_Texture* comonTexture = nullptr;
     PixelCoord translation;
 public:
-    Renderer() = default;
+    Renderer(SDL_Renderer* sdlRenderer) : sdlRenderer(sdlRenderer) {
+        SDL_SetRenderDrawBlendMode(sdlRenderer, SDL_BLENDMODE_BLEND);
+    }
+    ~Renderer() { SDL_DestroyTexture(comonTexture); }
     //
     t1_finline void drawFast(const Texture texture, const PixelCoord position, const PixelCoord size) const noexcept {
         const SDL_FRect dstRect(position.x - translation.x, position.y - translation.y, size.x, size.y);
@@ -43,13 +52,14 @@ public:
             uv, sizeof(float) * 2, vertexCount, indexes, indexCount, sizeof(int));
     }
     //
-    SDL_Renderer* getRawSDLRenderer() { return sdlRenderer; }
     void setTranslation(const PixelCoord translation) noexcept { this->translation = translation; }
-    void setComonTexture(SDL_Texture* texture) { comonTexture = texture; }
-    void setRawSDLRenderer(SDL_Renderer* renderer) {
-        sdlRenderer = renderer;
-        SDL_SetRenderDrawBlendMode(sdlRenderer, SDL_BLENDMODE_BLEND);
-    } 
+    void setScaleMode(const ScaleMode mode) noexcept {
+        SDL_SetTextureScaleMode(comonTexture, static_cast<SDL_ScaleMode>(mode));
+    }
+    void createComonTexture(SDL_Surface* comonSurface) {
+        comonTexture = SDL_CreateTextureFromSurface(sdlRenderer, comonSurface);
+        setScaleMode(ScaleMode::nearest);
+    }
 private:
     Renderer(const Renderer&) = delete;
     Renderer(Renderer&&) = delete;

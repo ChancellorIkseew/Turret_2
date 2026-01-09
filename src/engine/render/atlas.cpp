@@ -44,11 +44,9 @@ void Atlas::build(Renderer& renderer) {
     for (auto& [name, rect] : atlas) {
         SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
     }
-    comonTexture = SDL_CreateTextureFromSurface(renderer.getRawSDLRenderer(), comonSurface);
-    SDL_SetTextureScaleMode(comonTexture, SDL_SCALEMODE_NEAREST);
+    renderer.createComonTexture(comonSurface);
     SDL_DestroySurface(comonSurface);
     clearTemporary(temporarySurfaces);
-    renderer.setComonTexture(comonTexture);
 }
 
 Texture Atlas::at(const std::string& name) const noexcept {
@@ -68,7 +66,6 @@ Texture Atlas::at(const std::string& name) const noexcept {
 void Atlas::clear() {
     atlas.clear();
     clearTemporary(temporarySurfaces);
-    SDL_DestroyTexture(comonTexture);
 }
 
 Texture Atlas::getComonTexture() const noexcept {

@@ -14,7 +14,7 @@ class Input {
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
 public:
-    Input() = default;
+    Input(SDL_Window* sdlWindow) : sdlWindow(sdlWindow) { }
 
     ///@brief Check any press/click.
     bool active(const cString bindName) const;
@@ -36,7 +36,6 @@ public:
     bool isTextEnterEnabled() const;
 private:
     friend MainWindow;
-    void setWindow(SDL_Window* sdlWindow) { this->sdlWindow = sdlWindow; }
     void update(const SDL_Event& event);
     void reset();
 private:
