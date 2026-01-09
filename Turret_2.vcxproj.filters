@@ -99,9 +99,6 @@
     <ClInclude Include="src\engine\widgets\image_button.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\gui\gui_util\tile_data.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\gui\editor_gui.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

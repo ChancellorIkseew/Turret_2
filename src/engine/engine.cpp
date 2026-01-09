@@ -34,7 +34,7 @@ static std::unique_ptr<World> createWorld(const EngineCommand command, const std
     return gen::generateWorld(properties, assets.getIndexes());
 }
 
-static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engine, WorldMap& map, const Camera& camera) {
+static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engine) {
     switch (command) {
     case EngineCommand::main_menu:
         return std::make_unique<MenuGUI>(engine);
@@ -43,7 +43,7 @@ static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engin
         return std::make_unique<GameplayGUI>(engine);
     case EngineCommand::editor_new_world:
     case EngineCommand::editor_load_world:
-        return std::make_unique<EditorGUI>(engine, map, camera);
+        return std::make_unique<EditorGUI>(engine);
     }
     throw std::runtime_error("Failed to create GUI.");
 }
@@ -96,7 +96,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     if (!world)
         return openMainMenu();
     Camera camera(world->getMap().getSize());
-    std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
+    std::unique_ptr<GUI> gui = createGUI(command, *this);
     PlayerController playerController;
     WorldDrawer worldDrawer(assets);
     SoundQueue worldSounds;

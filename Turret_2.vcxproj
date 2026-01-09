@@ -37,7 +37,6 @@
     <ClInclude Include="src\engine\gui\editor_gui.hpp" />
     <ClInclude Include="src\engine\gui\gameplay_gui.hpp" />
     <ClInclude Include="src\engine\gui\gui.hpp" />
-    <ClInclude Include="src\engine\gui\gui_util\tile_data.hpp" />
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
     <ClInclude Include="src\engine\io\parser\list_parser.hpp" />

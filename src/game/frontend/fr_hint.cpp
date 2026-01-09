@@ -1,6 +1,6 @@
 #include "frontend.hpp"
 //
-#include "engine/gui/gui_util/tile_data.hpp"
+#include "engine/engine.hpp"
 #include "engine/widgets/label.hpp"
 #include "engine/io/utf8/utf8.hpp"
 #include "game/world/world.hpp"
@@ -8,7 +8,7 @@
 constexpr int ROW_SIZE = 6;
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
 
-std::unique_ptr<Container> frontend::initHint(TileData& tileData) {
+std::unique_ptr<Container> frontend::initHint(Engine& engine) {
     auto hint = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);
     
     std::string hintStr;
