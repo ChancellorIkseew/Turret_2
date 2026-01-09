@@ -1,26 +1,23 @@
 #pragma once
 #include <memory>
-#include <stack>
 #include <vector>
 #include "engine/engine.hpp"
 #include "engine/widgets/container.hpp"
-#include "engine/widgets/label.hpp"
 
 class GUI {
 protected:
     std::vector<std::unique_ptr<Container>> containers;
-    std::deque<std::unique_ptr<Container>> overlaped;
-    Label debugText;
+    std::vector<std::unique_ptr<Container>> overlaped;
     Engine& engine;
     MainWindow& mainWindow;
     Input& input;
     bool showGUI = true, showFPS = false, showAtlas = false;
 public:
-    GUI(Engine& engine) : debugText(U""), engine(engine),
+    GUI(Engine& engine) : engine(engine),
         mainWindow(engine.getMainWindow()), input(mainWindow.getInput()) {}
     virtual ~GUI() = default;
 
-    void draw(const Renderer& renderer);
+    void draw(const Renderer& renderer, const Atlas& atlas);
     void translate();
     virtual void callback();
     void addOverlaped(std::unique_ptr<Container> container);

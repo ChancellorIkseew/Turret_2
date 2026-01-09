@@ -1,6 +1,7 @@
 #include "player_controller.hpp"
 //
 #include "camera.hpp"
+#include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
@@ -40,7 +41,7 @@ void PlayerController::move(const Input& input, Camera& camera, const MobManager
     camera.scale(input);
 }
 
-void PlayerController::update(Engine& engine, MobManager& mobs) {
+void PlayerController::update(Engine& engine, MobManager& mobs, const Presets& presets) {
     if (engine.getGUI().hasOverlaped() || !engine.getGUI().isMouseFree())
         return;
     const Input& input = engine.getMainWindow().getInput();
@@ -49,10 +50,10 @@ void PlayerController::update(Engine& engine, MobManager& mobs) {
     move(engine.getMainWindow().getInput(), camera, mobs, engine.isPaused());
     shoot(input, camera);
     mine();
-    captureMob(input, camera, mobs);
+    captureMob(input, camera, mobs, presets);
 }
 
-void PlayerController::captureMob(const Input& input, const Camera& camera, MobManager& mobs) {
+void PlayerController::captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets) {
     if (!input.jactive(Control_unit))
         return;
     const auto& soa = mobs.getSoa();
@@ -61,13 +62,13 @@ void PlayerController::captureMob(const Input& input, const Camera& camera, MobM
         if (soa.teamID[i] != playerTeam->getID())
             continue;
         if (t1::areCloser(camera.fromMapToScreen(soa.position[i]), input.getMouseCoord(), 20.f))
-            return setTarget(mobs, soa.id[i]);     
+            return setTarget(mobs, soa.id[i], presets);     
     }
-    resetTarget(mobs);
+    resetTarget(mobs, presets);
 }
 
-void PlayerController::setTarget(MobManager& mobs, const MobID mobID) {
-    resetTarget(mobs); // Reset current target before set new.
+void PlayerController::setTarget(MobManager& mobs, const MobID mobID, const Presets& presets) {
+    resetTarget(mobs, presets); // Reset current target before set new.
     if (mobID == IDManager<MobID>::INVALID_ID)
         return;
     const size_t index = mobs.getSoaIndexByMobID(mobID);
@@ -77,12 +78,12 @@ void PlayerController::setTarget(MobManager& mobs, const MobID mobID) {
     state = State::control_mob;
 }
 
-void PlayerController::resetTarget(MobManager& mobs) {
+void PlayerController::resetTarget(MobManager& mobs, const Presets& presets) {
     if (targetMobID == IDManager<MobID>::INVALID_ID)
         return;
     const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-    mobs.getSoa().motionData[index].aiType = mobs.getSoa().preset[index]->defaultMovingAI;
-    mobs.getSoa().shootingData[index].aiType = mobs.getSoa().preset[index]->defaultShootingAI;
+    mobs.getSoa().motionData[index].aiType =   presets.getMob(mobs.getSoa().preset[index]).defaultMovingAI;
+    mobs.getSoa().shootingData[index].aiType = presets.getMob(mobs.getSoa().preset[index]).defaultShootingAI;
     targetMobID = IDManager<MobID>::INVALID_ID;
     state = State::control_camera;
 }

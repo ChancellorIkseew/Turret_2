@@ -7,8 +7,6 @@
 #include "engine/gui/gameplay_gui.hpp"
 #include "engine/gui/menu_gui.hpp"
 //
-#include "game/content/content.hpp"
-#include "engine/render/atlas.hpp"
 #include "engine/util/sleep.hpp"
 //
 #include "game/events/events.hpp"
@@ -23,7 +21,6 @@
 #include "engine/io/folders.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
-#include "game/content/presets.hpp"
 #include "game/physics/ai_system.hpp"
 #include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
@@ -51,11 +48,9 @@ static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engin
 }
 
 void Engine::run() {
-    audio.loadSound("cannon_shot", io::folders::SOUNDS / "cannon_shot.wav");
-
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
-    content::load(atlas, mainWindow.getRenderer());
+    assets.load(mainWindow.getRenderer());
     openMainMenu();
     while (mainWindow.isOpen()) {
         createScene(worldFolder, worldProperties);
@@ -102,7 +97,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     Camera camera(world->getMap().getSize());
     std::unique_ptr<GUI> gui = createGUI(command, *this, world->getMap(), camera);
     PlayerController playerController;
-    WorldDrawer worldDrawer(atlas);
+    WorldDrawer worldDrawer(assets);
     SoundQueue worldSounds;
 
     _world = world.get();
@@ -120,16 +115,17 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     auto& mobs = world->getMobs();
     auto& shells = world->getShells();
 
-    auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
+    //auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
     MotionData mData(MovingAI::basic, 0, PixelCoord(400, 1000));
     ShootingData sData(ShootingAI::basic, false, PixelCoord(0, 0));
-    mobs.addMob(cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
-        cannonerBot->turret->reload, 0.f);
+    //mobs.addMob(presets, cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
+        //cannonerBot->turret->reload, 0.f);
     //
     while (mainWindow.isOpen() && isWorldOpen()) {
         mainWindow.pollEvents();
         mainWindow.clear();
-        playerController.update(*this, world->getMobs());
+        const Presets& presets = assets.getPresets();
+        playerController.update(*this, world->getMobs(), presets);
         camera.update(mainWindow.getSize());
         mainWindow.setRenderScale(camera.getMapScale());
         mainWindow.setRenderTranslation(camera.getPosition());
@@ -137,23 +133,23 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
         if (!isPaused()) {
             // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
             shells::processShells(shells.getSoa(), mobs.getSoa());
-            mobs::processMobs(mobs.getSoa());
-            ai::updateMovingAI(mobs.getSoa(), playerController);
-            ai::updateShootingAI(mobs.getSoa(), playerController);
-            turrets::processTurrets(mobs.getSoa(), shells, worldSounds, camera);
+            mobs::processMobs(mobs.getSoa(), presets);
+            ai::updateMovingAI(mobs.getSoa(), presets, playerController);
+            ai::updateShootingAI(mobs.getSoa(), presets, playerController);
+            turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);
             // Clean up only after all processing.
-            shells::cleanupShells(shells);
-            mobs::cleanupMobs(mobs);
+            shells::cleanupShells(shells, presets);
+            mobs::cleanupMobs(mobs, presets);
         }
         //
-        worldDrawer.draw(camera, mainWindow.getRenderer(), *world);
-        worldSounds.play(audio, camera);
+        worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets);
+        worldSounds.play(assets.getAudio(), camera);
         Events::reset(); // for editor
         scriptsHandler.execute();
         //
         mainWindow.setRenderScale(1.0f);
         mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        gui->draw(mainWindow.getRenderer());
+        gui->draw(mainWindow.getRenderer(), assets.getAtlas());
         gui->callback();
         mainWindow.render();
     }
@@ -167,6 +163,6 @@ void Engine::startNet() {
 
 void Engine::setPaused(const bool flag) {
     paused = flag;
-    if (paused) audio.pauseWorldSounds();
-    else        audio.resumeWorldSounds();
+    if (paused) assets.getAudio().pauseWorldSounds();
+    else        assets.getAudio().resumeWorldSounds();
 }

@@ -3,14 +3,14 @@
 #include "engine/engine.hpp"
 #include "engine/gui/gui_util/tile_data.hpp"
 #include "engine/widgets/image_button.hpp"
-#include "game/content/indexes.hpp"
+//#include "game/content/indexes.hpp"
 #include "game/world/world.hpp"
 
 constexpr int ROW_SIZE = 6;
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
 
 std::unique_ptr<Container> frontend::initJEI(Engine& engine, TileData& tileData) {
-    auto jei = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);
+    auto jei = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);/*
     int btns = 0;
     auto line = std::make_unique<Layout>(Orientation::horizontal);
 
@@ -42,5 +42,6 @@ std::unique_ptr<Container> frontend::initJEI(Engine& engine, TileData& tileData)
         jei->addNode(line.release());
     jei->arrange();
     
+    */
     return jei;
 }

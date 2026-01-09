@@ -1,5 +1,4 @@
 #pragma once
-#include <SDL3/SDL_render.h>
 #include <string>
 #include "engine/coords/pixel_coord.hpp"
 

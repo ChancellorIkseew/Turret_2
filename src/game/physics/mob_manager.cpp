@@ -1,5 +1,6 @@
 #include "mob_manager.hpp"
 //
+#include "engine/assets/presets.hpp"
 #include "engine/debug/logger.hpp"
 
 constexpr MobID INVALID_MOB_ID = IDManager<MobID>::INVALID_ID;
@@ -25,7 +26,8 @@ void MobManager::reserve(const size_t capacity) {
 }
 
 MobID MobManager::addMob(
-    const csp::centralized_ptr<MobPreset>& preset,
+    const Presets& presets,
+    const PresetID preset,
     const PixelCoord position,
     const AngleRad angle,
     const Health health,
@@ -48,7 +50,7 @@ MobID MobManager::addMob(
     soa.health.push_back(health);
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
-    soa.hitbox.push_back(Hitbox(position, preset->hitboxRadius));
+    soa.hitbox.push_back(Hitbox(position, presets.getMob(preset).hitboxRadius));
     soa.motionData.push_back(motionData);
     soa.shootingData.push_back(shootingData);
     soa.restReloadTime.push_back(restReloadTime);

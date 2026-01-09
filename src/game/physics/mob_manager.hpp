@@ -12,36 +12,36 @@
 using MobID = uint16_t;
 
 struct MobVisualPreset {
-    csp::centralized_ptr<Texture> texture;
-    const PixelCoord origin;
-    const PixelCoord size;
-    const uint8_t frameCount;
+    Texture texture;
+    PixelCoord origin;
+    PixelCoord size;
+    uint8_t frameCount;
 };
 
 struct TurretVisualPreset {
-    csp::centralized_ptr<Texture> texture;
-    const PixelCoord origin;
-    const PixelCoord size;
-    const uint8_t frameCount;
+    Texture texture;
+    PixelCoord origin;
+    PixelCoord size;
+    uint8_t frameCount;
 };
 
 struct TurretPreset {
-    const TickCount reload;
-    const AngleRad rotationSpeed;
-    const size_t barrelsCount;
-    const std::array<PixelCoord, 4> barrels;
-    csp::centralized_ptr<ShellPreset> shell;
-    const TurretVisualPreset visual;
+    TickCount reload;
+    AngleRad rotationSpeed;
+    size_t barrelsCount;
+    std::array<PixelCoord, 4> barrels;
+    PresetID shell;
+    TurretVisualPreset visual;
 };
 
 struct MobPreset {
-    const float maxSpeed;
-    const float hitboxRadius;
-    const Health maxHealth;
-    const MovingAI defaultMovingAI;
-    const ShootingAI defaultShootingAI;
-    csp::centralized_ptr<TurretPreset> turret;
-    const MobVisualPreset visual;
+    float maxSpeed;
+    float hitboxRadius;
+    Health maxHealth;
+    MovingAI defaultMovingAI;
+    ShootingAI defaultShootingAI;
+    PresetID turret;
+    MobVisualPreset visual;
 };
 
 struct MobSoA {
@@ -50,7 +50,7 @@ struct MobSoA {
     std::vector<PixelCoord> velocity;
     std::vector<AngleRad> angle;
     std::vector<Health> health;
-    std::vector<csp::centralized_ptr<MobPreset>> preset;
+    std::vector<PresetID> preset;
     std::vector<MobID> id;
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
@@ -82,7 +82,8 @@ public:
     void reserve(const size_t capacity);
     void removeMob(const size_t index);
     MobID addMob(
-        const csp::centralized_ptr<MobPreset>& preset,
+        const Presets& presets,
+        const PresetID preset,
         const PixelCoord position,
         const AngleRad angle,
         const Health health,

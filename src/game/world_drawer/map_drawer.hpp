@@ -5,7 +5,7 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/render/texture.hpp"
 
-class Atlas;
+class Assets;
 class Camera;
 class Renderer;
 class WorldMap;
@@ -21,7 +21,7 @@ class MapDrawer {
     std::vector<int> indexCache;
     PixelCoord atlasSize;
 public:
-    MapDrawer(Atlas& atlas);
+    MapDrawer(const Assets& atlas);
     void cacheFloor(const WorldMap& map);
     void cacheOverlay(const WorldMap& map);
     void draw(const Camera& camera, const Renderer& renderer, const WorldMap& map);

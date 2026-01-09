@@ -20,6 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp" />
+    <ClInclude Include="src\engine\assets\assets.hpp" />
+    <ClInclude Include="src\engine\assets\indexes.hpp" />
+    <ClInclude Include="src\engine\assets\presets.hpp" />
+    <ClInclude Include="src\engine\assets\preset_reader.hpp" />
     <ClInclude Include="src\engine\audio\audio.hpp" />
     <ClInclude Include="src\engine\audio\sound_queue.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
@@ -67,9 +71,6 @@
     <ClInclude Include="src\engine\window\input\controls.hpp" />
     <ClInclude Include="src\engine\window\input\input.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
-    <ClInclude Include="src\game\content\indexes.hpp" />
-    <ClInclude Include="src\game\content\content.hpp" />
-    <ClInclude Include="src\game\content\presets.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
@@ -105,6 +106,9 @@
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\assets\assets.cpp" />
+    <ClCompile Include="src\engine\assets\indexes.cpp" />
+    <ClCompile Include="src\engine\assets\presets.cpp" />
     <ClCompile Include="src\engine\audio\audio.cpp" />
     <ClCompile Include="src\engine\coords\math.cpp" />
     <ClCompile Include="src\engine\debug\console.cpp" />
@@ -140,9 +144,6 @@
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
-    <ClCompile Include="src\game\content\indexes.cpp" />
-    <ClCompile Include="src\game\content\presets.cpp" />
-    <ClCompile Include="src\game\content\textures.cpp" />
     <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />

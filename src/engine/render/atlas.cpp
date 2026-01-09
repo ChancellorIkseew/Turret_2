@@ -51,13 +51,13 @@ void Atlas::build(Renderer& renderer) {
     renderer.setComonTexture(comonTexture);
 }
 
-Texture Atlas::at(const std::string& name) {
+Texture Atlas::at(const std::string& name) const noexcept {
     if (!atlas.contains(name)) {
         logger.error() << "Texture was not created yet or does not exist: " << name;
-        return Texture(SDL_FRect(0.0f, 0.0f, 0.0f, 0.0f));
+        return NULL_TEXTURE;
     }
     SDL_FRect fRect;
-    auto& iRect = atlas[name];
+    auto& iRect = atlas.at(name);
     fRect.x = static_cast<float>(iRect.x);
     fRect.y = static_cast<float>(iRect.y);
     fRect.w = static_cast<float>(iRect.w);
@@ -71,6 +71,6 @@ void Atlas::clear() {
     SDL_DestroyTexture(comonTexture);
 }
 
-Texture Atlas::getComonTexture() const {
+Texture Atlas::getComonTexture() const noexcept {
     return Texture(SDL_FRect(0.0f, 0.0f, static_cast<float>(size.x), static_cast<float>(size.y)));
 }

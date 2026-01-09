@@ -58,11 +58,11 @@ void Settings::readSettings() {
 
 void Settings::applySettings(Engine& engine) {
     float master = static_cast<float>(audio.master) / 100.f;
-    engine.getAudio().setMasterVolume(audio.toggleSound ? master : 0.0f);
-    engine.getAudio().setWorldVolume(static_cast<float>(audio.world) / 100.f);
-    engine.getAudio().setUIVolume(static_cast<float>(audio.ui) / 100.f);
-    engine.getAudio().setMusicVolume(static_cast<float>(audio.music) / 100.f);
-    engine.getAudio().updateVolume();
+    engine.getAssets().getAudio().setMasterVolume(audio.toggleSound ? master : 0.0f);
+    engine.getAssets().getAudio().setWorldVolume(static_cast<float>(audio.world) / 100.f);
+    engine.getAssets().getAudio().setUIVolume(static_cast<float>(audio.ui) / 100.f);
+    engine.getAssets().getAudio().setMusicVolume(static_cast<float>(audio.music) / 100.f);
+    engine.getAssets().getAudio().updateVolume();
     //
     engine.getMainWindow().setFPS(display.FPS);
     engine.getMainWindow().setFullscreen(display.fullscreen);

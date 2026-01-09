@@ -1,7 +1,7 @@
 #include "script_libs.hpp"
 //
 #include "engine/debug/logger.hpp"
-#include "game/content/presets.hpp"
+//#include "game/content/presets.hpp"
 #include "game/world/world.hpp"
 
 static debug::Logger logger("scripts_lib_world");
@@ -21,7 +21,7 @@ static int getHeight() {
 }
 
 static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID) {
-    if (!content::Presets::getMobs().contains(presetName)) {
+    /*if (!content::Presets::getMobs().contains(presetName)) {
         logger.warning() << "Preset does not exist. Preset: " << presetName;
         return;
     }
@@ -33,11 +33,11 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
     MotionData mData(preset->defaultMovingAI, 0, PixelCoord(400, 1000));
     ShootingData sData(preset->defaultShootingAI, false, PixelCoord(0, 0));
     script_libs::world->getMobs().addMob(preset, PixelCoord(x, y), 0.f, preset->maxHealth, teamID, mData, sData,
-        preset->turret->reload, 0.f);
+        preset->turret->reload, 0.f);*/
 }
 
 static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TeamID teamID) {
-    if (!content::Presets::getShells().contains(presetName)) {
+    /*if (!content::Presets::getShells().contains(presetName)) {
         logger.warning() << "Preset does not exist. Preset: " << presetName;
         return;
     }
@@ -46,7 +46,7 @@ static void spawnShell(const std::string& presetName, int x, int y, AngleRad ang
         return;
     }
     auto& preset = content::Presets::getShells().at(presetName);
-    script_libs::world->getShells().addShell(preset, PixelCoord(x, y), angle, preset->damage, preset->maxLifeTime, teamID);
+    script_libs::world->getShells().addShell(preset, PixelCoord(x, y), angle, preset->damage, preset->maxLifeTime, teamID);*/
 }
 
 void script_libs::registerWorld(const ScriptsHandler& scriptsHandler) {

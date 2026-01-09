@@ -24,13 +24,13 @@ class PlayerController {
 public:
     PlayerController() = default;
 
-    void captureMob(const Input& input, const Camera& camera, MobManager& mobs);
-    void update(Engine& engine, MobManager& mobs);
+    void captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets);
+    void update(Engine& engine, MobManager& mobs, const Presets& presets);
 
     void setPlayerTeam(Team* team) { playerTeam = team; }
     Team* getPlayerTeam() { return playerTeam; }
-    void resetTarget(MobManager& mobs);
-    void setTarget(MobManager& mobs, const MobID mobID);
+    void resetTarget(MobManager& mobs, const Presets& presets);
+    void setTarget(MobManager& mobs, const MobID mobID, const Presets& presets);
     MobID getTarget() { return targetMobID; }
 
     PixelCoord getMotionVector() const { return motionVector; }

@@ -1,5 +1,6 @@
 #include "turrets_system.hpp"
 //
+#include "engine/assets/presets.hpp"
 #include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"
@@ -19,42 +20,46 @@ static inline void reduceRestReload(MobSoA& soa) {
     }
 }
 
-static inline void shoot(MobSoA& soa, ShellManager& shells, const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
+static inline void shoot(MobSoA& soa, ShellManager& shells, const Presets& presets,
+    const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.restReloadTime[i] > 0 || !soa.shootingData[i].isShooting)
             continue;
-        soa.restReloadTime[i] = soa.preset[i]->turret->reload;
-        const auto& preset = soa.preset[i]->turret->shell;
+        const TurretPreset& turret = presets.getTurret(presets.getMob(soa.preset[i]).turret);
+        const ShellPreset& shell = presets.getShell(turret.shell);
+        soa.restReloadTime[i] = turret.reload;
         const AngleRad angle = soa.turretAngle[i];
-        const PixelCoord localMuzzle = soa.preset[i]->turret->barrels[soa.currentBarrel[i]];
+        const PixelCoord localMuzzle = turret.barrels[soa.currentBarrel[i]];
         PixelCoord position = soa.position[i];
 
         ++soa.currentBarrel[i];
-        if (soa.currentBarrel[i] >= soa.preset[i]->turret->barrelsCount)
+        if (soa.currentBarrel[i] >= turret.barrelsCount)
             soa.currentBarrel[i] = 0;
 
         const float sin = sinf(angle);
         const float cos = cosf(angle);
         position.x +=  localMuzzle.x * cos + localMuzzle.y * sin;
         position.y += -localMuzzle.x * sin + localMuzzle.y * cos;
-        shells.addShell(preset, position, angle, preset->damage, preset->maxLifeTime, soa.teamID[i]);
+
+        shells.addShell(presets, turret.shell, position, angle, shell.damage, shell.maxLifeTime, soa.teamID[i]);
         if (camera.contains(t1::tile(position)))
             sounds.pushSound("cannon_shot", position);
     }
 }
 
-void turrets::processTurrets(MobSoA& soa, ShellManager& shells, SoundQueue& sounds, const Camera& camera) {
+void turrets::processTurrets(MobSoA& soa, ShellManager& shells, const Presets& presets,
+    SoundQueue& sounds, const Camera& camera) {
     const size_t mobCount = soa.mobCount;
     reduceRestReload(soa);
-    shoot(soa, shells, mobCount, sounds, camera);
+    shoot(soa, shells, presets, mobCount, sounds, camera);
 }
 
-void turrets::drawTurrets(const MobSoA& soa, const Camera& camera, const Renderer& renderer) {
+void turrets::drawTurrets(const MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        auto& visual = soa.preset[i]->turret->visual;
-        renderer.draw(*visual.texture, soa.position[i], visual.size, visual.origin, soa.turretAngle[i]);
+        auto& visual = presets.getTurret(presets.getMob(soa.preset[i]).turret).visual;
+        renderer.draw(visual.texture, soa.position[i], visual.size, visual.origin, soa.turretAngle[i]);
     }
 }

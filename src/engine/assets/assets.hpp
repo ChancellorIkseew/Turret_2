@@ -1,39 +1,24 @@
 #pragma once
-#include "engine/io/folders.hpp"
 #include "engine/render/atlas.hpp"
-#include "engine/render/text.hpp"
 #include "engine/audio/audio.hpp"
-#include "game/content/indexes.hpp"
-#include "game/content/presets.hpp"
+#include "indexes.hpp"
+#include "presets.hpp"
+
+class Renderer;
 
 class Assets {
-
-
+    Atlas atlas;
+    Audio audio;
+    Presets presets;
+    Indexes indexes;
 public:
-    void loadTextures(Atlas& atlas) {
-        atlas.clear();
-        const auto fileNames = io::folders::getContents(io::folders::IMAGES, io::folders::ContentsType::file);
-        for (const auto& fileName : fileNames) {
-            atlas.addTexture(io::folders::IMAGES / fileName);
-        }
-        atlas.build();
-    }
-
-    void loadSounds(Audio& audio) {
-        const auto fileNames = io::folders::getContents(io::folders::SOUNDS, io::folders::ContentsType::file);
-        for (const auto& fileName : fileNames) {
-            //audio.clear();
-            audio.loadSound(io::folders::trimExtensions(fileName), io::folders::SOUNDS / fileName);
-        }
-    }
-
-    void load(Atlas& atlas, Audio& audio, content::Indexes& indexes, content::Presets& presets) {
-        loadTextures(atlas);
-        loadSounds(audio);
-
-        indexes.load();
-        presets.load();
-    }
-
-
+    Assets() = default;
+    void load(Renderer& renderer);
+    //
+    const Atlas&   getAtlas()   const noexcept { return atlas; }
+    const Audio&   getAudio()   const noexcept { return audio; }
+    const Presets& getPresets() const noexcept { return presets; }
+    const Indexes& getIndexes() const noexcept { return indexes; }
+    //
+    Audio& getAudio() noexcept { return audio; }
 };

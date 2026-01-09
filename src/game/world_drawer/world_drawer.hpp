@@ -5,6 +5,7 @@
 // TODO: #include "weather_drawer.hpp"
 
 class Camera;
+class Presets;
 class Renderer;
 
 class WorldDrawer {
@@ -12,11 +13,11 @@ class WorldDrawer {
     EntitiesDrawer entitiesDrawer;
     // TODO: WeatherDrawer weatherDrawer;
 public:
-    WorldDrawer(Atlas& atlas) : mapDrawer(atlas) { }
+    WorldDrawer(const Assets& assets) : mapDrawer(assets) { }
 
-    void draw(const Camera& camera, const Renderer& renderer, World& world) {
+    void draw(const Camera& camera, const Renderer& renderer, World& world, const Presets& presets) {
         mapDrawer.draw(camera, renderer, world.getMap());
-        entitiesDrawer.draw(camera, renderer, world.getMobs().getSoa(), world.getShells().getSoa());
+        entitiesDrawer.draw(camera, renderer, world.getMobs().getSoa(), world.getShells().getSoa(), presets);
         // TODO: weatherDrawer.draw();
     }
 };

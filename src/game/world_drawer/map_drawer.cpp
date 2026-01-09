@@ -1,9 +1,9 @@
 #include "map_drawer.hpp"
 //
+#include "engine/assets/assets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/renderer.hpp"
-#include "game/content/indexes.hpp"
 #include "game/events/events.hpp"
 #include "game/player/camera.hpp"
 #include "game/world/world_map.hpp"
@@ -12,16 +12,16 @@ constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 constexpr PixelCoord TILE_SIZE(t1::TILE_F, t1::TILE_F);
 constexpr PixelCoord FLOOR_SIZE(t1::TILE_F + 8.0f, t1::TILE_F + 8.0f);
 
-MapDrawer::MapDrawer(Atlas& atlas) {
-    for (const auto& [name, id] : content::Indexes::getFloor()) {
+MapDrawer::MapDrawer(const Assets& assets) {
+    for (const auto& [name, id] : assets.getIndexes().getFloor()) {
         cachedFloor.emplace(id, std::vector<PixelCoord>());
-        floorTextures.emplace(id, atlas.at(name));
+        floorTextures.emplace(id, assets.getAtlas().at(name));
     }
-    for (const auto& [name, id] : content::Indexes::getOverlay()) {
+    for (const auto& [name, id] : assets.getIndexes().getOverlay()) {
         cachedOverlay.emplace(id, std::vector<PixelCoord>());
-        overlayTextures.emplace(id, atlas.at(name));
+        overlayTextures.emplace(id, assets.getAtlas().at(name));
     }
-    atlasSize = atlas.getSize();
+    atlasSize = assets.getAtlas().getSize();
 }
 
 void MapDrawer::cacheFloor(const WorldMap& map) {
@@ -31,7 +31,8 @@ void MapDrawer::cacheFloor(const WorldMap& map) {
     //
     for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
         for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
-            cachedFloor.at(map.at(x, y).floor).push_back(t1::pixel(x, y));
+            if (map.at(x, y).floor != 0)
+                cachedFloor.at(map.at(x, y).floor).push_back(t1::pixel(x, y));
         }
     }
 }

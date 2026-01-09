@@ -4,6 +4,7 @@
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
+#include "engine/render/text.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/util/time.hpp"
 #include "engine/widgets/form_editor/form_editor.hpp"
@@ -12,13 +13,13 @@
 
 static tin::Data langTranslations;
 
-static void drawDebugText(MainWindow& mainWindow, Label& debugText) {
-    debugText.setText(U"FPS: " + utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()));
-    debugText.setPosition(PixelCoord(mainWindow.getSize().x - 100.0f, 20.0f));
-    debugText.draw(mainWindow.getRenderer());
+static void drawDebugText(const Renderer& renderer, const MainWindow& mainWindow) {
+    const PixelCoord corner = mainWindow.getSize();
+    PixelCoord position = corner - PixelCoord(100.0f, 20.0f);
+    text::drawString(renderer, U"FPS: " + utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
 }
 
-void GUI::draw(const Renderer& renderer) {
+void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
     if (mainWindow.justResized())
         relocateContainers();
     //
@@ -31,9 +32,9 @@ void GUI::draw(const Renderer& renderer) {
         FormEditor::drawCarriage(renderer);
     }
     if (showFPS)
-        drawDebugText(mainWindow, debugText);
+        drawDebugText(renderer, mainWindow);
     if (showAtlas)
-        renderer.drawFast(engine.getAtlas().getComonTexture(), PixelCoord(0, 0), engine.getAtlas().getSize());
+        renderer.drawFast(atlas.getComonTexture(), PixelCoord(0, 0), atlas.getSize());  
 }
 
 void GUI::translate() {

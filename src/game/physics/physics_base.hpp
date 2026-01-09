@@ -3,6 +3,7 @@
 #include "config.hpp"
 #include "engine/coords/transforms.hpp"
 
+using PresetID = uint8_t;
 using TeamID = uint8_t;
 using Health = int64_t;
 using AngleRad = float;

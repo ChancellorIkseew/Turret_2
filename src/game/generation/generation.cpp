@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include "engine/debug/logger.hpp"
-#include "game/content/indexes.hpp"
+//#include "game/content/indexes.hpp"
 #include "game/world/world.hpp"
 #include "hash_noise.hpp"
 #include "perlin_noise.hpp"
@@ -29,7 +29,7 @@ static uint8_t calculateTileType(const float height, const std::vector<Pair>& va
 static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets) {
     std::vector<Pair> vals;
     for (const auto& [name, height] : floorPresets) {
-        vals.emplace_back(height, content::Indexes::getFloor().at(name));
+        //vals.emplace_back(height, content::Indexes::getFloor().at(name));
     }
     std::sort(vals.begin(), vals.end(), fromMaxToMin);
     return vals;
@@ -58,8 +58,8 @@ static WorldMap generateMap(const WorldProperties& properties) {
             map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, vals);
  
             for (const auto& [id, frequency, deposite] : properties.overlayPresets) {
-                if (hashNoises.at(id).createTile(x, y, frequency))
-                    spotGenerator.generateSpot(map, TileCoord(x, y), content::Indexes::getOverlay().at(id), deposite);
+                //if (hashNoises.at(id).createTile(x, y, frequency))
+                    //spotGenerator.generateSpot(map, TileCoord(x, y), content::Indexes::getOverlay().at(id), deposite);
             }
         }
     }
