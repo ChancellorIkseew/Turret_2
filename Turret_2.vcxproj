@@ -20,6 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.hpp" />
+    <ClInclude Include="src\engine\assets\assets.hpp" />
+    <ClInclude Include="src\engine\assets\indexes.hpp" />
+    <ClInclude Include="src\engine\assets\presets.hpp" />
+    <ClInclude Include="src\engine\assets\preset_reader.hpp" />
+    <ClInclude Include="src\engine\audio\audio.hpp" />
+    <ClInclude Include="src\engine\audio\sound_queue.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\math.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
@@ -31,7 +37,6 @@
     <ClInclude Include="src\engine\gui\editor_gui.hpp" />
     <ClInclude Include="src\engine\gui\gameplay_gui.hpp" />
     <ClInclude Include="src\engine\gui\gui.hpp" />
-    <ClInclude Include="src\engine\gui\gui_util\tile_data.hpp" />
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
     <ClInclude Include="src\engine\io\parser\list_parser.hpp" />
@@ -40,8 +45,9 @@
     <ClInclude Include="src\engine\io\utf8\utf8.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
-    <ClInclude Include="src\engine\render\sprite.hpp" />
+    <ClInclude Include="src\engine\render\renderer.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
+    <ClInclude Include="src\engine\render\texture.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
     <ClInclude Include="src\engine\settings\settings.hpp" />
     <ClInclude Include="src\engine\util\time.hpp" />
@@ -64,9 +70,6 @@
     <ClInclude Include="src\engine\window\input\controls.hpp" />
     <ClInclude Include="src\engine\window\input\input.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
-    <ClInclude Include="src\game\content\indexes.hpp" />
-    <ClInclude Include="src\game\content\content.hpp" />
-    <ClInclude Include="src\game\content\presets.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
@@ -102,6 +105,10 @@
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\assets\assets.cpp" />
+    <ClCompile Include="src\engine\assets\indexes.cpp" />
+    <ClCompile Include="src\engine\assets\presets.cpp" />
+    <ClCompile Include="src\engine\audio\audio.cpp" />
     <ClCompile Include="src\engine\coords\math.cpp" />
     <ClCompile Include="src\engine\debug\console.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
@@ -136,9 +143,7 @@
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
-    <ClCompile Include="src\game\content\indexes.cpp" />
-    <ClCompile Include="src\game\content\presets.cpp" />
-    <ClCompile Include="src\game\content\textures.cpp" />
+    <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />
     <ClCompile Include="src\game\frontend\fr_languages.cpp" />
@@ -304,7 +309,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/libs/MSVC_lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>angelscript64d.lib;SDL3.lib;SDL3_image.lib;zlib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>angelscript64d.lib;SDL3.lib;SDL3_mixer.lib;zlib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -325,7 +330,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/libs/MSVC_lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>angelscript64.lib;SDL3.lib;SDL3_image.lib;zlib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>angelscript64.lib;SDL3.lib;SDL3_mixer.lib;zlib.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

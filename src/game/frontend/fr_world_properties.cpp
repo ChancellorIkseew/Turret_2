@@ -76,10 +76,8 @@ public:
         oProps = main->addNode(new OProps());
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        auto back = lower->addNode(new Button(BTN_SIZE, U"Back"));
-        auto aply = lower->addNode(new Button(BTN_SIZE, U"Aply"));
-        back->addCallback([&] { close(); });
-        aply->addCallback([&] { createWorld(engine); });
+        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { createWorld(engine); });
 
         arrange();
     }

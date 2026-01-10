@@ -1,29 +1,32 @@
 #pragma once
 #include <SDL3/SDL.h>
-#include <atomic>
 #include <filesystem>
 #include <string>
 #include "cursor.hpp"
-#include "engine/coords/pixel_coord.hpp"
+#include "engine/render/renderer.hpp"
 #include "engine/window/input/input.hpp"
 
-class MainWindow {
+struct SDLContext {
+    SDL_Window* sdlWindow = nullptr;
+    SDL_Renderer* sdlRenderer = nullptr;
+    SDL_Event event = SDL_Event{ };
+    SDLContext(const std::string& title);
+    ~SDLContext(); // Not virtual because of no polymorphism.
+};
+
+class MainWindow : private SDLContext {
     Input input;
-    SDL_Window* sdlWindow;
-    SDL_Renderer* sdlRenderer;
-    SDL_Event event = SDL_Event(0);
+    Renderer renderer;
     Cursor cursor;
     Uint32 FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
-    bool resized = false, fullscreen = false;
-    std::atomic_bool open = true;
+    bool open = true, resized = false, fullscreen = false;
 public:
     MainWindow(const std::string& title);
-    ~MainWindow();
     //
-    void close() { open.store(false, std::memory_order_seq_cst); }
+    void close() { open = false; }
     void setFullscreen(const bool flag);
     void setFPS(const Uint32 FPS);
-    bool isOpen() const { return open.load(std::memory_order_relaxed); }
+    bool isOpen() const { return open; }
     bool isFullscreen() const { return fullscreen; }
     bool justResized() const { return resized; }
     Uint32 getFPS() const { return FPS; }
@@ -40,11 +43,14 @@ public:
             cursor = Cursor(type);
     }
     CursorType getCursor() const { return cursor.getType(); }
+    Renderer& getRenderer() { return renderer; }
     Input& getInput() { return input; }
     //
     void takeScreenshot(const std::filesystem::path& path) const;
     void pollEvents();
-    void setRenderTranslation(const PixelCoord translation);
+    void setRenderTranslation(const PixelCoord translation) {
+        renderer.setTranslation(translation);
+    }
     void setRenderScale(const float scale) {
         SDL_SetRenderScale(sdlRenderer, scale, scale);
     }

@@ -2,8 +2,9 @@
 texture=cannoner_bot_turret
 origin=21.5|28.0
 size=43|43
+frame_count=3
 #logic
-reload=15
+reload=10
 rotation_speed=0.02
 shooting_ai=basic
 shell=cannon_shell

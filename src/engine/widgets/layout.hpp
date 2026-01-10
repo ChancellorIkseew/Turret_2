@@ -21,7 +21,7 @@ public:
         return node;
     }
     void arrange();
-    void draw() final;
+    void draw(const Renderer& renderer) final;
     void clear() { contents.clear(); }
     void setMargin(const float margin) { this->margin = margin; }
     void setPadding(const float padding) { this->padding = padding; }

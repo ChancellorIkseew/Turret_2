@@ -1,21 +1,23 @@
 #pragma once
 #include <CSP/centralized_ptr.hpp>
 #include <vector>
-#include "engine/render/sprite.hpp"
+#include "engine/render/texture.hpp"
 #include "physics_base.hpp"
 
+class Presets;
+
 struct ShellVisualPreset {
-    csp::centralized_ptr<Texture> texture;
-    const PixelCoord origin;
-    const PixelCoord size;
+    Texture texture;
+    PixelCoord origin;
+    PixelCoord size;
 };
 
 struct ShellPreset {
-    const float speed;
-    const Health damage;
-    const TickCount maxLifeTime;
-    const Explosion explosion;
-    const ShellVisualPreset visual;
+    float speed;
+    Health damage;
+    TickCount maxLifeTime;
+    Explosion explosion;
+    ShellVisualPreset visual;
 };
 
 struct ShellSoA {
@@ -24,7 +26,7 @@ struct ShellSoA {
     std::vector<AngleRad> angle;
     std::vector<Health> restDamage;
     std::vector<TickCount> restLifeTime;
-    std::vector<csp::centralized_ptr<ShellPreset>> preset;
+    std::vector<PresetID> preset;
     std::vector<TeamID> teamID;
     size_t shellCount = 0;
 };
@@ -41,7 +43,8 @@ public:
     void reserve(const size_t capacity);
     void removeShell(const size_t index);
     void addShell(
-        const csp::centralized_ptr<ShellPreset>& preset,
+        const Presets& presets,
+        const PresetID preset,
         const PixelCoord position,
         const AngleRad angle,
         const Health restDamage,

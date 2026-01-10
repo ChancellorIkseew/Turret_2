@@ -1,5 +1,6 @@
 #include "mob_manager.hpp"
 //
+#include "engine/assets/presets.hpp"
 #include "engine/debug/logger.hpp"
 
 constexpr MobID INVALID_MOB_ID = IDManager<MobID>::INVALID_ID;
@@ -20,10 +21,13 @@ void MobManager::reserve(const size_t capacity) {
     soa.restReloadTime.reserve(capacity);
     soa.currentBarrel.reserve(capacity);
     soa.turretAngle.reserve(capacity);
+    soa.chassisFrame.reserve(capacity);
+    soa.turretFrame.reserve(capacity);
 }
 
 MobID MobManager::addMob(
-    const csp::centralized_ptr<MobPreset>& preset,
+    const Presets& presets,
+    const PresetID preset,
     const PixelCoord position,
     const AngleRad angle,
     const Health health,
@@ -46,12 +50,14 @@ MobID MobManager::addMob(
     soa.health.push_back(health);
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
-    soa.hitbox.push_back(Hitbox(position, preset->hitboxRadius));
+    soa.hitbox.push_back(Hitbox(position, presets.getMob(preset).hitboxRadius));
     soa.motionData.push_back(motionData);
     soa.shootingData.push_back(shootingData);
     soa.restReloadTime.push_back(restReloadTime);
     soa.currentBarrel.push_back(0);
     soa.turretAngle.push_back(turretAngle);
+    soa.chassisFrame.push_back(0);
+    soa.turretFrame.push_back(0);
 
     const size_t last = soa.id.size() - 1;
     soaIndexByMobID[last] = mobID;
@@ -80,6 +86,8 @@ void MobManager::removeMob(const size_t index) {
         soa.restReloadTime[index] = std::move(soa.restReloadTime[last]);
         soa.currentBarrel[index] = std::move(soa.currentBarrel[last]);
         soa.turretAngle[index] = std::move(soa.turretAngle[last]);
+        soa.chassisFrame[index] = std::move(soa.chassisFrame[last]);
+        soa.turretFrame[index] = std::move(soa.turretFrame[last]);
     }
 
     soa.id.pop_back();
@@ -95,4 +103,6 @@ void MobManager::removeMob(const size_t index) {
     soa.restReloadTime.pop_back();
     soa.currentBarrel.pop_back();
     soa.turretAngle.pop_back();
+    soa.chassisFrame.pop_back();
+    soa.turretFrame.pop_back();
 }

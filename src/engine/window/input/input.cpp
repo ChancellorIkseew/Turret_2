@@ -37,7 +37,7 @@ void Input::update(const SDL_Event& event) {
         return;
     }
 
-    lastKeyPressed.store(Binding(code, inputType), std::memory_order_relaxed);
+    lastKeyPressed = Binding(code, inputType);
     for (auto& [bindName, binding] : Controls::getBindings()) {
         if (inputType != binding.inputType || code != binding.code)
             continue;
@@ -49,6 +49,7 @@ void Input::update(const SDL_Event& event) {
 void Input::reset() {
     mouseWheelScroll = MouseWheelScroll::none;
     symbolJustEntered.reset();
+    lastKeyPressed.reset();
     for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
     }
@@ -69,19 +70,14 @@ MouseWheelScroll Input::getMouseWheelScroll() const {
 }
 
 std::optional<Binding> Input::getLastKeyPressed() const {
-    return lastKeyPressed.load(std::memory_order_relaxed);
-}
-void Input::resetLastKeyPressed() {
-    lastKeyPressed = std::nullopt;
+    return lastKeyPressed;
 }
 std::optional<char32_t> Input::getLastSymbolEntered() const {
     return symbolJustEntered;
 }
 void Input::enableTextEnter(const bool flag) {
-    if (flag)
-        SDL_StartTextInput(sdlWindow);
-    else
-        SDL_StopTextInput(sdlWindow);
+    if (flag) SDL_StartTextInput(sdlWindow);
+    else      SDL_StopTextInput(sdlWindow);
 }
 bool Input::isTextEnterEnabled() const {
     return SDL_TextInputActive(sdlWindow);

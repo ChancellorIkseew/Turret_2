@@ -1,5 +1,7 @@
 #include "shells_system.hpp"
 //
+#include "engine/assets/presets.hpp"
+#include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"
 #include "game/physics/mob_manager.hpp"
 #include "game/physics/shell_manager.hpp"
@@ -41,7 +43,7 @@ void shells::processShells(ShellSoA& shells, MobSoA& mobs) {
     hitMobs(shells, mobs, shellCount);
 }
 
-void shells::cleanupShells(ShellManager& manager/*, Explosions& explosions*/) {
+void shells::cleanupShells(ShellManager& manager, const Presets& presets/*, Explosions& explosions*/) {
     const auto& soa = manager.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.shellCount; i > 0; --i) {
@@ -54,18 +56,12 @@ void shells::cleanupShells(ShellManager& manager/*, Explosions& explosions*/) {
     }
 }
 
-void shells::drawShells(const ShellSoA& soa, const Camera& camera, const float tickOfset) {
-    Sprite sprite;
+void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
     const size_t shellCount = soa.shellCount;
     for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        auto& visual = soa.preset[i]->visual;
-        sprite.setTexture(*visual.texture);
-        sprite.setOrigin(visual.origin);
-        sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i] + soa.velocity[i] * tickOfset);
-        sprite.setRotationRad(soa.angle[i]);
-        sprite.draw();
+        auto& visual = presets.getShell(soa.preset[i]).visual;
+        renderer.draw(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i]);
     }
 }

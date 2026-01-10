@@ -1,44 +1,70 @@
 #include "frontend.hpp"
 //
-#include "engine/gui/gui_util/tile_data.hpp"
+#include "engine/engine.hpp"
+#include "engine/gui/gui.hpp"
 #include "engine/widgets/image_button.hpp"
-#include "game/content/indexes.hpp"
+#include "game/player/camera.hpp"
 #include "game/world/world.hpp"
 
+enum class TileComponent : uint8_t { floor, overlay, block };
 constexpr int ROW_SIZE = 6;
 constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
 
-std::unique_ptr<Container> frontend::initJEI(TileData& tileData) {
-    auto jei = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);
-    int btns = 0;
-    auto line = std::make_unique<Layout>(Orientation::horizontal);
+struct TileData {
+    TileComponent component = TileComponent::floor;
+    uint8_t id = 0U;
+};
 
-    auto addButton = [&](const std::string& name, int id, TileComponent component) {
-        auto btn = line->addNode(new ImageButton(BTN_SIZE, name));
-        btn->addCallback([id, component, &tileData]() {
+class JEI : public Container {
+    Engine& engine;
+    TileData tileData;
+public:
+    JEI(Engine& engine) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
+        int btnsCount = 0;
+        auto line = std::make_unique<Layout>(Orientation::horizontal);
+
+        for (const auto& [floorName, id] : engine.getAssets().getIndexes().getFloor()) {
+            addButton(floorName, id, TileComponent::floor, btnsCount, line);
+        }
+        for (const auto& [overlayName, id] : engine.getAssets().getIndexes().getOverlay()) {
+            addButton(overlayName, id, TileComponent::overlay, btnsCount, line);
+        }
+
+        tileData.id = engine.getAssets().getIndexes().getFloor().begin()->second; // Reset tileData to avoid errors.
+
+        if (btnsCount != 0)
+            addNode(line.release());
+        arrange();
+    }
+
+    void addButton(const std::string& name, int id, TileComponent component, int& btnsCount, std::unique_ptr<Layout>& line) {
+        auto btn = line->addNode(new ImageButton(BTN_SIZE, engine.getAssets().getAtlas().at(name)));
+        btn->addCallback([id, component, this]() {
             tileData.id = id;
             tileData.component = component;
             });
-        btns++;
-        if (btns >= ROW_SIZE) {
-            jei->addNode(line.release());
+        btnsCount++;
+        if (btnsCount >= ROW_SIZE) {
+            this->addNode(line.release());
             line = std::make_unique<Layout>(Orientation::horizontal);
-            btns = 0;
+            btnsCount = 0;
         }
-    };
-
-    for (const auto& [floorName, id] : content::Indexes::getFloor()) {
-        addButton(floorName, id, TileComponent::floor);
-    }
-    for (const auto& [overlayName, id] : content::Indexes::getOverlay()) {
-        addButton(overlayName, id, TileComponent::overlay);
     }
 
-    tileData.component = TileComponent::floor; // Reset tileData to avoid errors.
-    tileData.id = content::Indexes::getFloor().begin()->second;
+    void callback(const Input& input) override {
+        Container::callback(input);
+        if (!input.active(Build) || !engine.getGUI().isMouseFree())
+            return;
+        WorldMap& map = engine.getWorld().getMap();
+        const TileCoord tile = t1::tile(engine.getCamera().fromScreenToMap(input.getMouseCoord()));
+        switch (tileData.component) {
+        case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
+        case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
+        case TileComponent::block: break;
+        }
+    }
+};
 
-    if (btns != 0)
-        jei->addNode(line.release());
-    jei->arrange();
-    return jei;
+std::unique_ptr<Container> frontend::initJEI(Engine& engine) {
+    return std::make_unique<JEI>(engine);
 }

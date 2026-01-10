@@ -1,19 +1,18 @@
 #pragma once
-#include <atomic>
 #include "engine_command.hpp"
+#include "engine/assets/assets.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "engine/window/window.hpp"
 #include "game/generation/generation.hpp"
 
-namespace std { class mutex; }
 class Camera;
 class GUI;
 class PlayerController;
 class World;
 
 class Engine {
-    uint64_t currentTickStart = 0U, pauseStart = 0U;
     MainWindow mainWindow;
+    Assets assets;
     ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
     std::string worldFolder;
@@ -22,7 +21,7 @@ class Engine {
     World*  _world  = nullptr;
     GUI*    _gui    = nullptr;
     EngineCommand command = EngineCommand::main_menu;
-    std::atomic_bool worldOpen = false, paused = false;
+    bool worldOpen = false, paused = false;
 public:
     Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
     void run();
@@ -32,9 +31,8 @@ public:
     void createWorldInGame(WorldProperties& properties);
     void createWorldInEditor();
     void openMainMenu();
-    void closeWorld() { worldOpen.store(false, std::memory_order::seq_cst); }
+    void closeWorld() { worldOpen = false; }
     void closeGame() { closeWorld(); mainWindow.close(); }
-    void startSimulation(World& world, std::mutex& worldMutex, PlayerController& playerController);
     void startNet();
     //
     const PlayerController& getPlayerController() const { return *_playerController; }
@@ -47,11 +45,9 @@ public:
     Camera& getCamera() { return *_camera; }
     World& getWorld() { return *_world; }
     GUI& getGUI() { return *_gui; }
+    Assets& getAssets() { return assets; };
     //
-    bool isWorldOpen() const { return worldOpen.load(std::memory_order_relaxed); }
-    bool isPaused() const { return paused.load(std::memory_order_relaxed); }
-    void setPaused(const bool flag) {
-        paused.store(flag, std::memory_order::seq_cst);
-        pauseStart = mainWindow.getTime();
-    }
+    bool isWorldOpen() const { return worldOpen; }
+    bool isPaused() const { return paused; }
+    void setPaused(const bool flag);
 };

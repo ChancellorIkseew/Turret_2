@@ -12,6 +12,7 @@ namespace io::folders {
     extern const fs::path CURSORS;
     extern const fs::path IMAGES;
     extern const fs::path FONTS;
+    extern const fs::path SOUNDS;
     extern const fs::path CONTENT;
     extern const fs::path GENERATION;
     extern const fs::path GENERATION_DEFAULT;

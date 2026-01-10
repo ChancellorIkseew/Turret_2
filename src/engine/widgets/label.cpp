@@ -4,8 +4,8 @@
 #include "engine/io/parser/validator.hpp"
 #include "engine/render/text.hpp"
 
-void Label::draw() {
-    text::drawString(visibleText, getPosition());
+void Label::draw(const Renderer& renderer) {
+    text::drawString(renderer, visibleText, getPosition());
 }
 
 void Label::translate(const tin::Data& translations) {

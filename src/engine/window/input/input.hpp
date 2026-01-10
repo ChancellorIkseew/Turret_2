@@ -1,5 +1,4 @@
 #pragma once
-#include <atomic>
 #include <optional>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
@@ -10,12 +9,12 @@ class MainWindow;
 
 class Input {
     SDL_Window* sdlWindow;
-    std::atomic<std::optional<Binding>> lastKeyPressed;
+    std::optional<Binding> lastKeyPressed;
     std::optional<char32_t> symbolJustEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
 public:
-    Input() = default;
+    Input(SDL_Window* sdlWindow) : sdlWindow(sdlWindow) { }
 
     ///@brief Check any press/click.
     bool active(const cString bindName) const;
@@ -30,7 +29,6 @@ public:
     ///@brief Int code and input type(keyboard/mouse) of the last key/button press.
     /// Is used for controls rebinding, but can have other usages.
     std::optional<Binding> getLastKeyPressed() const;
-    void resetLastKeyPressed();
     ///@brief Last symbol entered in any text field.
     std::optional<char32_t> getLastSymbolEntered() const;
     ///@brief Start/stop checking.
@@ -38,7 +36,6 @@ public:
     bool isTextEnterEnabled() const;
 private:
     friend MainWindow;
-    void setWindow(SDL_Window* sdlWindow) { this->sdlWindow = sdlWindow; }
     void update(const SDL_Event& event);
     void reset();
 private:

@@ -7,6 +7,7 @@
 #include "config.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
+#include "renderer.hpp"
 
 constexpr char32_t CYRILIC_BEGIN = 1024U;
 constexpr char32_t CUSTOM_BEGIN = 57344U; // Unicode private use area 57344 - 63743.
@@ -16,9 +17,8 @@ static SDL_FPoint startLatin;
 static SDL_FPoint startCyrilic;
 static SDL_FPoint startCustom;
 static std::unordered_map<std::string, char32_t> customSymbols;
-namespace text { static SDL_Renderer* renderer; }
 
-static t1_finline void drawGlyph(char32_t symbol, const SDL_FRect* destRect) noexcept {
+static t1_finline void drawGlyph(const Renderer& renderer, char32_t symbol, const PixelCoord position) noexcept {
     SDL_FRect glyphRect = SDL_FRect(startLatin.x, startLatin.y, GLYPH_SIZE, GLYPH_SIZE);
     if (symbol >= CYRILIC_BEGIN) {
         if (symbol >= CUSTOM_BEGIN) {
@@ -34,29 +34,26 @@ static t1_finline void drawGlyph(char32_t symbol, const SDL_FRect* destRect) noe
     }
     glyphRect.x += static_cast<float>(symbol % SYMBOLS_PER_LINE) * GLYPH_SIZE;
     glyphRect.y += static_cast<float>(symbol / SYMBOLS_PER_LINE) * GLYPH_SIZE;
-    SDL_RenderTexture(text::renderer, Atlas::rawSDL(), &glyphRect, destRect);
+
+    renderer.drawFast(Texture(glyphRect), position, PixelCoord(GLYPH_SIZE, GLYPH_SIZE));
 }
 
-void text::drawString(const std::u32string& text, const float x, const float y) {
-    SDL_FRect destRect(ceilf(x), ceilf(y), GLYPH_SIZE, GLYPH_SIZE);
+void text::drawString(const Renderer& renderer, const std::u32string& text, const PixelCoord position) {
+    PixelCoord glyphPosition = PixelCoord(ceilf(position.x), ceilf(position.y));
     for (const auto it : text) {
         if (it != ' ')
-            drawGlyph(it, &destRect);
-        destRect.x += GLYPH_SIZE / 2.0f;
+            drawGlyph(renderer, it, glyphPosition);
+        glyphPosition.x += GLYPH_SIZE / 2.0f;
     }
 }
 
 void text::setFont(const std::string& latin, const std::string& cyrilic, const std::string& custom) {
-    startLatin.x = Atlas::at(latin).x;
-    startLatin.y = Atlas::at(latin).y;
-    startCyrilic.x = Atlas::at(cyrilic).x;
-    startCyrilic.y = Atlas::at(cyrilic).y;
-    startCustom.x = Atlas::at(custom).x;
-    startCustom.y = Atlas::at(custom).y;
-}
-
-void text::setRenderer(SDL_Renderer* renderer) {
-    text::renderer = renderer;
+    //startLatin.x = Atlas::at(latin).x;
+    //startLatin.y = Atlas::at(latin).y;
+    //startCyrilic.x = Atlas::at(cyrilic).x;
+    //startCyrilic.y = Atlas::at(cyrilic).y;
+    //startCustom.x = Atlas::at(custom).x;
+    //startCustom.y = Atlas::at(custom).y;
 }
 
 void text::loadCustomSymbols() {

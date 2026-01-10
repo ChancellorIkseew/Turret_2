@@ -1,28 +1,30 @@
 #pragma once
 #include "engine/coords/pixel_coord.hpp"
-#include "engine/render/sprite.hpp"
+#include "ui_defs.hpp"
 
 namespace tin { class Data; }
 class Input;
+class Renderer;
 
 class Node {
-    Sprite sprite;
+    UIColor color = UIColor::non_interactive;
+    PixelCoord size, position;
 public:
-    Node(const PixelCoord size, const PixelCoord position)      : sprite("fill", size, position) { }
-    Node(const PixelCoord size, const std::string& textureName) : sprite(textureName, size, PixelCoord(0, 0)) { }
-    Node(const PixelCoord size)                                 : sprite("fill", size, PixelCoord(0, 0)) { }
-    Node()                                                      : sprite("fill") { }
+    Node(const PixelCoord size, const PixelCoord position) : size(size), position(position) { }
+    Node(const PixelCoord size, const UIColor color)       : size(size), color(color) { }
+    Node(const PixelCoord size)                            : size(size) { }
+    Node() = default;
     virtual ~Node() = default;
     //
-    virtual void draw();
+    virtual void draw(const Renderer& renderer);
     virtual void translate(const tin::Data& translations) { }
     virtual void callback(const Input& input) = 0;
     //
-    PixelCoord getPosition() const { return sprite.getPosition(); }
-    PixelCoord getSize() const { return sprite.getSize(); }
-    virtual void setPosition(const PixelCoord position) { sprite.setPosition(position); }
-    void setSize(const PixelCoord size) { sprite.setSize(size); }
-    void setTexture(const std::string& textureName) { sprite.setTexture(textureName); }
+    PixelCoord getPosition() const { return position; }
+    PixelCoord getSize() const { return size; }
+    virtual void setPosition(const PixelCoord position) { this->position = position; }
+    void setSize(const PixelCoord size) { this->size = size; }
+    void setColor(const UIColor color) { this->color = color; }
     bool containsMouse(const Input& input) const;
 private:
     Node(const Node& other) = delete;

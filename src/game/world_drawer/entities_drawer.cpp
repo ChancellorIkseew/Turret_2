@@ -4,8 +4,9 @@
 #include "game/physics/shells_system.hpp"
 #include "game/physics/turrets_system.hpp"
 
-void EntitiesDrawer::draw(const Camera& camera, const MobSoA& mobs, const ShellSoA& shells, const float tickOfset) {
-    mobs::drawMobs(mobs, camera, tickOfset);
-    turrets::drawTurrets(mobs, camera, tickOfset);
-    shells::drawShells(shells, camera, tickOfset);
+void EntitiesDrawer::draw(const Camera& camera, const Renderer& renderer,
+    MobSoA& mobs, const ShellSoA& shells, const Presets& presets, const uint64_t tickCount) {
+    mobs::drawMobs(mobs, presets, camera, renderer, tickCount);
+    turrets::drawTurrets(mobs, presets, camera, renderer);
+    shells::drawShells(shells, presets, camera, renderer);
 }

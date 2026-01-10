@@ -1,16 +1,20 @@
 #include "mobs_system.hpp"
 //
+#include "engine/assets/presets.hpp"
+#include "engine/render/renderer.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
+
+constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
 
 static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord vector) {
     soa.position[index] = soa.position[index] + vector;
     soa.hitbox[index].move(vector);
 }
 
-static inline void resolveCollisions(MobSoA& soa, const size_t current, const size_t mobCount) {
+static inline void resolveCollisions(MobSoA& soa, const size_t current, const size_t mobCount, const Presets& presets) {
     for (size_t other = current + 1; other < mobCount; ++other) {
         if (!soa.hitbox[current].intersects(soa.hitbox[other])) continue;
 
@@ -22,10 +26,13 @@ static inline void resolveCollisions(MobSoA& soa, const size_t current, const si
         const float pushDirection = pushX ? (soa.position[current].x > soa.position[other].x ? 1.0f : -1.0f)
                                           : (soa.position[current].y > soa.position[other].y ? 1.0f : -1.0f);
 
-        const float totalRadius = soa.preset[current]->hitboxRadius + soa.preset[other]->hitboxRadius;
+        const MobPreset& currentPreset = presets.getMob(soa.preset[current]);
+        const MobPreset& otherPreset   = presets.getMob(soa.preset[other]);
+
+        const float totalRadius = currentPreset.hitboxRadius + otherPreset.hitboxRadius;
         const float invertedTotalRadius = 1.0f / totalRadius;
-        const float mob1Weight = soa.preset[other]->hitboxRadius * invertedTotalRadius;
-        const float mob2Weight = soa.preset[current]->hitboxRadius * invertedTotalRadius;
+        const float mob1Weight = otherPreset.hitboxRadius   * invertedTotalRadius;
+        const float mob2Weight = currentPreset.hitboxRadius * invertedTotalRadius;
 
         PixelCoord pushVec;
         if (pushX) pushVec.x = distance * pushDirection;
@@ -42,15 +49,15 @@ static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
     }
 }
 
-void mobs::processMobs(MobSoA& soa) {
+void mobs::processMobs(MobSoA& soa, const Presets& presets) {
     const size_t mobCount = soa.mobCount;
     moveByAI(soa, mobCount);
     for (size_t i = 0; i < mobCount; ++i) {
-        resolveCollisions(soa, i, mobCount);
+        resolveCollisions(soa, i, mobCount, presets);
     }
 }
 
-void mobs::cleanupMobs(MobManager& manager/*, Explosions& explosions*/) {
+void mobs::cleanupMobs(MobManager& manager, const Presets& presets/*, Explosions& explosions*/) {
     const auto& soa = manager.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.mobCount; i > 0; --i) {
@@ -63,36 +70,30 @@ void mobs::cleanupMobs(MobManager& manager/*, Explosions& explosions*/) {
     }
 }
 
-static void drawHitboxes(const MobSoA& soa, const Camera& camera) {
-    Sprite sprite;
+static void drawHitboxes(const MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
     for (size_t i = 0; i < soa.id.size(); ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        // TODO: refactoring
-        const float hitboxSize = soa.preset[i]->hitboxRadius * 2.0f;
+        const float hitboxSize = presets.getMob(soa.preset[i]).hitboxRadius * 2.0f;
         const PixelCoord hitbox(hitboxSize, hitboxSize);
-        sprite.setTexture(Texture("fill"));
-        sprite.setSize(hitbox);
-        sprite.setOrigin(hitbox / 2.0f);
-        sprite.setPosition(soa.position[i]);
-        sprite.draw();
+        renderer.drawRect(HITBOX_COLOR, soa.position[i] - hitbox / 2.0f, hitbox);
     }
 }
 
-void mobs::drawMobs(const MobSoA& soa, const Camera& camera, const float tickOfset) {
+void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer, const uint64_t tickCount) {
     if (Settings::gameplay.showHitboxes)
-        drawHitboxes(soa, camera);
-    Sprite sprite;
+        drawHitboxes(soa, presets, camera, renderer);
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        auto& visual = soa.preset[i]->visual;
-        sprite.setTexture(*visual.texture);
-        sprite.setOrigin(visual.origin);
-        sprite.setSize(visual.size);
-        sprite.setPosition(soa.position[i] + soa.velocity[i] * tickOfset);
-        sprite.setRotationRad(soa.angle[i]);
-        sprite.draw();
+        auto& visual = presets.getMob(soa.preset[i]).visual;
+        if (tickCount % visual.frameTicks == 0 && soa.velocity[i] != PixelCoord(0.0f, 0.0f)) {
+            ++soa.chassisFrame[i];
+            if (soa.chassisFrame[i] >= presets.getMob(soa.preset[i]).visual.frameCount)
+                soa.chassisFrame[i] = 0;
+        }
+        renderer.drawAnimated(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i],
+            visual.frameOrder[soa.chassisFrame[i]], visual.frameHeight);
     }
 }

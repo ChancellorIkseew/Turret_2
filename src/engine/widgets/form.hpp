@@ -18,7 +18,7 @@ public:
     Form(const PixelCoord size = FORM_SIZE)                      : Clickable(size) { }
     ~Form() final = default;
 
-    void draw() final;
+    void draw(const Renderer& renderer) final;
     void callback(const Input& input) final;
     void validate();
     const std::u32string& getText() const { return text; }

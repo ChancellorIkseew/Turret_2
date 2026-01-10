@@ -4,9 +4,9 @@
 #include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 
-void Form::draw() {
-    Node::draw();
-    text::drawString(text, getPosition());
+void Form::draw(const Renderer& renderer) {
+    Node::draw(renderer);
+    text::drawString(renderer, text, getPosition());
 }
 
 void Form::callback(const Input& input) {

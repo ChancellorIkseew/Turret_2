@@ -16,7 +16,7 @@ public:
         resizeBy(visibleText);
     }
     void resizeBy(const std::u32string& text);
-    void draw() final;
+    void draw(const Renderer& renderer) final;
     void translate(const tin::Data& translations) final;
     void callback(const Input& input) final { };
 };

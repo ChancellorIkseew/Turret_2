@@ -1,7 +1,6 @@
 #include "cursor.hpp"
 //
 #include <SDL3/SDL_mouse.h>
-#include <SDL3_image/SDL_image.h>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
 
@@ -22,7 +21,7 @@ Cursor::Cursor(const CursorType type) : type(type) {
         return;
     // TODO: other types.
     }
-    SDL_Surface* cursorSurface = IMG_Load(path.string().c_str());
+    SDL_Surface* cursorSurface = SDL_LoadPNG(path.string().c_str());
     if (!cursorSurface)
         logger.error() << "Cold not Load image from file " << path;
     SDL_Cursor* cursor = SDL_CreateColorCursor(cursorSurface, 0, 0);

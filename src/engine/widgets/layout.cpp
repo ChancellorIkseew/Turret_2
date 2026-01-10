@@ -31,9 +31,9 @@ void Layout::arrangeHorizontal() {
     setSize(PixelCoord(position.x - getPosition().x, maxHeight + padding * 2.0f));
 }
 
-void Layout::draw() {
-    Node::draw();
+void Layout::draw(const Renderer& renderer) {
+    Node::draw(renderer);
     for (const auto& it : contents) {
-        it->draw();
+        it->draw(renderer);
     }
 }

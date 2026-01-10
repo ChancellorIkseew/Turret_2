@@ -5,17 +5,20 @@
 // TODO: #include "weather_drawer.hpp"
 
 class Camera;
+class Presets;
+class Renderer;
 
 class WorldDrawer {
     MapDrawer mapDrawer;
     EntitiesDrawer entitiesDrawer;
     // TODO: WeatherDrawer weatherDrawer;
 public:
-    WorldDrawer() = default;
+    WorldDrawer(const Assets& assets) : mapDrawer(assets) { }
 
-    void draw(const Camera& camera, const World& world, const float tickOfset) {
-        mapDrawer.draw(camera, world.getMap());
-        entitiesDrawer.draw(camera, world.getMobs().getSoa(), world.getShells().getSoa(), tickOfset);
+    void draw(const Camera& camera, const Renderer& renderer, World& world,
+        const Presets& presets, const uint64_t tickCount) {
+        mapDrawer.draw(camera, renderer, world.getMap());
+        entitiesDrawer.draw(camera, renderer, world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
         // TODO: weatherDrawer.draw();
     }
 };
