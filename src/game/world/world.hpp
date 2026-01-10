@@ -6,9 +6,10 @@
 #include "world_map.hpp"
 
 class World {
+    ChunkGrid chunkGrid;
+    //
     WorldMap map;
     TeamsPool teams;
-    ChunkGrid chunkGrid;
     MobManager mobs;
     ShellManager shells;
 public:
