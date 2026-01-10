@@ -112,6 +112,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
 
     //sim
     Team* playerTeam = world->getTeams().addTeam(U"player");
+    world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
     auto& mobs = world->getMobs();
     auto& shells = world->getShells();
