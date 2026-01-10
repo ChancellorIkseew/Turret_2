@@ -9,13 +9,14 @@ static size_t carPos = 0;
 constexpr int INPUT_RELOAD = 120;
 constexpr uint32_t CARRIGE_COLOR = 0xFF'FF'FF'FF;
 constexpr PixelCoord CARRIGE_SIZE(1.0f, 16.0f);
+constexpr float GLYPH_WIDTH = 8;
 static int inputTimer = 0;
 
 void FormEditor::drawCarriage(const Renderer& renderer) {
     if (!targetForm.lock())
         return;
     auto position = targetForm.lock()->getPosition();
-    position.x += carPos * 8;
+    position.x += static_cast<float>(carPos) * GLYPH_WIDTH;
     renderer.drawRect(CARRIGE_COLOR, position, CARRIGE_SIZE);
 }
 
@@ -62,9 +63,12 @@ void FormEditor::editForm(const Input& input, const int frameDelay) {
     }
     //
     std::optional<uint32_t> sym = input.getLastSymbolEntered();
-    if (sym.has_value() && targetForm.lock()->accepts(sym.value())) {
-        text.insert(carPos, 1, sym.value());
-        ++carPos;
+
+    if (targetForm.lock()->getSize().x >= static_cast<float>(targetForm.lock()->getText().size() + 1) * GLYPH_WIDTH) {
+        if (sym.has_value() && targetForm.lock()->accepts(sym.value())) {
+            text.insert(carPos, 1, sym.value());
+            ++carPos;
+        }
     }
 }
 
@@ -90,7 +94,7 @@ void FormEditor::update(Input& input, const int frameDelay) {
 
 void FormEditor::moveCarriageToCursor(const Input& input) {
     const auto positionInForm = input.getMouseCoord() - targetForm.lock()->getPosition();
-    carPos = static_cast<size_t>((positionInForm / 8).x);
+    carPos = static_cast<size_t>((positionInForm / GLYPH_WIDTH).x);
     const size_t textLength = targetForm.lock()->getText().length();
     if (carPos > textLength)
         carPos = textLength;
