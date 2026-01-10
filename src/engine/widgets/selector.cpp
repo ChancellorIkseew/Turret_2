@@ -3,10 +3,10 @@
 #include "button.hpp"
 #include "engine/window/input/input.hpp"
 
-void Selector::callback(const Input& input) {
+void Selector::callback(UIContext& context) {
     for (auto& it : contents) {
-        it->callback(input);
-        if (it->containsMouse(input) && input.jactive(LMB)) {
+        it->callback(context);
+        if (it->containsMouse(context.input) && context.input.jactive(LMB)) {
             if (std::dynamic_pointer_cast<Button>(it))
                 setTarget(std::static_pointer_cast<Button>(it));
             return;

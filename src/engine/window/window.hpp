@@ -15,9 +15,9 @@ struct SDLContext {
 };
 
 class MainWindow : private SDLContext {
+    Cursor cursor;
     Input input;
     Renderer renderer;
-    Cursor cursor;
     Uint32 FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
     bool open = true, resized = false, fullscreen = false;
 public:
@@ -38,13 +38,9 @@ public:
         return PixelCoord(x, y);
     }
     //
-    void setCursor(const CursorType type) {
-        if (getCursor() != type)
-            cursor = Cursor(type);
-    }
-    CursorType getCursor() const { return cursor.getType(); }
-    Renderer& getRenderer() { return renderer; }
+    Cursor& getCursor() { return cursor; }
     Input& getInput() { return input; }
+    Renderer& getRenderer() { return renderer; }
     //
     void takeScreenshot(const std::filesystem::path& path) const;
     void pollEvents();

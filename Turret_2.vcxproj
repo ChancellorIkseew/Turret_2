@@ -62,6 +62,7 @@
     <ClInclude Include="src\engine\widgets\label.hpp" />
     <ClInclude Include="src\engine\widgets\layout.hpp" />
     <ClInclude Include="src\engine\widgets\selector.hpp" />
+    <ClInclude Include="src\engine\widgets\ui_context.hpp" />
     <ClInclude Include="src\engine\widgets\ui_defs.hpp" />
     <ClInclude Include="src\engine\widgets\ui_node.hpp" />
     <ClInclude Include="src\engine\window\cursor.hpp" />

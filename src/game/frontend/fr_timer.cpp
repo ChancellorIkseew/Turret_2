@@ -21,8 +21,8 @@ public:
         arrange();
     }
 
-    void callback(const Input& input) final {
-        Container::callback(input);
+    void callback(UIContext& context) final {
+        Container::callback(context);
         time->setText(utf8::to_u32string(engine.getMainWindow().getTime()));
         mobCount->setText(utf8::to_u32string(engine.getWorld().getMobs().getSoa().id.size()));
     }

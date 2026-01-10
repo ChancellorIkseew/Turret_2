@@ -1,9 +1,10 @@
 #pragma once
+#include <type_traits>
 #include "engine/coords/pixel_coord.hpp"
+#include "ui_context.hpp"
 #include "ui_defs.hpp"
 
 namespace tin { class Data; }
-class Input;
 class Renderer;
 
 class Node {
@@ -18,7 +19,7 @@ public:
     //
     virtual void draw(const Renderer& renderer);
     virtual void translate(const tin::Data& translations) { }
-    virtual void callback(const Input& input) = 0;
+    virtual void callback(UIContext& context) = 0;
     //
     PixelCoord getPosition() const { return position; }
     PixelCoord getSize() const { return size; }

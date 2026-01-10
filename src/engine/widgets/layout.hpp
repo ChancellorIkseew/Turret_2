@@ -34,9 +34,9 @@ public:
             it->translate(translations);
         }
     }
-    void callback(const Input& input) override {
+    void callback(UIContext& context) override {
         for (auto& it : contents) {
-            it->callback(input);
+            it->callback(context);
         }
     }
     const auto& getContents() const { return contents; }

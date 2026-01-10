@@ -15,10 +15,11 @@ void Form::draw(const Renderer& renderer) {
     }
 }
 
-void Form::callback(const Input& input) {
-    Clickable::callback(input);
+void Form::callback(UIContext& context) {
+    Clickable::callback(context);
+    Input& input = context.input;
     if (state == ButtonState::checked) {
-        if (!containsMouse(input) && input.jactive(LMB)) {
+        if (!containsMouse(input) && context.input.jactive(LMB)) {
             if (validator)
                 validator->validateValue(text);
             setState(ButtonState::idle);

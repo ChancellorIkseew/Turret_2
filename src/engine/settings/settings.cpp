@@ -70,6 +70,6 @@ void Settings::applySettings(Engine& engine) {
     // "pause_on_world_open": implemented in engine.cpp
     // "show_hitboxes" implemented in mobs_system.cpp
     GUI::loadLangTranslations(gui.lang);
-    engine.getMainWindow().setCursor(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
+    engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     debug::Console::setVisible(Settings::gui.showConsole);
 }

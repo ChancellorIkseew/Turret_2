@@ -267,6 +267,9 @@
     <ClInclude Include="src\engine\window\input\text_edit.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\widgets\ui_context.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">

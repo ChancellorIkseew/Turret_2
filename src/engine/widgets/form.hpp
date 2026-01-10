@@ -21,7 +21,7 @@ public:
     ~Form() final = default;
 
     void draw(const Renderer& renderer) final;
-    void callback(const Input& input) final;
+    void callback(UIContext& context) final;
     void setGlyphSize(const PixelCoord size) { glyphSize = size; }
     const std::u32string& getText() const { return text; }
     std::u32string& getText() { return text; }

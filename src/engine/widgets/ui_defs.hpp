@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <string>
 
 using AlignType = uint8_t;
 

@@ -49,16 +49,16 @@ public:
         this->bindName = bindName;
     }
 
-    void callback(const Input& input) final {
-        Container::callback(input);
+    void callback(UIContext& context) final {
+        Container::callback(context);
         if (inputReload > 0) {
             inputReload -= engine.getMainWindow().getRealFrameDelay();
             return;
         }
-        if (!btn || !input.getLastKeyPressed().has_value())
+        if (!btn || !context.input.getLastKeyPressed().has_value())
             return;
         inputReload = INPUT_RELOAD;
-        Controls::rebind(bindName, input.getLastKeyPressed().value());
+        Controls::rebind(bindName, context.input.getLastKeyPressed().value());
         btn->setText(U'[' + Controls::getKeyName(bindName) + U']');
         btn->setState(ButtonState::idle);
         btn = nullptr;

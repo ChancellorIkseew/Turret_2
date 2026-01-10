@@ -20,7 +20,8 @@ public:
         GUI::acceptHotkeys();
         if (!showGUI)
             return;
-        overlaped.back()->callback(input);
+        UIContext context(engine.getAssets().getAudio(), mainWindow.getCursor(), input);
+        overlaped.back()->callback(context);
         if (overlaped.size() > 1 && (!overlaped.back()->isOpen() || input.jactive(Escape)))
             overlaped.pop_back();
     }

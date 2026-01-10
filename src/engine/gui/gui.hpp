@@ -3,6 +3,7 @@
 #include <vector>
 #include "engine/engine.hpp"
 #include "engine/widgets/container.hpp"
+#include "engine/widgets/ui_context.hpp"
 
 class GUI {
 protected:

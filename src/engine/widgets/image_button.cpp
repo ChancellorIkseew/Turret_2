@@ -7,7 +7,7 @@ void ImageButton::draw(const Renderer& renderer) {
     renderer.drawFast(texture, getPosition(), getSize());
 }
 
-void ImageButton::callback(const Input& input) {
-    if (action && containsMouse(input) && input.jactive(LMB))
+void ImageButton::callback(UIContext& context) {
+    if (action && containsMouse(context.input) && context.input.jactive(LMB))
         action();
 }

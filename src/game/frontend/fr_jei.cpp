@@ -51,12 +51,12 @@ public:
         }
     }
 
-    void callback(const Input& input) override {
-        Container::callback(input);
-        if (!input.active(Build) || !engine.getGUI().isMouseFree())
+    void callback(UIContext& context) override {
+        Container::callback(context);
+        if (!context.input.active(Build) || !engine.getGUI().isMouseFree())
             return;
         WorldMap& map = engine.getWorld().getMap();
-        const TileCoord tile = t1::tile(engine.getCamera().fromScreenToMap(input.getMouseCoord()));
+        const TileCoord tile = t1::tile(engine.getCamera().fromScreenToMap(context.input.getMouseCoord()));
         switch (tileData.component) {
         case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;

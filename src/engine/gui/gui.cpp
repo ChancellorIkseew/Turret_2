@@ -53,14 +53,15 @@ void GUI::callback() {
     acceptHotkeys();
     if (!showGUI)
         return;
+    UIContext context(engine.getAssets().getAudio(), mainWindow.getCursor(), input);
     if (!overlaped.empty()) {
-        overlaped.back()->callback(input);
+        overlaped.back()->callback(context);
         if (!overlaped.back()->isOpen() || input.jactive(Escape))
             overlaped.pop_back();
         return; // Do not callback other containers.
     }
     for (const auto& it : containers) {
-        it->callback(input);
+        it->callback(context);
     }
 }
 

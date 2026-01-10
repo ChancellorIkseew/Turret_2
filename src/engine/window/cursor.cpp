@@ -6,7 +6,8 @@
 
 static debug::Logger logger("cursor");
 
-Cursor::Cursor(const CursorType type) : type(type) {
+void Cursor::setType(const CursorType type) {
+    this->type = type;
     std::filesystem::path path;
     switch (type) {
     case CursorType::arrow:

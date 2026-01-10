@@ -10,7 +10,7 @@ public:
     Clickable(const PixelCoord size)                          : Node(size, UIColor::idle) { }
     ~Clickable() override = default;
     //
-    void callback(const Input& input) override;
+    void callback(UIContext& context) override;
     void setState(const ButtonState newState);
     const ButtonState getState() const { return state; }
 };
