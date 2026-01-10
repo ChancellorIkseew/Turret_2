@@ -8,6 +8,8 @@
 #include "mob_manager.hpp"
 
 constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
+constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
+constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
 
 static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord vector) {
     soa.position[index] = soa.position[index] + vector;
@@ -77,6 +79,20 @@ static void drawHitboxes(const MobSoA& soa, const Presets& presets, const Camera
         const float hitboxSize = presets.getMob(soa.preset[i]).hitboxRadius * 2.0f;
         const PixelCoord hitbox(hitboxSize, hitboxSize);
         renderer.drawRect(HITBOX_COLOR, soa.position[i] - hitbox / 2.0f, hitbox);
+    }
+}
+
+static void drawHealthBars(const MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
+    for (size_t i = 0; i < soa.id.size(); ++i) {
+        if (!camera.contains(t1::tile(soa.position[i])))
+            continue;
+        const Health current = soa.health[i];
+        const Health max = presets.getMob(soa.preset[i]).maxHealth;
+        const float part = static_cast<float>(current) / static_cast<float>(max);
+        const PixelCoord healthSize(BAR_SIZE.x * part, 5.0f);
+
+        renderer.drawRect(HITBOX_COLOR, soa.position[i] - BAR_SIZE / 2.0f, BAR_SIZE);
+        renderer.drawRect(HEALTH_COLOR, soa.position[i] - BAR_SIZE / 2.0f, healthSize);
     }
 }
 
