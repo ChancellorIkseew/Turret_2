@@ -37,5 +37,6 @@ enum class UIColor : uint32_t {
     non_interactive = 0x5A'6D'75'80,
     idle            = 0x00'09'0D'A0,
     hover           = 0x02'2B'3D'A0,
-    checked         = 0xA3'BC'C6'A0
+    checked         = 0xA3'BC'C6'A0,
+    carrige         = 0xFF'FF'FF'FF
 };

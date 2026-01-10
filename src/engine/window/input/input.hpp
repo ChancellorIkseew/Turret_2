@@ -1,7 +1,7 @@
 #pragma once
 #include <optional>
 #include "binding.hpp"
-#include "engine/coords/pixel_coord.hpp"
+#include "text_edit.hpp"
 
 struct SDL_Window;
 union SDL_Event;
@@ -13,6 +13,7 @@ class Input {
     std::optional<char32_t> symbolJustEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
+    mutable TextEdit textEdit;
 public:
     Input(SDL_Window* sdlWindow) : sdlWindow(sdlWindow) { }
 
@@ -34,6 +35,7 @@ public:
     ///@brief Start/stop checking.
     void enableTextEnter(const bool flag);
     bool isTextEnterEnabled() const;
+    TextEdit& getTextEdit() const { return textEdit; }
 private:
     friend MainWindow;
     void update(const SDL_Event& event);

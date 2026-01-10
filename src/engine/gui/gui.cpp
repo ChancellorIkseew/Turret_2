@@ -7,7 +7,6 @@
 #include "engine/render/text.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/util/time.hpp"
-#include "engine/widgets/form_editor/form_editor.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
 
@@ -29,7 +28,6 @@ void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
         }
         if (!overlaped.empty())
             overlaped.back()->draw(renderer);
-        FormEditor::drawCarriage(renderer);
     }
     if (showFPS)
         drawDebugText(renderer, mainWindow);
@@ -97,7 +95,6 @@ void GUI::acceptHotkeys() {
         Settings::display.fullscreen = mainWindow.isFullscreen();
         Settings::writeSettings();
     }
-    FormEditor::update(input, mainWindow.getRealFrameDelay());
 }
 
 void GUI::relocateContainers() {

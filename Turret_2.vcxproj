@@ -57,8 +57,7 @@
     <ClInclude Include="src\engine\widgets\clickable.hpp" />
     <ClInclude Include="src\engine\widgets\container.hpp" />
     <ClInclude Include="src\engine\widgets\form.hpp" />
-    <ClInclude Include="src\engine\widgets\form_editor\form_editor.hpp" />
-    <ClInclude Include="src\engine\widgets\form_editor\form_validator.hpp" />
+    <ClInclude Include="src\engine\widgets\form_validator\form_validator.hpp" />
     <ClInclude Include="src\engine\widgets\image_button.hpp" />
     <ClInclude Include="src\engine\widgets\label.hpp" />
     <ClInclude Include="src\engine\widgets\layout.hpp" />
@@ -69,6 +68,7 @@
     <ClInclude Include="src\engine\window\input\binding.hpp" />
     <ClInclude Include="src\engine\window\input\controls.hpp" />
     <ClInclude Include="src\engine\window\input\input.hpp" />
+    <ClInclude Include="src\engine\window\input\text_edit.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
@@ -131,8 +131,7 @@
     <ClCompile Include="src\engine\widgets\clickable.cpp" />
     <ClCompile Include="src\engine\widgets\container.cpp" />
     <ClCompile Include="src\engine\widgets\form.cpp" />
-    <ClCompile Include="src\engine\widgets\form_editor\form_editor.cpp" />
-    <ClCompile Include="src\engine\widgets\form_editor\form_validator.cpp" />
+    <ClCompile Include="src\engine\widgets\form_validator\form_validator.cpp" />
     <ClCompile Include="src\engine\widgets\image_button.cpp" />
     <ClCompile Include="src\engine\widgets\label.cpp" />
     <ClCompile Include="src\engine\widgets\layout.cpp" />
@@ -142,6 +141,7 @@
     <ClCompile Include="src\engine\window\input\controls.cpp" />
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />
     <ClCompile Include="src\engine\window\input\input.cpp" />
+    <ClCompile Include="src\engine\window\input\text_edit.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />

@@ -47,13 +47,13 @@ void text::drawString(const Renderer& renderer, const std::u32string& text, cons
     }
 }
 
-void text::setFont(const std::string& latin, const std::string& cyrilic, const std::string& custom) {
-    //startLatin.x = Atlas::at(latin).x;
-    //startLatin.y = Atlas::at(latin).y;
-    //startCyrilic.x = Atlas::at(cyrilic).x;
-    //startCyrilic.y = Atlas::at(cyrilic).y;
-    //startCustom.x = Atlas::at(custom).x;
-    //startCustom.y = Atlas::at(custom).y;
+void text::setFont(const Atlas& atlas, const std::string& latin, const std::string& cyrilic, const std::string& custom) {
+    startLatin.x = atlas.at(latin).rect.x;
+    startLatin.y = atlas.at(latin).rect.y;
+    startCyrilic.x = atlas.at(cyrilic).rect.x;
+    startCyrilic.y = atlas.at(cyrilic).rect.y;
+    startCustom.x = atlas.at(custom).rect.x;
+    startCustom.y = atlas.at(custom).rect.y;
 }
 
 void text::loadCustomSymbols() {
