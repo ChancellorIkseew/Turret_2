@@ -80,23 +80,20 @@ static void drawHitboxes(const MobSoA& soa, const Presets& presets, const Camera
     }
 }
 
-static uint64_t c = 0;
-
-void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
+void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer, const uint64_t tickCount) {
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(soa, presets, camera, renderer);
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        ++c;
-        if (c % 3 == 0 && soa.velocity[i] != PixelCoord(0.0f, 0.0f)) {
+        auto& visual = presets.getMob(soa.preset[i]).visual;
+        if (tickCount % visual.frameTicks == 0 && soa.velocity[i] != PixelCoord(0.0f, 0.0f)) {
             ++soa.chassisFrame[i];
             if (soa.chassisFrame[i] >= presets.getMob(soa.preset[i]).visual.frameCount)
                 soa.chassisFrame[i] = 0;
         }
-        auto& visual = presets.getMob(soa.preset[i]).visual;
         renderer.drawAnimated(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i],
-            soa.chassisFrame[i], visual.frameCount);
+            visual.frameOrder[soa.chassisFrame[i]], visual.frameHeight);
     }
 }

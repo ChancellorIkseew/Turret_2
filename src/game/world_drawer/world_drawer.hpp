@@ -15,9 +15,10 @@ class WorldDrawer {
 public:
     WorldDrawer(const Assets& assets) : mapDrawer(assets) { }
 
-    void draw(const Camera& camera, const Renderer& renderer, World& world, const Presets& presets) {
+    void draw(const Camera& camera, const Renderer& renderer, World& world,
+        const Presets& presets, const uint64_t tickCount) {
         mapDrawer.draw(camera, renderer, world.getMap());
-        entitiesDrawer.draw(camera, renderer, world.getMobs().getSoa(), world.getShells().getSoa(), presets);
+        entitiesDrawer.draw(camera, renderer, world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
         // TODO: weatherDrawer.draw();
     }
 };

@@ -10,11 +10,16 @@ using FindMap = std::unordered_map<std::string, PresetID>;
 static debug::Logger logger("presets");
 
 static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const FindMap& turretIDByName) {
+    std::array<uint8_t, 16> frames;
+    reader.getUint8Array("frame_order", frames);
     MobVisualPreset visual(
         reader.getTexture(atlas, "texture"),
         reader.get(&tin::Data::getPixelCoord, "origin"),
         reader.get(&tin::Data::getPixelCoord, "size"),
-        reader.get(&tin::Data::getUint8, "frame_count")
+        reader.get(&tin::Data::getUint8, "frame_ticks"),
+        reader.get(&tin::Data::getFloat, "frame_height"),
+        reader.get(&tin::Data::getUint8, "frame_count"),
+        frames
     );
     return MobPreset(
         reader.get(&tin::Data::getFloat, "speed"),

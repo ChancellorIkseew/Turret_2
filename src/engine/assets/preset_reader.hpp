@@ -85,4 +85,34 @@ public:
 
         return list.size();
     }
+
+    size_t getUint8Array(const std::string& key, std::span<uint8_t> outArray) const {
+        std::vector<std::string> list = data.getList(key);
+
+        if (list.empty()) {
+            logger.error() << "[" << fileName << "] List is empty or missing: " << key;
+            failed = true;
+            throw std::bad_optional_access();
+        }
+
+        if (list.size() > outArray.size()) {
+            logger.error() << "[" << fileName << "] Too many elements in [" << key
+                << "]. Found: " << list.size() << ", Max: " << outArray.size();
+            failed = true;
+            throw std::bad_optional_access();
+        }
+
+        for (size_t i = 0; i < list.size(); ++i) {
+            auto u = validator::toUint8(list[i]);
+            if (!u) {
+                logger.error() << "[" << fileName << "] Invalid PixelCoord format in list ["
+                    << key << "] at index " << i << ": '" << list[i] << "'";
+                failed = true;
+                throw std::bad_optional_access();
+            }
+            outArray[i] = *u;
+        }
+
+        return list.size();
+    }
 };

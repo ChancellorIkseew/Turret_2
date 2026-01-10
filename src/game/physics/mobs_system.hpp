@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 struct MobSoA;
 class Camera;
@@ -9,5 +10,5 @@ class Renderer;
 namespace mobs {
     void processMobs(MobSoA& soa, const Presets& presets);
     void cleanupMobs(MobManager& manager, const Presets& presets);
-    void drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer);
+    void drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer, const uint64_t tickCount);
 }

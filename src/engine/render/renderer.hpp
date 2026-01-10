@@ -40,10 +40,10 @@ public:
             &texture.rect, &dstRect, t1::radToDegree(angleRad), &sdlOrigin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     void drawAnimated(const Texture texture, const PixelCoord position, const PixelCoord size,
-        const PixelCoord origin, const double angleRad, const uint8_t frame, const uint8_t frameCount) const noexcept {
+        const PixelCoord origin, const double angleRad, const uint8_t frame, const float frameHeight) const noexcept {
         Texture frameTexture = texture;
-        frameTexture.rect.h /= frameCount;
-        frameTexture.rect.y += static_cast<float>(frame) * frameTexture.rect.h;
+        frameTexture.rect.h = frameHeight;
+        frameTexture.rect.y += static_cast<float>(frame) * frameHeight;
         draw(frameTexture, position, size, origin, angleRad);
     }
     void drawBatched(const float* xy, const float* uv, const int* indexes,

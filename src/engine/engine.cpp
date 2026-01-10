@@ -122,6 +122,7 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
     //mobs.addMob(presets, cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
         //cannonerBot->turret->reload, 0.f);
     //
+    uint64_t tickCount = 0;
     while (mainWindow.isOpen() && isWorldOpen()) {
         mainWindow.pollEvents();
         mainWindow.clear();
@@ -141,9 +142,10 @@ void Engine::createScene(const std::string& folder, WorldProperties& properties)
             // Clean up only after all processing.
             shells::cleanupShells(shells, presets);
             mobs::cleanupMobs(mobs, presets);
+            ++tickCount;
         }
         //
-        worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets);
+        worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, tickCount);
         worldSounds.play(assets.getAudio(), camera);
         Events::reset(); // for editor
         scriptsHandler.execute();
