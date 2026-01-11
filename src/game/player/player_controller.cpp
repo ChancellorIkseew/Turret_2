@@ -3,8 +3,6 @@
 #include "camera.hpp"
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
-#include "engine/engine.hpp"
-#include "engine/gui/gui.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/physics/team/team.hpp"
 

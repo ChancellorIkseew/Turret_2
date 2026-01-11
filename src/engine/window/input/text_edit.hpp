@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <string>
+#include "config.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
 struct Validator;
@@ -19,4 +20,6 @@ public:
         const PixelCoord nodePosition, const float glyphWidth, const std::unique_ptr<Validator>& validator);
     //
     size_t getCarrigePosition() const { return carPos; }
+private:
+    t1_disable_copy_and_move(TextEdit)
 };

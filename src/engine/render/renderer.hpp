@@ -61,8 +61,5 @@ public:
         setScaleMode(ScaleMode::nearest);
     }
 private:
-    Renderer(const Renderer&) = delete;
-    Renderer(Renderer&&) = delete;
-    Renderer& operator=(const Renderer&) = delete;
-    Renderer& operator=(Renderer&&) = delete;
+    t1_disable_copy_and_move(Renderer)
 };

@@ -13,6 +13,10 @@
 #include "game/world_saver/world_saver.hpp"
 #include "game_session.hpp"
 
+// Constuctor and destructor in cpp are needed for forward declaraton "GameSession" class in hpp.
+Engine::Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
+Engine::~Engine() = default;
+
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder,
     WorldProperties& properties, const Assets& assets) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
@@ -34,13 +38,28 @@ static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engin
     throw std::runtime_error("Failed to create GUI.");
 }
 
+std::unique_ptr<GameSession> Engine::createSession() {
+    std::unique_ptr<World> world = createWorld(command, worldFolder, worldProperties, assets);
+    if (!world) {
+        openMainMenu();
+        return nullptr;
+    }
+    const bool paused = command == EngineCommand::main_menu ? false : Settings::gameplay.pauseOnWorldOpen;
+    return std::make_unique<GameSession>(std::move(world), createGUI(command, *this), assets, paused);
+}
+
 void Engine::run() {
     script_libs::registerScripts(scriptsHandler);
     scriptsHandler.load();
     assets.load(mainWindow.getRenderer());
     openMainMenu();
     while (mainWindow.isOpen()) {
-        startSession(worldFolder, worldProperties);
+        if (session && session->isOpen())
+            session->update(*this, assets.getPresets(), scriptsHandler);
+        else {
+            session = createSession();
+            script_libs::initNewGame(*this);
+        }
     }
 }
 
@@ -74,23 +93,8 @@ void Engine::openMainMenu() {
     worldProperties = WorldProperties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
 }
 
-void Engine::startSession(const std::string& folder, WorldProperties& properties) {
-    std::unique_ptr<World> world = createWorld(command, folder, properties, assets);
-    if (!world) {
-        openMainMenu();
-        return;
-    }
+GUI& Engine::getGUI() { return session->getGUI(); }
 
-    const bool paused = Settings::gameplay.pauseOnWorldOpen;
-    GameSession session(std::move(world), createGUI(command, *this), assets, paused);
-    _session = &session;
-    script_libs::initNewGame(*this);
-
-    while (mainWindow.isOpen() && session.isOpen()) {
-        session.update(*this, assets.getPresets(), scriptsHandler);
-    }
+void Engine::closeSession() {
+    if (session) session->close();
 }
-
-void Engine::closeSession() { if (_session) _session->close(); }
-GUI& Engine::getGUI() { return _session->getGUI(); }
-

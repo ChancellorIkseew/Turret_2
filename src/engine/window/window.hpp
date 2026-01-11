@@ -66,9 +66,5 @@ private:
         realDelay = frameTime > requiredDelay ? frameTime : requiredDelay;
         frameStart += realDelay;
     }
-private:
-    MainWindow(const MainWindow&) = delete;
-    MainWindow(MainWindow&&) = delete;
-    MainWindow& operator=(const MainWindow&) = delete;
-    MainWindow& operator=(MainWindow&&) = delete;
+    t1_disable_copy_and_move(MainWindow)
 };

@@ -10,3 +10,15 @@
 ///@brief force inline macro
 #define t1_finline inline
 #endif
+
+#define t1_disable_copy(Class) \
+    Class(const Class&) = delete; \
+    Class& operator=(const Class&) = delete;
+
+#define t1_disable_move(Class) \
+    Class(Class&&) = delete; \
+    Class& operator=(Class&&) = delete;
+
+#define t1_disable_copy_and_move(Class) \
+    t1_disable_copy(Class) \
+    t1_disable_move(Class)

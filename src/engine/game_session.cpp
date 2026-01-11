@@ -9,10 +9,12 @@
 #include "game/world/world.hpp"
 #include "game/events/events.hpp"
 
-GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets, const bool paused) :
+// Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
+GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
     camera(world->getMap().getSize()), world(std::move(world)), gui(std::move(gui)), worldDrawer(assets), paused(paused) {
     prepare();
 }
+GameSession::~GameSession() = default;
 
 void GameSession::prepare() {
     Team* playerTeam = world->getTeams().addTeam(U"player");

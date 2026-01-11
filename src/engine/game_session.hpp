@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "engine/audio/sound_queue.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
@@ -21,7 +22,8 @@ class GameSession {
     int tickSpeed = 1;
     bool paused, open = true;
 public:
-    GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets, const bool paused);
+    GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused);
+    ~GameSession();
 
     void update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler);
 
@@ -39,4 +41,5 @@ public:
 private:
     void prepare();
     void updateSimulation(const Presets& presets);
+    t1_disable_copy_and_move(GameSession)
 };

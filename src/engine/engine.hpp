@@ -6,8 +6,8 @@
 #include "engine/window/window.hpp"
 #include "game/generation/generation.hpp"
 
-class GUI;
 class GameSession;
+class GUI;
 
 class Engine {
     MainWindow mainWindow;
@@ -16,9 +16,10 @@ class Engine {
     WorldProperties worldProperties;
     std::string worldFolder;
     EngineCommand command = EngineCommand::main_menu;
-    GameSession* _session = nullptr;
+    std::unique_ptr<GameSession> session;
 public:
-    Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
+    Engine(const std::string& windowTitle);
+    ~Engine();
     void run();
     void loadWorldInGame(const std::string& folder);
     void loadWorldInEditor(const std::string& folder);
@@ -26,8 +27,8 @@ public:
     void createWorldInEditor();
     void openMainMenu();
     //
-    void closeGame() { closeSession(); mainWindow.close(); }
-    GameSession& getSession() { return *_session; }
+    void closeGame() { mainWindow.close(); }
+    GameSession& getSession() { return *session; }
     //
     const MainWindow& getMainWindow() const { return mainWindow; }
     const Assets& getAssets() const { return assets; }
@@ -35,6 +36,7 @@ public:
     Assets& getAssets() { return assets; };
     GUI& getGUI();
 private:
-    void startSession(const std::string& folder, WorldProperties& properties);
+    std::unique_ptr<GameSession> createSession();
     void closeSession();
+    t1_disable_copy_and_move(Engine)
 };

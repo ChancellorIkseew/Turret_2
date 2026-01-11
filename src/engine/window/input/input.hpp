@@ -40,9 +40,5 @@ private:
     friend MainWindow;
     void update(const SDL_Event& event);
     void reset();
-private:
-    Input(const Input&) = delete;
-    Input(Input&&) = delete;
-    Input& operator=(const Input&) = delete;
-    Input& operator=(Input&&) = delete;
+    t1_disable_copy_and_move(Input)
 };

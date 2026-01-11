@@ -3,7 +3,8 @@
 #include <filesystem>
 #include <string>
 #include <unordered_map>
-#include "engine/coords/transforms.hpp"
+#include "config.hpp"
+#include "engine/coords/pixel_coord.hpp"
 #include "texture.hpp"
 
 class Renderer;
@@ -23,8 +24,5 @@ public:
     Texture getComonTexture() const noexcept;
     PixelCoord getSize() const noexcept { return PixelCoord(size.x, size.y); }
 private:
-    Atlas(const Atlas&) = delete;
-    Atlas(Atlas&&) = delete;
-    Atlas& operator=(const Atlas&) = delete;
-    Atlas& operator=(Atlas&&) = delete;
+    t1_disable_copy_and_move(Atlas)
 };

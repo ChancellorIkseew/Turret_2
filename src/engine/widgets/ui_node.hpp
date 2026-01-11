@@ -1,5 +1,6 @@
 #pragma once
 #include <type_traits>
+#include "config.hpp"
 #include "engine/coords/pixel_coord.hpp"
 #include "ui_context.hpp"
 #include "ui_defs.hpp"
@@ -28,10 +29,7 @@ public:
     void setColor(const UIColor color) { this->color = color; }
     bool containsMouse(const Input& input) const;
 private:
-    Node(const Node& other) = delete;
-    Node(Node&& other) = delete;
-    Node& operator=(const Node&) = delete;
-    Node& operator=(Node&&) = delete;
+    t1_disable_copy_and_move(Node)
 };
 
 template<typename T>

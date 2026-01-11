@@ -1,7 +1,6 @@
 #pragma once
 #include <array>
 #include <filesystem>
-#include <span>
 #include <string>
 #include <unordered_map>
 #include "engine/coords/pixel_coord.hpp"

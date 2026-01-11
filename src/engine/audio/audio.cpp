@@ -1,6 +1,7 @@
 #include "audio.hpp"
 //
 #include <SDL3_mixer/SDL_mixer.h>
+#include <span>
 #include <stdexcept>
 #include "engine/coords/transforms.hpp"
 #include "engine/debug/logger.hpp"
