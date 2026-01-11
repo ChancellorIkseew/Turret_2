@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/debug/logger.hpp"
 #include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/scripting/scripting.hpp"
 
 namespace script_libs {
@@ -26,11 +27,11 @@ namespace script_libs {
 
     inline void initNewGame(Engine& engine) {
         assets = &engine.getAssets();
-        camera = &engine.getCamera();
+        camera = &engine.getSession().getCamera();
         gui    = &engine.getGUI();
         input  = &engine.getMainWindow().getInput();
-        world  = &engine.getWorld();
-        playerController = &engine.getPlayerController();
+        world  = &engine.getSession().getWorld();
+        playerController = &engine.getSession().getPlayerController();
     }
 
     [[noreturn]] inline void logAndThrow(const std::string& message) noexcept(false) {

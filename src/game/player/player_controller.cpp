@@ -8,16 +8,18 @@
 #include "engine/window/input/input.hpp"
 #include "game/physics/team/team.hpp"
 
-void PlayerController::shoot(const Input& input, const Camera& camera) {
+using PlCtr = PlayerController;
+
+void PlCtr::shoot(const Input& input, const Camera& camera) {
     aimCoord = camera.fromScreenToMap(input.getMouseCoord());
     shooting = input.active(Shoot);
 }
 
-void PlayerController::mine() {
+void PlCtr::mine() {
 
 }
 
-void PlayerController::move(const Input& input, Camera& camera, const MobManager& mobs, const bool isPaused) {
+void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, const bool isPaused) {
     PixelCoord delta(0.0f, 0.0f);
 
     if (input.active(Move_up))
@@ -41,19 +43,14 @@ void PlayerController::move(const Input& input, Camera& camera, const MobManager
     camera.scale(input);
 }
 
-void PlayerController::update(Engine& engine, MobManager& mobs, const Presets& presets) {
-    if (engine.getGUI().hasOverlaped() || !engine.getGUI().isMouseFree())
-        return;
-    const Input& input = engine.getMainWindow().getInput();
-    Camera& camera = engine.getCamera();
-
-    move(engine.getMainWindow().getInput(), camera, mobs, engine.isPaused());
+void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobManager& mobs, const Presets& presets) {
+    move(input, camera, mobs, paused);
     shoot(input, camera);
     mine();
     captureMob(input, camera, mobs, presets);
 }
 
-void PlayerController::captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets) {
+void PlCtr::captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets) {
     if (!input.jactive(Control_unit))
         return;
     const auto& soa = mobs.getSoa();
@@ -67,7 +64,7 @@ void PlayerController::captureMob(const Input& input, const Camera& camera, MobM
     resetTarget(mobs, presets);
 }
 
-void PlayerController::setTarget(MobManager& mobs, const MobID mobID, const Presets& presets) {
+void PlCtr::setTarget(MobManager& mobs, const MobID mobID, const Presets& presets) {
     resetTarget(mobs, presets); // Reset current target before set new.
     if (mobID == IDManager<MobID>::INVALID_ID)
         return;
@@ -78,7 +75,7 @@ void PlayerController::setTarget(MobManager& mobs, const MobID mobID, const Pres
     state = State::control_mob;
 }
 
-void PlayerController::resetTarget(MobManager& mobs, const Presets& presets) {
+void PlCtr::resetTarget(MobManager& mobs, const Presets& presets) {
     if (targetMobID == IDManager<MobID>::INVALID_ID)
         return;
     const size_t index = mobs.getSoaIndexByMobID(targetMobID);

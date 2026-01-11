@@ -4,7 +4,6 @@
 
 class Camera;
 class Engine;
-class GUI;
 class Input;
 class Team;
 
@@ -25,7 +24,7 @@ public:
     PlayerController() = default;
 
     void captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets);
-    void update(Engine& engine, MobManager& mobs, const Presets& presets);
+    void update(const Input& input, Camera& camera, const bool paused, MobManager& mobs, const Presets& presets);
 
     void setPlayerTeam(Team* team) { playerTeam = team; }
     Team* getPlayerTeam() { return playerTeam; }

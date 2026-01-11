@@ -2,6 +2,7 @@
 #include "gui.hpp"
 //
 #include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
 #include "game/world/world.hpp"
@@ -21,6 +22,6 @@ public:
         else
             GUI::callback();
         if (input.jactive(Pause))
-            engine.setPaused(!engine.isPaused());
+            engine.getSession().setPaused(!engine.getSession().isPaused(), engine);
     }
 };

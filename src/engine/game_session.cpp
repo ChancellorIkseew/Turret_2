@@ -1,0 +1,73 @@
+#include "game_session.hpp"
+//
+#include "engine/gui/gui.hpp"
+#include "engine/scripting/scripting.hpp"
+#include "game/physics/ai_system.hpp"
+#include "game/physics/mobs_system.hpp"
+#include "game/physics/shells_system.hpp"
+#include "game/physics/turrets_system.hpp"
+#include "game/world/world.hpp"
+#include "game/events/events.hpp"
+
+GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets, const bool paused) :
+    camera(world->getMap().getSize()), world(std::move(world)), gui(std::move(gui)), worldDrawer(assets), paused(paused) {
+    prepare();
+}
+
+void GameSession::prepare() {
+    Team* playerTeam = world->getTeams().addTeam(U"player");
+    Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
+    playerController.setPlayerTeam(playerTeam);
+}
+
+void GameSession::updateSimulation(const Presets& presets) {
+    auto& mobs = world->getMobs();
+    auto& shells = world->getShells();
+    //
+    shells::processShells(shells.getSoa(), mobs.getSoa());
+    mobs::processMobs(mobs.getSoa(), presets);
+    ai::updateMovingAI(mobs.getSoa(), presets, playerController);
+    ai::updateShootingAI(mobs.getSoa(), presets, playerController);
+    turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);
+    // Clean up only after all processing.
+    shells::cleanupShells(shells, presets);
+    mobs::cleanupMobs(mobs, presets);
+    ++tickCount;
+}
+
+void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
+    auto& mainWindow = engine.getMainWindow();
+    //
+    mainWindow.pollEvents();
+    mainWindow.clear();
+    if (gui->isMouseFree() && !gui->hasOverlaped())
+         playerController.update(mainWindow.getInput(), camera, paused, world->getMobs(), presets);
+    camera.update(mainWindow.getSize());
+    mainWindow.setRenderScale(camera.getMapScale());
+    mainWindow.setRenderTranslation(camera.getPosition());
+    //
+    if (!paused) {
+        for (int i = 0; i < tickSpeed; ++i) {
+            updateSimulation(presets);
+        }
+    }
+    //
+    worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, tickCount);
+    worldSounds.play(engine.getAssets().getAudio(), camera);
+    Events::reset(); // for editor // needs update
+    scriptsHandler.execute();
+    //
+    mainWindow.setRenderScale(1.0f);
+    mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
+    gui->callback();
+    gui->draw(mainWindow.getRenderer(), engine.getAssets().getAtlas());
+    mainWindow.render();
+}
+
+void GameSession::setPaused(const bool flag, Engine& engine) {
+    paused = flag;
+    auto& audio = engine.getAssets().getAudio();
+    if (paused) audio.pauseWorldSounds();
+    else        audio.resumeWorldSounds();
+}
+

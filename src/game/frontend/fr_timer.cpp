@@ -1,6 +1,7 @@
 #include "frontend.hpp"
 //
 #include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/label.hpp"
@@ -24,7 +25,7 @@ public:
     void callback(UIContext& context) final {
         Container::callback(context);
         time->setText(utf8::to_u32string(engine.getMainWindow().getTime()));
-        mobCount->setText(utf8::to_u32string(engine.getWorld().getMobs().getSoa().id.size()));
+        mobCount->setText(utf8::to_u32string(engine.getSession().getWorld().getMobs().getSoa().id.size()));
     }
 };
 

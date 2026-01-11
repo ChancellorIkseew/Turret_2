@@ -1,31 +1,17 @@
 #include "engine.hpp"
 //
-#include <functional>
-#include <mutex>
-#include <thread>
+#include "engine/io/folders.hpp"
+#include "engine/settings/settings.hpp"
+//
 #include "engine/gui/editor_gui.hpp"
 #include "engine/gui/gameplay_gui.hpp"
 #include "engine/gui/menu_gui.hpp"
 //
-#include "engine/util/sleep.hpp"
-//
-#include "game/events/events.hpp"
 #include "game/script_libs/script_libs.hpp"
-#include "game/player/camera.hpp"
-#include "game/world_drawer/world_drawer.hpp"
-
-#include "game/player/player_controller.hpp"
-#include "game/world_saver/world_saver.hpp"
 #include "game/generation/generation.hpp"
-//
-#include "engine/io/folders.hpp"
-#include "engine/settings/settings.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
-#include "game/physics/ai_system.hpp"
-#include "game/physics/mobs_system.hpp"
-#include "game/physics/shells_system.hpp"
-#include "game/physics/turrets_system.hpp"
-#include "engine/audio/sound_queue.hpp"
+#include "game/world_saver/world_saver.hpp"
+#include "game_session.hpp"
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder,
     WorldProperties& properties, const Assets& assets) {
@@ -54,119 +40,57 @@ void Engine::run() {
     assets.load(mainWindow.getRenderer());
     openMainMenu();
     while (mainWindow.isOpen()) {
-        createScene(worldFolder, worldProperties);
+        startSession(worldFolder, worldProperties);
     }
 }
 
 void Engine::loadWorldInGame(const std::string& folder) {
-    closeWorld();
+    closeSession();
     command = EngineCommand::gameplay_load_world;
     worldFolder = folder;
 }
 void Engine::loadWorldInEditor(const std::string& folder) {
-    closeWorld();
+    closeSession();
     command = EngineCommand::editor_load_world;
     worldFolder = folder;
 }
 void Engine::createWorldInGame(WorldProperties& properties) {
-    closeWorld();
+    closeSession();
     command = EngineCommand::gameplay_new_world;
     worldProperties = properties;
 }
 void Engine::createWorldInEditor() {
-    closeWorld();
+    closeSession();
     command = EngineCommand::editor_new_world;
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
     worldProperties = WorldProperties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
 }
 void Engine::openMainMenu() {
-    closeWorld();
+    closeSession();
     command = EngineCommand::main_menu;
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
     worldProperties = WorldProperties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
 }
 
-void Engine::createScene(const std::string& folder, WorldProperties& properties) {
-    paused = Settings::gameplay.pauseOnWorldOpen;
-    std::mutex worldMutex;
-    
+void Engine::startSession(const std::string& folder, WorldProperties& properties) {
     std::unique_ptr<World> world = createWorld(command, folder, properties, assets);
-    if (!world)
-        return openMainMenu();
-    Camera camera(world->getMap().getSize());
-    std::unique_ptr<GUI> gui = createGUI(command, *this);
-    PlayerController playerController;
-    WorldDrawer worldDrawer(assets);
-    SoundQueue worldSounds;
+    if (!world) {
+        openMainMenu();
+        return;
+    }
 
-    _world = world.get();
-    _gui = gui.get();
-    _camera = &camera;
-    _playerController = &playerController;
+    const bool paused = Settings::gameplay.pauseOnWorldOpen;
+    GameSession session(std::move(world), createGUI(command, *this), assets, paused);
+    _session = &session;
     script_libs::initNewGame(*this);
 
-    worldOpen = true;
-    //TODO: std::jthread network([&] { startNet(); }); 
-
-    //sim
-    Team* playerTeam = world->getTeams().addTeam(U"player");
-    world->getTeams().addTeam(U"enemy");
-    playerController.setPlayerTeam(playerTeam);
-    auto& mobs = world->getMobs();
-    auto& shells = world->getShells();
-
-    //auto& cannonerBot = content::Presets::getMobs().at("cannoner_bot"); // throws if no .tin preset files
-    MotionData mData(MovingAI::basic, 0, PixelCoord(400, 1000));
-    ShootingData sData(ShootingAI::basic, false, PixelCoord(0, 0));
-    //mobs.addMob(presets, cannonerBot, PixelCoord(100, 100), 0.f, cannonerBot->maxHealth, playerTeam->getID(), mData, sData,
-        //cannonerBot->turret->reload, 0.f);
-    //
-    uint64_t tickCount = 0;
-    while (mainWindow.isOpen() && isWorldOpen()) {
-        mainWindow.pollEvents();
-        mainWindow.clear();
-        const Presets& presets = assets.getPresets();
-        playerController.update(*this, world->getMobs(), presets);
-        camera.update(mainWindow.getSize());
-        mainWindow.setRenderScale(camera.getMapScale());
-        mainWindow.setRenderTranslation(camera.getPosition());
-        //
-        if (!isPaused()) {
-            // world.getChunks().update(mobs.getSoa()); not needed now, waits for better time
-            shells::processShells(shells.getSoa(), mobs.getSoa());
-            mobs::processMobs(mobs.getSoa(), presets);
-            ai::updateMovingAI(mobs.getSoa(), presets, playerController);
-            ai::updateShootingAI(mobs.getSoa(), presets, playerController);
-            turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);
-            // Clean up only after all processing.
-            shells::cleanupShells(shells, presets);
-            mobs::cleanupMobs(mobs, presets);
-            ++tickCount;
-        }
-        //
-        worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, tickCount);
-        worldSounds.play(assets.getAudio(), camera);
-        Events::reset(); // for editor
-        scriptsHandler.execute();
-        //
-        mainWindow.setRenderScale(1.0f);
-        mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-        gui->draw(mainWindow.getRenderer(), assets.getAtlas());
-        gui->callback();
-        mainWindow.render();
+    while (mainWindow.isOpen() && session.isOpen()) {
+        session.update(*this, assets.getPresets(), scriptsHandler);
     }
 }
 
-void Engine::startNet() {
-    while (mainWindow.isOpen() && isWorldOpen()) {
-        util::sleep(48);
-    }
-}
+void Engine::closeSession() { if (_session) _session->close(); }
+GUI& Engine::getGUI() { return _session->getGUI(); }
 
-void Engine::setPaused(const bool flag) {
-    paused = flag;
-    if (paused) assets.getAudio().pauseWorldSounds();
-    else        assets.getAudio().resumeWorldSounds();
-}

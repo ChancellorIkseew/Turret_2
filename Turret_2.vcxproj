@@ -34,6 +34,7 @@
     <ClInclude Include="src\engine\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
     <ClInclude Include="src\engine\engine_command.hpp" />
+    <ClInclude Include="src\engine\game_session.hpp" />
     <ClInclude Include="src\engine\gui\editor_gui.hpp" />
     <ClInclude Include="src\engine\gui\gameplay_gui.hpp" />
     <ClInclude Include="src\engine\gui\gui.hpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="src\engine\debug\console.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
+    <ClCompile Include="src\engine\game_session.cpp" />
     <ClCompile Include="src\engine\gui\gui.cpp" />
     <ClCompile Include="src\engine\io\comon_pathes.cpp" />
     <ClCompile Include="src\engine\io\folders.cpp" />
@@ -168,7 +170,6 @@
     <ClCompile Include="src\game\physics\shell_manager.cpp" />
     <ClCompile Include="src\game\physics\shells_system.cpp" />
     <ClCompile Include="src\game\physics\shooting_ai_system.cpp" />
-    <ClCompile Include="src\game\physics\team\team.cpp" />
     <ClCompile Include="src\game\physics\turrets_system.cpp" />
     <ClCompile Include="src\game\player\camera.cpp" />
     <ClCompile Include="src\game\player\player_controller.cpp" />

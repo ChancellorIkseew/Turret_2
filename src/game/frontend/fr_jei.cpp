@@ -1,9 +1,9 @@
 #include "frontend.hpp"
 //
 #include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/widgets/image_button.hpp"
-#include "game/player/camera.hpp"
 #include "game/world/world.hpp"
 
 enum class TileComponent : uint8_t { floor, overlay, block };
@@ -55,8 +55,8 @@ public:
         Container::callback(context);
         if (!context.input.active(Build) || !engine.getGUI().isMouseFree())
             return;
-        WorldMap& map = engine.getWorld().getMap();
-        const TileCoord tile = t1::tile(engine.getCamera().fromScreenToMap(context.input.getMouseCoord()));
+        WorldMap& map = engine.getSession().getWorld().getMap();
+        const TileCoord tile = t1::tile(engine.getSession().getCamera().fromScreenToMap(context.input.getMouseCoord()));
         switch (tileData.component) {
         case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;

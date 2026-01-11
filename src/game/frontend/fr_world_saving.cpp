@@ -1,6 +1,7 @@
 #include "frontend.hpp"
 //
 #include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/widgets/button.hpp"
@@ -15,7 +16,7 @@ static void saveWorld(Form* form, Selector* saves, Container* saving, Engine& en
     std::string folder = validator::trimToStdString(form->getText());
     if (!io::folders::isPathValid(folder))
         return;
-    serializer::saveWorld(engine.getWorld(), folder);
+    serializer::saveWorld(engine.getSession().getWorld(), folder);
     frontend::update(saves, folder);
     saving->arrange();
 }
