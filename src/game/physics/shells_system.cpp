@@ -1,5 +1,6 @@
 #include "shells_system.hpp"
 //
+#include <cmath>
 #include "engine/assets/presets.hpp"
 #include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"

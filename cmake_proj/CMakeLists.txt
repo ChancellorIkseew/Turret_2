@@ -18,7 +18,7 @@ if(WIN32)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         "${LIBS_DIR}/zlib.lib"
         "${LIBS_DIR}/SDL3.lib"
-        "${LIBS_DIR}/SDL3_image.lib"
+        "${LIBS_DIR}/SDL3_mixer.lib"
         "${LIBS_DIR}/angelscript64.lib")
 elseif(UNIX AND NOT APPLE)
     set(LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../libs/GCC_so")
@@ -26,7 +26,7 @@ elseif(UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         "${LIBS_DIR}/libz.so.1"
         "${LIBS_DIR}/libSDL3.so.0"
-        "${LIBS_DIR}/libSDL3_image.so.0"
+        "${LIBS_DIR}/libSDL3_mixer.so.0"
         "${LIBS_DIR}/libangelscript64.so.2.37.0")
     target_link_libraries(${PROJECT_NAME} PRIVATE pthread atomic) # Linux std::atomic
 endif()

@@ -1,5 +1,6 @@
 #include "turrets_system.hpp"
 //
+#include <cmath>
 #include "engine/assets/presets.hpp"
 #include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"

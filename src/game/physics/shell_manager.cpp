@@ -1,5 +1,6 @@
 #include "shell_manager.hpp"
 //
+#include <cmath>
 #include "engine/assets/presets.hpp"
 
 void ShellManager::reserve(const size_t capacity) {

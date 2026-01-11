@@ -1,5 +1,6 @@
 #include "ai_system.hpp"
 //
+#include <cmath>
 #include "engine/assets/presets.hpp"
 #include "mob_manager.hpp"
 #include "game/player/player_controller.hpp"
