@@ -38,32 +38,31 @@ void GameSession::updateSimulation(const Presets& presets) {
 }
 
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
+    Events::reset(); // for editor // needs update
     auto& mainWindow = engine.getMainWindow();
     //
     mainWindow.pollEvents();
-    mainWindow.clear();
+    gui->callback();
     if (gui->isMouseFree() && !gui->hasOverlaped())
          playerController.update(mainWindow.getInput(), camera, paused, world->getMobs(), presets);
-    camera.update(mainWindow.getSize());
-    mainWindow.setRenderScale(camera.getMapScale());
-    mainWindow.setRenderTranslation(camera.getPosition());
-    //
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
             updateSimulation(presets);
         }
     }
+    scriptsHandler.execute();
     //
+    camera.update(mainWindow.getSize());
+    mainWindow.setRenderScale(camera.getMapScale());
+    mainWindow.setRenderTranslation(camera.getTranslation());
     worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, tickCount);
     worldSounds.play(engine.getAssets().getAudio(), camera);
-    Events::reset(); // for editor // needs update
-    scriptsHandler.execute();
     //
     mainWindow.setRenderScale(1.0f);
     mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
-    gui->callback();
     gui->draw(mainWindow.getRenderer(), engine.getAssets().getAtlas());
     mainWindow.render();
+    mainWindow.clear();
 }
 
 void GameSession::setPaused(const bool flag, Engine& engine) {

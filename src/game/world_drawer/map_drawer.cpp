@@ -108,8 +108,8 @@ void MapDrawer::draw(const Camera& camera, const Renderer& renderer, const World
         cacheFloor(map);
         cacheOverlay(map);
     }
-    renderLayer(renderer, cachedFloor, floorTextures, FLOOR_SIZE, camera.getPosition() + BLENDING_AREA);
-    renderLayer(renderer, cachedOverlay, overlayTextures, TILE_SIZE, camera.getPosition());
+    renderLayer(renderer, cachedFloor, floorTextures, FLOOR_SIZE, camera.getTranslation() + BLENDING_AREA);
+    renderLayer(renderer, cachedOverlay, overlayTextures, TILE_SIZE, camera.getTranslation());
     drawStructures(camera, map);
 }
 

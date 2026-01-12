@@ -36,7 +36,7 @@ void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, con
     }
     else /*State::control_mob*/ {
         const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-        camera.setPosition(mobs.getSoa().position[index]);
+        camera.setCenter(mobs.getSoa().position[index]);
     }
     camera.scale(input);
 }

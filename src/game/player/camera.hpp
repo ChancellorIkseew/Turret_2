@@ -5,7 +5,7 @@
 class Input;
 
 class Camera {
-    PixelCoord cameraUpperLeftCorner, cameraCentre;
+    PixelCoord cameraUpperLeftCorner, cameraCenter;
     PixelCoord movingStartMouseCoord;
     const PixelCoord pixelMapSize;
     const TileCoord tileMapSize;
@@ -20,14 +20,14 @@ public:
     void move(const PixelCoord delta);
     void moveByMouse(const Input& input);
     void scale(const Input& input);
-    void setPosition(const PixelCoord position) { cameraCentre = position; }
+    void setCenter(const PixelCoord position) { cameraCenter = position; }
 
     ///@brief applies correction for building max size
     TileCoord getBuildingsStartTile() const noexcept { return buildingsStartTile; }
     TileCoord getStartTile() const noexcept { return startTile; }
     TileCoord getEndTile() const noexcept { return endTile; }
-    PixelCoord getPosition() const noexcept { return cameraUpperLeftCorner; }
-    PixelCoord getCenter() const noexcept { return cameraCentre; }
+    PixelCoord getTranslation() const noexcept { return cameraUpperLeftCorner; }
+    PixelCoord getCenter() const noexcept { return cameraCenter; }
     float getMapScale() const noexcept { return mapScale; }
 
     PixelCoord fromMapToScreen(const PixelCoord mapCoord) const noexcept;

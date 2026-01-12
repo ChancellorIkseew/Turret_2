@@ -40,17 +40,17 @@ namespace t1 {
     }
 
     // tile_centre
-    t1_finline int tileCentre(const int tileCoord) noexcept {
+    t1_finline int tileCenter(const int tileCoord) noexcept {
         return tileCoord * TILE + HALF_TILE;
     }
-    t1_finline float tileCentreF(const int tileCoord) noexcept {
+    t1_finline float tileCenterF(const int tileCoord) noexcept {
         return static_cast<float>(tileCoord * TILE + HALF_TILE);
     }
-    t1_finline PixelCoord tileCentre(const int tileCoordX, const int tileCoordY) noexcept {
-        return PixelCoord(tileCentreF(tileCoordX), tileCentreF(tileCoordY));
+    t1_finline PixelCoord tileCenter(const int tileCoordX, const int tileCoordY) noexcept {
+        return PixelCoord(tileCenterF(tileCoordX), tileCenterF(tileCoordY));
     }
-    t1_finline PixelCoord tileCentre(const TileCoord tileCoord) noexcept {
-        return PixelCoord(tileCentreF(tileCoord.x), tileCentreF(tileCoord.y));
+    t1_finline PixelCoord tileCenter(const TileCoord tileCoord) noexcept {
+        return PixelCoord(tileCenterF(tileCoord.x), tileCenterF(tileCoord.y));
     }
 
     // simple math

@@ -23,18 +23,18 @@ void Camera::moveByMouse(const Input& input) {
         movingStartMouseCoord = fromScreenToMap(input.getMouseCoord());
     else if (input.active(MidMB)) {
         const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(input.getMouseCoord());
-        cameraCentre = cameraCentre + delta;
+        cameraCenter = cameraCenter + delta;
     }
 }
 
 void Camera::move(const PixelCoord delta) {
     if (delta != PixelCoord(0.0f, 0.0f))
-        cameraCentre = cameraCentre + (delta * MOTION_SPEED / mapScale);
+        cameraCenter = cameraCenter + (delta * MOTION_SPEED / mapScale);
 }
 
 void Camera::avoidEscapeFromMap() {
-    cameraCentre.x = std::clamp(cameraCentre.x, 0.0f, pixelMapSize.x);
-    cameraCentre.y = std::clamp(cameraCentre.y, 0.0f, pixelMapSize.y);
+    cameraCenter.x = std::clamp(cameraCenter.x, 0.0f, pixelMapSize.x);
+    cameraCenter.y = std::clamp(cameraCenter.y, 0.0f, pixelMapSize.y);
 }
 
 void Camera::scale(const Input& input) {
@@ -54,7 +54,7 @@ void Camera::scale(const Input& input) {
 }
 
 void Camera::resize(const PixelCoord windowSize) {
-    cameraUpperLeftCorner = cameraCentre - windowSize / 2.0f / mapScale;
+    cameraUpperLeftCorner = cameraCenter - windowSize / 2.0f / mapScale;
 }
 
 void Camera::updateMapRegion(const PixelCoord windowSize) {
