@@ -8,14 +8,13 @@ union SDL_Event;
 class MainWindow;
 
 class Input {
-    SDL_Window* sdlWindow;
     std::optional<Binding> lastKeyPressed;
     std::optional<char32_t> symbolJustEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
     mutable TextEdit textEdit;
 public:
-    Input(SDL_Window* sdlWindow) : sdlWindow(sdlWindow) { }
+    Input() = default;
 
     ///@brief Check any press/click.
     bool active(const cString bindName) const;
@@ -32,9 +31,7 @@ public:
     std::optional<Binding> getLastKeyPressed() const;
     ///@brief Last symbol entered in any text field.
     std::optional<char32_t> getLastSymbolEntered() const;
-    ///@brief Start/stop checking.
-    void enableTextEnter(const bool flag);
-    bool isTextEnterEnabled() const;
+
     TextEdit& getTextEdit() const { return textEdit; }
 private:
     friend MainWindow;

@@ -1,13 +1,17 @@
 #include "text_edit.hpp"
 //
-#include "engine/render/renderer.hpp"
-#include "engine/widgets/form.hpp"
+#include <SDL3/SDL_keyboard.h>
 #include "engine/widgets/form_validator/form_validator.hpp"
 #include "engine/window/input/input.hpp"
 
 constexpr int INPUT_RELOAD = 120;
 
-void TextEdit::updateTimer(const int frameDelay) {
+void TextEdit::update(SDL_Window* sdlWindow, const int frameDelay) {
+    if (editingActive && !SDL_TextInputActive(sdlWindow))
+        SDL_StartTextInput(sdlWindow);
+    else if (!editingActive && SDL_TextInputActive(sdlWindow))
+        SDL_StopTextInput(sdlWindow);
+    editingActive = false;
     if (inputTimer > 0)
         inputTimer -= frameDelay;
 }
@@ -52,6 +56,7 @@ static void editForm(const Input& input, std::u32string& text, const PixelCoord 
 
 void TextEdit::edit(const Input& input, std::u32string& text, const PixelCoord nodeSize,
     const PixelCoord nodePosition, const float glyphWidth, const std::unique_ptr<Validator>& validator) {
+    editingActive = true;
     if (input.jactive(LMB))
         moveCarriageToCursor(input, text, nodePosition, glyphWidth);
     editForm(input, text, nodeSize, validator, carPos, inputTimer, glyphWidth);

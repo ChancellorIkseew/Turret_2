@@ -75,10 +75,3 @@ std::optional<Binding> Input::getLastKeyPressed() const {
 std::optional<char32_t> Input::getLastSymbolEntered() const {
     return symbolJustEntered;
 }
-void Input::enableTextEnter(const bool flag) {
-    if (flag) SDL_StartTextInput(sdlWindow);
-    else      SDL_StopTextInput(sdlWindow);
-}
-bool Input::isTextEnterEnabled() const {
-    return SDL_TextInputActive(sdlWindow);
-}

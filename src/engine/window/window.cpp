@@ -42,9 +42,8 @@ SDLContext::~SDLContext() {
 }
 
 MainWindow::MainWindow(const std::string& title) :
-    SDLContext(title), input(sdlWindow), renderer(sdlRenderer) {
+    SDLContext(title), renderer(sdlRenderer) {
     loadIcon(sdlWindow);
-    input.enableTextEnter(true);
 }
 
 void MainWindow::setFPS(const Uint32 FPS) {
@@ -59,7 +58,7 @@ void MainWindow::setFullscreen(const bool flag) {
 
 void MainWindow::pollEvents() {
     input.reset();
-    input.getTextEdit().updateTimer(realDelay);
+    input.getTextEdit().update(sdlWindow, realDelay);
     resized = false;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
