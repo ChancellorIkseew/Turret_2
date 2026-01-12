@@ -13,7 +13,6 @@ static debug::Logger logger("settings");
 void Settings::writeSettings() {
     tin::Data data;
     data.emplace("volume_master", audio.master);
-    data.emplace("volume_master", audio.master);
     data.emplace("volume_world",  audio.world);
     data.emplace("volume_ui",     audio.ui);
     data.emplace("volume_music",  audio.music);
