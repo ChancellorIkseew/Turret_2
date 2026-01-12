@@ -1,13 +1,11 @@
 #include "ai_system.hpp"
 //
-#include <cmath>
 #include "engine/assets/presets.hpp"
+#include "engine/coords/math.hpp"
 #include "mob_manager.hpp"
 #include "game/player/player_controller.hpp"
 
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
-
-static inline float atan2f(const PixelCoord p) noexcept { return atan2f(p.x, p.y); }
 
 static inline void updatePlayerControlled(MobSoA& soa, const Presets& presets, const size_t index, const PlayerController& playerController) {
     const PixelCoord motionVector = playerController.getMotionVector();
@@ -15,7 +13,7 @@ static inline void updatePlayerControlled(MobSoA& soa, const Presets& presets, c
         soa.velocity[index] = NO_MOTION;
         return;
     } 
-    AngleRad motionAngle = atan2f(motionVector);// needs refactoring
+    AngleRad motionAngle = t1::atan(motionVector);// needs refactoring
     soa.angle[index] = motionAngle;//
     soa.velocity[index].x = sinf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;//
     soa.velocity[index].y = cosf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;//
@@ -26,7 +24,7 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
     if (t1::areCloser(aiData.target, soa.position[index], presets.getMob(soa.preset[index]).maxSpeed))
         soa.velocity[index] = NO_MOTION;
     else {
-        AngleRad motionAngle = atan2f(aiData.target - soa.position[index]);//
+        AngleRad motionAngle = t1::atan(aiData.target - soa.position[index]);//
         soa.angle[index] = motionAngle;//
         soa.velocity[index].x = sinf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;//
         soa.velocity[index].y = cosf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;//

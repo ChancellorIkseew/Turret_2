@@ -1,10 +1,9 @@
 #include "camera.hpp"
 //
 #include <algorithm>
-#include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
 
-constexpr float MIN_MAP_SCALE = 0.25f, MAX_MAP_SCALE = 5.0f; // Strong visual artifacts with (slow motion and scale < 0.68). 
+constexpr float MIN_MAP_SCALE = 0.25f, MAX_MAP_SCALE = 5.0f;
 constexpr float SCALE_FACTOR = 1.2f;
 constexpr float MOTION_SPEED = 20.0f;
 constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
@@ -59,7 +58,7 @@ void Camera::resize(const PixelCoord windowSize) {
 
 void Camera::updateMapRegion(const PixelCoord windowSize) {
     endTile = t1::tile(fromScreenToMap(windowSize)) + TileCoord(1, 1);
-    startTile = t1::tile(fromScreenToMap(PixelCoord(0.0f, 0.0f)));
+    startTile = t1::tile(fromScreenToMap(PixelCoord(0.0f, 0.0f))) - TileCoord(1, 1);
     buildingsStartTile = startTile - MAX_MAP_STRUCTURE_SIZE;
     // Correction is needed to correct big_buildings drawing.
 

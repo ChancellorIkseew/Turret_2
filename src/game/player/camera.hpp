@@ -1,10 +1,12 @@
 #pragma once
 #include "config.hpp"
+#include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
 
 class Input;
 
 class Camera {
+    static constexpr float VISUAL_ARTIFACTS_START_SCALE = 0.68f;
     PixelCoord cameraUpperLeftCorner, cameraCenter;
     PixelCoord movingStartMouseCoord;
     const PixelCoord pixelMapSize;
@@ -26,7 +28,6 @@ public:
     TileCoord getBuildingsStartTile() const noexcept { return buildingsStartTile; }
     TileCoord getStartTile() const noexcept { return startTile; }
     TileCoord getEndTile() const noexcept { return endTile; }
-    PixelCoord getTranslation() const noexcept { return cameraUpperLeftCorner; }
     PixelCoord getCenter() const noexcept { return cameraCenter; }
     float getMapScale() const noexcept { return mapScale; }
 
@@ -35,6 +36,11 @@ public:
 
     t1_finline bool contains(const TileCoord tile) const noexcept {
         return t1::contains(startTile, endTile, tile);
+    }
+    t1_finline PixelCoord getTranslation() const noexcept {
+        if (mapScale > VISUAL_ARTIFACTS_START_SCALE)
+            return cameraUpperLeftCorner;
+        return t1::floor(cameraUpperLeftCorner * mapScale) / mapScale;
     }
 private:
     void avoidEscapeFromMap();

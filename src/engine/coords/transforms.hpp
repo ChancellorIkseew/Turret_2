@@ -55,7 +55,7 @@ namespace t1 {
 
     // simple math
     t1_finline bool areCloser(const PixelCoord first, const PixelCoord second, const float distance) noexcept {
-        return abs(first.x - second.x) < distance && abs(first.y - second.y) < distance;
+        return std::abs(first.x - second.x) < distance && std::abs(first.y - second.y) < distance;
     }
 
     t1_finline bool contains(const TileCoord start, const TileCoord end, const TileCoord target) noexcept {

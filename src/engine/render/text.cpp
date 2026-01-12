@@ -1,10 +1,10 @@
 #include "text.hpp"
 //
 #include <cstdint>
-#include <cmath>
 #include <unordered_map>
 #include "atlas.hpp"
 #include "config.hpp"
+#include "engine/coords/math.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "renderer.hpp"
@@ -39,7 +39,7 @@ static t1_finline void drawGlyph(const Renderer& renderer, char32_t symbol, cons
 }
 
 void text::drawString(const Renderer& renderer, const std::u32string& text, const PixelCoord position) {
-    PixelCoord glyphPosition = PixelCoord(ceilf(position.x), ceilf(position.y));
+    PixelCoord glyphPosition = PixelCoord(t1::ceil(position));
     for (const auto it : text) {
         if (it != ' ')
             drawGlyph(renderer, it, glyphPosition);
