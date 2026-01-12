@@ -7,7 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
 #--------------------------------------
 set(CMAKE_INSTALL_RPATH "\$ORIGIN")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-#-----find_cources---------------------
+#-----find_sources---------------------
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "../src/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE "../src" "../libs/include")
