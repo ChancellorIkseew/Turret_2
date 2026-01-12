@@ -2,9 +2,8 @@
 #include <cstdint>
 #include <optional>
 #include <string>
-
-struct PixelCoord;
-struct TileCoord;
+#include "engine/coords/pixel_coord.hpp"
+#include "engine/coords/tile_coord.hpp"
 
 namespace validator {
     std::optional<uint64_t> toUint64(const std::string& str);
@@ -34,4 +33,25 @@ namespace validator {
     inline std::optional<int8_t> toInt8(const std::u32string& str) { return toInt8(trimToStdString(str)); }
     //
     inline std::optional<float> toFloat(const std::u32string& str) { return toFloat(trimToStdString(str)); }
+
+    template <typename T>
+    std::optional<T> to(const std::string& str) {
+        if constexpr (std::is_same_v<T, std::string>) return str;
+        else if constexpr (std::is_same_v<T, uint64_t>) return toUint64(str);
+        else if constexpr (std::is_same_v<T, uint32_t>) return toUint32(str);
+        else if constexpr (std::is_same_v<T, uint16_t>) return toUint16(str);
+        else if constexpr (std::is_same_v<T, uint8_t>)  return toUint8(str);
+        else if constexpr (std::is_same_v<T, int64_t>)  return toInt64(str);
+        else if constexpr (std::is_same_v<T, int32_t>)  return toInt32(str);
+        else if constexpr (std::is_same_v<T, int16_t>)  return toInt16(str);
+        else if constexpr (std::is_same_v<T, int8_t>)   return toInt8(str);
+        else if constexpr (std::is_same_v<T, float>)    return toFloat(str);
+        else if constexpr (std::is_same_v<T, bool>)     return toBool(str);
+        else if constexpr (std::is_same_v<T, TileCoord>)  return toTileCoord(str);
+        else if constexpr (std::is_same_v<T, PixelCoord>) return toPixelCoord(str);
+        else {
+            static_assert(false, "Unsupported type for validator::to<T>");
+            return std::nullopt;
+        }
+    }
 }

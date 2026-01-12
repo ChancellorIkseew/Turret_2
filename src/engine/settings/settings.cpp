@@ -12,22 +12,23 @@ static debug::Logger logger("settings");
 
 void Settings::writeSettings() {
     tin::Data data;
-    data.emplace("volume_master", std::to_string(audio.master));
-    data.emplace("volume_world",  std::to_string(audio.world));
-    data.emplace("volume_ui",     std::to_string(audio.ui));
-    data.emplace("volume_music",  std::to_string(audio.music));
-    data.emplace("toggle_sound",  std::to_string(audio.toggleSound));
+    data.emplace("volume_master", audio.master);
+    data.emplace("volume_master", audio.master);
+    data.emplace("volume_world",  audio.world);
+    data.emplace("volume_ui",     audio.ui);
+    data.emplace("volume_music",  audio.music);
+    data.emplace("toggle_sound",  audio.toggleSound);
     //
-    data.emplace("FPS", std::to_string(display.FPS));
-    data.emplace("fullscreen", std::to_string(display.fullscreen));
+    data.emplace("FPS",        display.FPS);
+    data.emplace("fullscreen", display.fullscreen);
     //
-    data.emplace("camera_inertia", std::to_string(gameplay.cameraInertia));
-    data.emplace("pause_on_world_open", std::to_string(gameplay.pauseOnWorldOpen));
-    data.emplace("show_hitboxes", std::to_string(gameplay.showHitboxes));
+    data.emplace("camera_inertia",      gameplay.cameraInertia);
+    data.emplace("pause_on_world_open", gameplay.pauseOnWorldOpen);
+    data.emplace("show_hitboxes",       gameplay.showHitboxes);
     //
-    data.emplace("lang", gui.lang);
-    data.emplace("custom_cursor", std::to_string(gui.customCursor));
-    data.emplace("show_console", std::to_string(gui.showConsole));
+    data.emplace("lang",          gui.lang);
+    data.emplace("custom_cursor", gui.customCursor);
+    data.emplace("show_console",  gui.showConsole);
     tin::write("settings.tin", data);
 }
 
@@ -38,22 +39,22 @@ void Settings::readSettings() {
         logger.info() << "Saved file with default settings. File: settings.tin";
         return;
     }
-    audio.master = data.getUint16("volume_master").value_or(50U);
-    audio.world  = data.getUint16("volume_world").value_or(100U);
-    audio.ui     = data.getUint16("volume_ui").value_or(100U);
-    audio.music  = data.getUint16("volume_music").value_or(100U);
-    audio.toggleSound = data.getBool("toggle_sound").value_or(true);
+    data.get("volume_master", audio.master, 50U);
+    data.get("volume_world",  audio.world, 100U);
+    data.get("volume_ui",     audio.world, 100U);
+    data.get("volume_music",  audio.world, 100U);
+    data.get("toggle_sound",  audio.toggleSound, false);
     //
-    display.FPS = data.getUint32("FPS").value_or(60U);
-    display.fullscreen = data.getBool("fullscreen").value_or(false);
+    data.get("FPS",        display.FPS, 60U);
+    data.get("fullscreen", display.fullscreen, false);
     //
-    gameplay.cameraInertia = data.getBool("camera_inertia").value_or(true);
-    gameplay.pauseOnWorldOpen = data.getBool("pause_on_world_open").value_or(false);
-    gameplay.showHitboxes = data.getBool("show_hitboxes").value_or(false);
+    data.get("camera_inertia",      gameplay.cameraInertia, true);
+    data.get("pause_on_world_open", gameplay.pauseOnWorldOpen, false);
+    data.get("show_hitboxes",       gameplay.showHitboxes, false);
     //
-    gui.lang = data.getString("lang").value_or("en_US");
-    gui.customCursor = data.getBool("custom_cursor").value_or(true);
-    gui.showConsole = data.getBool("show_console").value_or(false);
+    data.get("lang",          gui.lang, std::string("en_US"));
+    data.get("custom_cursor", gui.customCursor, true);
+    data.get("show_console",  gui.showConsole, false);
 }
 
 void Settings::applySettings(Engine& engine) {

@@ -11,22 +11,22 @@ static debug::Logger logger("presets");
 
 static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const FindMap& turretIDByName) {
     std::array<uint8_t, 16> frames;
-    reader.getUint8Array("frame_order", frames);
+    reader.getArray<uint8_t>("frame_order", frames);
     MobVisualPreset visual(
         reader.getTexture(atlas, "texture"),
-        reader.get(&tin::Data::getPixelCoord, "origin"),
-        reader.get(&tin::Data::getPixelCoord, "size"),
-        reader.get(&tin::Data::getUint8, "frame_ticks"),
-        reader.get(&tin::Data::getFloat, "frame_height"),
-        reader.get(&tin::Data::getUint8, "frame_count"),
+        reader.get<PixelCoord>("origin"),
+        reader.get<PixelCoord>("size"),
+        reader.get<uint8_t>("frame_ticks"),
+        reader.get<float>("frame_height"),
+        reader.get<uint8_t>("frame_count"),
         frames
     );
     return MobPreset(
-        reader.get(&tin::Data::getFloat, "speed"),
-        reader.get(&tin::Data::getFloat, "hitbox_radius"),
-        reader.get(&tin::Data::getInt64, "health"),
-        mob_ai::getMovingAI(reader.getString("moving_ai")),
-        mob_ai::getShootingAI(reader.getString("shooting_ai")),
+        reader.get<float>("speed"),
+        reader.get<float>("hitbox_radius"),
+        reader.get<Health>("health"),
+        mob_ai::getMovingAI(reader.get<std::string>("moving_ai")),
+        mob_ai::getShootingAI(reader.get<std::string>("moving_ai")),
         reader.getID(turretIDByName, "turret"),
         visual
     );
@@ -35,18 +35,18 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
 static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
     ShellVisualPreset visual(
         reader.getTexture(atlas, "texture"),
-        reader.get(&tin::Data::getPixelCoord, "origin"),
-        reader.get(&tin::Data::getPixelCoord, "size")
+        reader.get<PixelCoord>("origin"),
+        reader.get<PixelCoord>("size")
     );
     Explosion explosion(
-        reader.get(&tin::Data::getInt64, "explosion_damage"),
-        reader.get(&tin::Data::getInt32, "explosion_radius"),
-        reader.get(&tin::Data::getFloat, "explosion_fading")
+        reader.get<Health>("explosion_damage"),
+        reader.get<int>("explosion_radius"),
+        reader.get<float>("explosion_fading")
     );
     return ShellPreset(
-        reader.get(&tin::Data::getFloat, "speed"),
-        reader.get(&tin::Data::getInt64, "damage"),
-        reader.get(&tin::Data::getUint16, "life_time"),
+        reader.get<float>("speed"),
+        reader.get<Health>("damage"),
+        reader.get<TickCount>("life_time"),
         explosion,
         visual
     );
@@ -54,16 +54,16 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
 
 static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const FindMap& shellIDByName) {
     std::array<PixelCoord, 4> barrels;
-    size_t barrelsCount = reader.getPixelCoordArray("barrels", barrels);
+    size_t barrelsCount = reader.getArray<PixelCoord>("barrels", barrels);
     TurretVisualPreset visual(
         reader.getTexture(atlas, "texture"),
-        reader.get(&tin::Data::getPixelCoord, "origin"),
-        reader.get(&tin::Data::getPixelCoord, "size"),
-        reader.get(&tin::Data::getUint8, "frame_count")
+        reader.get<PixelCoord>("origin"),
+        reader.get<PixelCoord>("size"),
+        reader.get<uint8_t>("frame_count")
     );
     return TurretPreset(
-        reader.get(&tin::Data::getUint16, "reload"),
-        reader.get(&tin::Data::getFloat, "rotation_speed"),
+        reader.get<TickCount>("reload"),
+        reader.get<AngleRad>("rotation_speed"),
         barrelsCount,
         barrels,
         reader.getID(shellIDByName, "shell"),

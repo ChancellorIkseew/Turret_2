@@ -15,104 +15,52 @@ public:
         : data(data), fileName(fileName), failed(failed), logger("preset_reader") { }
 
     template<typename T>
-    T get(std::optional<T>(tin::Data::* func)(const std::string&) const, const std::string& key) const {
-        auto res = (data.*func)(key);
-        if (!res) {
-            logger.error() << "[" << fileName << "] Missing or invalid key: " << key;
-            failed = true;
-            throw std::bad_optional_access();
-        }
-        return *res;
-    }
-
-    std::string getString(const std::string& key) const {
-        auto res = data.getString(key);
-        if (!res) {
-            logger.error() << "[" << fileName << "] Missing key: " << key;
-            failed = true;
-            throw std::bad_optional_access();
-        }
+    T get(const std::string& key) const {
+    std::optional<T> res = data.get<T>(key);
+        if (!res)
+            fail("Missing or invalid key: " + key);
         return *res;
     }
 
     Texture getTexture(const Atlas& atlas, const std::string& key) const {
-        std::string textureName = getString(key);
+        std::string textureName = get<std::string>(key);
         Texture texture = atlas.at(textureName);
-        if (texture == NULL_TEXTURE) {
-            logger.error() << "[" << fileName << "] Texture not found in atlas: " << textureName;
-            failed = true;
-            throw std::bad_optional_access();
-        }
+        if (texture == NULL_TEXTURE)
+            fail("Texture not found in atlas: " + textureName);
         return texture;
     }
 
     PresetID getID(const std::unordered_map<std::string, PresetID>& idMap, const std::string& key) const {
-        std::string targetName = getString(key);
-        if (!idMap.contains(targetName)) {
-            logger.error() << "[" << fileName << "] Dependency not found: " << targetName;
-            failed = true;
-            throw std::bad_optional_access();
-        }
+        std::string targetName = get<std::string>(key);
+        if (!idMap.contains(targetName))
+            fail( "Dependency not found: " + targetName);
         return idMap.at(targetName);
     }
 
-    size_t getPixelCoordArray(const std::string& key, std::span<PixelCoord> outArray) const {
+    template<typename T>
+    size_t getArray(const std::string& key, std::span<T> outArray) const {
         std::vector<std::string> list = data.getList(key);
 
-        if (list.empty()) {
-            logger.error() << "[" << fileName << "] List is empty or missing: " << key;
-            failed = true;
-            throw std::bad_optional_access();
-        }
+        if (list.empty())
+            fail("List is empty or missing: " + key);
 
-        if (list.size() > outArray.size()) {
-            logger.error() << "[" << fileName << "] Too many elements in [" << key
-                << "]. Found: " << list.size() << ", Max: " << outArray.size();
-            failed = true;
-            throw std::bad_optional_access();
-        }
+        if (list.size() > outArray.size())
+            fail("Too many elements in [" + key + "]. Found: " +
+                std::to_string(list.size()) + ", Max: " + std::to_string(outArray.size()));
 
         for (size_t i = 0; i < list.size(); ++i) {
-            auto coord = validator::toPixelCoord(list[i]);
-            if (!coord) {
-                logger.error() << "[" << fileName << "] Invalid PixelCoord format in list ["
-                    << key << "] at index " << i << ": '" << list[i] << "'";
-                failed = true;
-                throw std::bad_optional_access();
-            }
-            outArray[i] = *coord;
+            auto val = validator::to<T>(list[i]);
+            if (!val)
+                fail("Invalid format in list [" + key + "] at index " +
+                    std::to_string(i) + ": '" + list[i] + "'");
+            outArray[i] = *val;
         }
-
         return list.size();
     }
-
-    size_t getUint8Array(const std::string& key, std::span<uint8_t> outArray) const {
-        std::vector<std::string> list = data.getList(key);
-
-        if (list.empty()) {
-            logger.error() << "[" << fileName << "] List is empty or missing: " << key;
-            failed = true;
-            throw std::bad_optional_access();
-        }
-
-        if (list.size() > outArray.size()) {
-            logger.error() << "[" << fileName << "] Too many elements in [" << key
-                << "]. Found: " << list.size() << ", Max: " << outArray.size();
-            failed = true;
-            throw std::bad_optional_access();
-        }
-
-        for (size_t i = 0; i < list.size(); ++i) {
-            auto u = validator::toUint8(list[i]);
-            if (!u) {
-                logger.error() << "[" << fileName << "] Invalid PixelCoord format in list ["
-                    << key << "] at index " << i << ": '" << list[i] << "'";
-                failed = true;
-                throw std::bad_optional_access();
-            }
-            outArray[i] = *u;
-        }
-
-        return list.size();
+private:
+    [[noreturn]] void fail(const std::string& message) const {
+        logger.error() << "[" << fileName << "] " << message;
+        failed = true;
+        throw std::bad_optional_access();
     }
 };

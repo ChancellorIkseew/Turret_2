@@ -61,4 +61,3 @@ void TextEdit::edit(const Input& input, std::u32string& text, const PixelCoord n
         moveCarriageToCursor(input, text, nodePosition, glyphWidth);
     editForm(input, text, nodeSize, validator, carPos, inputTimer, glyphWidth);
 }
-

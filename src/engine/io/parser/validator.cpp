@@ -1,8 +1,6 @@
 #include "validator.hpp"
 //
 #include <stdexcept>
-#include "engine/coords/pixel_coord.hpp"
-#include "engine/coords/tile_coord.hpp"
 
 // Unsigned int
 std::optional<uint64_t> validator::toUint64(const std::string& str) {
