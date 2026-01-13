@@ -1,6 +1,7 @@
 #include "validator.hpp"
 //
 #include <stdexcept>
+#include <limits>
 
 // Unsigned int
 std::optional<uint64_t> validator::toUint64(const std::string& str) {
