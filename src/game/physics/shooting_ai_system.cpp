@@ -16,18 +16,42 @@ static t1_finline float normalize(const float angle) {
     return angle;
 }
 
-static inline void updatePlayerControlled(MobSoA& soa, const Presets& presets,
-    const size_t index, const PlayerController& playerController) {
-    soa.shootingData[index].isShooting = playerController.shootingActive();
-    const PixelCoord aim = playerController.getAimCoord();
+static t1_finline void rotateTurret(MobSoA& soa, const Presets& presets, const size_t index, const PixelCoord aim) {
     const AngleRad requiredAngle = atan2f(aim - soa.position[index]);
     const AngleRad deltaAngle = normalize(requiredAngle - soa.turretAngle[index]);
     const AngleRad maxStep = presets.getTurret(soa.preset[index]).rotationSpeed;
-
+    //
     if (std::abs(deltaAngle) <= maxStep)
         soa.turretAngle[index] = requiredAngle;
     else
         soa.turretAngle[index] += (deltaAngle > 0 ? maxStep : -maxStep);
+}
+
+static inline void updatePlayerControlled(MobSoA& soa, const Presets& presets,
+    const size_t index, const PlayerController& playerController) {
+    soa.shootingData[index].isShooting = playerController.shootingActive();
+    rotateTurret(soa, presets, index, playerController.getAimCoord());
+}
+
+static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t index) {
+    const float range = presets.getTurret(soa.preset[index]).range;
+    const PixelCoord position = soa.position[index];
+    const TeamID teamID = soa.teamID[index];
+    soa.shootingData[index].isShooting = false;
+
+    for (size_t i = 0; i < soa.mobCount; ++i) {
+        if (teamID == soa.teamID[i])
+            continue;
+        if (!t1::areCloser(position, soa.position[i], range))
+            continue;
+        const float distance = std::sqrt(t1::pow2f(position.x - soa.position[i].x) +
+                                         t1::pow2f(position.y - soa.position[i].y));
+        if (range >= distance) {
+            soa.shootingData[index].isShooting = true;
+            rotateTurret(soa, presets, index, soa.position[i]);
+            return;
+        }
+    }
 }
 
 void ai::updateShootingAI(MobSoA& soa, const Presets& presets, const PlayerController& playerController) {
@@ -38,7 +62,7 @@ void ai::updateShootingAI(MobSoA& soa, const Presets& presets, const PlayerContr
             updatePlayerControlled(soa, presets, i, playerController);
             break;
         case ShootingAI::basic:
-            //updateBasic(soa, i);
+            updateBasic(soa, presets, i);
             break;
         }
     }

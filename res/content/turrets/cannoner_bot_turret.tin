@@ -5,6 +5,7 @@ size=43|43
 frame_count=3
 #logic
 reload=10
+range=460
 rotation_speed=0.02
 shooting_ai=basic
 shell=cannon_shell

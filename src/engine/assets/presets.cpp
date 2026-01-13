@@ -63,6 +63,7 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
     );
     return TurretPreset(
         reader.get<TickCount>("reload"),
+        reader.get<float>("range"),
         reader.get<AngleRad>("rotation_speed"),
         barrelsCount,
         barrels,
