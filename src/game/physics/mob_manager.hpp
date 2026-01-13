@@ -82,6 +82,9 @@ public:
         assert(mobID != IDManager<MobID>::INVALID_ID);
         return soaIndexByMobID[mobID];
     }
+    t1_finline bool isIndexValid(const size_t index) const noexcept {
+        return index < soa.mobCount;
+    }
     //
     void reserve(const size_t capacity);
     void removeMob(const size_t index);

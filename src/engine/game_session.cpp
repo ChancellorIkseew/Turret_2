@@ -44,7 +44,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     mainWindow.pollEvents();
     gui->callback();
     if (gui->isMouseFree() && !gui->hasOverlaped())
-         playerController.update(mainWindow.getInput(), camera, paused, world->getMobs(), presets);
+        playerController.update(mainWindow.getInput(), camera, paused, world->getMobs(), presets);
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
             updateSimulation(presets);

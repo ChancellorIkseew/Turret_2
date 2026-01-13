@@ -36,7 +36,10 @@ void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, con
     }
     else /*State::control_mob*/ {
         const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-        camera.setCenter(mobs.getSoa().position[index]);
+        if (mobs.isIndexValid(index))
+            camera.setCenter(mobs.getSoa().position[index]);
+        else
+            state = State::control_camera;
     }
     camera.scale(input);
 }
@@ -67,6 +70,8 @@ void PlCtr::setTarget(MobManager& mobs, const MobID mobID, const Presets& preset
     if (mobID == IDManager<MobID>::INVALID_ID)
         return;
     const size_t index = mobs.getSoaIndexByMobID(mobID);
+    if (!mobs.isIndexValid(index))
+        return;
     mobs.getSoa().motionData[index].aiType = MovingAI::player_controlled;
     mobs.getSoa().shootingData[index].aiType = ShootingAI::player_controlled;
     targetMobID = mobID;
@@ -77,6 +82,8 @@ void PlCtr::resetTarget(MobManager& mobs, const Presets& presets) {
     if (targetMobID == IDManager<MobID>::INVALID_ID)
         return;
     const size_t index = mobs.getSoaIndexByMobID(targetMobID);
+    if (!mobs.isIndexValid(index))
+        return;
     mobs.getSoa().motionData[index].aiType =   presets.getMob(mobs.getSoa().preset[index]).defaultMovingAI;
     mobs.getSoa().shootingData[index].aiType = presets.getMob(mobs.getSoa().preset[index]).defaultShootingAI;
     targetMobID = IDManager<MobID>::INVALID_ID;
