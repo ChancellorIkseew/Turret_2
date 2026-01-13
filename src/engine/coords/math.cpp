@@ -1,6 +1,6 @@
 #include "math.hpp"
 //
-#include <algorithm> // std::mat is placed <utility> in MSVC, but <algorithm> in GCC
+#include <algorithm> // std::max is placed <utility> in MSVC, but <algorithm> in GCC
 
 int t1::ceilUpPow2(const int value) noexcept {
     int val = value;
