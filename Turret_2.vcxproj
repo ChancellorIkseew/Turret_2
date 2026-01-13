@@ -22,7 +22,9 @@
     <ClInclude Include="src\config.hpp" />
     <ClInclude Include="src\engine\assets\assets.hpp" />
     <ClInclude Include="src\engine\assets\indexes.hpp" />
+    <ClInclude Include="src\engine\assets\preset_defs.hpp" />
     <ClInclude Include="src\engine\assets\presets.hpp" />
+    <ClInclude Include="src\engine\assets\preset_id.hpp" />
     <ClInclude Include="src\engine\assets\preset_reader.hpp" />
     <ClInclude Include="src\engine\audio\audio.hpp" />
     <ClInclude Include="src\engine\audio\sound_queue.hpp" />

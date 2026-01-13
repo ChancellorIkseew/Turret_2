@@ -1,52 +1,11 @@
 #pragma once
-#include <CSP/centralized_ptr.hpp>
-#include <array>
 #include <cassert>
 #include <vector>
-#include "engine/render/texture.hpp"
+#include "engine/assets/preset_defs.hpp"
 #include "id_manager.hpp"
-#include "mob_ai.hpp"
-#include "physics_base.hpp"
-#include "shell_manager.hpp"
 
 using MobID = uint16_t;
-
-struct MobVisualPreset {
-    Texture texture;
-    PixelCoord origin;
-    PixelCoord size;
-    uint8_t frameTicks;
-    float frameHeight;
-    uint8_t frameCount;
-    std::array<uint8_t, 16> frameOrder;
-};
-
-struct TurretVisualPreset {
-    Texture texture;
-    PixelCoord origin;
-    PixelCoord size;
-    uint8_t frameCount;
-};
-
-struct TurretPreset {
-    TickCount reload;
-    float range;
-    AngleRad rotationSpeed;
-    uint8_t barrelsCount;
-    std::array<PixelCoord, 4> barrels;
-    PresetID shell;
-    TurretVisualPreset visual;
-};
-
-struct MobPreset {
-    float maxSpeed;
-    float hitboxRadius;
-    Health maxHealth;
-    MovingAI defaultMovingAI;
-    ShootingAI defaultShootingAI;
-    PresetID turret;
-    MobVisualPreset visual;
-};
+class Presets;
 
 struct MobSoA {
     std::vector<Hitbox> hitbox;
@@ -54,7 +13,7 @@ struct MobSoA {
     std::vector<PixelCoord> velocity;
     std::vector<AngleRad> angle;
     std::vector<Health> health;
-    std::vector<PresetID> preset;
+    std::vector<MobPresetID> preset;
     std::vector<MobID> id;
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
@@ -90,7 +49,7 @@ public:
     void removeMob(const size_t index);
     MobID addMob(
         const Presets& presets,
-        const PresetID preset,
+        const MobPresetID preset,
         const PixelCoord position,
         const AngleRad angle,
         const Health health,

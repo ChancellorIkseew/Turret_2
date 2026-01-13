@@ -1,18 +1,21 @@
 #include "presets.hpp"
 //
 #include "engine/io/folders.hpp"
-#include "engine/render/atlas.hpp"
 #include "game/physics/mob_manager.hpp"
 #include "game/physics/shell_manager.hpp"
 #include "preset_reader.hpp"
 
-using FindMap = std::unordered_map<std::string, PresetID>;
+template<class Tag>
+using FindMap = std::unordered_map<std::string, preset_tag::StrongID<Tag>>;
+using ShellFindMap = FindMap<preset_tag::ShellTag>;
+using TurretFindMap = FindMap<preset_tag::TurretTag>;
+
 static debug::Logger logger("presets");
 
-static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const FindMap& turretIDByName) {
+static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName) {
     std::array<uint8_t, 16> frames;
     size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
-    MobVisualPreset visual(
+    MobVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
@@ -20,8 +23,8 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
         reader.get<float>("frame_height"),
         static_cast<uint8_t>(frameCount),
         frames
-    );
-    return MobPreset(
+    };
+    return MobPreset{
         reader.get<float>("speed"),
         reader.get<float>("hitbox_radius"),
         reader.get<Health>("health"),
@@ -29,39 +32,39 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
         mob_ai::getShootingAI(reader.get<std::string>("moving_ai")),
         reader.getID(turretIDByName, "turret"),
         visual
-    );
+    };
 }
 
 static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
-    ShellVisualPreset visual(
+    ShellVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size")
-    );
-    Explosion explosion(
+    };
+    Explosion explosion{
         reader.get<Health>("explosion_damage"),
         reader.get<int>("explosion_radius"),
         reader.get<float>("explosion_fading")
-    );
-    return ShellPreset(
+    };
+    return ShellPreset{
         reader.get<float>("speed"),
         reader.get<Health>("damage"),
         reader.get<TickCount>("life_time"),
         explosion,
         visual
-    );
+    };
 }
 
-static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const FindMap& shellIDByName) {
+static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const ShellFindMap& shellIDByName) {
     std::array<PixelCoord, 4> barrels;
     size_t barrelsCount = reader.getArray<PixelCoord>("barrels", barrels);
-    TurretVisualPreset visual(
+    TurretVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
         reader.get<uint8_t>("frame_count")
-    );
-    return TurretPreset(
+    };
+    return TurretPreset{
         reader.get<TickCount>("reload"),
         reader.get<float>("range"),
         reader.get<AngleRad>("rotation_speed"),
@@ -69,17 +72,17 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         barrels,
         reader.getID(shellIDByName, "shell"),
         visual
-    );
+    };
 }
 
-template<class PresetType>
+template<class PresetType, class Tag>
 static inline void addPreset(const std::string& name, PresetType&& preset,
-    std::array<PresetType, MAX_PRESETS>& store, FindMap& find, PresetID& nextID) {
-    PresetID id;
+    std::array<PresetType, MAX_PRESETS>& store, FindMap<Tag>& find, preset_tag::StrongID<Tag>& nextID) {
+    preset_tag::StrongID<Tag> id;
     if (find.contains(name)) id = find[name];
     else                     id = nextID++;
     find.insert_or_assign(name, id);
-    store[id] = std::move(preset);
+    store[id.asUint()] = std::move(preset);
 }
 
 template<class PresetType>

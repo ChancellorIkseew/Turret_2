@@ -21,7 +21,7 @@ static int getHeight() {
 }
 
 static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID) {
-    if (!script_libs::assets->getPresets().hasMob(presetName)) {
+    if (!script_libs::assets->getPresets().hasMobID(presetName)) {
         logger.warning() << "Preset does not exist. Preset: " << presetName;
         return;
     }
@@ -30,7 +30,7 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
         return;
     }
     const Presets& presets = script_libs::assets->getPresets();
-    PresetID presetID = presets.getMob(presetName);
+    MobPresetID presetID = presets.getMobID(presetName);
     const MobPreset& preset = presets.getMob(presetID);
 
     MotionData mData(preset.defaultMovingAI, 0, PixelCoord(400, 1000));
@@ -40,7 +40,7 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
 }
 
 static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TeamID teamID) {
-    if (!script_libs::assets->getPresets().hasShell(presetName)) {
+    if (!script_libs::assets->getPresets().hasShellID(presetName)) {
         logger.warning() << "Preset does not exist. Preset: " << presetName;
         return;
     }
@@ -49,7 +49,7 @@ static void spawnShell(const std::string& presetName, int x, int y, AngleRad ang
         return;
     }
     const Presets& presets = script_libs::assets->getPresets();
-    PresetID presetID = presets.getShell(presetName);
+    ShellPresetID presetID = presets.getShellID(presetName);
     const ShellPreset& preset = presets.getShell(presetID);
     script_libs::world->getShells().addShell(presets, presetID, PixelCoord(x, y), angle, preset.damage,
         preset.maxLifeTime, teamID);

@@ -15,7 +15,7 @@ void ShellManager::reserve(const size_t capacity) {
 
 void ShellManager::addShell(
     const Presets& presets,
-    const PresetID preset,
+    const ShellPresetID preset,
     const PixelCoord position,
     const AngleRad angle,
     const Health restDamage,

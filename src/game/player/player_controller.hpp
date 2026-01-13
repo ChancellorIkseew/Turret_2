@@ -5,6 +5,7 @@
 class Camera;
 class Engine;
 class Input;
+class Presets;
 class Team;
 
 class PlayerController {
@@ -14,7 +15,7 @@ class PlayerController {
     MobID targetMobID = IDManager<MobID>::INVALID_ID;
     PixelCoord motionVector;
     PixelCoord aimCoord;
-    std::atomic_bool shooting = false;
+    bool shooting = false;
 public:
     PlayerController() = default;
 

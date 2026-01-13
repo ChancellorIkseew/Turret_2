@@ -4,6 +4,10 @@
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
 #include "game/physics/physics_base.hpp"
+#include "preset_id.hpp"
+
+template<class Tag>
+using FindMap = std::unordered_map<std::string, preset_tag::StrongID<Tag>>;
 
 class PresetReader {
     const tin::Data& data;
@@ -30,7 +34,8 @@ public:
         return texture;
     }
 
-    PresetID getID(const std::unordered_map<std::string, PresetID>& idMap, const std::string& key) const {
+    template<class Tag>
+    preset_tag::StrongID<Tag> getID(const FindMap<Tag>& idMap, const std::string& key) const {
         std::string targetName = get<std::string>(key);
         if (!idMap.contains(targetName))
             fail( "Dependency not found: " + targetName);

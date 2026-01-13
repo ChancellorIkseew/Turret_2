@@ -27,7 +27,7 @@ void MobManager::reserve(const size_t capacity) {
 
 MobID MobManager::addMob(
     const Presets& presets,
-    const PresetID preset,
+    const MobPresetID preset,
     const PixelCoord position,
     const AngleRad angle,
     const Health health,
