@@ -32,7 +32,7 @@ struct TurretPreset {
     TickCount reload;
     float range;
     AngleRad rotationSpeed;
-    size_t barrelsCount;
+    uint8_t barrelsCount;
     std::array<PixelCoord, 4> barrels;
     PresetID shell;
     TurretVisualPreset visual;

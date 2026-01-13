@@ -4,7 +4,6 @@ origin=10.5|19
 size=21|25
 frame_ticks=4
 frame_height=25
-frame_count=16
 frame_order=0,1,2,3,2,2,1,1,0,6,5,4,5,5,6,6
 #logic
 speed=0.33

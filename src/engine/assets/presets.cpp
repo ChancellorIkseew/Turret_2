@@ -11,14 +11,14 @@ static debug::Logger logger("presets");
 
 static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const FindMap& turretIDByName) {
     std::array<uint8_t, 16> frames;
-    reader.getArray<uint8_t>("frame_order", frames);
+    size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
     MobVisualPreset visual(
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
         reader.get<uint8_t>("frame_ticks"),
         reader.get<float>("frame_height"),
-        reader.get<uint8_t>("frame_count"),
+        static_cast<uint8_t>(frameCount),
         frames
     );
     return MobPreset(
@@ -65,7 +65,7 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<TickCount>("reload"),
         reader.get<float>("range"),
         reader.get<AngleRad>("rotation_speed"),
-        barrelsCount,
+        static_cast<uint8_t>(barrelsCount),
         barrels,
         reader.getID(shellIDByName, "shell"),
         visual
