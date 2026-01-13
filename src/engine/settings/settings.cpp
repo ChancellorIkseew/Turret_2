@@ -7,7 +7,10 @@
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/window/window.hpp"
 
-using namespace t1_sp;
+Settings::_Audio Settings::audio;
+Settings::_Display Settings::display;
+Settings::_Gameplay Settings::gameplay;
+Settings::_GUI Settings::gui;
 static debug::Logger logger("settings");
 
 void Settings::writeSettings() {
@@ -40,8 +43,8 @@ void Settings::readSettings() {
     }
     data.get("volume_master", audio.master, 50U);
     data.get("volume_world",  audio.world, 100U);
-    data.get("volume_ui",     audio.world, 100U);
-    data.get("volume_music",  audio.world, 100U);
+    data.get("volume_ui",     audio.ui, 100U);
+    data.get("volume_music",  audio.music, 100U);
     data.get("toggle_sound",  audio.toggleSound, false);
     //
     data.get("FPS",        display.FPS, 60U);

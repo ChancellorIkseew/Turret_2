@@ -4,38 +4,30 @@
 
 class Engine;
 
-namespace t1_sp { // sp - settings_private.
-    // Private namespace instead of nested structures because
-    // of GCC and Clang bug with nested structures/classes.
-    struct _Audio {
+class Settings {
+public:
+    static struct _Audio {
         uint16_t master = 50U;
         uint16_t world  = 100U;
         uint16_t ui     = 100U;
         uint16_t music  = 100U;
         bool toggleSound = true;
-    };
-    struct _Display {
+    } audio;
+    static struct _Display {
         uint32_t FPS = 60U;
         bool fullscreen = false;
-    };
-    struct _Gameplay {
+    } display;
+    static struct _Gameplay {
         bool cameraInertia = true;
         bool pauseOnWorldOpen = false;
         bool showHitboxes = false;
-    };
-    struct _GUI {
+    } gameplay;
+    static struct _GUI {
         std::string lang = "en_US";
         bool customCursor = true;
         bool showConsole = false;
-    };
-}
-
-class Settings {
+    } gui;
 public:
-    static inline t1_sp::_Audio audio;
-    static inline t1_sp::_Display display;
-    static inline t1_sp::_Gameplay gameplay;
-    static inline t1_sp::_GUI gui;
     static void writeSettings();
     static void readSettings();
     static void applySettings(Engine& engine);
