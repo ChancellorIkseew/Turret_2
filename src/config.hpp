@@ -1,14 +1,14 @@
 #pragma once
 //
 #if defined(_MSC_VER)
-///@brief force inline macro
-#define t1_finline __forceinline
+#define t1_finline      __forceinline
+#define t1_finline_cxpr __forceinline constexpr
 #elif defined(__GNUC__) || defined(__clang__)
-///@brief force inline macro
-#define t1_finline __attribute__((always_inline)) inline
+#define t1_finline      __attribute__((always_inline)) inline
+#define t1_finline_cxpr __attribute__((always_inline)) inline constexpr
 #else
-///@brief force inline macro
-#define t1_finline inline
+#define t1_finline      inline
+#define t1_finline_cxpr inline constexpr
 #endif
 
 #define t1_disable_copy(Class) \

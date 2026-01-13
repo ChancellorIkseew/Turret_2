@@ -1,47 +1,41 @@
 #pragma once
-#include <limits>
-#include <cstdlib>
-
-constexpr float MINIMAL_FLOAT = std::numeric_limits<float>::lowest();
+#include <compare>
+#include "config.hpp"
 
 struct PixelCoord {
     float x = 0.0f, y = 0.0f;
     
-    PixelCoord(const int x, const int y) noexcept : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
+    constexpr PixelCoord(const int x, const int y) noexcept : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
     constexpr PixelCoord(const float x, const float y) noexcept : x(x), y(y) {}
-    PixelCoord() noexcept = default;
+    constexpr PixelCoord() noexcept = default;
     
-    bool valid() const noexcept { return x > MINIMAL_FLOAT + epsilon; }
+    t1_finline_cxpr auto operator<=>(const PixelCoord& rhs) const noexcept = default;
     
-    bool operator==(const PixelCoord& rhs) const noexcept {
-        return std::abs(x - rhs.x) <= epsilon && std::abs(y - rhs.y) <= epsilon;
+    t1_finline_cxpr PixelCoord operator+(const PixelCoord rhs) const noexcept {
+        return { x + rhs.x, y + rhs.y };
     }
-    bool operator!=(const PixelCoord& rhs) const noexcept {
-        return std::abs(x - rhs.x) > epsilon || std::abs(y - rhs.y) > epsilon;
+    t1_finline_cxpr PixelCoord operator-(const PixelCoord rhs) const noexcept {
+        return { x - rhs.x, y - rhs.y };
     }
-    
-    PixelCoord operator+(const PixelCoord& rhs) const noexcept {
-        return PixelCoord(x + rhs.x, y + rhs.y);
+    t1_finline_cxpr PixelCoord operator*(const float value) const noexcept {
+        return { x * value, y * value };
     }
-    PixelCoord operator-(const PixelCoord& rhs) const noexcept {
-        return PixelCoord(x - rhs.x, y - rhs.y);
+    t1_finline_cxpr PixelCoord operator/(const float value) const noexcept {
+        const float inv = 1.0f / value;
+        return { x * inv, y * inv };
     }
-    PixelCoord operator*(const float value) const noexcept {
-        return PixelCoord(x * value, y * value);
-    }
-    PixelCoord operator/(const float value) const noexcept {
-        return PixelCoord(x / value, y / value);
-    }
-    PixelCoord operator*(const int value) const noexcept {
-        const float floatValue = static_cast<float>(value);
-        return PixelCoord(x * floatValue, y * floatValue);
-    }
-    PixelCoord operator/(const int value) const noexcept {
-        const float floatValue = static_cast<float>(value);
-        return PixelCoord(x / floatValue, y / floatValue);
-    }
-private:
-    static inline constexpr float epsilon = 0.0001f;
-};
 
-constexpr PixelCoord INCORRECT_PIXEL_COORD(MINIMAL_FLOAT, MINIMAL_FLOAT);
+    t1_finline_cxpr PixelCoord& operator+=(const PixelCoord rhs) noexcept {
+        x += rhs.x; y += rhs.y; return *this;
+    }
+    t1_finline_cxpr PixelCoord& operator-=(const PixelCoord rhs) noexcept {
+        x -= rhs.x; y -= rhs.y; return *this;
+    }
+    t1_finline_cxpr PixelCoord& operator*=(const float value) noexcept {
+        x *= value; y *= value; return *this;
+    }
+    t1_finline_cxpr PixelCoord& operator/=(const float value) noexcept {
+        const float inv = 1.0f / value;
+        x *= inv; y *= inv; return *this;
+    }
+};

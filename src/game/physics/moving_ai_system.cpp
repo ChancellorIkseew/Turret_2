@@ -21,7 +21,7 @@ static inline void updatePlayerControlled(MobSoA& soa, const Presets& presets, c
 
 static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t index) {
     const auto& aiData = soa.motionData[index];
-    if (t1::areCloser(aiData.target, soa.position[index], presets.getMob(soa.preset[index]).maxSpeed))
+    if (t1::areCloserRect(aiData.target, soa.position[index], presets.getMob(soa.preset[index]).maxSpeed))
         soa.velocity[index] = NO_MOTION;
     else {
         AngleRad motionAngle = t1::atan(aiData.target - soa.position[index]);//

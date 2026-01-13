@@ -1,35 +1,38 @@
 #pragma once
-#include <limits>
-
-constexpr int MINIMAL_INT = std::numeric_limits<int>::lowest();
+#include <compare>
+#include "config.hpp"
 
 struct TileCoord {
     int x = 0, y = 0;
-    
+
     constexpr TileCoord(const int x, const int y) noexcept : x(x), y(y) {}
-    TileCoord() noexcept = default;
-    
-    bool valid() const { return x > MINIMAL_INT; }
-    
-    bool operator==(const TileCoord& rhs) const noexcept {
-        return x == rhs.x && y == rhs.y;
+    constexpr TileCoord() noexcept = default;
+
+    constexpr auto operator<=>(const TileCoord& rhs) const noexcept = default;
+
+    t1_finline_cxpr TileCoord operator+(const TileCoord rhs) const noexcept {
+        return { x + rhs.x, y + rhs.y };
     }
-    bool operator!=(const TileCoord& rhs) const noexcept {
-        return x != rhs.x || y != rhs.y;
+    t1_finline_cxpr TileCoord operator-(const TileCoord rhs) const noexcept {
+        return { x - rhs.x, y - rhs.y };
     }
-    
-    TileCoord operator+(const TileCoord& rhs) const noexcept {
-        return TileCoord(x + rhs.x, y + rhs.y);
+    t1_finline_cxpr TileCoord operator*(const int value) const noexcept {
+        return { x * value, y * value };
     }
-    TileCoord operator-(const TileCoord& rhs) const noexcept {
-        return TileCoord(x - rhs.x, y - rhs.y);
+    t1_finline_cxpr TileCoord operator/(const int value) const noexcept {
+        return { x / value, y / value };
     }
-    TileCoord operator*(const int value) const noexcept {
-        return TileCoord(x * value, y * value);
+
+    t1_finline_cxpr TileCoord& operator+=(const TileCoord rhs) noexcept {
+        x += rhs.x; y += rhs.y; return *this;
     }
-    TileCoord operator/(const int value) const noexcept {
-        return TileCoord(x / value, y / value);
+    t1_finline_cxpr TileCoord& operator-=(const TileCoord rhs) noexcept {
+        x -= rhs.x; y -= rhs.y; return *this;
+    }
+    t1_finline_cxpr TileCoord& operator*=(const int value) noexcept {
+        x *= value; y *= value; return *this;
+    }
+    t1_finline_cxpr TileCoord& operator/=(const int value) noexcept {
+        x /= value; y /= value; return *this;
     }
 };
-
-constexpr TileCoord INCORRECT_TILE_COORD(MINIMAL_INT, MINIMAL_INT);

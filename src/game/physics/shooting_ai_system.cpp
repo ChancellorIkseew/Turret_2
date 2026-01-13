@@ -1,6 +1,5 @@
 #include "ai_system.hpp"
 //
-#include <cmath>
 #include "engine/assets/presets.hpp"
 #include "engine/coords/math.hpp"
 #include "game/player/player_controller.hpp"
@@ -40,10 +39,7 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
     for (size_t i = 0; i < soa.mobCount; ++i) {
         if (teamID == soa.teamID[i])
             continue;
-        if (!t1::areCloser(position, soa.position[i], range))
-            continue;
-        const PixelCoord delta = position - soa.position[i];
-        if (t1::pow2f(range) >= t1::pow2f(delta.x) + t1::pow2f(delta.y)) {
+        if (t1::areCloserCircle(position, soa.position[i], range)) {
             soa.shootingData[index].isShooting = true;
             rotateTurret(soa, presets, index, soa.position[i]);
             return;

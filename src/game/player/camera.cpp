@@ -22,13 +22,13 @@ void Camera::moveByMouse(const Input& input) {
         movingStartMouseCoord = fromScreenToMap(input.getMouseCoord());
     else if (input.active(MidMB)) {
         const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(input.getMouseCoord());
-        cameraCenter = cameraCenter + delta;
+        cameraCenter += delta;
     }
 }
 
 void Camera::move(const PixelCoord delta) {
     if (delta != PixelCoord(0.0f, 0.0f))
-        cameraCenter = cameraCenter + (delta * MOTION_SPEED / mapScale);
+        cameraCenter += (delta * MOTION_SPEED / mapScale);
 }
 
 void Camera::avoidEscapeFromMap() {

@@ -12,7 +12,7 @@ constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
 constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
 
 static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord vector) {
-    soa.position[index] = soa.position[index] + vector;
+    soa.position[index] += vector;
     soa.hitbox[index].move(vector);
 }
 

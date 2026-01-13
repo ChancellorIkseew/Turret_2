@@ -59,7 +59,7 @@ void PlCtr::captureMob(const Input& input, const Camera& camera, MobManager& mob
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.teamID[i] != playerTeam->getID())
             continue;
-        if (t1::areCloser(camera.fromMapToScreen(soa.position[i]), input.getMouseCoord(), 20.f))
+        if (t1::areCloserRect(camera.fromMapToScreen(soa.position[i]), input.getMouseCoord(), 20.f))
             return setTarget(mobs, soa.id[i], presets);     
     }
     resetTarget(mobs, presets);

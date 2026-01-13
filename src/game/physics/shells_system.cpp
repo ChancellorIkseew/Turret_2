@@ -15,7 +15,7 @@ static inline void reduceShellsLifeTime(ShellSoA& soa) {
 
 static inline void moveShells(ShellSoA& soa, const size_t shellCount) {
     for (size_t i = 0; i < shellCount; ++i) {
-        soa.position[i] = soa.position[i] + soa.velocity[i];
+        soa.position[i] += soa.velocity[i];
     }
 }
 
