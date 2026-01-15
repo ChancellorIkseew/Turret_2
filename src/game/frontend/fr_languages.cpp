@@ -12,10 +12,10 @@
 constexpr PixelCoord LANG_BTN_SIZE(110.0f, 30.0f);
 constexpr PixelCoord BACK_BTN_SIZE(120.0f, 30.0f);
 
-static void changeLang(Engine& engine, const std::u32string langName) {
-    Settings::gui.lang = validator::trimToStdString(langName);
+static void changeLang(Engine& engine, const std::string& lang) {
+    Settings::gui.lang = lang;
     Settings::writeSettings();
-    GUI::loadLangTranslations(Settings::gui.lang);
+    GUI::loadLangTranslations(lang);
     engine.getGUI().translate();
 }
 
@@ -26,11 +26,11 @@ std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
     auto selector = languages->addNode(new Selector(Orientation::vertical));
 
     auto contents = io::folders::getContents(io::folders::LANG, io::folders::ContentsType::file);
-    for (const auto& fileName : contents) {
-        auto langName = utf8::to_u32string(fileName).substr(0, fileName.length() - 4);
-        auto btn = selector->addNode(new Button(LANG_BTN_SIZE, langName));
-        btn->addCallback([&, langName] { changeLang(engine, langName); });
-        if (fileName == Settings::gui.lang + ".tin")
+    for (const auto& file : contents) {
+        std::string lang = io::folders::trimExtensions(file);
+        auto btn = selector->addNode(new Button(LANG_BTN_SIZE, utf8::to_u32string(lang), false));
+        btn->addCallback([&, lang] { changeLang(engine, lang); });
+        if (lang == Settings::gui.lang)
             selector->setTarget(btn);
     }
 
