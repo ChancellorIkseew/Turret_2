@@ -1,10 +1,10 @@
 #include "frontend.hpp"
 //
-#include <cassert>
 #include "engine/engine.hpp"
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/widgets/button.hpp"
 #include "engine/widgets/label.hpp"
+#include "engine/widgets/selector.hpp"
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 
@@ -14,20 +14,20 @@ constexpr PixelCoord BTN_SIZE(100.0f, 20.0f);
 class FrControls : public Container {
     Engine& engine;
     uint32_t inputReload = 0;
-    Button* btn = nullptr;
     std::string bindName;
+    Selector* bindings = nullptr;
 public:
     FrControls(Engine& engine) : Container(Align::centre, Orientation::vertical), engine(engine) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto bindNames = main->addNode(new Layout(Orientation::vertical));
-        auto bindings  = main->addNode(new Layout(Orientation::vertical));
+        bindings       = main->addNode(new Selector(Orientation::vertical));
 
         for (const auto& [bindName, binding] : Controls::getBindings()) {
             if (!binding.changable)
                 continue;
             bindNames->addNode(new Label(utf8::to_u32string(bindName)));
-            auto btn = bindings->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']'));
+            auto btn = bindings->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']', false));
             btn->addCallback([=] { targetBinding(btn, bindName); });
         }
 
@@ -40,12 +40,10 @@ public:
     }
 
     void targetBinding(Button* btn, const std::string& bindName) {
-        assert(!btn);
-        if (inputReload > 0 || this->btn)
+        if (inputReload > 0 || bindings->getTarget().lock())
             return;
         inputReload = INPUT_RELOAD;
-        btn->setState(ButtonState::checked);
-        this->btn = btn;
+        bindings->setTarget(btn);
         this->bindName = bindName;
     }
 
@@ -55,13 +53,12 @@ public:
             inputReload -= engine.getMainWindow().getRealFrameDelay();
             return;
         }
-        if (!btn || !context.input.getLastKeyPressed().has_value())
+        if (!bindings->getTarget().lock() || !context.input.getLastKeyPressed().has_value())
             return;
         inputReload = INPUT_RELOAD;
         Controls::rebind(bindName, context.input.getLastKeyPressed().value());
-        btn->setText(U'[' + Controls::getKeyName(bindName) + U']');
-        btn->setState(ButtonState::idle);
-        btn = nullptr;
+        bindings->getTarget().lock()->setText(U'[' + Controls::getKeyName(bindName) + U']');
+        bindings->resetTarget();
     }
 };
 
