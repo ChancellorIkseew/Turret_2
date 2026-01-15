@@ -24,7 +24,7 @@ public:
         inertia    = clickable->addNode(new Checkbox(Settings::gameplay.cameraInertia));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->addNode(new Label(U"FPS"));
+        labels->addNode(new Label(U"FPS|TPS"));
         labels->addNode(new Label(U"fullscreen"));
         labels->addNode(new Label(U"camera inertia"));
 

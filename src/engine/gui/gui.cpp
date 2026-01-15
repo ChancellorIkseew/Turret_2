@@ -10,12 +10,17 @@
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
 
+constexpr uint32_t BLACK = 0x00'00'00'FF;
+constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
 static tin::Data langTranslations;
 
-static void drawDebugText(const Renderer& renderer, const MainWindow& mainWindow) {
-    const PixelCoord corner = mainWindow.getSize();
-    PixelCoord position = corner - PixelCoord(100.0f, 20.0f);
-    text::drawString(renderer, U"FPS: " + utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
+static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindow) {
+    PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
+    renderer.drawRect(BLACK, position, DEBUD_PANEL_SIZE);
+    position += PixelCoord(20.f, 20.f);
+    text::drawString(renderer, U"FPS|TPS: " + utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
+    position.y += 20.f;
+    text::drawString(renderer, U"Frame|tick time: " + utf8::to_u32string(mainWindow.getRealFrameDelay()), position);
 }
 
 void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
@@ -30,7 +35,7 @@ void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
             overlaped.back()->draw(renderer);
     }
     if (showFPS)
-        drawDebugText(renderer, mainWindow);
+        drawDebugPanel(renderer, mainWindow);
     if (showAtlas)
         renderer.drawFast(atlas.getComonTexture(), PixelCoord(0, 0), atlas.getSize());  
 }
