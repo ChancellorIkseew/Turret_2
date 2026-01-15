@@ -7,7 +7,7 @@
 
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
 
-static t1_finline float normalize(const float angle) {
+static t1_finline_cxpr float normalize(const float angle) {
     if (angle >  t1::PI_F) return angle - 2.0f * t1::PI_F;
     if (angle < -t1::PI_F) return angle + 2.0f * t1::PI_F;
     return angle;
