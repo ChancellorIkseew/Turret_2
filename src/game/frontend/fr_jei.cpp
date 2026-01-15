@@ -53,7 +53,7 @@ public:
 
     void callback(UIContext& context) override {
         Container::callback(context);
-        if (!context.input.active(Build) || !engine.getGUI().isMouseFree())
+        if (!context.input.active(Build) || engine.getGUI().ownsMouse())
             return;
         WorldMap& map = engine.getSession().getWorld().getMap();
         const TileCoord tile = t1::tile(engine.getSession().getCamera().fromScreenToMap(context.input.getMouseCoord()));

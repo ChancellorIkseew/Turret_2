@@ -123,3 +123,7 @@ bool GUI::isMouseFree() const {
     }
     return true;
 }
+
+bool GUI::ownsMouse() const {
+    return hasOverlaped() || !isMouseFree();
+}
