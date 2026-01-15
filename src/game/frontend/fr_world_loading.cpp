@@ -1,37 +1,30 @@
 #include "frontend.hpp"
 //
-#include "engine/engine.hpp"
-#include "engine/io/folders.hpp"
 #include "engine/widgets/button.hpp"
 #include "layouts/l_saves.hpp"
 
 constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
-static std::string folder;
 
-static void deleteFolder(Selector* saves, Container* loading) {
-    io::folders::deleteFolder(io::folders::SAVES / folder);
-    frontend::update(saves, folder);
-    loading->arrange();
-}
+class FrWorldLoading : public Container{
+    FrSaves* saves = nullptr;
+public:
+    FrWorldLoading(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+        saves = addNode(new FrSaves());
+        auto lower = addNode(new Layout(Orientation::horizontal));
 
-static void loadWorld(Engine& engine) {
-    engine.loadWorldInGame(folder);
-}
+        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, U"Load"))->addCallback([&] { saves->loadWorld(engine); });
+        lower->addNode(new Button(BTN_SIZE, U"Delete"))->addCallback([&] { deleteWorld(); });
+
+        arrange();
+    }
+private:
+    void deleteWorld() {
+        saves->deleteWorld();
+        arrange();
+    }
+};
 
 std::unique_ptr<Container> frontend::initWorldLoading(Engine& engine) {
-    folder = ""; // Reset folder name to avoid erors.
-    auto loading = std::make_unique<Container>(Align::centre, Orientation::vertical);
-    auto saves = loading->addNode(initSaves(folder).release());
-    auto lower = loading->addNode(new Layout(Orientation::horizontal));
-
-    auto back        = lower->addNode(new Button(BTN_SIZE, U"Back"));
-    auto load        = lower->addNode(new Button(BTN_SIZE, U"Load"));
-    auto deleteWorld = lower->addNode(new Button(BTN_SIZE, U"Delete"));
-
-    back       ->addCallback([container = loading.get()] { container->close(); });
-    load       ->addCallback([&] { loadWorld(engine); });
-    deleteWorld->addCallback(std::bind_front(deleteFolder, saves, loading.get()));
-
-    loading->arrange();
-    return loading;
+    return std::make_unique<FrWorldLoading>(engine);
 }
