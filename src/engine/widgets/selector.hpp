@@ -6,7 +6,7 @@ class Selector : public Layout {
     std::weak_ptr<Button> target;
 public:
     Selector(const Orientation orientation) : Layout(orientation) { }
-    ~Selector() final = default;
+    ~Selector() override = default;
     //
     const std::weak_ptr<Button> getTarget() const { return target; }
     void setTarget(const Button* const button);
