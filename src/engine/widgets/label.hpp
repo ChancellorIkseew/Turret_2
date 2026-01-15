@@ -14,7 +14,7 @@ public:
     void setText(const std::u32string& text) {
         originalText = text;
         visibleText = text;
-        resizeBy(visibleText);
+        resizeBy(text);
     }
     void resizeBy(const std::u32string& text);
     void draw(const Renderer& renderer) final;
