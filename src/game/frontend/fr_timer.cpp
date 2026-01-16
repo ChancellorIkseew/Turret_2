@@ -14,7 +14,6 @@ class FrTimer : public Container {
     Label* time;
     Label* mobCount;
 public:
-    ~FrTimer() final = default;
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
         addNode(new Button(BTN_SIZE, U"Next wave"));
         time = addNode(new Label(U"", false));

@@ -4,10 +4,9 @@
 
 class Engine;
 
-class FrSaves : public Selector {
+class FrSaves final : public Selector {
     std::string targetFolder;
 public:
-    ~FrSaves() final = default;
     FrSaves() : Selector(Orientation::vertical) {
         update();
     }

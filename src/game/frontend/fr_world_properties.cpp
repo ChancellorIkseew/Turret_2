@@ -38,7 +38,6 @@ public:
         }
         arrange();
     }
-    ~OProps() final = default;
     //
     const OverlayPresets getPresets() {
         for (int i = 1; i < frequency->getContents().size(); ++i) {
