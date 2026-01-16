@@ -2,20 +2,20 @@
 #include <array>
 #include "engine/coords/tile_coord.hpp"
 #include "game/world/world_map.hpp"
-#include "hash_noise.hpp"
+#include "squirell_noise.hpp"
 
 class SpotGenerator2D {
-    HashNoise2D hashNoise;
+    SquirellNoise2D squirellNoise;
 public:
-    SpotGenerator2D(const uint64_t seed) : hashNoise(seed) { }
-
+    SpotGenerator2D(const uint64_t seed) : squirellNoise(seed) { }
+    
     void generateSpot(WorldMap& map, const TileCoord start, const uint8_t tileType, const int spotSize) const {
         TileCoord tile = start;
-        for (int s = 0; s < spotSize; ++s) {
-            tile = tile + spotPreset[hashNoise.createTile(tile.x ^ s, tile.y ^ s) % 4];
-            for (int i = 0; i < 5; ++i) {
-                if (map.tileExists(tile + spotPreset[i]))
-                    map.at(tile + spotPreset[i]).overlay = tileType;
+        for (int i = 0; i < spotSize; ++i) {
+            tile += spotPreset[squirellNoise.createTile(tile.x ^ i, tile.y ^ i) % 3];
+            for (const TileCoord offset : spotPreset) {
+                if (map.tileExists(tile + offset))
+                    map.at(tile + offset).overlay = tileType;
             }
         }
     }

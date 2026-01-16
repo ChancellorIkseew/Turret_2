@@ -79,7 +79,7 @@
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
-    <ClInclude Include="src\game\generation\hash_noise.hpp" />
+    <ClInclude Include="src\game\generation\squirell_noise.hpp" />
     <ClInclude Include="src\game\generation\spot_generator.hpp" />
     <ClInclude Include="src\game\physics\chunk_grid.hpp" />
     <ClInclude Include="src\game\physics\id_manager.hpp" />

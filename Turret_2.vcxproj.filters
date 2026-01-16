@@ -186,7 +186,7 @@
     <ClInclude Include="src\engine\widgets\clickable.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\generation\hash_noise.hpp">
+    <ClInclude Include="src\game\generation\squirell_noise.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\generation\spot_generator.hpp">

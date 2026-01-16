@@ -5,14 +5,19 @@
 #include "engine/assets/indexes.hpp"
 #include "engine/debug/logger.hpp"
 #include "game/world/world.hpp"
-#include "hash_noise.hpp"
 #include "perlin_noise.hpp"
 #include "spot_generator.hpp"
+#include "squirell_noise.hpp"
 
 constexpr float MAIN_NOISE_SCALE = 40.0f;
 constexpr float SUPPORT_NOISE_SCALE = 10.0f;
 
 using Pair = std::pair<float, uint8_t>;
+
+struct OvPr {
+    uint8_t type = 0;
+    int frequency = 0, deposite = 0;
+};
 
 static inline bool fromMaxToMin(const Pair a, const Pair b) {
     return a.first > b.first;
@@ -35,19 +40,28 @@ static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets, c
     return vals;
 }
 
+static std::vector<OvPr> processOverlayPresets(const OverlayPresets& overlayPresets, const Indexes& indexes) {
+    std::vector<OvPr> vals;
+    for (const auto& [name, frequency, deposite] : overlayPresets) {
+        vals.emplace_back(indexes.getOverlay().at(name), frequency, deposite);
+    }
+    return vals;
+}
+
 static WorldMap generateMap(const WorldProperties& properties, const Indexes& indexes) {
     const auto mapSize = properties.mapSize;
     PerlinNoise2D mainNoise(properties.seed);
     PerlinNoise2D supportNoise(properties.seed + 100U);
     WorldMap map(mapSize);
-    const auto vals = processFloorPresets(properties.floorPresets, indexes);
+    const auto floorPresets = processFloorPresets(properties.floorPresets, indexes);
+    const auto overlayPresets = processOverlayPresets(properties.overlayPresets, indexes);
 
     SpotGenerator2D spotGenerator(properties.seed);
 
-    std::unordered_map<std::string, HashNoise2D> hashNoises;
+    std::unordered_map<uint8_t, SquirellNoise2D> squirellNoises;
     uint64_t seedOfset = 0U;
-    for (const auto& [id, frequency, deposite] : properties.overlayPresets) {
-        hashNoises.emplace(id, HashNoise2D(properties.seed + seedOfset));
+    for (const auto& [id, frequency, deposite] : overlayPresets) {
+        squirellNoises.emplace(id, SquirellNoise2D(properties.seed + seedOfset));
         seedOfset += 50U;
     }
 
@@ -55,11 +69,11 @@ static WorldMap generateMap(const WorldProperties& properties, const Indexes& in
         for (int y = 0; y < mapSize.y; ++y) {
             const float m = mainNoise.createTile(x, y + 1, MAIN_NOISE_SCALE);
             const float s = supportNoise.createTile(x, y + 1, SUPPORT_NOISE_SCALE);
-            map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, vals);
+            map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, floorPresets);
  
-            for (const auto& [id, frequency, deposite] : properties.overlayPresets) {
-                if (hashNoises.at(id).createTile(x, y, frequency))
-                    spotGenerator.generateSpot(map, TileCoord(x, y), indexes.getOverlay().at(id), deposite);
+            for (const auto& [id, frequency, deposite] : overlayPresets) {
+                if (squirellNoises.at(id).createTile(x, y, frequency))
+                    spotGenerator.generateSpot(map, TileCoord(x, y), id, deposite);
             }
         }
     }
