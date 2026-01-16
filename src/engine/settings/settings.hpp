@@ -7,10 +7,10 @@ class Engine;
 class Settings {
 public:
     static struct _Audio {
-        uint16_t master = 50U;
-        uint16_t world  = 100U;
-        uint16_t ui     = 100U;
-        uint16_t music  = 100U;
+        uint8_t master = 50U;
+        uint8_t world  = 100U;
+        uint8_t ui     = 100U;
+        uint8_t music  = 100U;
         bool toggleSound = true;
     } audio;
     static struct _Display {

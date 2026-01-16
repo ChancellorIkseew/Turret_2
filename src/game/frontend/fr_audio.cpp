@@ -21,10 +21,10 @@ public:
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));
-        master = clickable->addNode(new Form(Settings::audio.master, new Uint16Validator(0U, 100U), FORM_SIZE));
-        world  = clickable->addNode(new Form(Settings::audio.world,  new Uint16Validator(0U, 100U), FORM_SIZE));
-        ui     = clickable->addNode(new Form(Settings::audio.ui,     new Uint16Validator(0U, 100U), FORM_SIZE));
-        music  = clickable->addNode(new Form(Settings::audio.music,  new Uint16Validator(0U, 100U), FORM_SIZE));
+        master = clickable->addNode(new Form(Settings::audio.master, new Uint8Validator(0U, 100U), FORM_SIZE));
+        world  = clickable->addNode(new Form(Settings::audio.world,  new Uint8Validator(0U, 100U), FORM_SIZE));
+        ui     = clickable->addNode(new Form(Settings::audio.ui,     new Uint8Validator(0U, 100U), FORM_SIZE));
+        music  = clickable->addNode(new Form(Settings::audio.music,  new Uint8Validator(0U, 100U), FORM_SIZE));
         toggleSound = clickable->addNode(new Checkbox(Settings::audio.toggleSound));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
@@ -42,10 +42,10 @@ public:
     }
 
     void applySettings(Engine& engine) {
-        Settings::audio.master = validator::toUint16(master->getText()).value_or(50U);
-        Settings::audio.world  = validator::toUint16(world ->getText()).value_or(100U);
-        Settings::audio.ui     = validator::toUint16(ui    ->getText()).value_or(100U);
-        Settings::audio.music  = validator::toUint16(music ->getText()).value_or(100U);
+        Settings::audio.master = validator::toUint8(master->getText()).value_or(50U);
+        Settings::audio.world  = validator::toUint8(world ->getText()).value_or(100U);
+        Settings::audio.ui     = validator::toUint8(ui    ->getText()).value_or(100U);
+        Settings::audio.music  = validator::toUint8(music ->getText()).value_or(100U);
         Settings::audio.toggleSound = toggleSound->getValue();;
         Settings::applySettings(engine);
         Settings::writeSettings();
