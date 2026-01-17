@@ -57,6 +57,8 @@ public:
         SDL_SetTextureScaleMode(comonTexture, static_cast<SDL_ScaleMode>(mode));
     }
     void createComonTexture(SDL_Surface* comonSurface) {
+        if (comonTexture)
+            SDL_DestroyTexture(comonTexture);
         comonTexture = SDL_CreateTextureFromSurface(sdlRenderer, comonSurface);
         setScaleMode(ScaleMode::nearest);
     }
