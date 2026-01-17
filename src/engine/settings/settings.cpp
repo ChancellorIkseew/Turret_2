@@ -45,7 +45,7 @@ void Settings::readSettings() {
     data.get("volume_world",  audio.world, 100U);
     data.get("volume_ui",     audio.ui, 100U);
     data.get("volume_music",  audio.music, 100U);
-    data.get("toggle_sound",  audio.toggleSound, false);
+    data.get("toggle_sound",  audio.toggleSound, true);
     //
     data.get("FPS",        display.FPS, 60U);
     data.get("fullscreen", display.fullscreen, false);
