@@ -4,9 +4,9 @@
 
 namespace util::time {
     ///@brief Local time since epoch (in seconds).
-    uint64_t getLocalTime();
+    uint64_t getLocalTime() noexcept;
     ///@brief Local time since epoch (in milliseconds).
-    uint64_t getLocalTimeMs();
+    uint64_t getLocalTimeMs() noexcept;
 
     ///@brief Seconds to "YYYY/MM/DD HH:MM:SS".
     std::string yyyyMMddHHmmSS(const uint64_t value);
