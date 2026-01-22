@@ -18,8 +18,8 @@ void serializer::save(const WorldProperties& properties, const std::filesystem::
 
 WorldProperties serializer::load(const std::filesystem::path& path) {
     const tin::Data data = tin::read(path / "world_properties.tin");
-    TileCoord mapSize = data.getTileCoord("map_size").value_or(TileCoord(0, 0));
-    uint64_t seed = data.getUint64("seed").value_or(0U);
+    TileCoord mapSize = data.get<TileCoord>("map_size").value_or(TileCoord(0, 0));
+    uint64_t seed = data.get<uint64_t>("seed").value_or(0U);
     FloorPresets floor = loadFloorPreset(path);
     OverlayPresets overlay = loadOverlayPreset(path);
     return WorldProperties(mapSize, seed, floor, overlay);

@@ -36,7 +36,7 @@ public:
     }
 
     void applySettings(Engine& engine) {
-        Settings::display.FPS = validator::toUint32(fps->getText()).value_or(60U);
+        Settings::display.FPS = validator::to<decltype(Settings::display.FPS)>(fps->getText()).value_or(60U);
         Settings::display.fullscreen = fullscreen->getValue();
         Settings::gameplay.cameraInertia = inertia->getValue();
         Settings::applySettings(engine);

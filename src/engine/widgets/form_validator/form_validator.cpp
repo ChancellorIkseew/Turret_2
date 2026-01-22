@@ -47,36 +47,36 @@ void Int16Validator::validateText(std::u32string& text) const { validateIntegral
 void Int8Validator::validateText(std::u32string& text)  const { validateIntegral(text); }
 
 void Uint64Validator::validateValue(std::u32string& text) const {
-    const uint64_t value = validator::toUint64(text).value_or(0);
+    const uint64_t value = validator::to<uint64_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 void Uint32Validator::validateValue(std::u32string& text) const {
-    const uint32_t value = validator::toUint32(text).value_or(0);
+    const uint32_t value = validator::to<uint32_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 void Uint16Validator::validateValue(std::u32string& text) const {
-    const uint16_t value = validator::toUint16(text).value_or(0);
+    const uint16_t value = validator::to<uint16_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 void Uint8Validator::validateValue(std::u32string& text) const {
-    const uint8_t value = validator::toUint8(text).value_or(0);
+    const uint8_t value = validator::to<uint8_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 
 void Int64Validator::validateValue(std::u32string& text) const {
-    const int64_t value = validator::toInt64(text).value_or(0);
+    const int64_t value = validator::to<int64_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 void Int32Validator::validateValue(std::u32string& text) const {
-    const int32_t value = validator::toInt32(text).value_or(0);
+    const int32_t value = validator::to<int32_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 void Int16Validator::validateValue(std::u32string& text) const {
-    const int16_t value = validator::toInt16(text).value_or(0);
+    const int16_t value = validator::to<int16_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 void Int8Validator::validateValue(std::u32string& text) const {
-    const int8_t value = validator::toInt8(text).value_or(0);
+    const int8_t value = validator::to<int8_t>(text).value_or(0);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 
@@ -86,7 +86,7 @@ void FloatValidator::validateText(std::u32string& text) const {
     text.erase(it, text.end());
 }
 void FloatValidator::validateValue(std::u32string& text) const {
-    const float value = validator::toFloat(text).value_or(0.0f);
+    const float value = validator::to<float>(text).value_or(0.0f);
     text = utf8::to_u32string(std::clamp(value, min, max));
 }
 

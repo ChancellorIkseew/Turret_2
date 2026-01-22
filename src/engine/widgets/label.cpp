@@ -11,7 +11,7 @@ void Label::draw(const Renderer& renderer) {
 void Label::translate(const tin::Data& translations) {
     if (!translatable)
         return;
-    visibleText = translations.getU32String(validator::trimToStdString(originalText)).value_or(originalText);
+    visibleText = translations.get<std::u32string>(utf8::to_string(originalText)).value_or(originalText);
     resizeBy(visibleText);
 }
 

@@ -1,57 +1,45 @@
 #pragma once
 #include <cstdint>
 #include <optional>
-#include <string>
+#include <string_view>
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/coords/tile_coord.hpp"
+#include "engine/io/utf8/utf8.hpp"
 
 namespace validator {
-    std::optional<uint64_t> toUint64(const std::string& str);
-    std::optional<uint32_t> toUint32(const std::string& str);
-    std::optional<uint16_t> toUint16(const std::string& str);
-    std::optional<uint8_t> toUint8(const std::string& str);
-    //
-    std::optional<int64_t> toInt64(const std::string& str);
-    std::optional<int32_t> toInt32(const std::string& str);
-    std::optional<int16_t> toInt16(const std::string& str);
-    std::optional<int8_t> toInt8(const std::string& str);
-    //
-    std::optional<TileCoord> toTileCoord(const std::string& str);
-    std::optional<PixelCoord> toPixelCoord(const std::string& str);
-    std::optional<float> toFloat(const std::string& str);
-    std::optional<bool> toBool(const std::string& str);
-    std::string trimToStdString(const std::u32string& str);
+    template <class T>
+    std::optional<T> stringToNumber(std::string_view str);
 
-    inline std::optional<uint64_t> toUint64(const std::u32string& str) { return toUint64(trimToStdString(str)); }
-    inline std::optional<uint32_t> toUint32(const std::u32string& str) { return toUint32(trimToStdString(str)); }
-    inline std::optional<uint16_t> toUint16(const std::u32string& str) { return toUint16(trimToStdString(str)); }
-    inline std::optional<uint8_t> toUint8(const std::u32string& str) { return toUint8(trimToStdString(str)); }
-    //
-    inline std::optional<int64_t> toInt64(const std::u32string& str) { return toInt64(trimToStdString(str)); }
-    inline std::optional<int32_t> toInt32(const std::u32string& str) { return toInt32(trimToStdString(str)); }
-    inline std::optional<int16_t> toInt16(const std::u32string& str) { return toInt16(trimToStdString(str)); }
-    inline std::optional<int8_t> toInt8(const std::u32string& str) { return toInt8(trimToStdString(str)); }
-    //
-    inline std::optional<float> toFloat(const std::u32string& str) { return toFloat(trimToStdString(str)); }
+    template <class Point, class Base>
+    std::optional<Point> stringToPoint(std::string_view str);
 
-    template <typename T>
-    std::optional<T> to(const std::string& str) {
+    std::optional<bool> toBool(const std::string_view str);
+
+    template <class T>
+    inline std::optional<T> to(const std::string& str) {
         if constexpr (std::is_same_v<T, std::string>) return str;
-        else if constexpr (std::is_same_v<T, uint64_t>) return toUint64(str);
-        else if constexpr (std::is_same_v<T, uint32_t>) return toUint32(str);
-        else if constexpr (std::is_same_v<T, uint16_t>) return toUint16(str);
-        else if constexpr (std::is_same_v<T, uint8_t>)  return toUint8(str);
-        else if constexpr (std::is_same_v<T, int64_t>)  return toInt64(str);
-        else if constexpr (std::is_same_v<T, int32_t>)  return toInt32(str);
-        else if constexpr (std::is_same_v<T, int16_t>)  return toInt16(str);
-        else if constexpr (std::is_same_v<T, int8_t>)   return toInt8(str);
-        else if constexpr (std::is_same_v<T, float>)    return toFloat(str);
+        else if constexpr (std::is_same_v<T, std::u32string>) return utf8::to_u32string(str);
+        else if constexpr (std::is_same_v<T, uint64_t>) return stringToNumber<uint64_t>(str);
+        else if constexpr (std::is_same_v<T, uint32_t>) return stringToNumber<uint32_t>(str);
+        else if constexpr (std::is_same_v<T, uint16_t>) return stringToNumber<uint16_t>(str);
+        else if constexpr (std::is_same_v<T, uint8_t>)  return stringToNumber<uint8_t>(str);
+        else if constexpr (std::is_same_v<T, int64_t>)  return stringToNumber<int64_t>(str);
+        else if constexpr (std::is_same_v<T, int32_t>)  return stringToNumber<int32_t>(str);
+        else if constexpr (std::is_same_v<T, int16_t>)  return stringToNumber<int16_t>(str);
+        else if constexpr (std::is_same_v<T, int8_t>)   return stringToNumber<int8_t>(str);
+        else if constexpr (std::is_same_v<T, float>)    return stringToNumber<float>(str);
         else if constexpr (std::is_same_v<T, bool>)     return toBool(str);
-        else if constexpr (std::is_same_v<T, TileCoord>)  return toTileCoord(str);
-        else if constexpr (std::is_same_v<T, PixelCoord>) return toPixelCoord(str);
+        else if constexpr (std::is_same_v<T, TileCoord>)  return stringToPoint<TileCoord, int>(str);
+        else if constexpr (std::is_same_v<T, PixelCoord>) return stringToPoint<PixelCoord, float>(str);
         else {
             static_assert(false, "Unsupported type for validator::to<T>");
             return std::nullopt;
         }
+    }
+
+    template <class T>
+    inline std::optional<T> to(const std::u32string& u32str) {
+        if constexpr (std::is_same_v<T, std::u32string>) return u32str;
+        return to<T>(utf8::to_string(u32str));
     }
 }

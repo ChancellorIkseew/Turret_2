@@ -41,12 +41,14 @@ public:
     //
     const OverlayPresets getPresets() {
         for (int i = 1; i < frequency->getContents().size(); ++i) {
+            using T = decltype(overlayPresets[i - 1].frequency);
             const Form* form = static_cast<const Form*>(frequency->getContents()[i].get());
-            overlayPresets[i - 1].frequency = validator::toInt32(form->getText()).value_or(0U);
+            overlayPresets[i - 1].frequency = validator::to<T>(form->getText()).value_or(0U);
         }
         for (int i = 1; i < deposite->getContents().size(); ++i) {
+            using T = decltype(overlayPresets[i - 1].deposite);
             const Form* form = static_cast<const Form*>(deposite->getContents()[i].get());
-            overlayPresets[i - 1].deposite = validator::toInt32(form->getText()).value_or(0U);
+            overlayPresets[i - 1].deposite = validator::to<T>(form->getText()).value_or(0U);
         }
         return overlayPresets;
     }
@@ -83,9 +85,9 @@ public:
 private:
     void createWorld(Engine& engine) {
         WorldProperties properties(
-            TileCoord(validator::toInt32(width->getText()).value_or(100),
-                validator::toInt32(height->getText()).value_or(100)),
-            validator::toUint64(seed->getText()).value_or(0U),
+            TileCoord(validator::to<int>(width->getText()).value_or(100),
+                validator::to<int>(height->getText()).value_or(100)),
+            validator::to<uint64_t>(seed->getText()).value_or(0U),
             serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT),
             oProps->getPresets());
         engine.createWorldInGame(properties);

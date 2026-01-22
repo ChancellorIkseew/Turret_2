@@ -10,7 +10,7 @@ static debug::Logger logger("main_window");
 static inline void loadIcon(SDL_Window* window) {
     SDL_Surface* iconSurface = SDL_LoadPNG(ICON_PATH.string().c_str());
     if (!iconSurface)
-        logger.error() << "Cold not Load image from file " << ICON_PATH;
+        logger.error() << "Could not Load image from file " << ICON_PATH;
     SDL_SetWindowIcon(window, iconSurface);
     SDL_DestroySurface(iconSurface);
 }

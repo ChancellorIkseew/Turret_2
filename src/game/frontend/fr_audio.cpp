@@ -42,10 +42,11 @@ public:
     }
 
     void applySettings(Engine& engine) {
-        Settings::audio.master = validator::toUint8(master->getText()).value_or(50U);
-        Settings::audio.world  = validator::toUint8(world ->getText()).value_or(100U);
-        Settings::audio.ui     = validator::toUint8(ui    ->getText()).value_or(100U);
-        Settings::audio.music  = validator::toUint8(music ->getText()).value_or(100U);
+        using T = decltype(Settings::audio.master);
+        Settings::audio.master = validator::to<T>(master->getText()).value_or(50U);
+        Settings::audio.world  = validator::to<T>(world ->getText()).value_or(100U);
+        Settings::audio.ui     = validator::to<T>(ui    ->getText()).value_or(100U);
+        Settings::audio.music  = validator::to<T>(music ->getText()).value_or(100U);
         Settings::audio.toggleSound = toggleSound->getValue();;
         Settings::applySettings(engine);
         Settings::writeSettings();

@@ -48,7 +48,7 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
 }
 
 void ai::updateShootingAI(MobSoA& soa, const Presets& presets, const PlayerController& playerController) {
-    const size_t mobCount = soa.id.size();
+    const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         switch (soa.shootingData[i].aiType) {
         case ShootingAI::player_controlled:

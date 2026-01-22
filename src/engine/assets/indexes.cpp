@@ -15,11 +15,11 @@ void Indexes::load() {
     tin::Data data = tin::read(path);
     for (const auto& [name, id] : data) {
         if (name.find("floor_") != std::string::npos)
-            floor.emplace(name, validator::toUint8(id).value_or(0U));
+            floor.emplace(name, validator::to<uint8_t>(id).value_or(0U));
         else if (name.find("overlay_") != std::string::npos)
-            overlay.emplace(name, validator::toUint8(id).value_or(0U));
+            overlay.emplace(name, validator::to<uint8_t>(id).value_or(0U));
         else if (name.find("block_") != std::string::npos)
-            blocks.emplace(name, validator::toUint16(id).value_or(0U));
+            blocks.emplace(name, validator::to<uint16_t>(id).value_or(0U));
     }
 }
 

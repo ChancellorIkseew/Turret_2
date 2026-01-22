@@ -6,13 +6,13 @@ namespace utf8 {
     std::string to_string(const std::u32string& u32Str);
     char32_t to_char32_t(const char* s) noexcept;
     std::u32string to_u32string(const char* cStr);
-    inline std::u32string to_u32string(const std::string str) {
+    inline std::u32string to_u32string(const std::string& str) {
         return to_u32string(str.c_str());
     }
 
     namespace priv {
         template <typename T>
-        char32_t* fromUintToBuffer(char32_t* rNext, T unsignedValue) {
+        inline char32_t* fromUintToBuffer(char32_t* rNext, T unsignedValue) {
             static_assert(std::is_unsigned_v<T>, "T must be unsigned");
             auto _UVal_trunc = unsignedValue;
             do {
@@ -24,7 +24,7 @@ namespace utf8 {
     }
 
     template<typename T>
-    static std::u32string to_u32string(const T value) {
+    inline std::u32string to_u32string(const T value) {
         static_assert(std::is_integral_v<T>, "T must be integral");
         char32_t buffer[21]; // can hold -2^63 and 2^64 - 1, plus NUL
         char32_t* const bufferEnd = std::end(buffer);
@@ -45,7 +45,7 @@ namespace utf8 {
         return std::u32string(rNext, bufferEnd);
     }
 
-    static std::u32string to_u32string(const float value) {
+    inline std::u32string to_u32string(const float value) {
         return to_u32string(std::to_string(value));
     }
 }

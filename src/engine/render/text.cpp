@@ -59,7 +59,7 @@ void text::setFont(const Atlas& atlas, const std::string& latin, const std::stri
 void text::loadCustomSymbols() {
     tin::Data data = tin::read(io::folders::FONTS / "custom_symbols.tin");
     for (const auto& [symbolName, code] : data) {
-        customSymbols.emplace(symbolName, validator::toUint32(code).value_or(U'?'));
+        customSymbols.emplace(symbolName, validator::to<uint32_t>(code).value_or(U'?'));
     }
 }
 

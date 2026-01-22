@@ -40,55 +40,6 @@ namespace tin {
             return validator::to<T>(data.at(key));
         }
 
-        std::optional<uint64_t> getUint64(const std::string& key) const {
-            return get<uint64_t>(key);
-        }
-        std::optional<uint32_t> getUint32(const std::string& key) const {
-            return get<uint32_t>(key);
-        }
-        std::optional<uint16_t> getUint16(const std::string& key) const {
-            return get<uint16_t>(key);
-        }
-        std::optional<uint8_t> getUint8(const std::string& key) const {
-            return get<uint8_t>(key);
-        }
-
-        std::optional<int64_t> getInt64(const std::string& key) const {
-            return get<int64_t>(key);
-        }
-        std::optional<int32_t> getInt32(const std::string& key) const {
-            return get<int32_t>(key);
-        }
-        std::optional<int16_t> getInt16(const std::string& key) const {
-            return get<int16_t>(key);
-        }
-        std::optional<int8_t> getInt8(const std::string& key) const {
-            return get<int8_t>(key);
-        }
-
-        std::optional<float> getFloat(const std::string& key) const {
-            return get<float>(key);
-        }
-        std::optional<bool> getBool(const std::string& key) const {
-            return get<bool>(key);
-        }
-
-        std::optional<TileCoord> getTileCoord(const std::string& key) const {
-            return get<TileCoord>(key);
-        }
-        std::optional<PixelCoord> getPixelCoord(const std::string& key) const {
-            return get<PixelCoord>(key);
-        }
-
-        std::optional<std::string> getString(const std::string& key) const {
-            if (!data.contains(key)) return std::nullopt;
-            return data.at(key);
-        }
-        std::optional<std::u32string> getU32String(const std::string& key) const {
-            if (!data.contains(key)) return std::nullopt;
-            return utf8::to_u32string(data.at(key));
-        }
-
         std::vector<std::string> getList(const std::string& key) const {
             std::vector<std::string> list;
             if (!data.contains(key)) return list;

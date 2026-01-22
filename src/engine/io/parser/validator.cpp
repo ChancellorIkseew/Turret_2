@@ -7,7 +7,7 @@
 #include <utility>
 
 template <class T>
-static std::optional<T> stringToNumber(std::string_view str) {
+std::optional<T> validator::stringToNumber(std::string_view str) {
     static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
     str.remove_prefix(std::min(str.find_first_not_of(" "), str.size()));
     if (str.empty())
@@ -28,8 +28,20 @@ static std::optional<T> stringToNumber(std::string_view str) {
     return value;
 }
 
+template std::optional<uint64_t> validator::stringToNumber(std::string_view str);
+template std::optional<uint32_t> validator::stringToNumber(std::string_view str);
+template std::optional<uint16_t> validator::stringToNumber(std::string_view str);
+template std::optional<uint8_t>  validator::stringToNumber(std::string_view str);
+//
+template std::optional<int64_t> validator::stringToNumber(std::string_view str);
+template std::optional<int32_t> validator::stringToNumber(std::string_view str);
+template std::optional<int16_t> validator::stringToNumber(std::string_view str);
+template std::optional<int8_t>  validator::stringToNumber(std::string_view str);
+
+template std::optional<float> validator::stringToNumber<float>(std::string_view str);
+
 template <class Point, class Base>
-static std::optional<Point> stringToPoint(std::string_view str) {
+std::optional<Point> validator::stringToPoint(std::string_view str) {
     const size_t stick = str.find_first_of('|');
     if (stick == std::string::npos)
         return std::nullopt;
@@ -40,61 +52,13 @@ static std::optional<Point> stringToPoint(std::string_view str) {
     return Point(x.value(), y.value());
 }
 
-// Unsigned int
-std::optional<uint64_t> validator::toUint64(const std::string& str) {
-    return stringToNumber<uint64_t>(str);
-}
-std::optional<uint32_t> validator::toUint32(const std::string& str) {
-    return stringToNumber<uint32_t>(str);
-}
-std::optional<uint16_t> validator::toUint16(const std::string& str) {
-    return stringToNumber<uint16_t>(str);
-}
-std::optional<uint8_t> validator::toUint8(const std::string& str) {
-    return stringToNumber<uint8_t>(str);
-}
+template std::optional<TileCoord>  validator::stringToPoint<TileCoord, int>(std::string_view str);
+template std::optional<PixelCoord> validator::stringToPoint<PixelCoord, float>(std::string_view str);
 
-// Signed int
-std::optional<int64_t> validator::toInt64(const std::string& str) {
-    return stringToNumber<int64_t>(str);
-}
-std::optional<int32_t> validator::toInt32(const std::string& str) {
-    return stringToNumber<int32_t>(str);
-}
-std::optional<int16_t> validator::toInt16(const std::string& str) {
-    return stringToNumber<int16_t>(str);
-}
-std::optional<int8_t> validator::toInt8(const std::string& str) {
-    return stringToNumber<int8_t>(str);
-}
-
-//other
-std::optional<TileCoord> validator::toTileCoord(const std::string& str) {
-    return stringToPoint<TileCoord, int>(str);
-}
-std::optional<PixelCoord> validator::toPixelCoord(const std::string& str) {
-    return stringToPoint<PixelCoord, float>(str);
-}
-
-std::optional<float> validator::toFloat(const std::string& str) {
-    return stringToNumber<float>(str);
-}
-
-std::optional<bool> validator::toBool(const std::string& str) {
+std::optional<bool> validator::toBool(std::string_view str) {
     if (str == "true" || str == "1")
         return true;
     if (str == "false" || str == "0")
         return false;
     return std::nullopt;
-}
-
-std::string validator::trimToStdString(const std::u32string& u32str) {
-    if (u32str.empty())
-        return "";
-    std::string str;
-    str.reserve(u32str.size());
-    for (const auto it : u32str) {
-        str.push_back(static_cast<char>(it));
-    }
-    return str;
 }

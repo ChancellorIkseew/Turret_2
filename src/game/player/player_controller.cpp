@@ -55,8 +55,7 @@ void PlCtr::captureMob(const Input& input, const Camera& camera, MobManager& mob
     if (!input.jactive(Control_unit))
         return;
     const auto& soa = mobs.getSoa();
-    const size_t mobCount = soa.position.size();
-    for (size_t i = 0; i < mobCount; ++i) {
+    for (size_t i = 0; i < soa.mobCount; ++i) {
         if (soa.teamID[i] != playerTeam->getID())
             continue;
         if (t1::areCloserRect(camera.fromMapToScreen(soa.position[i]), input.getMouseCoord(), 20.f))
