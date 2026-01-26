@@ -2,8 +2,8 @@
 #ifdef FORM_VALIDATOR_TEST
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/io/utf8/utf8.cpp"
-#include "engine/widgets/form_editor/form_validator.hpp"
-#include "engine/widgets/form_editor/form_validator.cpp"
+#include "engine/widgets/form_validator/form_validator.hpp"
+#include "engine/widgets/form_validator/form_validator.cpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/io/parser/validator.cpp"
 //TODO: find other way to link cpp files
