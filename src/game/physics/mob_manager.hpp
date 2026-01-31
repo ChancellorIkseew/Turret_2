@@ -40,6 +40,7 @@ public:
     t1_finline MobSoA& getSoa() noexcept { return soa; }
     t1_finline size_t getSoaIndexByMobID(const MobID mobID) const noexcept {
         assert(mobID != IDManager<MobID>::INVALID_ID);
+        assert(isIndexValid(soaIndexByMobID[mobID]));
         return soaIndexByMobID[mobID];
     }
     t1_finline bool isIndexValid(const size_t index) const noexcept {

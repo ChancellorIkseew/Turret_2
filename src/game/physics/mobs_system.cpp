@@ -5,6 +5,7 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/player/camera.hpp"
+#include "game/player/player_controller.hpp"
 #include "mob_manager.hpp"
 
 constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
@@ -59,7 +60,7 @@ void mobs::processMobs(MobSoA& soa, const Presets& presets) {
     }
 }
 
-void mobs::cleanupMobs(MobManager& manager, const Presets& presets/*, Explosions& explosions*/) {
+void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerController& plCtr) {
     const auto& soa = manager.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.mobCount; i > 0; --i) {
@@ -68,6 +69,8 @@ void mobs::cleanupMobs(MobManager& manager, const Presets& presets/*, Explosions
             continue;
         // if (soa.presets->explosion.damage != 0)
         //     explosions.push(soa.presets->explosion);
+        if (plCtr.getTarget() == soa.id[index])
+            plCtr.resetTarget(manager, presets);
         manager.removeMob(index);
     }
 }

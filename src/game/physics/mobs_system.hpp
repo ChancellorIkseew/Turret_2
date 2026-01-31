@@ -4,11 +4,12 @@
 struct MobSoA;
 class Camera;
 class MobManager;
+class PlayerController;
 class Presets;
 class Renderer;
 
 namespace mobs {
     void processMobs(MobSoA& soa, const Presets& presets);
-    void cleanupMobs(MobManager& manager, const Presets& presets);
+    void cleanupMobs(MobManager& manager, const Presets& presets, PlayerController& plCtr);
     void drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer, const uint64_t tickCount);
 }
