@@ -23,4 +23,5 @@ cmake_proj/*
 test/packages/
 test/test_build/
 test/test_obj/
+test/Turret_2.lib
 test/.vs/

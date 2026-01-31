@@ -1,12 +1,8 @@
 #include "pch.h"
-#ifdef FORM_VALIDATOR_TEST
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/io/utf8/utf8.cpp"
 #include "engine/widgets/form_validator/form_validator.hpp"
-#include "engine/widgets/form_validator/form_validator.cpp"
 #include "engine/io/parser/validator.hpp"
-#include "engine/io/parser/validator.cpp"
-//TODO: find other way to link cpp files
 
 TEST(NumberToU32StringConvertor, ToU32String) {
     EXPECT_TRUE(utf8::to_u32string(uint8_t(100U)) == U"100");
@@ -56,5 +52,3 @@ TEST(FormValidatorTest, ValidatedText) {
     EXPECT_TRUE(maxUint64 == utf8::to_u32string(std::numeric_limits<uint64_t>::max()));
     EXPECT_TRUE(minUint64 == utf8::to_u32string(std::numeric_limits<uint64_t>::min()));
 }
-
-#endif
