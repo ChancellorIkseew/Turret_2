@@ -3,10 +3,11 @@
 #include "engine/assets/presets.hpp"
 #include "engine/debug/logger.hpp"
 
-constexpr MobID INVALID_MOB_ID = IDManager<MobID>::INVALID_ID;
+constexpr MobIndex INVALID_MOB_ID = IDManager<MobID>::INVALID_ID;
+constexpr MobIndex INVALID_MOB_INDEX = INVALID_MOB_ID;
 static debug::Logger logger("mob_manager");
 
-void MobManager::fillIndexes() { soaIndexByMobID.fill(INVALID_MOB_ID); }
+void MobManager::fillIndexes() { soaIndexByMobID.fill(INVALID_MOB_INDEX); }
 
 void MobManager::reserve(const size_t capacity) {
     soa.id.reserve(capacity);
@@ -59,35 +60,33 @@ MobID MobManager::addMob(
     soa.chassisFrame.push_back(0);
     soa.turretFrame.push_back(0);
 
-    const size_t last = soa.id.size() - 1;
-    soaIndexByMobID[last] = mobID;
+    soaIndexByMobID[mobID] = static_cast<MobIndex>(soa.mobCount);
     ++soa.mobCount;
     return mobID;
 }
 
-void MobManager::removeMob(const size_t index) {
-    const size_t last = soa.id.size() - 1;
-    soaIndexByMobID[index] = soaIndexByMobID[last];
-    soaIndexByMobID[last] = INVALID_MOB_ID;
-    idManager.setFree(soa.id[index]);
-    --soa.mobCount;
+void MobManager::removeMob(const size_t targetIndex) {
+    const size_t lastIndex = --soa.mobCount;
+    idManager.setFree(soa.id[targetIndex]);
+    soaIndexByMobID[soa.id[lastIndex]] = static_cast<MobIndex>(targetIndex);
+    soaIndexByMobID[soa.id[targetIndex]] = INVALID_MOB_INDEX;
 
-    if (index != last) {
-        soa.id[index] = std::move(soa.id[last]);
-        soa.position[index] = std::move(soa.position[last]);
-        soa.velocity[index] = std::move(soa.velocity[last]);
-        soa.angle[index] = std::move(soa.angle[last]);
-        soa.health[index] = std::move(soa.health[last]);
-        soa.teamID[index] = std::move(soa.teamID[last]);
-        soa.preset[index] = std::move(soa.preset[last]);
-        soa.hitbox[index] = std::move(soa.hitbox[last]);
-        soa.motionData[index] = std::move(soa.motionData[last]);
-        soa.shootingData[index] = std::move(soa.shootingData[last]);
-        soa.restReloadTime[index] = std::move(soa.restReloadTime[last]);
-        soa.currentBarrel[index] = std::move(soa.currentBarrel[last]);
-        soa.turretAngle[index] = std::move(soa.turretAngle[last]);
-        soa.chassisFrame[index] = std::move(soa.chassisFrame[last]);
-        soa.turretFrame[index] = std::move(soa.turretFrame[last]);
+    if (targetIndex != lastIndex) {
+        soa.id[targetIndex] = std::move(soa.id[lastIndex]);
+        soa.position[targetIndex] = std::move(soa.position[lastIndex]);
+        soa.velocity[targetIndex] = std::move(soa.velocity[lastIndex]);
+        soa.angle[targetIndex] = std::move(soa.angle[lastIndex]);
+        soa.health[targetIndex] = std::move(soa.health[lastIndex]);
+        soa.teamID[targetIndex] = std::move(soa.teamID[lastIndex]);
+        soa.preset[targetIndex] = std::move(soa.preset[lastIndex]);
+        soa.hitbox[targetIndex] = std::move(soa.hitbox[lastIndex]);
+        soa.motionData[targetIndex] = std::move(soa.motionData[lastIndex]);
+        soa.shootingData[targetIndex] = std::move(soa.shootingData[lastIndex]);
+        soa.restReloadTime[targetIndex] = std::move(soa.restReloadTime[lastIndex]);
+        soa.currentBarrel[targetIndex] = std::move(soa.currentBarrel[lastIndex]);
+        soa.turretAngle[targetIndex] = std::move(soa.turretAngle[lastIndex]);
+        soa.chassisFrame[targetIndex] = std::move(soa.chassisFrame[lastIndex]);
+        soa.turretFrame[targetIndex] = std::move(soa.turretFrame[lastIndex]);
     }
 
     soa.id.pop_back();

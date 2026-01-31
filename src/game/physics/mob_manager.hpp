@@ -5,6 +5,7 @@
 #include "id_manager.hpp"
 
 using MobID = uint16_t;
+using MobIndex = MobID;
 class Presets;
 
 struct MobSoA {
@@ -27,7 +28,7 @@ struct MobSoA {
 };
 
 class MobManager {
-    std::array<MobID, IDManager<MobID>::MAX_ID> soaIndexByMobID;
+    std::array<MobIndex, IDManager<MobID>::MAX_ID> soaIndexByMobID;
     IDManager<MobID> idManager = IDManager<MobID>(512);
     MobSoA soa;
     void fillIndexes();
@@ -46,7 +47,7 @@ public:
     }
     //
     void reserve(const size_t capacity);
-    void removeMob(const size_t index);
+    void removeMob(const size_t targetIndex);
     MobID addMob(
         const Presets& presets,
         const MobPresetID preset,
