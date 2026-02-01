@@ -1,4 +1,5 @@
-# Project Turret_2 [русская версия README](README.md)
+#### this is English version of README | [версия README на русском](README.md)
+# Project Turret_2
 A 2D game in the tower-defense genre. Distributed completely free of charge.
 ___
 ## General Information

@@ -1,3 +1,4 @@
+#### это версия README на русском | [English version README](README.en.md)
 # Проект "Турельница" (Turret_2) [English version README](README.en.md)
 Проект "Турельница". 2Д-игра в жанре tower-defence. Распространяется полностью бесплатно.
 ___
