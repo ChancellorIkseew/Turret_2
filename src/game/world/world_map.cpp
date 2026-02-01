@@ -1,19 +1,9 @@
 #include "world_map.hpp"
 //
-#include <iostream>
 #include "game/events/events.hpp"
 
 WorldMap::WorldMap(const TileCoord mapSize) :
     terrain(mapSize.x * mapSize.y), mapSize(mapSize) { }
-
-void WorldMap::print() {
-    for (int x = 0; x < mapSize.x; ++x) {
-        for (int y = 0; y < mapSize.y; ++y) {
-            std::cout << static_cast<int>(WorldMap::at(x, y).floor);
-        }
-        std::cout << '\n';
-    }
-}
 
 void WorldMap::placeFloor(const TileCoord tile, const uint8_t floorID) {
     if (!tileExists(tile))

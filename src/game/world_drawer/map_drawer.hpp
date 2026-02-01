@@ -25,7 +25,6 @@ public:
     void cacheFloor(const WorldMap& map);
     void cacheOverlay(const WorldMap& map);
     void draw(const Camera& camera, const Renderer& renderer, const WorldMap& map);
-    void drawStructures(const Camera& camera, const WorldMap& map);
 private:
     void renderLayer(
         const Renderer& renderer,

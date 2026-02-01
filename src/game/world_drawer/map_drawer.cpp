@@ -110,16 +110,4 @@ void MapDrawer::draw(const Camera& camera, const Renderer& renderer, const World
     }
     renderLayer(renderer, cachedFloor, floorTextures, FLOOR_SIZE, camera.getTranslation() + BLENDING_AREA);
     renderLayer(renderer, cachedOverlay, overlayTextures, TILE_SIZE, camera.getTranslation());
-    drawStructures(camera, map);
-}
-
-void MapDrawer::drawStructures(const Camera& camera, const WorldMap& map) {
-    const TileCoord start = camera.getStartTile();
-    const TileCoord end = camera.getEndTile();
-    for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
-        for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
-            if (map.at(x, y).block)
-                map.at(x, y).block->draw();
-        }
-    }
 }
