@@ -33,7 +33,7 @@ void GameSession::updateSimulation(const Presets& presets) {
     turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
-    mobs::cleanupMobs(mobs, presets);
+    mobs::cleanupMobs(mobs, presets, playerController);
     ++tickCount;
 }
 
