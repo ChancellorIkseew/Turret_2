@@ -20,6 +20,7 @@ void GameSession::prepare() {
     Team* playerTeam = world->getTeams().addTeam(U"player");
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
+    world->getBlocks().placeBlock(TileCoord(10, 10), BlockPresetID(2));
 }
 
 void GameSession::updateSimulation(const Presets& presets) {

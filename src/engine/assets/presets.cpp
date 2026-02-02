@@ -12,6 +12,24 @@ using TurretFindMap = FindMap<preset_tag::TurretTag>;
 
 static debug::Logger logger("presets");
 
+static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas) {
+    std::array<uint8_t, 16> frames;
+    size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
+    BlockVisualPreset visual{
+        reader.getTexture(atlas, "texture"),
+        reader.get<PixelCoord>("origin"),
+        reader.get<PixelCoord>("size"),
+        reader.get<uint8_t>("frame_ticks"),
+        reader.get<float>("frame_height"),
+        static_cast<uint8_t>(frameCount),
+        frames
+    };
+    return BlockPreset{
+        reader.get<Health>("health"),
+        visual
+    };
+}
+
 static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName) {
     std::array<uint8_t, 16> frames;
     size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
@@ -95,6 +113,8 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
         const PresetReader reader(data, file, failed);
         try {
             const std::string name = io::folders::trimExtensions(file);
+            if constexpr (std::is_same_v<PresetType, BlockPreset>)
+                addPreset(name, createBlockPreset(reader, atlas), blockStore, blockIDByName, nextBlockID);
             if constexpr (std::is_same_v<PresetType, MobPreset>)
                 addPreset(name, createMobPreset(reader, atlas, turretIDByName), mobStore, mobIDByName, nextMobID);
             if constexpr (std::is_same_v<PresetType, ShellPreset>)
@@ -116,4 +136,5 @@ void Presets::load(const Atlas& atlas) {
     loadPresets<ShellPreset>("shells", atlas);
     loadPresets<TurretPreset>("turrets", atlas);
     loadPresets<MobPreset>("mobs", atlas);
+    loadPresets<BlockPreset>("blocks", atlas);
 }

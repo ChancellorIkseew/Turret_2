@@ -15,11 +15,13 @@ namespace preset_tag {
         }
     };
 
+    struct BlockTag {};
     struct MobTag {};
     struct ShellTag {};
     struct TurretTag {};
 }
 
+using BlockPresetID = preset_tag::StrongID<preset_tag::BlockTag>;
 using MobPresetID = preset_tag::StrongID<preset_tag::MobTag>;
 using ShellPresetID = preset_tag::StrongID<preset_tag::ShellTag>;
 using TurretPresetID = preset_tag::StrongID<preset_tag::TurretTag>;
