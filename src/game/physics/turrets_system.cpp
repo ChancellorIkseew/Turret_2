@@ -44,7 +44,7 @@ static inline void shoot(MobSoA& soa, ShellManager& shells, const Presets& prese
 
         shells.addShell(presets, turret.shell, position, angle, shell.damage, shell.maxLifeTime, soa.teamID[i]);
         if (camera.contains(t1::tile(position)))
-            sounds.pushSound("cannon_shot", position);
+            sounds.pushSound(turret.visual.shotSound, position);
     }
 }
 
