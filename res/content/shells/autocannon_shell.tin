@@ -1,0 +1,11 @@
+#visual
+texture=autocannon_shell
+origin=0.5|1.0
+size=1.0|2.0
+#logic
+speed=2.5
+damage=1
+life_time=120
+explosion_damage=0
+explosion_radius=0
+explosion_fading=0.0
