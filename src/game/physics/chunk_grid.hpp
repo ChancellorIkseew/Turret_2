@@ -22,6 +22,7 @@ class ChunkGrid {
 
     std::array<uint32_t, TABLE_SIZE + 1> chunkOffsets;
     std::vector<uint32_t> mobIndices;
+    std::vector<Chunk> populatedChunks;
 public:
     void update(const MobSoA& soa);
 
@@ -33,6 +34,9 @@ public:
     }
     t1_finline_cxpr const Chunk getChunk(const TileCoord position) const {
         return getChunk(t1::pixel(position));
+    }
+    const std::vector<Chunk>& getPopulatedChunks() const {
+        return populatedChunks;
     }
 private:
     static t1_finline_cxpr uint32_t getHash(const uint32_t cx, const uint32_t cy) {

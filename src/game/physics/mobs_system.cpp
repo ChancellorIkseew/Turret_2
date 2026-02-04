@@ -4,6 +4,7 @@
 #include "engine/render/renderer.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
+#include "game/physics/chunk_grid.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
 #include "mob_manager.hpp"
@@ -17,32 +18,41 @@ static t1_finline void move(MobSoA& soa, const size_t index, const PixelCoord ve
     soa.hitbox[index].move(vector);
 }
 
-static inline void resolveCollisions(MobSoA& soa, const size_t current, const size_t mobCount, const Presets& presets) {
-    for (size_t other = current + 1; other < mobCount; ++other) {
-        if (!soa.hitbox[current].intersects(soa.hitbox[other])) continue;
+static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other, const Presets& presets) {
+    if (!soa.hitbox[current].intersects(soa.hitbox[other]))
+        return;
 
-        const PixelCoord overlap = soa.hitbox[current].overlap(soa.hitbox[other]);
+    const PixelCoord overlap = soa.hitbox[current].overlap(soa.hitbox[other]);
 
-        const bool pushX = (overlap.x < overlap.y);
-        const float distance = pushX ? overlap.x : overlap.y;
+    const bool pushX = (overlap.x < overlap.y);
+    const float distance = pushX ? overlap.x : overlap.y;
 
-        const float pushDirection = pushX ? (soa.position[current].x > soa.position[other].x ? 1.0f : -1.0f)
-                                          : (soa.position[current].y > soa.position[other].y ? 1.0f : -1.0f);
+    const float pushDirection = pushX ? (soa.position[current].x > soa.position[other].x ? 1.0f : -1.0f)
+                                      : (soa.position[current].y > soa.position[other].y ? 1.0f : -1.0f);
 
-        const MobPreset& currentPreset = presets.getMob(soa.preset[current]);
-        const MobPreset& otherPreset   = presets.getMob(soa.preset[other]);
+    const MobPreset& currentPreset = presets.getMob(soa.preset[current]);
+    const MobPreset& otherPreset = presets.getMob(soa.preset[other]);
 
-        const float totalRadius = currentPreset.hitboxRadius + otherPreset.hitboxRadius;
-        const float invertedTotalRadius = 1.0f / totalRadius;
-        const float mob1Weight = otherPreset.hitboxRadius   * invertedTotalRadius;
-        const float mob2Weight = currentPreset.hitboxRadius * invertedTotalRadius;
+    const float totalRadius = currentPreset.hitboxRadius + otherPreset.hitboxRadius;
+    const float invertedTotalRadius = 1.0f / totalRadius;
+    const float mob1Weight = otherPreset.hitboxRadius   * invertedTotalRadius;
+    const float mob2Weight = currentPreset.hitboxRadius * invertedTotalRadius;
 
-        PixelCoord pushVec;
-        if (pushX) pushVec.x = distance * pushDirection;
-        else /*Y*/ pushVec.y = distance * pushDirection;
+    PixelCoord pushVec;
+    if (pushX) pushVec.x = distance * pushDirection;
+    else /*Y*/ pushVec.y = distance * pushDirection;
 
-        move(soa, current, pushVec * mob1Weight);
-        move(soa, other, pushVec * -mob2Weight);
+    move(soa, current, pushVec * mob1Weight);
+    move(soa, other, pushVec * -mob2Weight);
+}
+
+static inline void resolveCollisions(MobSoA& soa, const Presets& presets, const ChunkGrid& chunks) {
+    for (const Chunk chunk : chunks.getPopulatedChunks()) {
+        for (const auto* currentMob = chunk.begin(); currentMob < chunk.end(); ++currentMob) {
+            for (const auto* otherMob = currentMob + 1; otherMob < chunk.end(); ++otherMob) {
+                resolveCollision(soa, *currentMob, *otherMob, presets);
+            }
+        }
     }
 }
 
@@ -52,12 +62,10 @@ static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
     }
 }
 
-void mobs::processMobs(MobSoA& soa, const Presets& presets) {
+void mobs::processMobs(MobSoA& soa, const Presets& presets, const ChunkGrid& chunks) {
     const size_t mobCount = soa.mobCount;
     moveByAI(soa, mobCount);
-    for (size_t i = 0; i < mobCount; ++i) {
-        resolveCollisions(soa, i, mobCount, presets);
-    }
+    resolveCollisions(soa, presets, chunks);
 }
 
 void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerController& plCtr) {

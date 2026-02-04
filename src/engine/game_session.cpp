@@ -29,7 +29,7 @@ void GameSession::updateSimulation(const Presets& presets) {
     //
     world->getChunks().update(mobs.getSoa());
     shells::processShells(shells.getSoa(), mobs.getSoa(), world->getChunks());
-    mobs::processMobs(mobs.getSoa(), presets);
+    mobs::processMobs(mobs.getSoa(), presets, world->getChunks());
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
     ai::updateShootingAI(mobs.getSoa(), presets, playerController);
     turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);

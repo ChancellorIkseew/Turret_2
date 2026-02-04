@@ -1,9 +1,22 @@
 #include "chunk_grid.hpp"
 //
+#include <span>
 #include "mob_manager.hpp"
+
+static inline void updatePopulatedChunks(std::vector<Chunk>& populatedChunks,
+    const std::span<const uint32_t> chunkOffsets, const std::span<const uint32_t> mobIndices) {
+    populatedChunks.clear();
+    for (uint32_t i = 0; i < chunkOffsets.size() - 1; ++i) {
+        uint32_t start = chunkOffsets[i];
+        uint32_t end = chunkOffsets[i + 1];
+        if (start < end)
+            populatedChunks.push_back(Chunk{ mobIndices.data() + start, mobIndices.data() + end });
+    }
+}
 
 void ChunkGrid::update(const MobSoA& soa) {
     chunkOffsets.fill(0);
+    populatedChunks.clear();
 
     for (const Hitbox hitbox : soa.hitbox) {
         const PixelCoord start = hitbox.getStart();
@@ -48,4 +61,6 @@ void ChunkGrid::update(const MobSoA& soa) {
             }
         }
     }
+
+    updatePopulatedChunks(populatedChunks, chunkOffsets, mobIndices);
 }
