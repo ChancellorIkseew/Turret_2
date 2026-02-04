@@ -17,9 +17,9 @@ struct Explosion {
 class Hitbox {
     PixelCoord start, end;
 public:
-    Hitbox(const PixelCoord start, const PixelCoord end) noexcept :
+    constexpr Hitbox(const PixelCoord start, const PixelCoord end) noexcept :
         start(start), end(end) { }
-    Hitbox(const PixelCoord center, const float radius) noexcept :
+    constexpr Hitbox(const PixelCoord center, const float radius) noexcept :
         start(center - PixelCoord(radius, radius)),
         end(center + PixelCoord(radius, radius)) { }
 
