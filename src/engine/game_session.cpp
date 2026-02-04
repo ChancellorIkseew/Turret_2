@@ -27,7 +27,8 @@ void GameSession::updateSimulation(const Presets& presets) {
     auto& mobs = world->getMobs();
     auto& shells = world->getShells();
     //
-    shells::processShells(shells.getSoa(), mobs.getSoa());
+    world->getChunks().update(mobs.getSoa());
+    shells::processShells(shells.getSoa(), mobs.getSoa(), world->getChunks());
     mobs::processMobs(mobs.getSoa(), presets);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
     ai::updateShootingAI(mobs.getSoa(), presets, playerController);

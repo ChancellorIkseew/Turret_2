@@ -4,6 +4,7 @@
 #include "engine/assets/presets.hpp"
 #include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"
+#include "game/physics/chunk_grid.hpp"
 #include "game/physics/mob_manager.hpp"
 #include "game/physics/shell_manager.hpp"
 
@@ -19,29 +20,30 @@ static inline void moveShells(ShellSoA& soa, const size_t shellCount) {
     }
 }
 
-static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCount) {
-    const size_t mobCount = mobs.mobCount;
-    for (size_t mob = 0; mob < mobCount; ++mob) {
-        for (size_t shell = 0; shell < shellCount; ++shell) {
-            if (shells.restDamage[shell] < 1)
-                continue;
+static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCount, const ChunkGrid& chunks) {
+    for (size_t shell = 0; shell < shellCount; ++shell) {
+        if (shells.restDamage[shell] < 1)
+            continue;
+        const PixelCoord shellPosition = shells.position[shell];
+        for (auto mob : chunks.getChunk(shellPosition)) {
             if (mobs.teamID[mob] == shells.teamID[shell])
                 continue;
-            if (!mobs.hitbox[mob].contains(shells.position[shell]))
+            if (!mobs.hitbox[mob].contains(shellPosition))
                 continue;
             const Health takenDamage = std::min(mobs.health[mob], shells.restDamage[shell]);
             shells.restDamage[shell] -= takenDamage;
             mobs.health[mob] -= takenDamage;
-            break;
+            if (shells.restDamage[shell] < 1)
+                break;
         }
     }
 }
 
-void shells::processShells(ShellSoA& shells, MobSoA& mobs) {
+void shells::processShells(ShellSoA& shells, MobSoA& mobs, const ChunkGrid& chunks) {
     const size_t shellCount = shells.shellCount;
     reduceShellsLifeTime(shells);
     moveShells(shells, shellCount);
-    hitMobs(shells, mobs, shellCount);
+    hitMobs(shells, mobs, shellCount, chunks);
 }
 
 void shells::cleanupShells(ShellManager& manager, const Presets& presets/*, Explosions& explosions*/) {

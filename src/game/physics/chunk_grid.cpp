@@ -1,32 +1,51 @@
 #include "chunk_grid.hpp"
 //
-#include <algorithm>
 #include "mob_manager.hpp"
 
-ChunkGrid::ChunkGrid(const TileCoord mapSize) { // move to cpp
-    gridSize = (mapSize + t1_cgp::CHUNK_SIZE - TileCoord(1, 1)) / t1_cgp::CHUNK_SIDE_SIZE;
-    chunksFind.assign(static_cast<size_t>(gridSize.x * gridSize.y), INVALID_CHUNK_ADDR);
-}
-
 void ChunkGrid::update(const MobSoA& soa) {
-    for (const auto index : activeChunksIndexes) {
-        chunksFind[index] = INVALID_CHUNK_ADDR;
-    }
-    activeChunksIndexes.clear();
-    chunks.clear();
+    chunkOffsets.fill(0);
 
-    for (size_t i = 0; i < soa.id.size(); ++i) {
-        t1_cgp::IntPoint chunk = t1::tile(soa.position[i]) / t1_cgp::CHUNK_SIDE_SIZE;;
-        chunk.x = std::clamp(chunk.x, 0, gridSize.x - 1);
-        chunk.y = std::clamp(chunk.y, 0, gridSize.y - 1);
-        ChunkAddrIndex addrIndex = getAddrIndex(chunk);
+    for (const Hitbox hitbox : soa.hitbox) {
+        const PixelCoord start = hitbox.getStart();
+        const PixelCoord end = hitbox.getEnd();
 
-        if (chunksFind[addrIndex] == INVALID_CHUNK_ADDR) { // Create new chunk.
-            chunksFind[addrIndex] = static_cast<ChunkAddrIndex>(chunks.size());
-            activeChunksIndexes.push_back(addrIndex);
-            chunks.emplace_back(chunk);
+        int32_t x1 = static_cast<int32_t>(start.x) >> CELL_SHIFT;
+        int32_t y1 = static_cast<int32_t>(start.y) >> CELL_SHIFT;
+        int32_t x2 = static_cast<int32_t>(end.x) >> CELL_SHIFT;
+        int32_t y2 = static_cast<int32_t>(end.y) >> CELL_SHIFT;
+
+        for (int32_t y = y1; y <= y2; ++y) {
+            for (int32_t x = x1; x <= x2; ++x) {
+                chunkOffsets[getHash(x, y)]++;
+            }
         }
+    }
 
-        chunks[chunksFind[addrIndex]].mobIndexes.push_back(i);
+    uint32_t currentOffset = 0;
+    for (size_t i = 0; i < TABLE_SIZE; ++i) {
+        uint32_t mobCountInChunk = chunkOffsets[i];
+        chunkOffsets[i] = currentOffset;
+        currentOffset += mobCountInChunk;
+    }
+    chunkOffsets[TABLE_SIZE] = currentOffset;
+    mobIndices.resize(currentOffset);
+    writePtrs.assign(chunkOffsets.begin(), chunkOffsets.end());
+
+    for (int32_t i = 0; i < static_cast<int32_t>(soa.mobCount); ++i) {
+        const Hitbox hitbox = soa.hitbox[i];
+        const PixelCoord start = hitbox.getStart();
+        const PixelCoord end = hitbox.getEnd();
+
+        int32_t x1 = static_cast<int32_t>(start.x) >> CELL_SHIFT;
+        int32_t y1 = static_cast<int32_t>(start.y) >> CELL_SHIFT;
+        int32_t x2 = static_cast<int32_t>(end.x) >> CELL_SHIFT;
+        int32_t y2 = static_cast<int32_t>(end.y) >> CELL_SHIFT;
+
+        for (int32_t y = y1; y <= y2; ++y) {
+            for (int32_t x = x1; x <= x2; ++x) {
+                size_t hash = getHash(x, y);
+                mobIndices[writePtrs[hash]++] = i;
+            }
+        }
     }
 }

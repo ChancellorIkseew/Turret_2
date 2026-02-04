@@ -1,60 +1,47 @@
 #pragma once
+#include <array>
+#include <cstdint>
 #include <vector>
-#include "physics_base.hpp"
-#include "engine/coords/tile_coord.hpp"
 #include "engine/coords/transforms.hpp"
 
 struct MobSoA;
 
-namespace t1_cgp {
-    using IntPoint = TileCoord;
-    constexpr int CHUNK_SIDE_SIZE = 50;
-    constexpr TileCoord CHUNK_SIZE(CHUNK_SIDE_SIZE, CHUNK_SIDE_SIZE);
-}
-
 struct Chunk {
-    std::vector<size_t> mobIndexes;
-    // TODO: std::vector<size_t> shellIndexes;
-    t1_cgp::IntPoint position, start, end;
-    Chunk(const t1_cgp::IntPoint position) :
-        position(position),
-        start(position* t1_cgp::CHUNK_SIDE_SIZE),
-        end(start + t1_cgp::CHUNK_SIZE) {
-    }
+    const int32_t* beginIt;
+    const int32_t* endIt;
+
+    constexpr const int32_t* begin() const { return beginIt; }
+    constexpr const int32_t* end()   const { return endIt; }
+    constexpr bool empty() const { return beginIt == endIt; }
 };
 
 class ChunkGrid {
-    using ChunkAddr = uint16_t;
-    using ChunkAddrIndex = ChunkAddr;
-    static constexpr ChunkAddr INVALID_CHUNK_ADDR = std::numeric_limits<ChunkAddr>::max();
-    //
-    t1_cgp::IntPoint gridSize;
-    std::vector<ChunkAddrIndex> activeChunksIndexes;
-    std::vector<ChunkAddr> chunksFind;
-    std::vector<Chunk> chunks;
+    static constexpr int32_t TABLE_SIZE = 8192;
+    static constexpr int32_t TABLE_MASK = TABLE_SIZE - 1;
+    static constexpr int32_t CELL_SHIFT = 8;
+
+    std::array<uint32_t, TABLE_SIZE + 1> chunkOffsets;
+    std::vector<int32_t> mobIndices;
+    std::vector<uint32_t> writePtrs;
 public:
-    ChunkGrid(const TileCoord mapSize);
     void update(const MobSoA& soa);
-    //
-    t1_finline Chunk* getChunkAt(const TileCoord tile) noexcept {
-        const t1_cgp::IntPoint chunk = tile / t1_cgp::CHUNK_SIDE_SIZE;
-        if (chunk.x < 0 || chunk.x >= gridSize.x || chunk.y < 0 || chunk.y >= gridSize.y)
-            return nullptr;
-        const ChunkAddrIndex addrIndex = getAddrIndex(chunk);
-        if (chunksFind[addrIndex] == INVALID_CHUNK_ADDR)
-            return nullptr;
-        return &chunks[chunksFind[addrIndex]];
+
+    t1_finline_cxpr const Chunk getChunk(const PixelCoord position) const {
+        size_t hash = getHash(position);
+        uint32_t start = chunkOffsets[hash];
+        uint32_t end = chunkOffsets[hash + 1];
+        return Chunk{ &mobIndices[start], &mobIndices[end] };
     }
-    t1_finline Chunk* getChunkAt(const PixelCoord pixel) noexcept {
-        return getChunkAt(t1::tile(pixel));
+    t1_finline_cxpr const Chunk getChunk(const TileCoord position) const {
+        return getChunk(t1::pixel(position));
     }
-    //
-    const auto cbegin() const noexcept { return chunks.cbegin(); }
-    const auto begin()  const noexcept { return chunks.begin(); }
-    const auto cend()   const noexcept { return chunks.cend(); }
-    const auto end()    const noexcept { return chunks.end(); }
 private:
-    t1_finline ChunkAddrIndex getAddrIndex(const t1_cgp::IntPoint chunk) const noexcept {
-        return static_cast<ChunkAddrIndex>(chunk.y* gridSize.x + chunk.x);
+    static t1_finline_cxpr int32_t getHash(const int32_t cx, const int32_t cy) {
+        return ((cx * 73856093) ^ (cy * 19349663)) & TABLE_MASK;
+    }
+    static t1_finline_cxpr int32_t getHash(const PixelCoord position) {
+        int32_t cx = static_cast<int32_t>(position.x) >> CELL_SHIFT;
+        int32_t cy = static_cast<int32_t>(position.y) >> CELL_SHIFT;
+        return getHash(cx, cy);
     }
 };

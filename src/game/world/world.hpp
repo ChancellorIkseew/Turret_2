@@ -16,7 +16,6 @@ class World {
     ShellManager shells;
 public:
     World(WorldMap& map) :
-        chunkGrid(map.getSize()),
         blocks(map.getSize()),
         map(std::move(map)),
         mobs(128),
