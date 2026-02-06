@@ -16,7 +16,7 @@ class WorldDrawer {
 public:
     WorldDrawer(const Assets& assets) : mapDrawer(assets) { }
 
-    void draw(const Camera& camera, const Renderer& renderer, World& world,
+    void draw(const Camera& camera, Renderer& renderer, World& world,
         const Presets& presets, const uint64_t tickCount) {
         mapDrawer.draw(camera, renderer, world.getMap());
         blocks::drawBlocks(world.getBlocks(), presets, camera, renderer);

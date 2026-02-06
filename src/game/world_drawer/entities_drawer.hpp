@@ -10,6 +10,6 @@ class Renderer;
 class EntitiesDrawer {
 public:
     EntitiesDrawer() = default;
-    void draw(const Camera& camera, const Renderer& renderer,
+    void draw(const Camera& camera, Renderer& renderer,
         MobSoA& mobs, const ShellSoA& shells, const Presets& presets, const uint64_t tickCount);
 };
