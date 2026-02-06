@@ -18,7 +18,8 @@ void ChunkGrid::update(const MobSoA& soa) {
     chunkOffsets.fill(0);
     populatedChunks.clear();
 
-    for (const Hitbox hitbox : soa.hitbox) {
+    for (size_t i = 0; i < soa.mobCount; ++i) {
+        RectHitbox hitbox(soa.position[i], soa.hitboxRadius[i]);
         const PixelCoord start = hitbox.getStart();
         const PixelCoord end = hitbox.getEnd();
 
@@ -45,7 +46,7 @@ void ChunkGrid::update(const MobSoA& soa) {
     std::array<uint32_t, TABLE_SIZE + 1> writePtrs = chunkOffsets;
 
     for (uint32_t i = 0; i < static_cast<uint32_t>(soa.mobCount); ++i) {
-        const Hitbox hitbox = soa.hitbox[i];
+        RectHitbox hitbox(soa.position[i], soa.hitboxRadius[i]);
         const PixelCoord start = hitbox.getStart();
         const PixelCoord end = hitbox.getEnd();
 

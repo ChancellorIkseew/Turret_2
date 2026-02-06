@@ -1,6 +1,5 @@
 #include "mob_manager.hpp"
 //
-#include "engine/assets/presets.hpp"
 #include "engine/debug/logger.hpp"
 
 constexpr MobIndex INVALID_MOB_ID = IDManager<MobID>::INVALID_ID;
@@ -16,7 +15,7 @@ void MobManager::reserve(const size_t capacity) {
     soa.angle.reserve(capacity);
     soa.teamID.reserve(capacity);
     soa.preset.reserve(capacity);
-    soa.hitbox.reserve(capacity);
+    soa.hitboxRadius.reserve(capacity);
     soa.motionData.reserve(capacity);
     soa.shootingData.reserve(capacity);
     soa.restReloadTime.reserve(capacity);
@@ -27,12 +26,12 @@ void MobManager::reserve(const size_t capacity) {
 }
 
 MobID MobManager::addMob(
-    const Presets& presets,
     const MobPresetID preset,
     const PixelCoord position,
     const AngleRad angle,
     const Health health,
     const TeamID teamID,
+    const float hitboxRadius,
     const MotionData motionData,
     const ShootingData shootingData,
     const TickCount restReloadTime,
@@ -51,7 +50,7 @@ MobID MobManager::addMob(
     soa.health.push_back(health);
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
-    soa.hitbox.push_back(Hitbox(position, presets.getMob(preset).hitboxRadius));
+    soa.hitboxRadius.push_back(hitboxRadius);
     soa.motionData.push_back(motionData);
     soa.shootingData.push_back(shootingData);
     soa.restReloadTime.push_back(restReloadTime);
@@ -79,7 +78,7 @@ void MobManager::removeMob(const size_t targetIndex) {
         soa.health[targetIndex] = std::move(soa.health[lastIndex]);
         soa.teamID[targetIndex] = std::move(soa.teamID[lastIndex]);
         soa.preset[targetIndex] = std::move(soa.preset[lastIndex]);
-        soa.hitbox[targetIndex] = std::move(soa.hitbox[lastIndex]);
+        soa.hitboxRadius[targetIndex] = std::move(soa.hitboxRadius[lastIndex]);
         soa.motionData[targetIndex] = std::move(soa.motionData[lastIndex]);
         soa.shootingData[targetIndex] = std::move(soa.shootingData[lastIndex]);
         soa.restReloadTime[targetIndex] = std::move(soa.restReloadTime[lastIndex]);
@@ -96,7 +95,7 @@ void MobManager::removeMob(const size_t targetIndex) {
     soa.health.pop_back();
     soa.teamID.pop_back();
     soa.preset.pop_back();
-    soa.hitbox.pop_back();
+    soa.hitboxRadius.pop_back();
     soa.motionData.pop_back();
     soa.shootingData.pop_back();
     soa.restReloadTime.pop_back();

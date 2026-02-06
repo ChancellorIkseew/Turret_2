@@ -35,8 +35,8 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
 
     MotionData mData(preset.defaultMovingAI, 0, PixelCoord(400, 1000));
     ShootingData sData(preset.defaultShootingAI, false, PixelCoord(0, 0));
-    script_libs::world->getMobs().addMob(presets, presetID, PixelCoord(x, y), 0.f, preset.maxHealth, teamID, mData, sData,
-        presets.getTurret(preset.turret).reload, 0.f);
+    script_libs::world->getMobs().addMob(presetID, PixelCoord(x, y), 0.f, preset.maxHealth, teamID, preset.hitboxRadius,
+        mData, sData, presets.getTurret(preset.turret).reload, 0.f);
 }
 
 static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TeamID teamID) {

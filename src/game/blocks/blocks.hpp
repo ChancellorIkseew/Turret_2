@@ -42,7 +42,7 @@ public:
         return blockExists(tile.x, tile.y); //expand
     }
     t1_finline bool isFilledBlock(const TileCoord tile) const noexcept {
-        return blockExists(tile.x, tile.y); //expand
+        return blockExists(tile.x, tile.y) && preset[at(tile)].presetID != BLOCK_AIR.asUint();
     }
 
     t1_finline int at(const int x, const int y) const noexcept { return x + y * mapSize.x; }

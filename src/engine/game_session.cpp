@@ -24,12 +24,14 @@ void GameSession::prepare() {
 }
 
 void GameSession::updateSimulation(const Presets& presets) {
-    auto& mobs = world->getMobs();
+    auto& blocks = world->getBlocks();
+    auto& chunks = world->getChunks();
+    auto& mobs   = world->getMobs();
     auto& shells = world->getShells();
     //
-    world->getChunks().update(mobs.getSoa());
-    shells::processShells(shells.getSoa(), mobs.getSoa(), world->getChunks());
-    mobs::processMobs(mobs.getSoa(), presets, world->getChunks());
+    chunks.update(mobs.getSoa());
+    shells::processShells(shells.getSoa(), mobs.getSoa(), chunks);
+    mobs::processMobs(mobs.getSoa(), chunks, blocks);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
     ai::updateShootingAI(mobs.getSoa(), presets, playerController);
     turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);

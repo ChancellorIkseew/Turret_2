@@ -28,7 +28,7 @@ static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCou
         for (auto mob : chunks.getChunk(shellPosition)) {
             if (mobs.teamID[mob] == shells.teamID[shell])
                 continue;
-            if (!mobs.hitbox[mob].contains(shellPosition))
+            if (!CircleHitbox(mobs.position[mob], mobs.hitboxRadius[mob]).contains(shellPosition))
                 continue;
             const Health takenDamage = std::min(mobs.health[mob], shells.restDamage[shell]);
             shells.restDamage[shell] -= takenDamage;

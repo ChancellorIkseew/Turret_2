@@ -9,7 +9,7 @@ using MobIndex = MobID;
 class Presets;
 
 struct MobSoA {
-    std::vector<Hitbox> hitbox;
+    std::vector<float> hitboxRadius;
     std::vector<PixelCoord> position;
     std::vector<PixelCoord> velocity;
     std::vector<AngleRad> angle;
@@ -50,12 +50,12 @@ public:
     void reserve(const size_t capacity);
     void removeMob(const size_t targetIndex);
     MobID addMob(
-        const Presets& presets,
         const MobPresetID preset,
         const PixelCoord position,
         const AngleRad angle,
         const Health health,
         const TeamID teamID,
+        const float hitboxRadius,
         const MotionData motionData,
         const ShootingData shootingData,
         const TickCount restReloadTime,

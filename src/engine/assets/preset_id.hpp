@@ -6,7 +6,7 @@ namespace preset_tag {
     template<class Tag>
     struct StrongID {
         PresetID presetID;
-        PresetID asUint() { return presetID; }
+        PresetID asUint() const { return presetID; }
         auto operator<=>(const StrongID&) const = default;
         auto operator++(int) {
             StrongID old = *this;
