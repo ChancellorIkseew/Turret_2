@@ -13,18 +13,21 @@ class FrTimer : public Container {
     Engine& engine;
     Label* time;
     Label* mobCount;
+    Label* shellCount;
 public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
         addNode(new Button(BTN_SIZE, U"Next wave"));
         time = addNode(new Label(U"", false));
         mobCount = addNode(new Label(U"", false));
+        shellCount = addNode(new Label(U"", false));
         arrange();
     }
 
     void callback(UIContext& context) final {
         Container::callback(context);
         time->setText(utf8::to_u32string(engine.getMainWindow().getTime()));
-        mobCount->setText(utf8::to_u32string(engine.getSession().getWorld().getMobs().getSoa().id.size()));
+        mobCount->setText(utf8::to_u32string(engine.getSession().getWorld().getMobs().getSoa().mobCount));
+        shellCount->setText(utf8::to_u32string(engine.getSession().getWorld().getShells().getSoa().shellCount));
     }
 };
 
