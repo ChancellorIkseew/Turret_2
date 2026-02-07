@@ -11,6 +11,17 @@ enum class ScaleMode : uint8_t {
     pixelart = SDL_SCALEMODE_PIXELART
 };
 
+enum class BlendMode : uint32_t {
+    none                = SDL_BLENDMODE_NONE,
+    blend               = SDL_BLENDMODE_BLEND,
+    blend_premultiplied = SDL_BLENDMODE_BLEND_PREMULTIPLIED,
+    add                 = SDL_BLENDMODE_ADD,
+    add_premultiplied   = SDL_BLENDMODE_ADD_PREMULTIPLIED,
+    modulate            = SDL_BLENDMODE_MOD,
+    multiply            = SDL_BLENDMODE_MUL,
+    invalid             = SDL_BLENDMODE_INVALID
+};
+
 class Renderer {
     static constexpr SDL_FColor WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
     SDL_Renderer* sdlRenderer = nullptr;
@@ -18,7 +29,7 @@ class Renderer {
     PixelCoord translation;
 public:
     Renderer(SDL_Renderer* sdlRenderer) : sdlRenderer(sdlRenderer) {
-        SDL_SetRenderDrawBlendMode(sdlRenderer, SDL_BLENDMODE_BLEND);
+        setBlendMode(BlendMode::blend);
     }
     ~Renderer() { SDL_DestroyTexture(comonTexture); }
     //
@@ -55,6 +66,10 @@ public:
     void setTranslation(const PixelCoord translation) noexcept { this->translation = translation; }
     void setScaleMode(const ScaleMode mode) noexcept {
         SDL_SetTextureScaleMode(comonTexture, static_cast<SDL_ScaleMode>(mode));
+    }
+    void setBlendMode(const BlendMode mode) noexcept {
+        SDL_SetRenderDrawBlendMode(sdlRenderer, static_cast<SDL_BlendMode>(mode));
+        SDL_SetTextureBlendMode(comonTexture, static_cast<SDL_BlendMode>(mode));
     }
     void createComonTexture(SDL_Surface* comonSurface) {
         if (comonTexture)
