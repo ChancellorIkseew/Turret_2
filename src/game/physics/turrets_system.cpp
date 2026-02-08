@@ -1,18 +1,40 @@
 #include "turrets_system.hpp"
 //
-#include <cmath>
 #include "engine/assets/presets.hpp"
+#include "engine/coords/math.hpp"
 #include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
 #include "shell_manager.hpp"
 
-using ItemType = uint16_t;
-struct ItemStack {
-    ItemType itemType;
-    uint64_t count;
-};
+constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
+
+static t1_finline_cxpr float normalize(const float angle) {
+    if (angle >  t1::PI_F) return angle - 2.0f * t1::PI_F;
+    if (angle < -t1::PI_F) return angle + 2.0f * t1::PI_F;
+    return angle;
+}
+
+static t1_finline void rotateTurret(AngleRad& turretAngle, const AngleRad rotationSpeed, const PixelCoord facingVector) {
+    const AngleRad requiredAngle = t1::atan(facingVector);
+    const AngleRad deltaAngle = normalize(requiredAngle - turretAngle);
+    //
+    if (std::abs(deltaAngle) <= rotationSpeed)
+        turretAngle = requiredAngle;
+    else
+        turretAngle += (deltaAngle > 0 ? rotationSpeed : -rotationSpeed);
+}
+
+static inline void rotateTurrets(MobSoA& soa, const Presets& presets, const size_t mobCount) {
+    for (size_t i = 0; i < mobCount; ++i) {
+        const AngleRad rotationSpeed = presets.getTurret(presets.getMob(soa.preset[i]).turret).rotationSpeed;
+        if (soa.shootingData[i].isShooting)
+            rotateTurret(soa.turretAngle[i], rotationSpeed, soa.shootingData[i].target - soa.position[i]);
+        else if (soa.velocity[i] != NO_MOTION)
+            rotateTurret(soa.turretAngle[i], rotationSpeed, soa.velocity[i]);
+    }
+}
 
 static inline void reduceRestReload(MobSoA& soa) {
     for (auto& time : soa.restReloadTime) {
@@ -52,6 +74,7 @@ void turrets::processTurrets(MobSoA& soa, ShellManager& shells, const Presets& p
     SoundQueue& sounds, const Camera& camera) {
     const size_t mobCount = soa.mobCount;
     reduceRestReload(soa);
+    rotateTurrets(soa, presets, mobCount);
     shoot(soa, shells, presets, mobCount, sounds, camera);
 }
 

@@ -5,29 +5,10 @@
 #include "game/player/player_controller.hpp"
 #include "mob_manager.hpp"
 
-constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
-
-static t1_finline_cxpr float normalize(const float angle) {
-    if (angle >  t1::PI_F) return angle - 2.0f * t1::PI_F;
-    if (angle < -t1::PI_F) return angle + 2.0f * t1::PI_F;
-    return angle;
-}
-
-static t1_finline void rotateTurret(MobSoA& soa, const Presets& presets, const size_t index, const PixelCoord aim) {
-    const AngleRad requiredAngle = t1::atan(aim - soa.position[index]);
-    const AngleRad deltaAngle = normalize(requiredAngle - soa.turretAngle[index]);
-    const AngleRad maxStep = presets.getTurret(presets.getMob(soa.preset[index]).turret).rotationSpeed;
-    //
-    if (std::abs(deltaAngle) <= maxStep)
-        soa.turretAngle[index] = requiredAngle;
-    else
-        soa.turretAngle[index] += (deltaAngle > 0 ? maxStep : -maxStep);
-}
-
 static inline void updatePlayerControlled(MobSoA& soa, const Presets& presets,
     const size_t index, const PlayerController& playerController) {
     soa.shootingData[index].isShooting = playerController.shootingActive();
-    rotateTurret(soa, presets, index, playerController.getAimCoord());
+    soa.shootingData[index].target = playerController.getAimCoord();
 }
 
 static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t index) {
@@ -41,7 +22,7 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
             continue;
         if (t1::areCloserCircle(position, soa.position[i], range)) {
             soa.shootingData[index].isShooting = true;
-            rotateTurret(soa, presets, index, soa.position[i]);
+            soa.shootingData[index].target = soa.position[i];
             return;
         }
     }
