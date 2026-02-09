@@ -34,7 +34,7 @@ void ShellManager::addShell(
 }
 
 void ShellManager::removeShell(const size_t index) {
-    const size_t last = soa.position.size() - 1;
+    const size_t last = --soa.shellCount;
 
     if (index != last) {
         soa.position[index] = std::move(soa.position[last]);
@@ -53,5 +53,4 @@ void ShellManager::removeShell(const size_t index) {
     soa.restLifeTime.pop_back();
     soa.teamID.pop_back();
     soa.preset.pop_back();
-    --soa.shellCount;
 }
