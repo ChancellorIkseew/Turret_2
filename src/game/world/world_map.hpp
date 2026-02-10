@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <vector>
 #include "config.hpp"
 #include "engine/coords/tile_coord.hpp"
