@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <cstdint>
 
 enum class Event : uint8_t {
     map_changed,
