@@ -27,7 +27,7 @@ jobs:
 
       - name: Configure CMake
         run: >
-          cmake -B build 
+          cmake -S cmake_proj -B build 
           -DCMAKE_BUILD_TYPE=Debug 
           -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3 /WX' || '-Wall -Werror' }}"
 
