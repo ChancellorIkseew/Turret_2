@@ -28,7 +28,7 @@ public:
                 continue;
             bindNames->addNode(new Label(utf8::to_u32string(bindName)));
             auto btn = bindings->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']', false));
-            btn->addCallback([=] { targetBinding(btn, bindName); });
+            btn->addCallback([=, this] { targetBinding(btn, bindName); });
         }
 
         auto lower = addNode(new Layout(Orientation::horizontal));

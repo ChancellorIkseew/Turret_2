@@ -2,17 +2,18 @@ name: Turret_2_CI
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-    
-    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -25,7 +26,10 @@ jobs:
           sudo apt-get install -y build-essential cmake
 
       - name: Configure CMake
-        run: cmake -S cmake_proj -B build -DCMAKE_BUILD_TYPE=Release
+        run: >
+          cmake -B build 
+          -DCMAKE_BUILD_TYPE=Debug 
+          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3 /WX' || '-Wall -Werror' }}"
 
       - name: Build
         run: cmake --build build --config Debug
