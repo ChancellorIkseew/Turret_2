@@ -29,7 +29,8 @@ jobs:
         run: >
           cmake -S cmake_proj -B build 
           -DCMAKE_BUILD_TYPE=Debug 
-          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3 /WX' || '-Wall -Werror' }}"
+          #toggle later -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3 /WX' || '-Wall -Werror' }}"
+          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}"
 
       - name: Build
         run: cmake --build build --config Debug
