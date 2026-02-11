@@ -1,7 +1,6 @@
 #include "generation.hpp"
 //
 #include <algorithm>
-#include <vector>
 #include "engine/assets/indexes.hpp"
 #include "engine/debug/logger.hpp"
 #include "game/world/world.hpp"
@@ -11,6 +10,7 @@
 
 constexpr float MAIN_NOISE_SCALE = 40.0f;
 constexpr float SUPPORT_NOISE_SCALE = 10.0f;
+static debug::Logger logger("world_generation");
 
 using Pair = std::pair<float, uint8_t>;
 
@@ -34,6 +34,10 @@ static uint8_t calculateTileType(const float height, const std::vector<Pair>& va
 static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets, const Indexes& indexes) {
     std::vector<Pair> vals;
     for (const auto& [name, height] : floorPresets) {
+        if (!indexes.getFloor().contains(name)) {
+            logger.warning() << "Content is not registred: \"" << name << "\"";
+            continue;
+        }
         vals.emplace_back(height, indexes.getFloor().at(name));
     }
     std::sort(vals.begin(), vals.end(), fromMaxToMin);
@@ -43,6 +47,10 @@ static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets, c
 static std::vector<OvPr> processOverlayPresets(const OverlayPresets& overlayPresets, const Indexes& indexes) {
     std::vector<OvPr> vals;
     for (const auto& [name, frequency, deposite] : overlayPresets) {
+        if (!indexes.getOverlay().contains(name)) {
+            logger.warning() << "Content is not registred: \"" << name << "\"";
+            continue;
+        }
         vals.emplace_back(indexes.getOverlay().at(name), frequency, deposite);
     }
     return vals;
