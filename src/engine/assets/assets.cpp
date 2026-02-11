@@ -26,10 +26,6 @@ static void loadSounds(Audio& audio) {
     }
 }
 
-static void loadPresets(Atlas& atlas, Audio& audio, Presets& presets) {
-    
-}
-
 void Assets::load(Renderer& renderer) {
     loadTextures(atlas, renderer);
     loadSounds(audio);
