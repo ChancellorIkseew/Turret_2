@@ -4,8 +4,9 @@ floor_ice=2
 floor_water=3
 floor_soil=4
 floor_stone=5
-floor_magma=6
-floor_plate=7
+floor_lava=6
+floor_magma=7
+floor_plate=8
 #overlay
 overlay_iron=1
 overlay_coal=2
