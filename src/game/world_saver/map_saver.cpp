@@ -28,7 +28,7 @@ void serializer::saveMap(const WorldMap& map, const std::filesystem::path& path)
     int result = compress2(packedData.data(), &packedDataSize, rawData.data(),
         static_cast<uLong>(rawData.size()), COMPRESSION_LEVEL);
     if (result != Z_OK)
-        throw SerializerError("Data compression failed. Error code: " + result);
+        throw SerializerError("Data compression failed. Error code: " + std::to_string(result));
     //
     std::ofstream fout(path / "world_map.dat", std::ios::binary);
     fout.write(reinterpret_cast<const char*>(&mapSize), sizeof(mapSize));
