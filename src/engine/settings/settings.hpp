@@ -21,6 +21,8 @@ public:
         bool cameraInertia = true;
         bool pauseOnWorldOpen = false;
         bool showHitboxes = false;
+        bool showParticles = true;
+        size_t maxParticles = 10000U;
     } gameplay;
     static struct _GUI {
         std::string lang = "en_US";

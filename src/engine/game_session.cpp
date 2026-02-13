@@ -22,9 +22,6 @@ void GameSession::prepare() {
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
     world->getBlocks().placeBlock(TileCoord(10, 10), BlockPresetID(2));
-
-    world->getParticles().addParticle({ 40, 40 }, 0.f, 0.f, 0x00'00'00'FF, 100);
-    world->getParticles().addParticle({ 42, 42 }, 0.5f, 0.f, 0xFF'00'00'FF, 100);
 }
 
 void GameSession::updateSimulation(const Presets& presets) {
@@ -39,8 +36,8 @@ void GameSession::updateSimulation(const Presets& presets) {
     mobs::processMobs(mobs.getSoa(), chunks, blocks);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
     ai::updateShootingAI(mobs.getSoa(), presets, playerController);
-    turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);
-    particles::updateParticles(particles.getSoa());
+    turrets::processTurrets(mobs.getSoa(), shells, particles, presets, worldSounds, camera);
+    particles::updateParticles(particles);
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets, playerController);

@@ -27,6 +27,8 @@ void Settings::writeSettings() {
     data.emplace("camera_inertia",      gameplay.cameraInertia);
     data.emplace("pause_on_world_open", gameplay.pauseOnWorldOpen);
     data.emplace("show_hitboxes",       gameplay.showHitboxes);
+    data.emplace("show_particles",      gameplay.showParticles);
+    data.emplace("max_particles",       gameplay.maxParticles);
     //
     data.emplace("lang",          gui.lang);
     data.emplace("custom_cursor", gui.customCursor);
@@ -53,6 +55,8 @@ void Settings::readSettings() {
     data.get("camera_inertia",      gameplay.cameraInertia, true);
     data.get("pause_on_world_open", gameplay.pauseOnWorldOpen, false);
     data.get("show_hitboxes",       gameplay.showHitboxes, false);
+    data.get("show_particles",      gameplay.showParticles, true);
+    data.get("max_particles",       gameplay.maxParticles, 10000U);
     //
     data.get("lang",          gui.lang, std::string("en_US"));
     data.get("custom_cursor", gui.customCursor, true);

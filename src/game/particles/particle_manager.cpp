@@ -31,7 +31,7 @@ void ParticleManager::addParticle(
     const float speed,
     const uint32_t color,
     const TickCount restLifeTime) {
-    const PixelCoord facing(sinf(angle), -cosf(angle));
+    const PixelCoord facing(sinf(angle), cosf(angle));
 
     addParticle(position, facing, speed, color, restLifeTime);
 }

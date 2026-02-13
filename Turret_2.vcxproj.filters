@@ -530,7 +530,7 @@
     <ClCompile Include="src\engine\game_session.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\particles\particle-manager.cpp">
+    <ClCompile Include="src\game\particles\particle_manager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\blocks\blocks_system.cpp">

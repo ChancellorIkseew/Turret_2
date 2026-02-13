@@ -1,7 +1,7 @@
 #pragma once
 
-struct ParticleSoA;
+class ParticleManager;
 
 namespace particles {
-    void updateParticles(ParticleSoA& soa);
+    void updateParticles(ParticleManager& particles);
 }

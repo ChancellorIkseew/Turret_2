@@ -4,6 +4,7 @@
 #include "engine/coords/math.hpp"
 #include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"
+#include "game/particles/particle_manager.hpp"
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
 #include "shell_manager.hpp"
@@ -43,8 +44,8 @@ static inline void reduceRestReload(MobSoA& soa) {
     }
 }
 
-static inline void shoot(MobSoA& soa, ShellManager& shells, const Presets& presets,
-    const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
+static inline void shoot(MobSoA& soa, ShellManager& shells, ParticleManager& particles,
+    const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.restReloadTime[i] > 0 || !soa.shootingData[i].isShooting)
             continue;
@@ -65,17 +66,21 @@ static inline void shoot(MobSoA& soa, ShellManager& shells, const Presets& prese
         position.y += -localMuzzle.x * sin + localMuzzle.y * cos;
 
         shells.addShell(presets, turret.shell, position, angle, shell.damage, shell.maxLifeTime, soa.teamID[i]);
-        if (camera.contains(t1::tile(position)))
+        if (camera.contains(t1::tile(position))) {
+            position.x -= shell.visual.origin.y * sin;
+            position.y -= shell.visual.origin.y * cos;
+            particles.addParticle(position, angle, 0.2f, 0xFF'B3'69'A0, 15);
             sounds.pushSound(turret.visual.shotSound, position);
+        }  
     }
 }
 
-void turrets::processTurrets(MobSoA& soa, ShellManager& shells, const Presets& presets,
-    SoundQueue& sounds, const Camera& camera) {
+void turrets::processTurrets(MobSoA& soa, ShellManager& shells, ParticleManager& particles,
+    const Presets& presets, SoundQueue& sounds, const Camera& camera) {
     const size_t mobCount = soa.mobCount;
     reduceRestReload(soa);
     rotateTurrets(soa, presets, mobCount);
-    shoot(soa, shells, presets, mobCount, sounds, camera);
+    shoot(soa, shells, particles, presets, mobCount, sounds, camera);
 }
 
 void turrets::drawTurrets(const MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
