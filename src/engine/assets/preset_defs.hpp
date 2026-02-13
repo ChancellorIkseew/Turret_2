@@ -24,7 +24,6 @@ struct TurretVisualPreset {
     Texture texture;
     PixelCoord origin;
     PixelCoord size;
-    uint8_t frameCount;
     std::string shotSound;
 };
 
