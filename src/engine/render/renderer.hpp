@@ -25,17 +25,17 @@ enum class BlendMode : uint32_t {
 class Renderer {
     static constexpr SDL_FColor WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
     SDL_Renderer* sdlRenderer = nullptr;
-    SDL_Texture* comonTexture = nullptr;
+    SDL_Texture* commonTexture = nullptr;
     PixelCoord translation;
 public:
     Renderer(SDL_Renderer* sdlRenderer) : sdlRenderer(sdlRenderer) {
         setBlendMode(BlendMode::blend);
     }
-    ~Renderer() { SDL_DestroyTexture(comonTexture); }
+    ~Renderer() { SDL_DestroyTexture(commonTexture); }
     //
     t1_finline void drawFast(const Texture texture, const PixelCoord position, const PixelCoord size) const noexcept {
         const SDL_FRect dstRect(position.x - translation.x, position.y - translation.y, size.x, size.y);
-        SDL_RenderTexture(sdlRenderer, comonTexture, &texture.rect, &dstRect);
+        SDL_RenderTexture(sdlRenderer, commonTexture, &texture.rect, &dstRect);
     }
     t1_finline void drawRect(const uint32_t color, const PixelCoord position, const PixelCoord size) const noexcept {
         const SDL_FRect dstRect(position.x - translation.x, position.y - translation.y, size.x, size.y);
@@ -47,7 +47,7 @@ public:
         const SDL_FPoint sdlOrigin(origin.x, origin.y);
         const PixelCoord dstPosition = position - origin - translation;
         const SDL_FRect dstRect(dstPosition.x, dstPosition.y, size.x, size.y);
-        SDL_RenderTextureRotated(sdlRenderer, comonTexture,
+        SDL_RenderTextureRotated(sdlRenderer, commonTexture,
             &texture.rect, &dstRect, t1::radToDegree(angleRad), &sdlOrigin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     void drawAnimated(const Texture texture, const PixelCoord position, const PixelCoord size,
@@ -59,22 +59,27 @@ public:
     }
     void drawBatched(const float* xy, const float* uv, const int* indexes,
         const int vertexCount, const int indexCount) const noexcept {
-        SDL_RenderGeometryRaw(sdlRenderer, comonTexture, xy, sizeof(float) * 2, &WHITE, 0,
+        SDL_RenderGeometryRaw(sdlRenderer, commonTexture, xy, sizeof(float) * 2, &WHITE, 0,
+            uv, sizeof(float) * 2, vertexCount, indexes, indexCount, sizeof(int));
+    }
+    void drawBatchedColored(const float* xy, const float* uv, const int* indexes, const SDL_FColor* colors,
+        const int vertexCount, const int indexCount) const noexcept {
+        SDL_RenderGeometryRaw(sdlRenderer, commonTexture, xy, sizeof(float) * 2, colors, sizeof(SDL_FColor),
             uv, sizeof(float) * 2, vertexCount, indexes, indexCount, sizeof(int));
     }
     //
     void setTranslation(const PixelCoord translation) noexcept { this->translation = translation; }
     void setScaleMode(const ScaleMode mode) noexcept {
-        SDL_SetTextureScaleMode(comonTexture, static_cast<SDL_ScaleMode>(mode));
+        SDL_SetTextureScaleMode(commonTexture, static_cast<SDL_ScaleMode>(mode));
     }
     void setBlendMode(const BlendMode mode) noexcept {
         SDL_SetRenderDrawBlendMode(sdlRenderer, static_cast<SDL_BlendMode>(mode));
-        SDL_SetTextureBlendMode(comonTexture, static_cast<SDL_BlendMode>(mode));
+        SDL_SetTextureBlendMode(commonTexture, static_cast<SDL_BlendMode>(mode));
     }
-    void createComonTexture(SDL_Surface* comonSurface) {
-        if (comonTexture)
-            SDL_DestroyTexture(comonTexture);
-        comonTexture = SDL_CreateTextureFromSurface(sdlRenderer, comonSurface);
+    void createCommonTexture(SDL_Surface* comonSurface) {
+        if (commonTexture)
+            SDL_DestroyTexture(commonTexture);
+        commonTexture = SDL_CreateTextureFromSurface(sdlRenderer, comonSurface);
         setScaleMode(ScaleMode::nearest);
     }
 private:

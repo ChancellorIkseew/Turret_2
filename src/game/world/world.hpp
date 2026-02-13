@@ -1,5 +1,6 @@
 #pragma once
 #include "game/blocks/blocks.hpp"
+#include "game/particles/particle_manager.hpp"
 #include "game/physics/chunk_grid.hpp"
 #include "game/physics/mob_manager.hpp"
 #include "game/physics/shell_manager.hpp"
@@ -14,6 +15,7 @@ class World {
     TeamsPool teams;
     MobManager mobs;
     ShellManager shells;
+    ParticleManager particles;
 public:
     World(WorldMap& map) :
         blocks(map.getSize()),
@@ -27,10 +29,12 @@ public:
     const ChunkGrid& getChunks() const noexcept { return chunkGrid; }
     const MobManager& getMobs() const noexcept { return mobs; }
     const ShellManager& getShells() const noexcept { return shells; }
+    const ParticleManager& getParticles() const noexcept { return particles; }
     WorldMap& getMap() noexcept { return map; }
     Blocks& getBlocks() noexcept { return blocks; }
     TeamsPool& getTeams() noexcept { return teams; }
     ChunkGrid& getChunks() noexcept { return chunkGrid; }
     MobManager& getMobs() noexcept { return mobs; }
     ShellManager& getShells() noexcept { return shells; }
+    ParticleManager& getParticles() noexcept { return particles; }
 };

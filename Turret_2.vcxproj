@@ -83,7 +83,8 @@
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\generation\squirell_noise.hpp" />
     <ClInclude Include="src\game\generation\spot_generator.hpp" />
-    <ClInclude Include="src\game\particles\particles.hpp" />
+    <ClInclude Include="src\game\particles\particle_manager.hpp" />
+    <ClInclude Include="src\game\particles\particles_system.hpp" />
     <ClInclude Include="src\game\physics\chunk_grid.hpp" />
     <ClInclude Include="src\game\physics\id_manager.hpp" />
     <ClInclude Include="src\game\physics\mobs_system.hpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="src\game\world\world_map.hpp" />
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
+    <ClInclude Include="src\game\world_drawer\particles_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\world_drawer.hpp" />
     <ClInclude Include="src\game\world_saver\gen_preset_saver.hpp" />
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
@@ -167,7 +169,8 @@
     <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
     <ClCompile Include="src\game\frontend\fr_world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
-    <ClCompile Include="src\game\particles\particles.cpp" />
+    <ClCompile Include="src\game\particles\particle-manager.cpp" />
+    <ClCompile Include="src\game\particles\particles_system.cpp" />
     <ClCompile Include="src\game\physics\chunk_grid.cpp" />
     <ClCompile Include="src\game\physics\mobs_system.cpp" />
     <ClCompile Include="src\game\physics\mob_ai.cpp" />
@@ -186,6 +189,7 @@
     <ClCompile Include="src\game\world\world_map.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />
+    <ClCompile Include="src\game\world_drawer\particles_drawer.cpp" />
     <ClCompile Include="src\game\world_saver\gen_preset_saver.cpp" />
     <ClCompile Include="src\game\world_saver\map_saver.cpp" />
     <ClCompile Include="src\game\world_saver\properties_saver.cpp" />

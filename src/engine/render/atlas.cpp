@@ -44,7 +44,7 @@ void Atlas::build(Renderer& renderer) {
     for (auto& [name, rect] : atlas) {
         SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
     }
-    renderer.createComonTexture(comonSurface);
+    renderer.createCommonTexture(comonSurface);
     SDL_DestroySurface(comonSurface);
     clearTemporary(temporarySurfaces);
 }

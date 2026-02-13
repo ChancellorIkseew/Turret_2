@@ -2,6 +2,7 @@
 //
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
+#include "game/particles/particles_system.hpp"
 #include "game/physics/ai_system.hpp"
 #include "game/physics/mobs_system.hpp"
 #include "game/physics/shells_system.hpp"
@@ -21,13 +22,17 @@ void GameSession::prepare() {
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
     world->getBlocks().placeBlock(TileCoord(10, 10), BlockPresetID(2));
+
+    world->getParticles().addParticle({ 40, 40 }, 0.f, 0.f, 0x00'00'00'FF, 100);
+    world->getParticles().addParticle({ 42, 42 }, 0.5f, 0.f, 0xFF'00'00'FF, 100);
 }
 
 void GameSession::updateSimulation(const Presets& presets) {
-    auto& blocks = world->getBlocks();
-    auto& chunks = world->getChunks();
-    auto& mobs   = world->getMobs();
-    auto& shells = world->getShells();
+    auto& blocks    = world->getBlocks();
+    auto& chunks    = world->getChunks();
+    auto& mobs      = world->getMobs();
+    auto& shells    = world->getShells();
+    auto& particles = world->getParticles();
     //
     chunks.update(mobs.getSoa());
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks);
@@ -35,6 +40,7 @@ void GameSession::updateSimulation(const Presets& presets) {
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
     ai::updateShootingAI(mobs.getSoa(), presets, playerController);
     turrets::processTurrets(mobs.getSoa(), shells, presets, worldSounds, camera);
+    particles::updateParticles(particles.getSoa());
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets, playerController);
