@@ -42,6 +42,7 @@
     <ClInclude Include="src\engine\gui\gui.hpp" />
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
+    <ClInclude Include="src\engine\io\parser\jtin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\list_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\tin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\validator.hpp" />
@@ -126,6 +127,7 @@
     <ClCompile Include="src\engine\gui\gui.cpp" />
     <ClCompile Include="src\engine\io\comon_pathes.cpp" />
     <ClCompile Include="src\engine\io\folders.cpp" />
+    <ClCompile Include="src\engine\io\parser\jtin_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\list_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\tin_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\validator.cpp" />

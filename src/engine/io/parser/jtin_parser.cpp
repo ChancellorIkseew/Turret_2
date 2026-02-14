@@ -1,33 +1,35 @@
-#include "tin_parser.hpp"
+#include "jtin_parser.hpp"
 //
 #include <fstream>
 #include "engine/debug/logger.hpp"
 
-static debug::Logger logger("tin_parser");
+static debug::Logger logger("jtin_parser");
 
-void tin::write(std::ostream& text, const Data& data) {
-    for (const auto& [key, value] : data) {
-        text << key << '=' << value << '\n';
+void jtin::write(std::ostream& text, const Data& data) {
+    for (const tin::Data& block : data) {
+        text << "{\n";
+        tin::write(text, block);
+        text << "}\n";
     }
 }
 
-tin::Data tin::read(std::istream& text) {
-    tin::Data data;
+jtin::Data jtin::read(std::istream& text) {
+    std::vector<tin::Data> data;
     std::string line;
     while (std::getline(text, line)) {
-        if (line.empty() || line[0] == '#')
+        if (line != "{")
             continue;
-        const size_t eqv = line.find_first_of('=');
-        if (eqv == std::string::npos)
-            continue;
-        std::string key = line.substr(0, eqv);
-        std::string value = line.substr(eqv + 1);
-        data.emplace(std::move(key), std::move(value));
+        std::string blockContent;
+        while (std::getline(text, line) && line != "}") {
+            blockContent += line + "\n";
+        }
+        std::istringstream blockStream(blockContent);
+        data.push_back(tin::read(blockStream));
     }
     return data;
 }
 
-void tin::write(const fs::path& path, const Data& data, const Log log) {
+void jtin::write(const fs::path& path, const jtin::Data& data, const Log log) {
     std::ofstream fout(path);
     if (!fout.is_open()) {
         logger.error() << "Could not open file to write. File: " << path;
@@ -40,7 +42,7 @@ void tin::write(const fs::path& path, const Data& data, const Log log) {
         logger.info() << "Writen file: " << path;
 }
 
-tin::Data tin::read(const fs::path& path, const Log log) {
+jtin::Data jtin::read(const fs::path& path, const Log log) {
     std::ifstream fin(path);
     if (!fin.is_open()) {
         logger.error() << "Could not open file to read. File: " << path;
