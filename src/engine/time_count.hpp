@@ -15,12 +15,12 @@ public:
         waveCount(static_cast<uint32_t>(tickCount / ticksPerWave)) { }
     //
     uint64_t getTickCount() const { return tickCount; }
-    uint64_t getTicksToNextWave() const { return tickCount % ticksPerWave; }
+    uint64_t getTicksToNextWave() const { return ticksToNextWave; }
     uint32_t getWaveCount() const { return waveCount; }
     bool isWaveJustChanged() const { return waveJustChanged; }
     //
     void update() {
-        waveJustChanged = ticksPerWave == 0; 
+        waveJustChanged = ticksToNextWave == 0;
         if (waveJustChanged) {
             ++waveCount;
             ticksToNextWave = ticksPerWave;
