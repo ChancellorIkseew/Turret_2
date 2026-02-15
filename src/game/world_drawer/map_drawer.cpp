@@ -12,7 +12,7 @@ constexpr PixelCoord BLENDING_AREA(4.0f, 4.0f);
 constexpr PixelCoord TILE_SIZE(t1::TILE_F, t1::TILE_F);
 constexpr PixelCoord FLOOR_SIZE(t1::TILE_F + 8.0f, t1::TILE_F + 8.0f);
 
-MapDrawer::MapDrawer(const Assets& assets) {
+void MapDrawer::updateTextures(const Assets& assets) {
     for (const auto& [name, id] : assets.getIndexes().getFloor()) {
         cachedFloor.emplace(id, std::vector<PixelCoord>());
         floorTextures.emplace(id, assets.getAtlas().at(name));

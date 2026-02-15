@@ -21,7 +21,8 @@ class MapDrawer {
     std::vector<int> indexCache;
     PixelCoord atlasSize;
 public:
-    MapDrawer(const Assets& atlas);
+    MapDrawer(const Assets& assets) { updateTextures(assets); }
+    void updateTextures(const Assets& assets);
     void cacheFloor(const WorldMap& map);
     void cacheOverlay(const WorldMap& map);
     void draw(const Camera& camera, const Renderer& renderer, const WorldMap& map);
