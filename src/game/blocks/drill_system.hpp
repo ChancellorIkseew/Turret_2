@@ -1,3 +1,4 @@
+#pragma once
 #include "blocks.hpp"
 
 using Item = uint8_t;
