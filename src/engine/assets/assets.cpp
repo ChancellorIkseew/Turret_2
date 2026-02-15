@@ -31,4 +31,5 @@ void Assets::load(Renderer& renderer) {
     loadSounds(audio);
     indexes.load();
     presets.load(atlas);
+    waves.load();
 }

@@ -12,3 +12,4 @@ const fs::path io::folders::SOUNDS = RES / "sounds";
 const fs::path io::folders::CONTENT = RES / "content";
 const fs::path io::folders::GENERATION = CONTENT / "generation";
 const fs::path io::folders::GENERATION_DEFAULT = GENERATION / "default";
+const fs::path io::folders::WAVES = CONTENT / "waves";

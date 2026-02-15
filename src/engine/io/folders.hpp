@@ -16,6 +16,7 @@ namespace io::folders {
     extern const fs::path CONTENT;
     extern const fs::path GENERATION;
     extern const fs::path GENERATION_DEFAULT;
+    extern const fs::path WAVES;
 
     using Contents = std::vector<std::string>;
     enum class ContentsType : uint8_t { folder, file };

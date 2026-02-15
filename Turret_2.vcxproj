@@ -26,6 +26,7 @@
     <ClInclude Include="src\engine\assets\presets.hpp" />
     <ClInclude Include="src\engine\assets\preset_id.hpp" />
     <ClInclude Include="src\engine\assets\preset_reader.hpp" />
+    <ClInclude Include="src\engine\assets\waves.hpp" />
     <ClInclude Include="src\engine\audio\audio.hpp" />
     <ClInclude Include="src\engine\audio\sound_queue.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
@@ -118,6 +119,7 @@
     <ClCompile Include="src\engine\assets\assets.cpp" />
     <ClCompile Include="src\engine\assets\indexes.cpp" />
     <ClCompile Include="src\engine\assets\presets.cpp" />
+    <ClCompile Include="src\engine\assets\waves.cpp" />
     <ClCompile Include="src\engine\audio\audio.cpp" />
     <ClCompile Include="src\engine\coords\math.cpp" />
     <ClCompile Include="src\engine\debug\console.cpp" />

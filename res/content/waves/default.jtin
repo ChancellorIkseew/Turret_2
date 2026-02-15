@@ -1,0 +1,14 @@
+{
+mob=gatling_bot
+begin=1
+spacing=0
+amount=2
+scaling=1
+}
+{
+mob=cannoner_bot
+begin=5
+spacing=5
+amount=1
+scaling=1
+}
