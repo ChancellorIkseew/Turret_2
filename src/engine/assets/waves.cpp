@@ -27,7 +27,7 @@ void Waves::load() {
     }
 }
 
-const Wave Waves::getWave(uint32_t waveNumber) const {
+Wave Waves::getWave(uint32_t waveNumber) const {
     Wave wave;
     for (const auto& it : mobWaveData) {
         if (it.begin > waveNumber)

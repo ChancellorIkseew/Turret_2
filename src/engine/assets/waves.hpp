@@ -20,5 +20,5 @@ class Waves {
     std::vector<MobWaveData> mobWaveData;
 public:
     void load();
-    const Wave getWave(uint32_t waveNumber) const;
+    Wave getWave(const uint32_t waveNumber) const;
 };
