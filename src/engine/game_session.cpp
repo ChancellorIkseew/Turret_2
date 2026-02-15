@@ -12,7 +12,8 @@
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
-    camera(world->getMap().getSize()), world(std::move(world)), gui(std::move(gui)), worldDrawer(assets), paused(paused) {
+    camera(world->getMap().getSize()), world(std::move(world)), gui(std::move(gui)), worldDrawer(assets), paused(paused),
+    timeCount(0, 18000) {
     prepare();
 }
 GameSession::~GameSession() = default;
@@ -41,7 +42,7 @@ void GameSession::updateSimulation(const Presets& presets) {
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets, playerController);
-    ++tickCount;
+    timeCount.update();
 }
 
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
@@ -62,7 +63,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     camera.update(mainWindow.getSize());
     mainWindow.setRenderScale(camera.getMapScale());
     mainWindow.setRenderTranslation(camera.getTranslation());
-    worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, tickCount);
+    worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, timeCount.getTickCount());
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
     mainWindow.setRenderScale(1.0f);

@@ -4,6 +4,7 @@
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
 #include "game/world_drawer/world_drawer.hpp"
+#include "time_count.hpp"
 
 class Engine;
 class GUI;
@@ -18,7 +19,7 @@ class GameSession {
     WorldDrawer worldDrawer;
     SoundQueue worldSounds;
 
-    uint64_t tickCount = 0;
+    TimeCount timeCount;
     int tickSpeed = 1;
     bool paused, open = true;
 public:
@@ -38,6 +39,7 @@ public:
     bool isOpen() const { return open; }
     bool isPaused() const { return paused; }
     int getTickSpeed() const { return tickSpeed; }
+    const TimeCount& getTimeCount() { return timeCount; }
 private:
     void prepare();
     void updateSimulation(const Presets& presets);
