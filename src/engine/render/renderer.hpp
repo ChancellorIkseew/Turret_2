@@ -76,6 +76,13 @@ public:
         SDL_SetRenderDrawBlendMode(sdlRenderer, static_cast<SDL_BlendMode>(mode));
         SDL_SetTextureBlendMode(commonTexture, static_cast<SDL_BlendMode>(mode));
     }
+    void setColorModifier(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a) {
+        SDL_SetTextureColorMod(commonTexture, r, g, b);
+        SDL_SetTextureAlphaMod(commonTexture, a);
+    }
+    void resetColorModifier() {
+        setColorModifier(255, 255, 255, 255);
+    }
     void createCommonTexture(SDL_Surface* comonSurface) {
         if (commonTexture)
             SDL_DestroyTexture(commonTexture);
