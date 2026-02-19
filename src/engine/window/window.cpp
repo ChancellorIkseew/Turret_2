@@ -59,6 +59,7 @@ void MainWindow::setFullscreen(const bool flag) {
 void MainWindow::pollEvents() {
     input.reset();
     input.getTextEdit().update(sdlWindow, realDelay);
+    SDL_Event event;
     resized = false;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {

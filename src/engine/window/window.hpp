@@ -9,7 +9,6 @@
 struct SDLContext {
     SDL_Window* sdlWindow = nullptr;
     SDL_Renderer* sdlRenderer = nullptr;
-    SDL_Event event = SDL_Event{ };
     SDLContext(const std::string& title);
     ~SDLContext(); // Not virtual because of no polymorphism.
 };
