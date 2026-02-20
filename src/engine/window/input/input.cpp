@@ -1,7 +1,6 @@
 #include "input.hpp"
 //
 #include <SDL3/SDL_events.h>
-#include <atomic>
 #include "controls.hpp"
 #include "engine/io/utf8/utf8.hpp"
 
