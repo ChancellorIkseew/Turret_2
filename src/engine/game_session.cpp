@@ -2,6 +2,7 @@
 //
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
+#include "game/built_in_scripts/built_in_scripts.hpp"
 #include "game/particles/particles_system.hpp"
 #include "game/physics/ai_system.hpp"
 #include "game/physics/mobs_system.hpp"
@@ -23,9 +24,12 @@ void GameSession::prepare() {
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
     world->getBlocks().placeBlock(TileCoord(10, 10), BlockPresetID(2));
+    world->getBlocks().placeBlock(TileCoord(11, 10), BlockPresetID(2));
+    world->getBlocks().placeBlock(TileCoord(10, 11), BlockPresetID(2));
+    world->getBlocks().placeBlock(TileCoord(10, 12), BlockPresetID(2));
 }
 
-void GameSession::updateSimulation(const Presets& presets) {
+void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto& blocks    = world->getBlocks();
     auto& chunks    = world->getChunks();
     auto& mobs      = world->getMobs();
@@ -43,6 +47,7 @@ void GameSession::updateSimulation(const Presets& presets) {
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets, playerController);
     timeCount.update();
+    built_in_scripts::execute(engine);
 }
 
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
@@ -55,7 +60,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
         playerController.update(mainWindow.getInput(), camera, paused, world->getMobs(), presets);
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
-            updateSimulation(presets);
+            updateSimulation(presets, engine);
         }
     }
     scriptsHandler.execute();
@@ -63,7 +68,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     camera.update(mainWindow.getSize());
     mainWindow.setRenderScale(camera.getMapScale());
     mainWindow.setRenderTranslation(camera.getTranslation());
-    worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, timeCount.getTickCount());
+    worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, engine.getAssets(), timeCount.getTickCount());
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
     mainWindow.setRenderScale(1.0f);

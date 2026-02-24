@@ -42,6 +42,6 @@ public:
     const TimeCount& getTimeCount() { return timeCount; }
 private:
     void prepare();
-    void updateSimulation(const Presets& presets);
+    void updateSimulation(const Presets& presets, Engine& engine);
     t1_disable_copy_and_move(GameSession)
 };

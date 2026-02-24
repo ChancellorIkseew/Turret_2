@@ -20,9 +20,9 @@ public:
     WorldDrawer(const Assets& assets) : mapDrawer(assets), particlesDrawer(assets) { }
 
     void draw(const Camera& camera, Renderer& renderer, World& world,
-        const Presets& presets, const uint64_t tickCount) {
+        const Presets& presets, const Assets& assets, const uint64_t tickCount) {
         mapDrawer.draw(camera, renderer, world.getMap());
-        blocks::drawBlocks(world.getBlocks(), presets, camera, renderer);
+        blocks::drawBlocks(world.getBlocks(), assets, camera, renderer);
         entitiesDrawer.draw(camera, renderer, world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
         particlesDrawer.draw(camera, renderer, world.getParticles().getSoa());
         // TODO: weatherDrawer.draw();

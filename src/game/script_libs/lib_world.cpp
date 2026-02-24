@@ -30,7 +30,7 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
         return;
     }
     const Presets& presets = script_libs::assets->getPresets();
-    MobPresetID presetID = presets.getMobID(presetName);
+    const MobPresetID presetID = presets.getMobID(presetName);
     const MobPreset& preset = presets.getMob(presetID);
 
     MotionData mData(preset.defaultMovingAI, 0, PixelCoord(400, 1000));

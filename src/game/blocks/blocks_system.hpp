@@ -2,7 +2,7 @@
 
 class Blocks;
 class Camera;
-class Presets;
+class Assets;
 
 class Renderer;
 
@@ -10,5 +10,5 @@ namespace blocks {
 
 
 
-    void drawBlocks(const Blocks& blocks, const Presets& presets, const Camera& camera, const Renderer& renderer);
+    void drawBlocks(const Blocks& blocks, const Assets& assets, const Camera& camera, Renderer& renderer);
 }

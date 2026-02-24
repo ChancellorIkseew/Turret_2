@@ -80,6 +80,7 @@
     <ClInclude Include="src\game\blocks\blocks.hpp" />
     <ClInclude Include="src\game\blocks\blocks_system.hpp" />
     <ClInclude Include="src\game\blocks\drill_system.hpp" />
+    <ClInclude Include="src\game\built_in_scripts\built_in_scripts.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\blocks\blocks_system.cpp" />
     <ClCompile Include="src\game\blocks\drill_system.cpp" />
+    <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
     <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />
