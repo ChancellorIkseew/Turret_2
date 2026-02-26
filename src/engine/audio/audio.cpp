@@ -24,7 +24,7 @@ static void fillPool(std::span<MIX_Track*> trackPool, MIX_Mixer* mixer) {
         track = nullptr;
         track = MIX_CreateTrack(mixer);
         if (!track)
-            throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());   
+            throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
     }
 }
 
