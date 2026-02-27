@@ -276,7 +276,7 @@
     <ClInclude Include="src\game\particles\particle_manager.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\blocks\blocks.hpp">
+    <ClInclude Include="src\game\blocks\block_manager.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\blocks\blocks_system.hpp">
@@ -564,6 +564,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\blocks\block_manager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

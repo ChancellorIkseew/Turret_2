@@ -1,6 +1,6 @@
 #pragma once
 
-class Blocks;
+class BlockManager;
 class Camera;
 class Assets;
 
@@ -10,5 +10,5 @@ namespace blocks {
 
 
 
-    void drawBlocks(const Blocks& blocks, const Assets& assets, const Camera& camera, Renderer& renderer);
+    void drawBlocks(const BlockManager& blocks, const Assets& assets, const Camera& camera, Renderer& renderer);
 }

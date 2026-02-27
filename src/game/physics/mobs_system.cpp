@@ -5,7 +5,7 @@
 #include "engine/render/renderer.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
-#include "game/blocks/blocks.hpp"
+#include "game/blocks/block_manager.hpp"
 #include "game/physics/chunk_grid.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
@@ -51,7 +51,7 @@ static inline void resolveCollisions(MobSoA& soa, const ChunkGrid& chunks) {
     }
 }
 
-static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, const Blocks& blocks) {
+static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, const BlockManager& blocks) {
     for (size_t i = 0; i < mobCount; ++i) {
         const float radius = soa.hitboxRadius[i];
         const PixelCoord center = soa.position[i];
@@ -77,7 +77,7 @@ static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
     }
 }
 
-void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const Blocks& blocks) {
+void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockManager& blocks) {
     const size_t mobCount = soa.mobCount;
     moveByAI(soa, mobCount);
     resolveCollisions(soa, chunks);

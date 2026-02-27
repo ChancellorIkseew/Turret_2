@@ -23,10 +23,12 @@ void GameSession::prepare() {
     Team* playerTeam = world->getTeams().addTeam(U"player");
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
-    world->getBlocks().placeBlock(TileCoord(10, 10), BlockPresetID(2));
-    world->getBlocks().placeBlock(TileCoord(11, 10), BlockPresetID(2));
-    world->getBlocks().placeBlock(TileCoord(10, 11), BlockPresetID(2));
-    world->getBlocks().placeBlock(TileCoord(10, 12), BlockPresetID(2));
+    TeamID playerTeamID = playerTeam->getID();
+
+    world->getBlocks().addBlock(TileCoord(10, 10), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
+    world->getBlocks().addBlock(TileCoord(11, 10), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
+    world->getBlocks().addBlock(TileCoord(10, 11), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
+    world->getBlocks().addBlock(TileCoord(10, 12), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
 }
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
