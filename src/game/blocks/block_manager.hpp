@@ -1,18 +1,11 @@
 #pragma once
 #include <vector>
+#include "block_archetype.hpp"
 #include "engine/assets/preset_defs.hpp"
 #include "game/physics/physics_base.hpp"
 
 constexpr BlockPresetID BLOCK_AIR = BlockPresetID(0);
 constexpr BlockPresetID BLOCK_AUXILARY = BlockPresetID(1);
-
-enum class BlockArchetype : uint8_t {
-    air,
-    wall,
-    drill,
-    factory,
-    turret
-};
 
 struct CommonBlockSoA {
     std::vector<BlockArchetype> archetype;

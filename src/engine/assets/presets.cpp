@@ -25,6 +25,7 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas) {
         frames
     };
     return BlockPreset{
+        block_archetype::getBlockArchetype(reader.get<std::string>("archetype")),
         reader.get<Health>("health"),
         visual
     };

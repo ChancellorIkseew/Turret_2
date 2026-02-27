@@ -15,20 +15,23 @@
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
     camera(world->getMap().getSize()), world(std::move(world)), gui(std::move(gui)), worldDrawer(assets), paused(paused),
     timeCount(0, 10800) {
-    prepare();
+    prepare(assets.getPresets());
 }
 GameSession::~GameSession() = default;
 
-void GameSession::prepare() {
+void GameSession::prepare(const Presets& presets) {
     Team* playerTeam = world->getTeams().addTeam(U"player");
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
     TeamID playerTeamID = playerTeam->getID();
 
-    world->getBlocks().addBlock(TileCoord(10, 10), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
-    world->getBlocks().addBlock(TileCoord(11, 10), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
-    world->getBlocks().addBlock(TileCoord(10, 11), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
-    world->getBlocks().addBlock(TileCoord(10, 12), BlockArchetype::wall, BlockPresetID(2), 100, playerTeamID);
+    const auto presetID = presets.getBlockID("iron_wall");
+    const auto& preset = presets.getBlock(presetID);
+
+    world->getBlocks().addBlock(TileCoord(10, 10), preset.archetype, presetID, preset.maxHealth, playerTeamID);
+    world->getBlocks().addBlock(TileCoord(11, 10), preset.archetype, presetID, preset.maxHealth, playerTeamID);
+    world->getBlocks().addBlock(TileCoord(10, 11), preset.archetype, presetID, preset.maxHealth, playerTeamID);
+    world->getBlocks().addBlock(TileCoord(10, 12), preset.archetype, presetID, preset.maxHealth, playerTeamID);
 }
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {

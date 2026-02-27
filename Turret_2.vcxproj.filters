@@ -306,6 +306,9 @@
     <ClInclude Include="src\game\built_in_scripts\built_in_scripts.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\blocks\block_archetype.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">
@@ -567,6 +570,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\blocks\block_manager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\blocks\block_archetype.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

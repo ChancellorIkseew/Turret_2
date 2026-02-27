@@ -77,6 +77,7 @@
     <ClInclude Include="src\engine\window\input\input.hpp" />
     <ClInclude Include="src\engine\window\input\text_edit.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
+    <ClInclude Include="src\game\blocks\block_archetype.hpp" />
     <ClInclude Include="src\game\blocks\block_manager.hpp" />
     <ClInclude Include="src\game\blocks\blocks_system.hpp" />
     <ClInclude Include="src\game\blocks\drill_system.hpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="src\engine\window\input\text_edit.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\blocks\blocks_system.cpp" />
+    <ClCompile Include="src\game\blocks\block_archetype.cpp" />
     <ClCompile Include="src\game\blocks\block_manager.cpp" />
     <ClCompile Include="src\game\blocks\drill_system.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
