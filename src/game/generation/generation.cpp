@@ -12,48 +12,44 @@ constexpr float MAIN_NOISE_SCALE = 40.0f;
 constexpr float SUPPORT_NOISE_SCALE = 10.0f;
 static debug::Logger logger("world_generation");
 
-using Pair = std::pair<float, uint8_t>;
+struct PreparedFloor { uint8_t type; float height; };
+struct PreparedOverlay { uint8_t type; int frequency; int deposite; };
 
-struct OvPr {
-    uint8_t type = 0;
-    int frequency = 0, deposite = 0;
-};
-
-static inline bool fromMaxToMin(const Pair a, const Pair b) {
-    return a.first > b.first;
+static inline bool fromMaxToMin(const PreparedFloor a, const PreparedFloor b) noexcept {
+    return a.height > b.height;
 }
 
-static uint8_t calculateTileType(const float height, const std::vector<Pair>& vals) {
-    for (const auto/*not ref*/ [minHeight, floorID] : vals) {
+static uint8_t calculateTileType(const float height, const std::vector<PreparedFloor>& vals) noexcept {
+    for (const auto/*not ref*/ [floorID, minHeight] : vals) {
         if (height >= minHeight)
             return floorID;
     }
     return 0U;
 }
 
-static std::vector<Pair> processFloorPresets(const FloorPresets& floorPresets, const Indexes& indexes) {
-    std::vector<Pair> vals;
+static auto prepareFloorPresets(const FloorPresets& floorPresets, const Indexes& indexes) {
+    std::vector<PreparedFloor> result;
     for (const auto& [name, height] : floorPresets) {
         if (!indexes.getFloor().contains(name)) {
             logger.warning() << "Content is not registred: \"" << name << "\"";
             continue;
         }
-        vals.emplace_back(height, indexes.getFloor().at(name));
+        result.emplace_back(indexes.getFloor().at(name), height);
     }
-    std::sort(vals.begin(), vals.end(), fromMaxToMin);
-    return vals;
+    std::sort(result.begin(), result.end(), fromMaxToMin);
+    return result;
 }
 
-static std::vector<OvPr> processOverlayPresets(const OverlayPresets& overlayPresets, const Indexes& indexes) {
-    std::vector<OvPr> vals;
+static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Indexes& indexes) {
+    std::vector<PreparedOverlay> result;
     for (const auto& [name, frequency, deposite] : overlayPresets) {
         if (!indexes.getOverlay().contains(name)) {
             logger.warning() << "Content is not registred: \"" << name << "\"";
             continue;
         }
-        vals.emplace_back(indexes.getOverlay().at(name), frequency, deposite);
+        result.emplace_back(indexes.getOverlay().at(name), frequency, deposite);
     }
-    return vals;
+    return result;
 }
 
 static WorldMap generateMap(const WorldProperties& properties, const Indexes& indexes) {
@@ -61,8 +57,8 @@ static WorldMap generateMap(const WorldProperties& properties, const Indexes& in
     PerlinNoise2D mainNoise(properties.seed);
     PerlinNoise2D supportNoise(properties.seed + 100U);
     WorldMap map(mapSize);
-    const auto floorPresets = processFloorPresets(properties.floorPresets, indexes);
-    const auto overlayPresets = processOverlayPresets(properties.overlayPresets, indexes);
+    const auto floorPresets = prepareFloorPresets(properties.floorPresets, indexes);
+    const auto overlayPresets = prepareOverlayPresets(properties.overlayPresets, indexes);
 
     SpotGenerator2D spotGenerator(properties.seed);
 
