@@ -15,6 +15,8 @@ Active assistance is not required at this time. Expect changes regarding this pa
 
 ### How to build the project locally?
 #### Windows (MSVC, Visual Studio)
+*Project and solution were made in Visual Studio 2022. To build in Visual Studio 2026 you need retarget solution.
+
 1) The ".sln" and other auxiliary Visual Studio files are already present in this repository. They have relative paths configured for all libraries.
 The libraries themselves are already compiled and located in the "libs" folder according to the specified paths. To open the project, simply run "Turret_2.sln".
 2) Start the project build (green triangle labeled "Local Windows Debugger"). A "build" folder will appear, containing "Release_win_x64"/"Debug_win_x64" depending on the build settings. At this point, Visual Studio will issue an error message regarding missing dll files.
