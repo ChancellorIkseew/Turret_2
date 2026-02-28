@@ -15,6 +15,7 @@ struct MobSoA {
     std::vector<AngleRad> angle;
     std::vector<Health> health;
     std::vector<MobPresetID> preset;
+    std::vector<TurretPresetID> turretPreset;
     std::vector<MobID> id;
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
@@ -51,6 +52,7 @@ public:
     void removeMob(const size_t targetIndex);
     MobID addMob(
         const MobPresetID preset,
+        const TurretPresetID turretPreset,
         const PixelCoord position,
         const AngleRad angle,
         const Health health,

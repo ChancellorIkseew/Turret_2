@@ -8,6 +8,7 @@
 #include "game/player/camera.hpp"
 #include "mob_manager.hpp"
 #include "shell_manager.hpp"
+#include "turret_components.hpp"
 
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
 
@@ -27,9 +28,18 @@ static t1_finline void rotateTurret(AngleRad& turretAngle, const AngleRad rotati
         turretAngle += (deltaAngle > 0 ? rotationSpeed : -rotationSpeed);
 }
 
-static inline void rotateTurrets(MobSoA& soa, const Presets& presets, const size_t mobCount) {
+static inline void rotateTurrets(TurretComponents& soa, const Presets& presets, const size_t mobCount) {
+    if (soa.velocity.empty()) {
+        for (size_t i = 0; i < mobCount; ++i) {
+            const AngleRad rotationSpeed = presets.getTurret(soa.preset[i]).rotationSpeed;
+            if (soa.shootingData[i].isShooting)
+                rotateTurret(soa.turretAngle[i], rotationSpeed, soa.shootingData[i].target - soa.position[i]);
+        }
+        return;
+    }
+    // else
     for (size_t i = 0; i < mobCount; ++i) {
-        const AngleRad rotationSpeed = presets.getTurret(presets.getMob(soa.preset[i]).turret).rotationSpeed;
+        const AngleRad rotationSpeed = presets.getTurret(soa.preset[i]).rotationSpeed;
         if (soa.shootingData[i].isShooting)
             rotateTurret(soa.turretAngle[i], rotationSpeed, soa.shootingData[i].target - soa.position[i]);
         else if (soa.velocity[i] != NO_MOTION)
@@ -37,19 +47,19 @@ static inline void rotateTurrets(MobSoA& soa, const Presets& presets, const size
     }
 }
 
-static inline void reduceRestReload(MobSoA& soa) {
+static inline void reduceRestReload(TurretComponents& soa) {
     for (auto& time : soa.restReloadTime) {
         if (time > 0)
             --time;
     }
 }
 
-static inline void shoot(MobSoA& soa, ShellManager& shells, ParticleManager& particles,
+static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleManager& particles,
     const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.restReloadTime[i] > 0 || !soa.shootingData[i].isShooting)
             continue;
-        const TurretPreset& turret = presets.getTurret(presets.getMob(soa.preset[i]).turret);
+        const TurretPreset& turret = presets.getTurret(soa.preset[i]);
         const ShellPreset& shell = presets.getShell(turret.shell);
         soa.restReloadTime[i] = turret.reload;
         const AngleRad angle = soa.turretAngle[i];
@@ -75,7 +85,7 @@ static inline void shoot(MobSoA& soa, ShellManager& shells, ParticleManager& par
     }
 }
 
-void turrets::processTurrets(MobSoA& soa, ShellManager& shells, ParticleManager& particles,
+void turrets::processTurrets(TurretComponents& soa, ShellManager& shells, ParticleManager& particles,
     const Presets& presets, SoundQueue& sounds, const Camera& camera) {
     const size_t mobCount = soa.mobCount;
     reduceRestReload(soa);
@@ -83,12 +93,12 @@ void turrets::processTurrets(MobSoA& soa, ShellManager& shells, ParticleManager&
     shoot(soa, shells, particles, presets, mobCount, sounds, camera);
 }
 
-void turrets::drawTurrets(const MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
+void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        auto& visual = presets.getTurret(presets.getMob(soa.preset[i]).turret).visual;
+        auto& visual = presets.getTurret(soa.preset[i]).visual;
         renderer.draw(visual.texture, soa.position[i], visual.size, visual.origin, soa.turretAngle[i]);
     }
 }

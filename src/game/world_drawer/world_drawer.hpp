@@ -23,7 +23,7 @@ public:
         const Presets& presets, const Assets& assets, const uint64_t tickCount) {
         mapDrawer.draw(camera, renderer, world.getMap());
         blocks::drawBlocks(world.getBlocks(), assets, camera, renderer);
-        entitiesDrawer.draw(camera, renderer, world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
+        entitiesDrawer.draw(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
         particlesDrawer.draw(camera, renderer, world.getParticles().getSoa());
         // TODO: weatherDrawer.draw();
     }

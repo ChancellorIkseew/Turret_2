@@ -1,0 +1,12 @@
+#visual
+texture=gatling_turret
+origin=12.5|15.0
+size=25|28
+shot_sound=autocannon_shot
+#logic
+reload=4
+range=310
+rotation_speed=0.03
+shooting_ai=basic
+shell=autocannon_shell
+barrels=3|16,-3|16

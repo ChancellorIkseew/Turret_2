@@ -1,4 +1,7 @@
 #include "block_manager.hpp"
+//
+#include "engine/coords/transforms.hpp"
+#include "engine/assets/presets.hpp"
 
 BlockManager::BlockManager(const TileCoord mapSize) : mapSize(mapSize) {
     const int blockCount = mapSize.x * mapSize.y;
@@ -9,9 +12,19 @@ BlockManager::BlockManager(const TileCoord mapSize) : mapSize(mapSize) {
     commonSoa.teamID.assign(blockCount, 0);
 }
 
-static uint32_t addTurret(TurretSoA& soa) {
+static uint32_t addTurret(const Presets& presets, const BlockPresetID preset,
+    TurretSoA& soa, const TileCoord tile, const TeamID teamID) {
 
-    return 0;
+    ShootingData sData(ShootingAI::basic, false, PixelCoord(0, 0));
+    soa.position.push_back(t1::tileCenter(tile));
+    soa.angle.push_back(0.0f);
+    soa.preset.push_back(presets.getBlock(preset).turret);
+    soa.teamID.push_back(teamID);
+    soa.shootingData.push_back(sData);
+    soa.restReloadTime.push_back(0);
+    soa.currentBarrel.push_back(0);
+    soa.turretAngle.push_back(0.0f);
+    return static_cast<uint32_t>(++soa.turretCount);
 }
 
 static void removeTurret(const uint32_t index, TurretSoA& soa) {
@@ -39,6 +52,7 @@ static void removeTurret(const uint32_t index, TurretSoA& soa) {
 }
 
 void BlockManager::addBlock(
+    const Presets& presets,
     const TileCoord tile,
     const BlockArchetype archetype,
     const BlockPresetID preset,
@@ -50,7 +64,7 @@ void BlockManager::addBlock(
 
     uint32_t specializedSoaIndex = 0;
     if (archetype == BlockArchetype::turret)
-        specializedSoaIndex = addTurret(turretSoa);
+        specializedSoaIndex = addTurret(presets, preset, turretSoa, tile, teamID);
 
     commonSoa.archetype[index] = archetype;
     commonSoa.specializedSoaIndex[index] = specializedSoaIndex;//?

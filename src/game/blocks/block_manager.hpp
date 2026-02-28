@@ -4,6 +4,8 @@
 #include "engine/assets/preset_defs.hpp"
 #include "game/physics/physics_base.hpp"
 
+class Presets;
+
 constexpr BlockPresetID BLOCK_AIR = BlockPresetID(0);
 constexpr BlockPresetID BLOCK_AUXILARY = BlockPresetID(1);
 
@@ -43,6 +45,7 @@ public:
     BlockManager(const TileCoord mapSize);
     void removeBlock(const TileCoord tile);
     void addBlock(
+        const Presets& presets,
         const TileCoord tile,
         const BlockArchetype archetype,
         const BlockPresetID preset,

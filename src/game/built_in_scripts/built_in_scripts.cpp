@@ -16,7 +16,8 @@ static void spawnMobs(const uint32_t waveCount, MobManager& mobs, const Assets& 
         const PixelCoord position(500, 500);
 
         for (uint32_t j = 0; j < wave.amount[i]; ++j) {
-            mobs.addMob(presetID, position, 0.0f, preset.maxHealth, enemyTeam, preset.hitboxRadius, mData, sData, 0, 0.0f);
+            mobs.addMob(presetID, preset.turret, position, 0.0f, preset.maxHealth, enemyTeam, preset.hitboxRadius,
+                mData, sData, 0, 0.0f);
         }
     }
 }

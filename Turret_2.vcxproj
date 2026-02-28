@@ -103,6 +103,7 @@
     <ClInclude Include="src\game\physics\team\team.hpp" />
     <ClInclude Include="src\game\physics\team\teams_pool.hpp" />
     <ClInclude Include="src\game\physics\turrets_system.hpp" />
+    <ClInclude Include="src\game\physics\turret_components.hpp" />
     <ClInclude Include="src\game\player\camera.hpp" />
     <ClInclude Include="src\game\player\player_controller.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />

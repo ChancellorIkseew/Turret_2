@@ -72,4 +72,7 @@ struct BlockPreset {
     BlockArchetype archetype;
     Health maxHealth;
     BlockVisualPreset visual;
+    union {
+        TurretPresetID turret;
+    };
 };
