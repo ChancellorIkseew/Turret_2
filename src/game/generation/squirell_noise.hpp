@@ -10,13 +10,13 @@ public:
     constexpr SquirellNoise2D(const uint64_t seed)
         : seed(static_cast<uint32_t>(seed ^ (seed >> 32))) { }
 
-    constexpr uint32_t createTile(const int x, const int y) const {
-        return hash(x, y, seed);
+    constexpr uint32_t createTile(const int x, const int y, const uint32_t offset) const {
+        return hash(x, y, seed + offset);
     }
 
-    constexpr bool createTile(const int x, const int y, const uint32_t frequency) const {
+    constexpr bool createTile(const int x, const int y, const uint32_t frequency, const uint32_t offset) const {
         const uint32_t threshold = static_cast<uint32_t>((static_cast<uint64_t>(frequency) * MAX_UINT32) / DEFAULT_TILE_COUNT);
-        return hash(x, y, seed) < threshold;
+        return hash(x, y, seed + offset) < threshold;
     }
 private:
     static constexpr uint32_t hash(const int x, const int y, const uint32_t seed) {

@@ -10,10 +10,11 @@
 
 constexpr float MAIN_NOISE_SCALE = 40.0f;
 constexpr float SUPPORT_NOISE_SCALE = 10.0f;
+constexpr uint32_t SEED_OFFSET = 50U;
 static debug::Logger logger("world_generation");
 
 struct PreparedFloor { uint8_t type; float height; };
-struct PreparedOverlay { uint8_t type; int frequency; int deposite; };
+struct PreparedOverlay { uint8_t type; int frequency; int deposit; };
 
 static inline bool fromMaxToMin(const PreparedFloor a, const PreparedFloor b) noexcept {
     return a.height > b.height;
@@ -42,12 +43,12 @@ static auto prepareFloorPresets(const FloorPresets& floorPresets, const Indexes&
 
 static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Indexes& indexes) {
     std::vector<PreparedOverlay> result;
-    for (const auto& [name, frequency, deposite] : overlayPresets) {
+    for (const auto& [name, frequency, deposit] : overlayPresets) {
         if (!indexes.getOverlay().contains(name)) {
             logger.warning() << "Content is not registred: \"" << name << "\"";
             continue;
         }
-        result.emplace_back(indexes.getOverlay().at(name), frequency, deposite);
+        result.emplace_back(indexes.getOverlay().at(name), frequency, deposit);
     }
     return result;
 }
@@ -60,14 +61,8 @@ static WorldMap generateMap(const WorldProperties& properties, const Indexes& in
     const auto floorPresets = prepareFloorPresets(properties.floorPresets, indexes);
     const auto overlayPresets = prepareOverlayPresets(properties.overlayPresets, indexes);
 
+    SquirellNoise2D squirellNoise(properties.seed);
     SpotGenerator2D spotGenerator(properties.seed);
-
-    std::unordered_map<uint8_t, SquirellNoise2D> squirellNoises;
-    uint64_t seedOfset = 0U;
-    for (const auto& [id, frequency, deposite] : overlayPresets) {
-        squirellNoises.emplace(id, SquirellNoise2D(properties.seed + seedOfset));
-        seedOfset += 50U;
-    }
 
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
@@ -75,9 +70,10 @@ static WorldMap generateMap(const WorldProperties& properties, const Indexes& in
             const float s = supportNoise.createTile(x, y + 1, SUPPORT_NOISE_SCALE);
             map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, floorPresets);
  
-            for (const auto& [id, frequency, deposite] : overlayPresets) {
-                if (squirellNoises.at(id).createTile(x, y, frequency))
-                    spotGenerator.generateSpot(map, TileCoord(x, y), id, deposite);
+            for (const auto& [id, frequency, deposit] : overlayPresets) {
+                const uint32_t seedOffset = id * SEED_OFFSET;
+                if (squirellNoise.createTile(x, y, frequency, seedOffset))
+                    spotGenerator.generateSpot(map, TileCoord(x, y), id, deposit);
             }
         }
     }
