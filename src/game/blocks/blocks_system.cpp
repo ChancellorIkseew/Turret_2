@@ -38,3 +38,13 @@ void blocks::drawBlocks(const BlockManager& blocks, const Assets& assets, const 
         }
     }
 }
+
+void blocks::cleanupBlocks(BlockManager& blocks) {
+    const size_t blockCount = blocks.getSize().x * blocks.getSize().y;
+    auto& blockSoa = blocks.getCommonSoa();
+    for (size_t i = blockCount; i > 0; --i) {
+        size_t index = i - 1;
+        if (blockSoa.health[index] <= 0 && blockSoa.archetype[index] != BlockArchetype::air)
+            blocks.removeBlock(index);
+    }
+}

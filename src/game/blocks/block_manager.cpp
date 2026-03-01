@@ -27,8 +27,8 @@ static uint32_t addTurret(const Presets& presets, const BlockPresetID preset,
     return static_cast<uint32_t>(++soa.turretCount);
 }
 
-static void removeTurret(const uint32_t index, TurretSoA& soa) {
-    const uint32_t last = static_cast<uint32_t>(soa.turretCount);
+static void removeTurret(const size_t index, TurretSoA& soa) {
+    const size_t last = soa.turretCount;
 
     if (index != last) {
         soa.position[index] = std::move(soa.position[last]);
@@ -49,6 +49,8 @@ static void removeTurret(const uint32_t index, TurretSoA& soa) {
     soa.restReloadTime.pop_back();
     soa.currentBarrel.pop_back();
     soa.turretAngle.pop_back();
+
+    --soa.turretCount;
 }
 
 void BlockManager::addBlock(
@@ -67,17 +69,15 @@ void BlockManager::addBlock(
         specializedSoaIndex = addTurret(presets, preset, turretSoa, tile, teamID);
 
     commonSoa.archetype[index] = archetype;
-    commonSoa.specializedSoaIndex[index] = specializedSoaIndex;//?
+    commonSoa.specializedSoaIndex[index] = specializedSoaIndex;
     commonSoa.preset[index] = preset;
-    commonSoa.health[index] = 0;
-    commonSoa.teamID[index] = 0;
+    commonSoa.health[index] = health;
+    commonSoa.teamID[index] = teamID;
 }
 
-void BlockManager::removeBlock(const TileCoord tile) {
-    const int index = at(tile);
-
+void BlockManager::removeBlock(const size_t index) {
     if (commonSoa.archetype[index] == BlockArchetype::turret)
-        removeTurret(index, turretSoa);
+        removeTurret(commonSoa.specializedSoaIndex[index], turretSoa);
 
     commonSoa.archetype[index] = BlockArchetype::air;
     commonSoa.specializedSoaIndex[index] = 0;//?

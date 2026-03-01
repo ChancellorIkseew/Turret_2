@@ -56,7 +56,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto blockTurrets = fromBlocks(blocks.getTurretSoa());
     //
     chunks.update(mobs.getSoa());
-    shells::processShells(shells.getSoa(), mobs.getSoa(), chunks);
+    shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
     mobs::processMobs(mobs.getSoa(), chunks, blocks);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), presets, playerController);
@@ -67,6 +67,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets, playerController);
+    blocks::cleanupBlocks(blocks);
     timeCount.update();
     built_in_scripts::execute(engine);
 }

@@ -43,7 +43,8 @@ class BlockManager {
     TurretSoA turretSoa;
 public:
     BlockManager(const TileCoord mapSize);
-    void removeBlock(const TileCoord tile);
+    void removeBlock(const TileCoord tile) { removeBlock(at(tile)); }
+    void removeBlock(const size_t index);
     void addBlock(
         const Presets& presets,
         const TileCoord tile,

@@ -3,6 +3,7 @@
 #include <cmath>
 #include "engine/assets/presets.hpp"
 #include "engine/render/renderer.hpp"
+#include "game/blocks/block_manager.hpp"
 #include "game/player/camera.hpp"
 #include "game/physics/chunk_grid.hpp"
 #include "game/physics/mob_manager.hpp"
@@ -39,11 +40,27 @@ static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCou
     }
 }
 
-void shells::processShells(ShellSoA& shells, MobSoA& mobs, const ChunkGrid& chunks) {
+static inline void hitBlocks(ShellSoA& shells, BlockManager& blocks, const size_t shellCount) {
+    auto& blockSoa = blocks.getCommonSoa();
+    for (size_t shell = 0; shell < shellCount; ++shell) {
+        if (shells.restDamage[shell] < 1)
+            continue;
+        const TileCoord tile = t1::tile(shells.position[shell]);
+        const size_t index = blocks.at(tile);
+        if (blockSoa.archetype[index] == BlockArchetype::air)
+            continue;
+        const Health takenDamage = std::min(blockSoa.health[index], shells.restDamage[shell]);
+        shells.restDamage[shell] -= takenDamage;
+        blockSoa.health[index] -= takenDamage;
+    }
+}
+
+void shells::processShells(ShellSoA& shells, MobSoA& mobs, const ChunkGrid& chunks, BlockManager& blocks) {
     const size_t shellCount = shells.shellCount;
     reduceShellsLifeTime(shells);
     moveShells(shells, shellCount);
     hitMobs(shells, mobs, shellCount, chunks);
+    hitBlocks(shells, blocks, shellCount);
 }
 
 void shells::cleanupShells(ShellManager& manager, const Presets& presets/*, Explosions& explosions*/) {
@@ -53,7 +70,7 @@ void shells::cleanupShells(ShellManager& manager, const Presets& presets/*, Expl
         size_t index = i - 1;
         if (soa.restLifeTime[index] > 0 && soa.restDamage[index] > 0)
             continue;
-        // if (soa.presets->explosion.damage != 0)
+        //if (soa.presets->explosion.damage != 0)
         //     explosions.push(soa.presets->explosion);
         manager.removeShell(index);
     }
