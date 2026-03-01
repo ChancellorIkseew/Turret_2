@@ -21,6 +21,12 @@ static inline void moveShells(ShellSoA& soa, const size_t shellCount) {
     }
 }
 
+static t1_finline_cxpr void registerDamage(Health& a, Health& b) {
+    const Health takenDamage = std::min(a, b);
+    a -= takenDamage;
+    b -= takenDamage;
+}
+
 static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCount, const ChunkGrid& chunks) {
     for (size_t shell = 0; shell < shellCount; ++shell) {
         if (shells.restDamage[shell] < 1)
@@ -31,9 +37,7 @@ static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCou
                 continue;
             if (!CircleHitbox(mobs.position[mob], mobs.hitboxRadius[mob]).contains(shellPosition))
                 continue;
-            const Health takenDamage = std::min(mobs.health[mob], shells.restDamage[shell]);
-            shells.restDamage[shell] -= takenDamage;
-            mobs.health[mob] -= takenDamage;
+            registerDamage(mobs.health[mob], shells.restDamage[shell]);
             if (shells.restDamage[shell] < 1)
                 break;
         }
@@ -49,9 +53,9 @@ static inline void hitBlocks(ShellSoA& shells, BlockManager& blocks, const size_
         const size_t index = blocks.at(tile);
         if (blockSoa.archetype[index] == BlockArchetype::air)
             continue;
-        const Health takenDamage = std::min(blockSoa.health[index], shells.restDamage[shell]);
-        shells.restDamage[shell] -= takenDamage;
-        blockSoa.health[index] -= takenDamage;
+        if (blockSoa.teamID[index] == shells.teamID[shell])
+            continue;
+        registerDamage(blockSoa.health[index], shells.restDamage[shell]);
     }
 }
 
