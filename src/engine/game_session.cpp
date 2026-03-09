@@ -15,7 +15,7 @@
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
     camera(world->getMap().getSize()), world(std::move(world)), gui(std::move(gui)), worldDrawer(assets), paused(paused),
-    timeCount(0, 10800) {
+    timeCount(0, 10800), builtInScripts(assets, *world) {
     prepare(assets.getPresets());
 }
 GameSession::~GameSession() = default;
@@ -69,7 +69,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     mobs::cleanupMobs(mobs, presets, playerController);
     blocks::cleanupBlocks(blocks);
     timeCount.update();
-    built_in_scripts::execute(engine);
+    builtInScripts.execute(timeCount);
 }
 
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {

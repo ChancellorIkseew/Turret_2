@@ -1,7 +1,20 @@
 #pragma once
+#include "engine/assets/preset_defs.hpp"
+#include "engine/coords/pixel_coord.hpp"
+#include "game/physics/physics_base.hpp"
 
-class Engine;
+class Assets;
+class TimeCount;
+class World;
 
-namespace built_in_scripts {
-    void execute(Engine& engine);
-}
+class BuiltInScripts {
+    const Assets& assets;
+    World& world;
+public:
+    BuiltInScripts(const Assets& assets, World& world) : assets(assets), world(world) { }
+
+    void execute(const TimeCount& timeCount);
+    void spawnWave(const uint32_t wavenumber);
+
+    void spawnMob(const MobPresetID presetID, const PixelCoord position, const TeamID teamID);
+};

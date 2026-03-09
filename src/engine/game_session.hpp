@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "engine/audio/sound_queue.hpp"
+#include "game/built_in_scripts/built_in_scripts.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
 #include "game/world_drawer/world_drawer.hpp"
@@ -18,6 +19,7 @@ class GameSession {
     PlayerController playerController;
     WorldDrawer worldDrawer;
     SoundQueue worldSounds;
+    BuiltInScripts builtInScripts;
 
     TimeCount timeCount;
     int tickSpeed = 1;
