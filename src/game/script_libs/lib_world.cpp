@@ -29,14 +29,9 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
         logger.warning() << "Team with ID does not exist. TeamID: " << static_cast<int>(teamID);
         return;
     }
-    const Presets& presets = script_libs::assets->getPresets();
-    const MobPresetID presetID = presets.getMobID(presetName);
-    const MobPreset& preset = presets.getMob(presetID);
 
-    MotionData mData(preset.defaultMovingAI, 0, PixelCoord(400, 1000));
-    ShootingData sData(preset.defaultShootingAI, false, PixelCoord(0, 0));
-    script_libs::world->getMobs().addMob(presetID, preset.turret, PixelCoord(x, y), 0.f, preset.maxHealth, teamID,
-        preset.hitboxRadius, mData, sData, presets.getTurret(preset.turret).reload, 0.f);
+    const MobPresetID presetID = script_libs::assets->getPresets().getMobID(presetName);
+    script_libs::builtInScripts->spawnMob(presetID, { x, y }, teamID);
 }
 
 static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TeamID teamID) {

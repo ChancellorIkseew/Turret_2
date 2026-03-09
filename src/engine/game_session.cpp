@@ -2,7 +2,6 @@
 //
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
-#include "game/built_in_scripts/built_in_scripts.hpp"
 #include "game/particles/particles_system.hpp"
 #include "game/physics/ai_system.hpp"
 #include "game/physics/mobs_system.hpp"
@@ -15,7 +14,7 @@
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
     camera(world->getMap().getSize()), world(std::move(world)), gui(std::move(gui)), worldDrawer(assets), paused(paused),
-    timeCount(0, 10800), builtInScripts(assets, *world) {
+    timeCount(0, 10800), builtInScripts(assets, *this->world) {
     prepare(assets.getPresets());
 }
 GameSession::~GameSession() = default;

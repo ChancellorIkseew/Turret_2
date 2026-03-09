@@ -24,6 +24,7 @@ namespace script_libs {
     inline Input*  input;
     inline World*  world;
     inline PlayerController* playerController;
+    inline BuiltInScripts* builtInScripts;
 
     inline void initNewGame(Engine& engine) {
         assets = &engine.getAssets();
@@ -32,6 +33,7 @@ namespace script_libs {
         input  = &engine.getMainWindow().getInput();
         world  = &engine.getSession().getWorld();
         playerController = &engine.getSession().getPlayerController();
+        builtInScripts   = &engine.getSession().getBuiltInScripts();
     }
 
     [[noreturn]] inline void logAndThrow(const std::string& message) noexcept(false) {

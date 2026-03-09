@@ -42,6 +42,7 @@ public:
     bool isPaused() const { return paused; }
     int getTickSpeed() const { return tickSpeed; }
     const TimeCount& getTimeCount() { return timeCount; }
+    BuiltInScripts& getBuiltInScripts() { return builtInScripts; }
 private:
     void prepare(const Presets& presets);
     void updateSimulation(const Presets& presets, Engine& engine);

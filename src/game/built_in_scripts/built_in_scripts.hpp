@@ -17,4 +17,6 @@ public:
     void spawnWave(const uint32_t wavenumber);
 
     void spawnMob(const MobPresetID presetID, const PixelCoord position, const TeamID teamID);
+private:
+    t1_disable_copy_and_move(BuiltInScripts)
 };
