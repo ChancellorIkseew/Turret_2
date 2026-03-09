@@ -47,8 +47,11 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
                 continue;
             if (blockSoa.archetype[blocks.at(x, y)] == BlockArchetype::air)
                 continue;
+            if (blockSoa.teamID[blocks.at(x, y)] == teamID)
+                continue;
             soa.shootingData[index].isShooting = true;
             soa.shootingData[index].target = blockCenter;
+            return;
         }
     }
 }

@@ -13,7 +13,7 @@ BlockManager::BlockManager(const TileCoord mapSize) : mapSize(mapSize) {
 }
 
 static uint32_t addTurret(const Presets& presets, const BlockPresetID preset,
-    TurretSoA& soa, const TileCoord tile, const TeamID teamID) {
+    TurretSoA& soa, const TileCoord tile, const TeamID teamID, const uint32_t ownerBlockIndex) {
 
     ShootingData sData(ShootingAI::basic, false, PixelCoord(0, 0));
     soa.position.push_back(t1::tileCenter(tile));
@@ -24,11 +24,12 @@ static uint32_t addTurret(const Presets& presets, const BlockPresetID preset,
     soa.restReloadTime.push_back(0);
     soa.currentBarrel.push_back(0);
     soa.turretAngle.push_back(0.0f);
-    return static_cast<uint32_t>(++soa.turretCount);
+    soa.ownerBlockIndex.push_back(static_cast<uint32_t>(ownerBlockIndex));
+    return static_cast<uint32_t>(soa.turretCount++);
 }
 
-static void removeTurret(const size_t index, TurretSoA& soa) {
-    const size_t last = soa.turretCount;
+static void removeTurret(const size_t index, TurretSoA& soa, CommonBlockSoA& commonSoa) {
+    const size_t last = --soa.turretCount;
 
     if (index != last) {
         soa.position[index] = std::move(soa.position[last]);
@@ -39,6 +40,8 @@ static void removeTurret(const size_t index, TurretSoA& soa) {
         soa.restReloadTime[index] = std::move(soa.restReloadTime[last]);
         soa.currentBarrel[index] = std::move(soa.currentBarrel[last]);
         soa.turretAngle[index] = std::move(soa.turretAngle[last]);
+        const uint32_t movedOwnerIdx = soa.ownerBlockIndex[index];
+        commonSoa.specializedSoaIndex[movedOwnerIdx] = static_cast<uint32_t>(index);
     }
 
     soa.position.pop_back();
@@ -49,8 +52,7 @@ static void removeTurret(const size_t index, TurretSoA& soa) {
     soa.restReloadTime.pop_back();
     soa.currentBarrel.pop_back();
     soa.turretAngle.pop_back();
-
-    --soa.turretCount;
+    soa.ownerBlockIndex.pop_back();
 }
 
 void BlockManager::addBlock(
@@ -66,7 +68,7 @@ void BlockManager::addBlock(
 
     uint32_t specializedSoaIndex = 0;
     if (archetype == BlockArchetype::turret)
-        specializedSoaIndex = addTurret(presets, preset, turretSoa, tile, teamID);
+        specializedSoaIndex = addTurret(presets, preset, turretSoa, tile, teamID, index);
 
     commonSoa.archetype[index] = archetype;
     commonSoa.specializedSoaIndex[index] = specializedSoaIndex;
@@ -77,7 +79,7 @@ void BlockManager::addBlock(
 
 void BlockManager::removeBlock(const size_t index) {
     if (commonSoa.archetype[index] == BlockArchetype::turret)
-        removeTurret(commonSoa.specializedSoaIndex[index], turretSoa);
+        removeTurret(commonSoa.specializedSoaIndex[index], turretSoa, commonSoa);
 
     commonSoa.archetype[index] = BlockArchetype::air;
     commonSoa.specializedSoaIndex[index] = 0;//?

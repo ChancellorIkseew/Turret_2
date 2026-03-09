@@ -26,6 +26,7 @@ struct TurretSoA {
     std::vector<TickCount> restReloadTime;
     std::vector<uint8_t> currentBarrel;
     std::vector<AngleRad> turretAngle;
+    std::vector<uint32_t> ownerBlockIndex;
     size_t turretCount = 0;
 };
 
