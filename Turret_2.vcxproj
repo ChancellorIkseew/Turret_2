@@ -67,6 +67,7 @@
     <ClInclude Include="src\engine\widgets\image_button.hpp" />
     <ClInclude Include="src\engine\widgets\label.hpp" />
     <ClInclude Include="src\engine\widgets\layout.hpp" />
+    <ClInclude Include="src\engine\widgets\main_canvas.hpp" />
     <ClInclude Include="src\engine\widgets\selector.hpp" />
     <ClInclude Include="src\engine\widgets\ui_context.hpp" />
     <ClInclude Include="src\engine\widgets\ui_defs.hpp" />

@@ -76,7 +76,7 @@ void Settings::applySettings(Engine& engine) {
     // "camera_inertia" not imlemented
     // "pause_on_world_open": implemented in engine.cpp
     // "show_hitboxes" implemented in mobs_system.cpp
-    GUI::loadLangTranslations(gui.lang);
+    // "lang" implemented in gui and main_canvas
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     debug::Console::setVisible(Settings::gui.showConsole);
 }

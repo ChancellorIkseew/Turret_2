@@ -10,14 +10,12 @@
 class GameplayGUI : public GUI {
 public:
     GameplayGUI(Engine& engine) : GUI(engine) {
-        containers.push_back(frontend::initTimer(engine));
-        GUI::relocateContainers();
-        GUI::translate();
+        mainCanvas.addContainer(frontend::initTimer(engine));
     }
     ~GameplayGUI() final = default;
 
     void callback() final {
-        if (input.jactive(Escape) && overlaped.empty())
+        if (input.jactive(Escape) && !mainCanvas.hasOverlaped())
             GUI::addOverlaped(frontend::initMenu(engine));
         else
             GUI::callback();
