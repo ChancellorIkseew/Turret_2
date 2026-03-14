@@ -1,6 +1,5 @@
 #pragma once
 #include "container.hpp"
-#include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 
 class MainCanvas {
@@ -10,9 +9,8 @@ class MainCanvas {
     PixelCoord windowSize;
     bool allwaysWithOverlay = false;
 public:
-    MainCanvas(const PixelCoord windowSize, const std::string& lang) :
-        windowSize(windowSize),
-        translations(tin::read(io::folders::LANG / (lang + ".tin"))) { }
+    MainCanvas(const PixelCoord windowSize, tin::Data&& translations) :
+        windowSize(windowSize), translations(translations) { }
 
     void addContainer(std::unique_ptr<Container> container) {
         container->translate(translations);
@@ -28,10 +26,8 @@ public:
     void update(UIContext& context) {
         if (!overlaped.empty()) {
             overlaped.back()->callback(context);
-            if (!overlaped.back()->isOpen()) {
-                if (!allwaysWithOverlay || overlaped.size() > 1)
-                    overlaped.pop_back();
-            }
+            if (!overlaped.back()->isOpen())
+                overlaped.pop_back();
             return; // Do not callback other containers.
         }
         for (const auto& it : containers) {
@@ -43,7 +39,7 @@ public:
         for (const auto& it : containers) {
             it->draw(renderer);
         }
-        if (!overlaped.empty())
+        if (hasOverlaped())
             overlaped.back()->draw(renderer);
     }
 
@@ -66,10 +62,10 @@ public:
         return false;
     }
 
-    void translate(const std::string& lang) {
-        translations = tin::read(io::folders::LANG / (lang + ".tin"));
-        for (auto& it : containers) it->translate(translations);
-        for (auto& it : overlaped)  it->translate(translations);
+    void translate(tin::Data&& translations) {
+        this->translations = std::move(translations);
+        for (auto& it : containers) it->translate(this->translations);
+        for (auto& it : overlaped)  it->translate(this->translations);
         relocateContainers(windowSize);
     }
 
@@ -79,7 +75,7 @@ public:
 
     ///@brief It is safe even there is no overlay.
     void closeLastOverlaped() {
-        if (!overlaped.empty())
+        if (hasOverlaped() && (!allwaysWithOverlay || overlaped.size() > 1))
             overlaped.back()->close();
     }
 private:

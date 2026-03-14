@@ -1,11 +1,10 @@
 #pragma once
-#include <memory>
-#include <vector>
-#include "engine/engine.hpp"
-#include "engine/settings/settings.hpp"
-#include "engine/widgets/container.hpp"
 #include "engine/widgets/main_canvas.hpp"
-#include "engine/widgets/ui_context.hpp"
+
+class Atlas;
+class Engine;
+class Input;
+class MainWindow;
 
 class GUI {
 protected:
@@ -15,10 +14,7 @@ protected:
     Input& input;
     bool showGUI = true, showFPS = false, showAtlas = false;
 public:
-    GUI(Engine& engine) : engine(engine),
-        mainWindow(engine.getMainWindow()),
-        mainCanvas(mainWindow.getSize(), Settings::gui.lang),
-        input(mainWindow.getInput()) { }
+    GUI(Engine& engine);
     virtual ~GUI() = default;
 
     void draw(const Renderer& renderer, const Atlas& atlas);

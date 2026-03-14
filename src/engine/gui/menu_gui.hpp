@@ -4,7 +4,6 @@
 #include "game/frontend/frontend.hpp"
 
 enum class EngineState : uint8_t;
-class Engine;
 
 class MenuGUI : public GUI {
 public:

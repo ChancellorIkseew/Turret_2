@@ -1,5 +1,6 @@
 #include "game_session.hpp"
 //
+#include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "game/particles/particles_system.hpp"

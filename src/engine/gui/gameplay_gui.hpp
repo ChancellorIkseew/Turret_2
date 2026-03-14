@@ -5,7 +5,6 @@
 #include "engine/game_session.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
-#include "game/world/world.hpp"
 
 class GameplayGUI : public GUI {
 public:

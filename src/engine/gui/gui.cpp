@@ -1,16 +1,24 @@
 #include "gui.hpp"
 //
 #include "engine/debug/console.hpp"
+#include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
+#include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
 #include "engine/render/text.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/util/time.hpp"
+#include "engine/widgets/ui_context.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
 
 constexpr uint32_t BLACK = 0x00'00'00'FF;
 constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
+
+GUI::GUI(Engine& engine) : engine(engine),
+mainWindow(engine.getMainWindow()),
+mainCanvas(mainWindow.getSize(), tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"))),
+input(mainWindow.getInput()) { }
 
 static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindow) {
     PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
@@ -34,7 +42,7 @@ void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
 }
 
 void GUI::translate(const std::string& lang) {
-    mainCanvas.translate(lang);
+    mainCanvas.translate(tin::read(io::folders::LANG / (lang + ".tin")));
 }
 
 void GUI::callback() {
