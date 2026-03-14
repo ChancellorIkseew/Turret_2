@@ -15,10 +15,10 @@ std::unique_ptr<Container> frontend::initMainMenu(Engine& engine) {
     auto settings  = menu->addNode(new Button(BTN_SIZE, U"Settings"));
     auto exit      = menu->addNode(new Button(BTN_SIZE, U"Exit game"));
     
-    startGame->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldProperties(engine)); });
-    loadGame ->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldLoading(engine)); });
+    startGame->addCallback([&] { engine.getGUI().addToOverlay(frontend::initWorldProperties(engine)); });
+    loadGame ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initWorldLoading(engine)); });
     editor   ->addCallback([&] { engine.createWorldInEditor(); });
-    settings ->addCallback([&] { engine.getGUI().addOverlaped(frontend::initSettings(engine)); });
+    settings ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initSettings(engine)); });
     exit     ->addCallback([&] { engine.closeGame(); });
     
     menu->arrange();

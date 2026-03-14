@@ -18,11 +18,11 @@ std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     auto language = settings->addNode(new Button(BTN_SIZE, U"Language"));
     
     back    ->addCallback([container = settings.get()] { container->close(); });
-    controls->addCallback([&] { engine.getGUI().addOverlaped(frontend::initControls(engine)); });
-    graphics->addCallback([&] { engine.getGUI().addOverlaped(frontend::initGraphics(engine)); });
-    audio   ->addCallback([&] { engine.getGUI().addOverlaped(frontend::initAudio(engine)); });
-    gui     ->addCallback([&] { engine.getGUI().addOverlaped(frontend::initGUI(engine)); });
-    language->addCallback([&] { engine.getGUI().addOverlaped(frontend::initLanguages(engine)); });
+    controls->addCallback([&] { engine.getGUI().addToOverlay(frontend::initControls(engine)); });
+    graphics->addCallback([&] { engine.getGUI().addToOverlay(frontend::initGraphics(engine)); });
+    audio   ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initAudio(engine)); });
+    gui     ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initGUI(engine)); });
+    language->addCallback([&] { engine.getGUI().addToOverlay(frontend::initLanguages(engine)); });
 
     settings->arrange();
     return settings;

@@ -8,13 +8,13 @@
 class EditorGUI : public GUI {
 public:
     EditorGUI(Engine& engine) : GUI(engine) {
-        mainCanvas.addContainer(frontend::initJEI(engine));
+        mainCanvas.addToMainLayer(frontend::initJEI(engine));
     }
     ~EditorGUI() final = default;
 
     void callback() final {
-        if (input.jactive(Escape) && !mainCanvas.hasOverlaped())
-            GUI::addOverlaped(frontend::initMenu(engine));
+        if (input.jactive(Escape) && !mainCanvas.hasOverlay())
+            GUI::addToOverlay(frontend::initMenu(engine));
         else
             GUI::callback();
     }

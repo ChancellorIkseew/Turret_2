@@ -53,8 +53,8 @@ void GUI::callback() {
     mainCanvas.update(context);
 }
 
-void GUI::addOverlaped(std::unique_ptr<Container> container) {
-    mainCanvas.addOverlaped(std::move(container));
+void GUI::addToOverlay(std::unique_ptr<Container> container) {
+    mainCanvas.addToOverlay(std::move(container));
 }
 
 void GUI::acceptHotkeys() {

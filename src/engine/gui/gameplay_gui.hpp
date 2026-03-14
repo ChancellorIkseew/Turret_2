@@ -9,13 +9,13 @@
 class GameplayGUI : public GUI {
 public:
     GameplayGUI(Engine& engine) : GUI(engine) {
-        mainCanvas.addContainer(frontend::initTimer(engine));
+        mainCanvas.addToMainLayer(frontend::initTimer(engine));
     }
     ~GameplayGUI() final = default;
 
     void callback() final {
-        if (input.jactive(Escape) && !mainCanvas.hasOverlaped())
-            GUI::addOverlaped(frontend::initMenu(engine));
+        if (input.jactive(Escape) && !mainCanvas.hasOverlay())
+            GUI::addToOverlay(frontend::initMenu(engine));
         else
             GUI::callback();
         if (input.jactive(Pause))

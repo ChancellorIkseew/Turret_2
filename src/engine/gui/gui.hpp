@@ -20,7 +20,7 @@ public:
     void draw(const Renderer& renderer, const Atlas& atlas);
     void translate(const std::string& lang);
     virtual void callback();
-    void addOverlaped(std::unique_ptr<Container> container);
+    void addToOverlay(std::unique_ptr<Container> container);
     bool ownsMouse() const;
 protected:
     void acceptHotkeys();

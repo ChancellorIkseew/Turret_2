@@ -15,8 +15,8 @@ std::unique_ptr<Container> frontend::initMenu(Engine& engine) {
     auto exit     = menu->addNode(new Button(BTN_SIZE, U"Exit to menu"));
 
     back    ->addCallback([container = menu.get()] { container->close(); });
-    save    ->addCallback([&] { engine.getGUI().addOverlaped(frontend::initWorldSaving(engine)); });
-    settings->addCallback([&] { engine.getGUI().addOverlaped(frontend::initSettings(engine)); });
+    save    ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initWorldSaving(engine)); });
+    settings->addCallback([&] { engine.getGUI().addToOverlay(frontend::initSettings(engine)); });
     exit    ->addCallback([&] { engine.openMainMenu(); });
 
     menu->arrange();
