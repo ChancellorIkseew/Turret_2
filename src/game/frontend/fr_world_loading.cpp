@@ -15,8 +15,6 @@ public:
         lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
         lower->addNode(new Button(BTN_SIZE, U"Load"))->addCallback([&] { saves->loadWorld(engine); });
         lower->addNode(new Button(BTN_SIZE, U"Delete"))->addCallback([&] { deleteWorld(); });
-
-        arrange();
     }
 private:
     void deleteWorld() {

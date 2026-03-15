@@ -24,6 +24,5 @@ std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     gui     ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initGUI(engine)); });
     language->addCallback([&] { engine.getGUI().addToOverlay(frontend::initLanguages(engine)); });
 
-    settings->arrange();
     return settings;
 }

@@ -25,7 +25,6 @@ public:
         time = addNode(new Label(U"", false));
         mobCount = addNode(new Label(U"", false));
         shellCount = addNode(new Label(U"", false));
-        arrange();
     }
 
     void callback(UIContext& context) final {

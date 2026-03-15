@@ -38,8 +38,6 @@ public:
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
         lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
-
-        arrange();
     }
 
     void applySettings(Engine& engine) {

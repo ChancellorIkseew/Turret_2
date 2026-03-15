@@ -14,13 +14,11 @@ public:
     }
 
     void addToMainLayer(std::unique_ptr<Container> container) {
-        container->translate(translations);
-        container->aplyAlignment(windowSize);
+        prepareContainer(container);
         mainLayer.push_back(std::move(container));
     }
     void addToOverlay(std::unique_ptr<Container> container) {
-        container->translate(translations);
-        container->aplyAlignment(windowSize);
+        prepareContainer(container);
         overlay.push_back(std::move(container));
     }
 
@@ -80,6 +78,11 @@ public:
             overlay.back()->close();
     }
 private:
+    void prepareContainer(std::unique_ptr<Container>& container) const {
+        container->arrange();
+        container->translate(translations);
+        container->aplyAlignment(windowSize);
+    }
     void relocateContainers(const PixelCoord windowSize) {
         for (const auto& it : mainLayer) it->aplyAlignment(windowSize);
         for (const auto& it : overlay)  it->aplyAlignment(windowSize);

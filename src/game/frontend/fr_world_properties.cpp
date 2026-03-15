@@ -36,7 +36,6 @@ public:
             frequency->addNode(new Form(f, new Int32Validator(0, 10000)));
             deposite->addNode(new Form(d, new Int32Validator(0, 100)));
         }
-        arrange();
     }
     //
     const OverlayPresets getPresets() {
@@ -79,8 +78,6 @@ public:
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
         lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { createWorld(engine); });
-
-        arrange();
     }
 private:
     void createWorld(Engine& engine) {

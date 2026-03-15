@@ -21,6 +21,5 @@ std::unique_ptr<Container> frontend::initMainMenu(Engine& engine) {
     settings ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initSettings(engine)); });
     exit     ->addCallback([&] { engine.closeGame(); });
     
-    menu->arrange();
     return menu;
 }

@@ -17,8 +17,6 @@ public:
         lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
         lower->addNode(new Button(BTN_SIZE, U"Save"))->addCallback([&] { saveWorld(engine); });
         worldName = lower->addNode(new Form());
-
-        arrange();
     }
 private:
     void saveWorld(Engine& engine) {

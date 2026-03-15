@@ -33,6 +33,5 @@ std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
             selector->setTarget(btn);
     }
 
-    languages->arrange();
     return languages;
 }

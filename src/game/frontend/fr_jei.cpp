@@ -34,7 +34,6 @@ public:
 
         if (btnsCount != 0)
             addNode(line.release());
-        arrange();
     }
 
     void addButton(const std::string& name, int id, TileComponent component, int& btnsCount, std::unique_ptr<Layout>& line) {

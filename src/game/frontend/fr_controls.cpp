@@ -35,8 +35,6 @@ public:
         lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
         //lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
         //lower->addNode(new Button(BTN_SIZE, U"Reset"))->addCallback([&] { reset(engine); });
-
-        arrange();
     }
 
     void targetBinding(Button* btn, const std::string& bindName) {
