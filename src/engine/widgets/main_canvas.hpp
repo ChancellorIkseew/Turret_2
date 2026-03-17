@@ -51,11 +51,11 @@ public:
         return !overlay.empty();
     }
 
-    bool ownsMouse(const Input& input) const {
+    bool ownsMouse(const PixelCoord mousePosition) const {
         if (hasOverlay())
             return true;
         for (const auto& it : mainLayer) {
-            if (it->containsMouse(input))
+            if (it->containsMouse(mousePosition))
                 return true;
         }
         return false;

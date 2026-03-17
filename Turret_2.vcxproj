@@ -69,6 +69,7 @@
     <ClInclude Include="src\engine\widgets\layout.hpp" />
     <ClInclude Include="src\engine\widgets\main_canvas.hpp" />
     <ClInclude Include="src\engine\widgets\selector.hpp" />
+    <ClInclude Include="src\engine\widgets\ui_config.hpp" />
     <ClInclude Include="src\engine\widgets\ui_context.hpp" />
     <ClInclude Include="src\engine\widgets\ui_defs.hpp" />
     <ClInclude Include="src\engine\widgets\ui_node.hpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="src\engine\widgets\label.cpp" />
     <ClCompile Include="src\engine\widgets\layout.cpp" />
     <ClCompile Include="src\engine\widgets\selector.cpp" />
+    <ClCompile Include="src\engine\widgets\ui_context.cpp" />
     <ClCompile Include="src\engine\widgets\ui_node.cpp" />
     <ClCompile Include="src\engine\window\cursor.cpp" />
     <ClCompile Include="src\engine\window\input\controls.cpp" />

@@ -315,6 +315,9 @@
     <ClInclude Include="src\engine\widgets\main_canvas.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\widgets\ui_config.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">
@@ -579,6 +582,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\blocks\block_archetype.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\widgets\ui_context.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

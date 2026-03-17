@@ -22,14 +22,14 @@ public:
     virtual void translate(const tin::Data& translations) { }
     virtual void callback(UIContext& context) = 0;
     //
-    PixelCoord getPosition() const { return position; }
-    PixelCoord getSize() const { return size; }
+    PixelCoord getPosition() const noexcept { return position; }
+    PixelCoord getSize() const noexcept { return size; }
     virtual void setPosition(const PixelCoord position) { this->position = position; }
     void setSize(const PixelCoord size) { this->size = size; }
     void setColor(const UIColor color) { this->color = color; }
-    bool containsMouse(const Input& input) const;
+    bool containsMouse(const PixelCoord mousePosition) const noexcept;
 private:
-    t1_disable_copy_and_move(Node)
+    MINGUI_DISABLE_COPY_AND_MOVE(Node)
 };
 
 template<typename T>

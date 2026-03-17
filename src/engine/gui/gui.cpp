@@ -87,5 +87,6 @@ void GUI::acceptHotkeys() {
 }
 
 bool GUI::ownsMouse() const {
-    return mainCanvas.ownsMouse(input);
+    UIContext context(engine.getAssets().getAudio(), mainWindow.getCursor(), input);
+    return mainCanvas.ownsMouse(input.getMouseCoord());
 }

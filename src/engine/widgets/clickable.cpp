@@ -1,14 +1,13 @@
 #include "clickable.hpp"
 //
 #include "engine/audio/audio.hpp"
-#include "engine/window/input/input.hpp"
 
 static const std::string UI_ON_HOVER = "ui_on_hover";
 
 void Clickable::callback(UIContext& context) {
-    if (state == ButtonState::hover && !containsMouse(context.input))
+    if (context.idled(*this))
         setState(ButtonState::idle);
-    else if (state == ButtonState::idle && containsMouse(context.input)) {
+    else if (context.hovered(*this)) {
         setState(ButtonState::hover);
         context.audio.playUI(UI_ON_HOVER);
     }

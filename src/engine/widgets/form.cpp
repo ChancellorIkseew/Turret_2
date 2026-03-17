@@ -19,7 +19,7 @@ void Form::callback(UIContext& context) {
     Clickable::callback(context);
     Input& input = context.input;
     if (state == ButtonState::checked) {
-        if (!containsMouse(input) && context.input.jactive(LMB)) {
+        if (context.clickedOut(*this)) {
             if (validator)
                 validator->validateValue(text);
             setState(ButtonState::idle);
@@ -27,12 +27,10 @@ void Form::callback(UIContext& context) {
         else {
             carrigePosition = input.getTextEdit().getCarrigePosition();
             input.getTextEdit().edit(input, text, getSize(), getPosition(), glyphSize.x, validator);
-        }    
-    }
-    else {
-        if (containsMouse(input) && input.jactive(LMB)) {
-            setState(ButtonState::checked);
-            input.getTextEdit().moveCarriageToCursor(input, text, getPosition(), glyphSize.x);
         }
+    }
+    else if (context.clicked(*this)) {
+        setState(ButtonState::checked);
+        input.getTextEdit().moveCarriageToCursor(input, text, getPosition(), glyphSize.x);
     }
 }

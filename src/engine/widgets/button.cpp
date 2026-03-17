@@ -1,10 +1,8 @@
 #include "button.hpp"
-//
-#include "engine/window/input/input.hpp"
 
 void Button::callback(UIContext& context) {
     Clickable::callback(context);
-    if (containsMouse(context.input) && action && context.input.jactive(LMB))
+    if (context.clicked(*this) && action)
         action();
 }
 
