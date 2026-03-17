@@ -2,12 +2,12 @@
 //
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/io/parser/validator.hpp"
-#include "engine/render/text.hpp"
+#include "render/ui_render.hpp"
 
 MINGUI
 
-void Label::draw(const Renderer& renderer) {
-    text::drawString(renderer, visibleText, getPosition());
+void Label::draw(RenderQueue& queue) {
+    queue.add(getPosition(), visibleText);
 }
 
 void Label::translate(const tin::Data& translations) {

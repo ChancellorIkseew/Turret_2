@@ -1,19 +1,18 @@
 #include "form.hpp"
 //
-#include "engine/render/renderer.hpp"
-#include "engine/render/text.hpp"
+#include "render/ui_render.hpp"
 #include "engine/window/input/input.hpp"
 
 MINGUI
 
-void Form::draw(const Renderer& renderer) {
-    Node::draw(renderer);
-    text::drawString(renderer, text, getPosition());
+void Form::draw(RenderQueue& queue) {
+    Node::draw(queue);
+    queue.add(getPosition(), text);
     if (state == ButtonState::checked) {
         auto position = getPosition();
         position.x += static_cast<float>(carrigePosition) * (glyphSize.x / 2.0f);
         position.y += 1.0f;
-        renderer.drawRect(static_cast<uint32_t>(UIColor::carrige), position, Point(1.0f, glyphSize.y));
+        queue.add(position, Point(1.0f, glyphSize.y), static_cast<uint32_t>(UIColor::carrige));
     }
 }
 

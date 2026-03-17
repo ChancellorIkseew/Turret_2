@@ -13,7 +13,7 @@ public:
         Node(size), texture(texture) { }
     ~ImageButton() final = default;
     //
-    void draw(const Renderer& renderer) final;
+    void draw(RenderQueue& queue) final;
     void callback(UIContext& context) final;
     void addCallback(std::function<void()> action) {
         this->action = action;

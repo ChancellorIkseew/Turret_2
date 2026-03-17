@@ -22,7 +22,7 @@ public:
     Form(const PixelCoord size = DEFAULT_FORM_SIZE)                      : Clickable(size) { }
     ~Form() final = default;
 
-    void draw(const Renderer& renderer) final;
+    void draw(RenderQueue& queue) final;
     void callback(UIContext& context) final;
     void setGlyphSize(const PixelCoord size) { glyphSize = size; }
     const std::u32string& getText() const { return text; }

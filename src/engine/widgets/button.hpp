@@ -13,7 +13,7 @@ public:
         : Clickable(size), label(name, translateble) { }
     ~Button() final = default;
     //
-    void draw(const Renderer& renderer) final;
+    void draw(RenderQueue& queue) final;
     void callback(UIContext& context) final;
     void setPosition(const Point position) final;
     void setText(const std::u32string& name);

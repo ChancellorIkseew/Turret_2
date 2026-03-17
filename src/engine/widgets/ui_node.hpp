@@ -1,13 +1,13 @@
 #pragma once
 #include <type_traits>
-#include "config.hpp"
 #include "ui_context.hpp"
 #include "ui_defs.hpp"
 
 namespace tin { class Data; }
-class Renderer;
 
 START_NAMESPACE_MINGUI
+
+class RenderQueue;
 
 class Node {
     UIColor color = UIColor::non_interactive;
@@ -19,7 +19,7 @@ public:
     Node() = default;
     virtual ~Node() = default;
     //
-    virtual void draw(const Renderer& renderer);
+    virtual void draw(RenderQueue& queue);
     virtual void translate(const tin::Data& translations) { }
     virtual void callback(UIContext& context) = 0;
     //

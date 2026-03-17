@@ -23,7 +23,7 @@ public:
         return node;
     }
     void arrange();
-    void draw(const Renderer& renderer) final;
+    void draw(RenderQueue& queue) final;
     void clear() { contents.clear(); }
     void setMargin(const float margin) { this->margin = margin; }
     void setPadding(const float padding) { this->padding = padding; }

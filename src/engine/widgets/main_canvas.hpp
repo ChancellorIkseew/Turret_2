@@ -1,10 +1,12 @@
 #pragma once
 #include "container.hpp"
 #include "engine/io/parser/tin_parser.hpp"
+#include "render/ui_render.hpp"
 
 START_NAMESPACE_MINGUI
 
 class MainCanvas {
+    RenderQueue renderQueue;
     std::vector<std::unique_ptr<Container>> mainLayer;
     std::vector<std::unique_ptr<Container>> overlay;
     tin::Data translations;
@@ -41,10 +43,11 @@ public:
 
     void draw(const Renderer& renderer) {
         for (const auto& it : mainLayer) {
-            it->draw(renderer);
+            it->draw(renderQueue);
         }
         if (hasOverlay())
-            overlay.back()->draw(renderer);
+            overlay.back()->draw(renderQueue);
+        renderQueue.drawAndClear(renderer);
     }
 
     void resize(const float windowSizeX, const float windowSizeY) {

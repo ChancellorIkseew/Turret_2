@@ -318,6 +318,9 @@
     <ClInclude Include="src\engine\widgets\ui_config.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine\widgets\render\ui_render.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">
@@ -585,6 +588,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\widgets\ui_context.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\widgets\render\ui_render.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

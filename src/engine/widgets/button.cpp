@@ -8,9 +8,9 @@ void Button::callback(UIContext& context) {
         action();
 }
 
-void Button::draw(const Renderer& renderer) {
-    Node::draw(renderer);
-    label.draw(renderer);
+void Button::draw(RenderQueue& queue) {
+    Node::draw(queue);
+    label.draw(queue);
 }
 
 void Button::setPosition(const Point position) {

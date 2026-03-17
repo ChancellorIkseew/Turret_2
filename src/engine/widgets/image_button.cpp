@@ -4,8 +4,8 @@
 
 MINGUI
 
-void ImageButton::draw(const Renderer& renderer) {
-    renderer.drawFast(texture, getPosition(), getSize());
+void ImageButton::draw(RenderQueue& render) {
+    //renderer.drawFast(texture, getPosition(), getSize());
 }
 
 void ImageButton::callback(UIContext& context) {

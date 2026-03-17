@@ -1,11 +1,11 @@
 #include "ui_node.hpp"
 //
-#include "engine/render/renderer.hpp"
+#include "render/ui_render.hpp"
 
 MINGUI
 
-void Node::draw(const Renderer& renderer) {
-    renderer.drawRect(static_cast<uint32_t>(color), position, size);
+void Node::draw(RenderQueue& queue) {
+    queue.add(position, size, static_cast<uint32_t>(color));
 }
 
 bool Node::containsMouse(const Point mousePosition) const noexcept {

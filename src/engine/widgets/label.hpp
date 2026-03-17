@@ -19,7 +19,7 @@ public:
         resizeBy(text);
     }
     void resizeBy(const std::u32string& text);
-    void draw(const Renderer& renderer) final;
+    void draw(RenderQueue& queue) final;
     void translate(const tin::Data& translations) final;
     void callback(UIContext& context) final { };
 };

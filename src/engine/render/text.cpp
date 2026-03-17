@@ -38,7 +38,7 @@ static t1_finline void drawGlyph(const Renderer& renderer, char32_t symbol, cons
     renderer.drawFast(Texture(glyphRect), position, PixelCoord(GLYPH_SIZE, GLYPH_SIZE));
 }
 
-void text::drawString(const Renderer& renderer, const std::u32string& text, const PixelCoord position) {
+void text::drawString(const Renderer& renderer, const std::u32string_view text, const PixelCoord position) {
     PixelCoord glyphPosition = PixelCoord(t1::ceil(position));
     for (const auto it : text) {
         if (it != ' ')
