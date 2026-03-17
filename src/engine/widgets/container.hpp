@@ -12,7 +12,7 @@ public:
         Layout(orientation), align(align) { }
     ~Container() override = default;
     //
-    void aplyAlignment(const PixelCoord windowSize);
+    void aplyAlignment(const Point windowSize);
     //
     bool isOpen() const { return open; }
     void close() { open = false; }

@@ -7,7 +7,7 @@
 #include "engine/widgets/button.hpp"
 #include "game/world_saver/world_saver.hpp"
 
-constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
+constexpr Point BTN_SIZE(120.0f, 30.0f);
 
 void FrSaves::update() {
     clear();

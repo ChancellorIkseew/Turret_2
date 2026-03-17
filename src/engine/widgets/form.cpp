@@ -13,7 +13,7 @@ void Form::draw(const Renderer& renderer) {
         auto position = getPosition();
         position.x += static_cast<float>(carrigePosition) * (glyphSize.x / 2.0f);
         position.y += 1.0f;
-        renderer.drawRect(static_cast<uint32_t>(UIColor::carrige), position, PixelCoord(1.0f, glyphSize.y));
+        renderer.drawRect(static_cast<uint32_t>(UIColor::carrige), position, Point(1.0f, glyphSize.y));
     }
 }
 

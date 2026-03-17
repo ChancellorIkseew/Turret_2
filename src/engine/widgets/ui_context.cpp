@@ -12,8 +12,6 @@ UIContext::UIContext(Audio& audio, Cursor& cursor, Input& input) :
 }
 
 bool UIContext::containsMouse(const Node& node) const noexcept {
-    auto start = node.getPosition();
-    auto end = start + node.getSize();
     return node.containsMouse(mousePosition);
 }
 

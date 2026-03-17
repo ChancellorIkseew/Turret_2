@@ -5,7 +5,7 @@
 #include "engine/widgets/checkbox.hpp"
 #include "engine/widgets/label.hpp"
 
-constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
+constexpr Point BTN_SIZE(120.0f, 30.0f);
 
 class FrGUI : public Container {
     Checkbox* customCursor;

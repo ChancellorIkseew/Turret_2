@@ -2,7 +2,7 @@
 
 MINGUI
 
-void Container::aplyAlignment(const PixelCoord windowSize) {
+void Container::aplyAlignment(const Point windowSize) {
     if (align == Align::none)
         return;
     //

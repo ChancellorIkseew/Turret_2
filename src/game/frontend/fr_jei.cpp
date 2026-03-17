@@ -8,7 +8,7 @@
 
 enum class TileComponent : uint8_t { floor, overlay, block };
 constexpr int ROW_SIZE = 6;
-constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
+constexpr Point BTN_SIZE(32.0f, 32.0f);
 
 struct TileData {
     TileComponent component = TileComponent::floor;

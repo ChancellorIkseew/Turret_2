@@ -8,8 +8,8 @@ class Clickable : public Node {
 protected:
     ButtonState state = ButtonState::idle;
 public:
-    Clickable(const PixelCoord size, const ButtonState state) : Node(size) { setState(state); }
-    Clickable(const PixelCoord size)                          : Node(size, UIColor::idle) { }
+    Clickable(const Point size, const ButtonState state) : Node(size) { setState(state); }
+    Clickable(const Point size)                          : Node(size, UIColor::idle) { }
     ~Clickable() override = default;
     //
     void callback(UIContext& context) override;

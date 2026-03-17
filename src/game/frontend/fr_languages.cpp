@@ -9,8 +9,8 @@
 #include "engine/widgets/selector.hpp"
 #include "engine/io/utf8/utf8.hpp"
 
-constexpr PixelCoord LANG_BTN_SIZE(110.0f, 30.0f);
-constexpr PixelCoord BACK_BTN_SIZE(120.0f, 30.0f);
+constexpr Point LANG_BTN_SIZE(110.0f, 30.0f);
+constexpr Point BACK_BTN_SIZE(120.0f, 30.0f);
 
 static void changeLang(Engine& engine, const std::string& lang) {
     Settings::gui.lang = lang;

@@ -11,10 +11,11 @@ START_NAMESPACE_MINGUI
 class Clickable;
 class Node;
 
-struct Point { float x, y; }; // replace PixelCoord with Point later
+//struct Point { float x = 0.0f, y = 0.0f; };
+using Point = PixelCoord;
 
 class UIContext {
-    PixelCoord mousePosition;
+    Point mousePosition;
     bool mouseClicked;
 public:
     Audio& audio;

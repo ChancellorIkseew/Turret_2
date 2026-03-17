@@ -3,7 +3,7 @@
 #include "engine/widgets/button.hpp"
 #include "layouts/l_saves.hpp"
 
-constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
+constexpr Point BTN_SIZE(120.0f, 30.0f);
 
 class FrWorldLoading : public Container{
     FrSaves* saves = nullptr;

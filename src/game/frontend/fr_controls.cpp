@@ -9,7 +9,7 @@
 #include "engine/window/input/input.hpp"
 
 constexpr uint32_t INPUT_RELOAD = 160U;
-constexpr PixelCoord BTN_SIZE(100.0f, 20.0f);
+constexpr Point BTN_SIZE(100.0f, 20.0f);
 
 class FrControls : public Container {
     Engine& engine;

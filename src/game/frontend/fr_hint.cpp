@@ -6,7 +6,7 @@
 #include "game/world/world.hpp"
 
 constexpr int ROW_SIZE = 6;
-constexpr PixelCoord BTN_SIZE(32.0f, 32.0f);
+constexpr Point BTN_SIZE(32.0f, 32.0f);
 
 std::unique_ptr<Container> frontend::initHint(Engine& engine) {
     auto hint = std::make_unique<Container>(Align::right | Align::down, Orientation::vertical);

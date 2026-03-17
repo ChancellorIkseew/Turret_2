@@ -10,8 +10,8 @@
 #include "game/world_saver/gen_preset_saver.hpp"
 
 constexpr uint64_t MAX_SEED = std::numeric_limits<uint64_t>::max();
-constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
-constexpr PixelCoord ICON_SIZE(0.0f, 20.0f);
+constexpr Point BTN_SIZE(120.0f, 30.0f);
+constexpr Point ICON_SIZE(0.0f, 20.0f);
 
 class OProps : public Layout {
     OverlayPresets overlayPresets;

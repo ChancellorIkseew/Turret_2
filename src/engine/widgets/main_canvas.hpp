@@ -8,11 +8,14 @@ class MainCanvas {
     std::vector<std::unique_ptr<Container>> mainLayer;
     std::vector<std::unique_ptr<Container>> overlay;
     tin::Data translations;
-    PixelCoord windowSize;
+    Point windowSize;
     bool allwaysWithOverlay = false;
 public:
-    MainCanvas(const PixelCoord windowSize, tin::Data&& translations) :
+    MainCanvas(const Point windowSize, tin::Data&& translations) :
         windowSize(windowSize), translations(std::move(translations)) {
+    }
+    MainCanvas(const float windowSizeX, const float windowSizeY, tin::Data&& translations) :
+        windowSize({ windowSizeX, windowSizeY }), translations(std::move(translations)) {
     }
 
     void addToMainLayer(std::unique_ptr<Container> container) {
@@ -44,7 +47,10 @@ public:
             overlay.back()->draw(renderer);
     }
 
-    void resize(const PixelCoord windowSize) {
+    void resize(const float windowSizeX, const float windowSizeY) {
+        relocateContainers({ windowSizeX, windowSizeY});
+    }
+    void resize(const Point windowSize) {
         this->windowSize = windowSize;
         relocateContainers(windowSize);
     }
@@ -53,7 +59,10 @@ public:
         return !overlay.empty();
     }
 
-    bool ownsMouse(const PixelCoord mousePosition) const {
+    bool ownsMouse(const float mousePositionX, const float mousePositionY) const {
+        return ownsMouse({ mousePositionX , mousePositionY });
+    }
+    bool ownsMouse(const Point mousePosition) const {
         if (hasOverlay())
             return true;
         for (const auto& it : mainLayer) {
@@ -85,7 +94,7 @@ private:
         container->translate(translations);
         container->aplyAlignment(windowSize);
     }
-    void relocateContainers(const PixelCoord windowSize) {
+    void relocateContainers(const Point windowSize) {
         for (const auto& it : mainLayer) it->aplyAlignment(windowSize);
         for (const auto& it : overlay)  it->aplyAlignment(windowSize);
     }

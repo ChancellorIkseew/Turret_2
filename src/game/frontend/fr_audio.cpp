@@ -7,8 +7,8 @@
 #include "engine/widgets/form.hpp"
 #include "engine/widgets/label.hpp"
 
-constexpr PixelCoord BTN_SIZE(120.0f, 30.0f);
-constexpr PixelCoord FORM_SIZE(28.0f, 20.0f);
+constexpr Point BTN_SIZE(120.0f, 30.0f);
+constexpr Point FORM_SIZE(28.0f, 20.0f);
 
 class FrAudio : public Container {
     Form* master;

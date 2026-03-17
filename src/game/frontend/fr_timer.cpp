@@ -8,7 +8,7 @@
 #include "game/world/world.hpp"
 #include "engine/util/time.hpp"
 
-constexpr PixelCoord BTN_SIZE(200.0f, 50.0f);
+constexpr Point BTN_SIZE(200.0f, 50.0f);
 
 class FrTimer : public Container {
     Engine& engine;
