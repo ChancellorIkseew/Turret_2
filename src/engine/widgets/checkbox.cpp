@@ -1,5 +1,7 @@
 #include "checkbox.hpp"
 
+MINGUI
+
 void Checkbox::callback(UIContext& context) {
     Clickable::callback(context);
     if (context.clicked(*this)) {

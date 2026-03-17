@@ -2,6 +2,8 @@
 #include "button.hpp"
 #include "layout.hpp"
 
+START_NAMESPACE_MINGUI
+
 class Selector : public Layout {
     std::weak_ptr<Button> target;
 public:
@@ -15,3 +17,5 @@ public:
 private:
     void setTarget(std::shared_ptr<Button> button);
 };
+
+END_NAMESPACE_MINGUI

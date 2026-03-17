@@ -2,6 +2,8 @@
 #include "container.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 
+START_NAMESPACE_MINGUI
+
 class MainCanvas {
     std::vector<std::unique_ptr<Container>> mainLayer;
     std::vector<std::unique_ptr<Container>> overlay;
@@ -88,3 +90,5 @@ private:
         for (const auto& it : overlay)  it->aplyAlignment(windowSize);
     }
 };
+
+END_NAMESPACE_MINGUI

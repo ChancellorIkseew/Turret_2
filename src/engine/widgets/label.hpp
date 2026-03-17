@@ -2,6 +2,8 @@
 #include <string>
 #include "ui_node.hpp"
 
+START_NAMESPACE_MINGUI
+
 class Label : public Node {
     std::u32string originalText, visibleText;
     const bool translatable;
@@ -21,3 +23,5 @@ public:
     void translate(const tin::Data& translations) final;
     void callback(UIContext& context) final { };
 };
+
+END_NAMESPACE_MINGUI

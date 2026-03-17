@@ -3,6 +3,8 @@
 #include "clickable.hpp"
 #include "label.hpp"
 
+START_NAMESPACE_MINGUI
+
 class Button : public Clickable {
     std::function<void()> action;
     Label label;
@@ -25,3 +27,5 @@ public:
 private:
     void centerText();
 };
+
+END_NAMESPACE_MINGUI

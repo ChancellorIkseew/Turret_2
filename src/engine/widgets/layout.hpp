@@ -4,6 +4,8 @@
 #include "ui_defs.hpp"
 #include "ui_node.hpp"
 
+START_NAMESPACE_MINGUI
+
 class Layout : public Node {
     float padding = 3.0f;
     float margin = 5.0f;
@@ -44,3 +46,5 @@ private:
     void arrangeVertical();
     void arrangeHorizontal();
 };
+
+END_NAMESPACE_MINGUI

@@ -2,6 +2,8 @@
 //
 #include "engine/render/renderer.hpp"
 
+MINGUI
+
 void ImageButton::draw(const Renderer& renderer) {
     renderer.drawFast(texture, getPosition(), getSize());
 }

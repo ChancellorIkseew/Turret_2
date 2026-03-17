@@ -1,5 +1,8 @@
 #pragma once
 #include <cstdint>
+#include "ui_config.hpp"
+
+START_NAMESPACE_MINGUI
 
 using AlignType = uint8_t;
 
@@ -39,3 +42,5 @@ enum class UIColor : uint32_t {
     checked         = 0xA3'BC'C6'A0,
     carrige         = 0xFF'FF'FF'FF
 };
+
+END_NAMESPACE_MINGUI

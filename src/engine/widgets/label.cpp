@@ -4,6 +4,8 @@
 #include "engine/io/parser/validator.hpp"
 #include "engine/render/text.hpp"
 
+MINGUI
+
 void Label::draw(const Renderer& renderer) {
     text::drawString(renderer, visibleText, getPosition());
 }

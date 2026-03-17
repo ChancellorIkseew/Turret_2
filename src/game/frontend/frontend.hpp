@@ -6,6 +6,8 @@ struct TileData;
 struct ContentIndexes;
 class Engine;
 
+using namespace mingui;
+
 namespace frontend {
     std::unique_ptr<Container> initMainMenu(Engine& engine);
     std::unique_ptr<Container> initMenu(Engine& engine);

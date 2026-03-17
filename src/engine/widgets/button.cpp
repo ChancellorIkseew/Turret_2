@@ -1,5 +1,7 @@
 #include "button.hpp"
 
+MINGUI
+
 void Button::callback(UIContext& context) {
     Clickable::callback(context);
     if (context.clicked(*this) && action)

@@ -2,6 +2,8 @@
 #include "ui_defs.hpp"
 #include "ui_node.hpp"
 
+START_NAMESPACE_MINGUI
+
 class Clickable : public Node {
 protected:
     ButtonState state = ButtonState::idle;
@@ -14,3 +16,5 @@ public:
     void setState(const ButtonState newState);
     const ButtonState getState() const { return state; }
 };
+
+END_NAMESPACE_MINGUI

@@ -3,6 +3,8 @@
 #include "clickable.hpp"
 #include "engine/window/input/input.hpp"
 
+MINGUI
+
 UIContext::UIContext(Audio& audio, Cursor& cursor, Input& input) :
     audio(audio), cursor(cursor), input(input) {
     mouseClicked = input.jactive(LMB);

@@ -4,6 +4,8 @@
 #include "engine/render/text.hpp"
 #include "engine/window/input/input.hpp"
 
+MINGUI
+
 void Form::draw(const Renderer& renderer) {
     Node::draw(renderer);
     text::drawString(renderer, text, getPosition());

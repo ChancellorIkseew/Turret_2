@@ -49,11 +49,11 @@ void GUI::callback() {
     acceptHotkeys();
     if (!showGUI)
         return;
-    UIContext context(engine.getAssets().getAudio(), mainWindow.getCursor(), input);
+    mingui::UIContext context(engine.getAssets().getAudio(), mainWindow.getCursor(), input);
     mainCanvas.update(context);
 }
 
-void GUI::addToOverlay(std::unique_ptr<Container> container) {
+void GUI::addToOverlay(std::unique_ptr<mingui::Container> container) {
     mainCanvas.addToOverlay(std::move(container));
 }
 
@@ -87,6 +87,5 @@ void GUI::acceptHotkeys() {
 }
 
 bool GUI::ownsMouse() const {
-    UIContext context(engine.getAssets().getAudio(), mainWindow.getCursor(), input);
     return mainCanvas.ownsMouse(input.getMouseCoord());
 }

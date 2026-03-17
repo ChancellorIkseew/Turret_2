@@ -2,6 +2,8 @@
 #include "layout.hpp"
 #include "ui_defs.hpp"
 
+START_NAMESPACE_MINGUI
+
 class Container : public Layout {
     Align align;
     bool open = true;
@@ -15,3 +17,5 @@ public:
     bool isOpen() const { return open; }
     void close() { open = false; }
 };
+
+END_NAMESPACE_MINGUI

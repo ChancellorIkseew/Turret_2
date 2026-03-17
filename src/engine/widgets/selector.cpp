@@ -2,6 +2,8 @@
 //
 #include "button.hpp"
 
+MINGUI
+
 void Selector::callback(UIContext& context) {
     for (auto& it : contents) {
         it->callback(context);

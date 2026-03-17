@@ -3,14 +3,15 @@
 #include "engine/coords/pixel_coord.hpp" //temporary
 
 class Audio;
-class Clickable;
 class Cursor;
 class Input;
-class Node;
 
 START_NAMESPACE_MINGUI
+
+class Clickable;
+class Node;
+
 struct Point { float x, y; }; // replace PixelCoord with Point later
-END_NAMESPACE_MINGUI
 
 class UIContext {
     PixelCoord mousePosition;
@@ -27,3 +28,5 @@ public:
     bool clicked(const Node& node)       const noexcept;
     bool clickedOut(const Node& node)    const noexcept;
 };
+
+END_NAMESPACE_MINGUI

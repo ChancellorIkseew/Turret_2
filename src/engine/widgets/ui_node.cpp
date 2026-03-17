@@ -2,6 +2,8 @@
 //
 #include "engine/render/renderer.hpp"
 
+MINGUI
+
 void Node::draw(const Renderer& renderer) {
     renderer.drawRect(static_cast<uint32_t>(color), position, size);
 }

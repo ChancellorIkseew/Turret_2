@@ -1,5 +1,7 @@
 #include "layout.hpp"
 
+MINGUI
+
 void Layout::arrange() {
     if (orientation == Orientation::vertical)
         arrangeVertical();

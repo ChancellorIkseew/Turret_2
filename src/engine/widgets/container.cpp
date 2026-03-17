@@ -1,5 +1,7 @@
 #include "container.hpp"
 
+MINGUI
+
 void Container::aplyAlignment(const PixelCoord windowSize) {
     if (align == Align::none)
         return;

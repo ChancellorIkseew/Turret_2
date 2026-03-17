@@ -8,6 +8,8 @@
 namespace tin { class Data; }
 class Renderer;
 
+START_NAMESPACE_MINGUI
+
 class Node {
     UIColor color = UIColor::non_interactive;
     PixelCoord size, position;
@@ -34,3 +36,5 @@ private:
 
 template<typename T>
 concept DerivedFromNode = std::is_base_of_v<Node, T>;
+
+END_NAMESPACE_MINGUI

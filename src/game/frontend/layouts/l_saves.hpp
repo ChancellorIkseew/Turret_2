@@ -4,6 +4,8 @@
 
 class Engine;
 
+using namespace mingui;
+
 class FrSaves final : public Selector {
     std::string targetFolder;
 public:

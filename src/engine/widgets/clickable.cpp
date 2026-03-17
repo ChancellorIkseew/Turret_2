@@ -2,6 +2,8 @@
 //
 #include "engine/audio/audio.hpp"
 
+MINGUI
+
 static const std::string UI_ON_HOVER = "ui_on_hover";
 
 void Clickable::callback(UIContext& context) {

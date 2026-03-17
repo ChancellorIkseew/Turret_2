@@ -3,6 +3,8 @@
 #include "engine/render/texture.hpp"
 #include "ui_node.hpp"
 
+START_NAMESPACE_MINGUI
+
 class ImageButton : public Node {
     std::function<void()> action;
     Texture texture;
@@ -17,3 +19,5 @@ public:
         this->action = action;
     }
 };
+
+END_NAMESPACE_MINGUI

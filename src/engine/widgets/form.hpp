@@ -5,6 +5,8 @@
 #include "engine/io/utf8/utf8.hpp"
 #include "engine/widgets/form_validator/form_validator.hpp"
 
+START_NAMESPACE_MINGUI
+
 class Form : public Clickable {
     static constexpr PixelCoord DEFAULT_FORM_SIZE{100.0f, 20.0f};
     std::u32string text;
@@ -26,3 +28,5 @@ public:
     const std::u32string& getText() const { return text; }
     std::u32string& getText() { return text; }
 };
+
+END_NAMESPACE_MINGUI
