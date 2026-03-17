@@ -1,5 +1,6 @@
 #include "gui.hpp"
 //
+#include "MINGUI/core/ui_context.hpp"
 #include "engine/debug/console.hpp"
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
@@ -8,7 +9,6 @@
 #include "engine/render/text.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/util/time.hpp"
-#include "engine/widgets/ui_context.hpp"
 #include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
 

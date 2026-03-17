@@ -1,4 +1,4 @@
-#include "button.hpp"
+#include "MINGUI/widgets/button.hpp"
 
 MINGUI
 

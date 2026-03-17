@@ -1,7 +1,7 @@
 #include "text_edit.hpp"
 //
 #include <SDL3/SDL_keyboard.h>
-#include "engine/widgets/form_validator/form_validator.hpp"
+#include "MINGUI/validator/form_validator.hpp"
 #include "engine/window/input/input.hpp"
 
 constexpr int INPUT_RELOAD = 120;

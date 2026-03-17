@@ -1,7 +1,7 @@
 #pragma once
 #include <type_traits>
-#include "ui_context.hpp"
-#include "ui_defs.hpp"
+#include "MINGUI/core/ui_context.hpp"
+#include "MINGUI/core/ui_defs.hpp"
 
 namespace tin { class Data; }
 

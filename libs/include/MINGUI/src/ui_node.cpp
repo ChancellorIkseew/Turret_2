@@ -1,6 +1,6 @@
-#include "ui_node.hpp"
+#include "MINGUI/widgets/ui_node.hpp"
 //
-#include "render/ui_render.hpp"
+#include "MINGUI/render/ui_render.hpp"
 
 MINGUI
 

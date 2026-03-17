@@ -1,9 +1,9 @@
 #include "frontend.hpp"
 //
+#include "MINGUI/widgets/button.hpp"
+#include "MINGUI/widgets/layout.hpp"
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
-#include "engine/widgets/button.hpp"
-#include "engine/widgets/layout.hpp"
 
 constexpr Point BTN_SIZE(200.0f, 50.0f);
 

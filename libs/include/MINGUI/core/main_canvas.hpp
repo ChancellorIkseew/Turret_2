@@ -1,7 +1,7 @@
 #pragma once
-#include "container.hpp"
 #include "engine/io/parser/tin_parser.hpp"
-#include "render/ui_render.hpp"
+#include "MINGUI/render/ui_render.hpp"
+#include "MINGUI/widgets/container.hpp"
 
 START_NAMESPACE_MINGUI
 

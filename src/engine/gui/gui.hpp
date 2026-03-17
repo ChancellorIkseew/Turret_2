@@ -1,5 +1,5 @@
 #pragma once
-#include "engine/widgets/main_canvas.hpp"
+#include "MINGUI/core/main_canvas.hpp"
 
 class Atlas;
 class Engine;

@@ -1,7 +1,7 @@
 #include "frontend.hpp"
 //
+#include "MINGUI/widgets/label.hpp"
 #include "engine/engine.hpp"
-#include "engine/widgets/label.hpp"
 #include "engine/io/utf8/utf8.hpp"
 #include "game/world/world.hpp"
 

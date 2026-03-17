@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "engine/widgets/selector.hpp"
+#include "MINGUI/widgets/selector.hpp"
 
 class Engine;
 

@@ -1,10 +1,10 @@
 #include "frontend.hpp"
 //
+#include "MINGUI/widgets/button.hpp"
+#include "MINGUI/widgets/label.hpp"
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/io/utf8/utf8.hpp"
-#include "engine/widgets/button.hpp"
-#include "engine/widgets/label.hpp"
 #include "game/world/world.hpp"
 #include "engine/util/time.hpp"
 

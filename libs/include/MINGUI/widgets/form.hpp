@@ -3,7 +3,7 @@
 #include <string>
 #include "clickable.hpp"
 #include "engine/io/utf8/utf8.hpp"
-#include "engine/widgets/form_validator/form_validator.hpp"
+#include "MINGUI/validator/form_validator.hpp"
 
 START_NAMESPACE_MINGUI
 

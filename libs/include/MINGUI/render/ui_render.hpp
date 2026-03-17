@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string_view>
-#include "../ui_context.hpp"
+#include "MINGUI/core/ui_context.hpp"
 
 class Renderer;
 

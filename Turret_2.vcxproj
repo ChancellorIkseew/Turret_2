@@ -19,6 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="libs\include\MINGUI\core\main_canvas.hpp" />
+    <ClInclude Include="libs\include\MINGUI\core\ui_config.hpp" />
+    <ClInclude Include="libs\include\MINGUI\core\ui_context.hpp" />
+    <ClInclude Include="libs\include\MINGUI\core\ui_defs.hpp" />
+    <ClInclude Include="libs\include\MINGUI\render\ui_render.hpp" />
+    <ClInclude Include="libs\include\MINGUI\validator\form_validator.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\button.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\checkbox.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\clickable.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\container.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\form.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\image_button.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\label.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\layout.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\selector.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\ui_node.hpp" />
     <ClInclude Include="src\config.hpp" />
     <ClInclude Include="src\engine\assets\assets.hpp" />
     <ClInclude Include="src\engine\assets\indexes.hpp" />
@@ -58,22 +74,6 @@
     <ClInclude Include="src\engine\time_count.hpp" />
     <ClInclude Include="src\engine\util\time.hpp" />
     <ClInclude Include="src\engine\util\sleep.hpp" />
-    <ClInclude Include="src\engine\widgets\button.hpp" />
-    <ClInclude Include="src\engine\widgets\checkbox.hpp" />
-    <ClInclude Include="src\engine\widgets\clickable.hpp" />
-    <ClInclude Include="src\engine\widgets\container.hpp" />
-    <ClInclude Include="src\engine\widgets\form.hpp" />
-    <ClInclude Include="src\engine\widgets\form_validator\form_validator.hpp" />
-    <ClInclude Include="src\engine\widgets\image_button.hpp" />
-    <ClInclude Include="src\engine\widgets\label.hpp" />
-    <ClInclude Include="src\engine\widgets\layout.hpp" />
-    <ClInclude Include="src\engine\widgets\main_canvas.hpp" />
-    <ClInclude Include="src\engine\widgets\render\ui_render.hpp" />
-    <ClInclude Include="src\engine\widgets\selector.hpp" />
-    <ClInclude Include="src\engine\widgets\ui_config.hpp" />
-    <ClInclude Include="src\engine\widgets\ui_context.hpp" />
-    <ClInclude Include="src\engine\widgets\ui_defs.hpp" />
-    <ClInclude Include="src\engine\widgets\ui_node.hpp" />
     <ClInclude Include="src\engine\window\cursor.hpp" />
     <ClInclude Include="src\engine\window\input\binding.hpp" />
     <ClInclude Include="src\engine\window\input\controls.hpp" />
@@ -123,6 +123,19 @@
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="libs\include\MINGUI\src\button.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\checkbox.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\clickable.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\container.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\form.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\form_validator.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\image_button.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\label.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\layout.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\selector.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\ui_context.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\ui_node.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\ui_render.cpp" />
     <ClCompile Include="src\engine\assets\assets.cpp" />
     <ClCompile Include="src\engine\assets\indexes.cpp" />
     <ClCompile Include="src\engine\assets\presets.cpp" />
@@ -147,19 +160,6 @@
     <ClCompile Include="src\engine\scripting\scripting.cpp" />
     <ClCompile Include="src\engine\settings\settings.cpp" />
     <ClCompile Include="src\engine\util\time.cpp" />
-    <ClCompile Include="src\engine\widgets\button.cpp" />
-    <ClCompile Include="src\engine\widgets\checkbox.cpp" />
-    <ClCompile Include="src\engine\widgets\clickable.cpp" />
-    <ClCompile Include="src\engine\widgets\container.cpp" />
-    <ClCompile Include="src\engine\widgets\form.cpp" />
-    <ClCompile Include="src\engine\widgets\form_validator\form_validator.cpp" />
-    <ClCompile Include="src\engine\widgets\image_button.cpp" />
-    <ClCompile Include="src\engine\widgets\label.cpp" />
-    <ClCompile Include="src\engine\widgets\layout.cpp" />
-    <ClCompile Include="src\engine\widgets\render\ui_render.cpp" />
-    <ClCompile Include="src\engine\widgets\selector.cpp" />
-    <ClCompile Include="src\engine\widgets\ui_context.cpp" />
-    <ClCompile Include="src\engine\widgets\ui_node.cpp" />
     <ClCompile Include="src\engine\window\cursor.cpp" />
     <ClCompile Include="src\engine\window\input\controls.cpp" />
     <ClCompile Include="src\engine\window\input\default_bindings.cpp" />

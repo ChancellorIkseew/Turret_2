@@ -1,8 +1,8 @@
-#include "label.hpp"
+#include "MINGUI/widgets/label.hpp"
 //
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/io/parser/validator.hpp"
-#include "render/ui_render.hpp"
+#include "MINGUI/render/ui_render.hpp"
 
 MINGUI
 

@@ -1,6 +1,6 @@
-#include "form.hpp"
+#include "MINGUI/widgets/form.hpp"
 //
-#include "render/ui_render.hpp"
+#include "MINGUI/render/ui_render.hpp"
 #include "engine/window/input/input.hpp"
 
 MINGUI
