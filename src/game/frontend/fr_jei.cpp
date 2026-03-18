@@ -52,6 +52,7 @@ public:
 
     void callback(UIContext& context) override {
         Container::callback(context);
+        /*
         if (!context.input.active(Build) || engine.getGUI().ownsMouse())
             return;
         WorldMap& map = engine.getSession().getWorld().getMap();
@@ -61,6 +62,7 @@ public:
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
         case TileComponent::block: break;
         }
+        */
     }
 };
 

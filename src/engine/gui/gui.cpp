@@ -1,6 +1,5 @@
 #include "gui.hpp"
 //
-#include "MINGUI/core/ui_context.hpp"
 #include "engine/debug/console.hpp"
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
@@ -9,8 +8,8 @@
 #include "engine/render/text.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/util/time.hpp"
-#include "engine/window/input/input.hpp"
 #include "engine/window/window.hpp"
+#include "t1_ui_context.hpp"
 
 constexpr uint32_t BLACK = 0x00'00'00'FF;
 constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
@@ -49,7 +48,7 @@ void GUI::callback() {
     acceptHotkeys();
     if (!showGUI)
         return;
-    mingui::UIContext context(engine.getAssets().getAudio(), mainWindow.getCursor(), input);
+    T1_UIContext context(input, engine.getAssets().getAudio());
     mainCanvas.update(context);
 }
 

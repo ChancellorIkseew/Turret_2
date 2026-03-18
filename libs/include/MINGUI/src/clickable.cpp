@@ -1,25 +1,16 @@
 #include "MINGUI/widgets/clickable.hpp"
-//
-#include "engine/audio/audio.hpp"
 
 MINGUI
 
-static const std::string UI_ON_HOVER = "ui_on_hover";
-
 void Clickable::callback(UIContext& context) {
-    if (context.idled(*this))
+    if (context.idled(*this)) {
         setState(ButtonState::idle);
+        context.onIdled(*this);
+    }
     else if (context.hovered(*this)) {
         setState(ButtonState::hover);
-        context.audio.playUI(UI_ON_HOVER);
-    }
-}
-
-void Clickable::setState(const ButtonState newState) {
-    state = newState;
-    switch (state) {
-    case ButtonState::idle:    setColor(UIColor::idle);    break;
-    case ButtonState::hover:   setColor(UIColor::hover);   break;
-    case ButtonState::checked: setColor(UIColor::checked); break;
+        context.onHovered(*this);
+        if (context.clicked(*this))
+            context.onClicked(*this);
     }
 }

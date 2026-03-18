@@ -13,94 +13,29 @@ class MainCanvas {
     Point windowSize;
     bool allwaysWithOverlay = false;
 public:
-    MainCanvas(const Point windowSize, tin::Data&& translations) :
-        windowSize(windowSize), translations(std::move(translations)) {
-    }
-    MainCanvas(const float windowSizeX, const float windowSizeY, tin::Data&& translations) :
-        windowSize({ windowSizeX, windowSizeY }), translations(std::move(translations)) {
-    }
-
-    void addToMainLayer(std::unique_ptr<Container> container) {
-        prepareContainer(container);
-        mainLayer.push_back(std::move(container));
-    }
-    void addToOverlay(std::unique_ptr<Container> container) {
-        prepareContainer(container);
-        overlay.push_back(std::move(container));
-    }
-
-    void update(UIContext& context) {
-        if (!overlay.empty()) {
-            overlay.back()->callback(context);
-            if (!overlay.back()->isOpen())
-                overlay.pop_back();
-            return; // Do not callback other containers.
-        }
-        for (const auto& it : mainLayer) {
-            it->callback(context);
-        }
-    }
-
-    void draw(const Renderer& renderer) {
-        for (const auto& it : mainLayer) {
-            it->draw(renderQueue);
-        }
-        if (hasOverlay())
-            overlay.back()->draw(renderQueue);
-        renderQueue.drawAndClear(renderer);
-    }
-
-    void resize(const float windowSizeX, const float windowSizeY) {
-        relocateContainers({ windowSizeX, windowSizeY});
-    }
-    void resize(const Point windowSize) {
-        this->windowSize = windowSize;
-        relocateContainers(windowSize);
-    }
-
-    bool hasOverlay() const {
-        return !overlay.empty();
-    }
-
-    bool ownsMouse(const float mousePositionX, const float mousePositionY) const {
-        return ownsMouse({ mousePositionX , mousePositionY });
-    }
-    bool ownsMouse(const Point mousePosition) const {
-        if (hasOverlay())
-            return true;
-        for (const auto& it : mainLayer) {
-            if (it->containsMouse(mousePosition))
-                return true;
-        }
-        return false;
-    }
-
-    void translate(tin::Data&& translations) {
-        this->translations = std::move(translations);
-        for (auto& it : mainLayer) it->translate(this->translations);
-        for (auto& it : overlay)   it->translate(this->translations);
-        relocateContainers(windowSize);
-    }
-
-    void setAllwaysWithOverlay(const bool flag) {
-        allwaysWithOverlay = flag;
-    }
-
+    MainCanvas(const Point windowSize, tin::Data&& translations);
+    MainCanvas(const float windowSizeX, const float windowSizeY, tin::Data&& translations);
+    //
     ///@brief It is safe even there is no overlay.
-    void closeLastOverlaped() {
-        if (hasOverlay() && (!allwaysWithOverlay || overlay.size() > 1))
-            overlay.back()->close();
-    }
+    void closeLastOverlaped();
+    void addToMainLayer(std::unique_ptr<Container> container);
+    void addToOverlay(std::unique_ptr<Container> container);
+    //
+    void update(UIContextBridge& contextBridge);
+    void draw(const Renderer& renderer); //?
+    void translate(tin::Data&& translations);
+    //
+    void resize(const float windowSizeX, const float windowSizeY);
+    void resize(const Point windowSize);
+    //
+    bool ownsMouse(const float mousePositionX, const float mousePositionY) const;
+    bool ownsMouse(const Point mousePosition) const;
+    //
+    void setAllwaysWithOverlay(const bool flag) { allwaysWithOverlay = flag; }
+    bool hasOverlay() const { return !overlay.empty(); }
 private:
-    void prepareContainer(std::unique_ptr<Container>& container) const {
-        container->arrange();
-        container->translate(translations);
-        container->aplyAlignment(windowSize);
-    }
-    void relocateContainers(const Point windowSize) {
-        for (const auto& it : mainLayer) it->aplyAlignment(windowSize);
-        for (const auto& it : overlay)  it->aplyAlignment(windowSize);
-    }
+    void prepareContainer(std::unique_ptr<Container>& container) const;
+    void relocateContainers(const Point windowSize);
 };
 
 END_NAMESPACE_MINGUI

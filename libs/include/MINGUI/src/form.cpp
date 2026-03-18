@@ -18,7 +18,7 @@ void Form::draw(RenderQueue& queue) {
 
 void Form::callback(UIContext& context) {
     Clickable::callback(context);
-    Input& input = context.input;
+    //Input& input = context.input;
     if (state == ButtonState::checked) {
         if (context.clickedOut(*this)) {
             if (validator)
@@ -26,12 +26,12 @@ void Form::callback(UIContext& context) {
             setState(ButtonState::idle);
         }
         else {
-            carrigePosition = input.getTextEdit().getCarrigePosition();
-            input.getTextEdit().edit(input, text, getSize(), getPosition(), glyphSize.x, validator);
+            //carrigePosition = input.getTextEdit().getCarrigePosition();
+            //input.getTextEdit().edit(input, text, getSize(), getPosition(), glyphSize.x, validator);
         }
     }
     else if (context.clicked(*this)) {
         setState(ButtonState::checked);
-        input.getTextEdit().moveCarriageToCursor(input, text, getPosition(), glyphSize.x);
+        //input.getTextEdit().moveCarriageToCursor(input, text, getPosition(), glyphSize.x);
     }
 }

@@ -5,11 +5,10 @@
 
 MINGUI
 
-UIContext::UIContext(Audio& audio, Cursor& cursor, Input& input) :
-    audio(audio), cursor(cursor), input(input) {
-    mouseClicked = input.jactive(LMB);
-    mousePosition = { input.getMouseCoord().x, input.getMouseCoord().y };
-}
+UIContext::UIContext(UIContextBridge& contextBridge) :
+    mouseClicked(contextBridge.mouseClicked),
+    mousePosition(contextBridge.mousePosition),
+    contextBridge(contextBridge) { }
 
 bool UIContext::containsMouse(const Node& node) const noexcept {
     return node.containsMouse(mousePosition);

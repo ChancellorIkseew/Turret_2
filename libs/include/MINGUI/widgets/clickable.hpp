@@ -12,7 +12,7 @@ public:
     ~Clickable() override = default;
     //
     void callback(UIContext& context) override;
-    void setState(const ButtonState newState);
+    void setState(const ButtonState state) { this->state = state; };
     const ButtonState getState() const { return state; }
 };
 

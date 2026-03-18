@@ -47,6 +47,7 @@ public:
 
     void callback(UIContext& context) final {
         Container::callback(context);
+        /*
         if (inputReload > 0) {
             inputReload -= engine.getMainWindow().getRealFrameDelay();
             return;
@@ -57,6 +58,7 @@ public:
         Controls::rebind(bindName, context.input.getLastKeyPressed().value());
         bindings->getTarget().lock()->setText(U'[' + Controls::getKeyName(bindName) + U']');
         bindings->resetTarget();
+        */
     }
 };
 
