@@ -303,9 +303,6 @@
     <ClInclude Include="libs\include\MINGUI\widgets\ui_node.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="libs\include\MINGUI\validator\form_validator.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="libs\include\MINGUI\render\render_queue.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -337,6 +334,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\gui\t1_ui_renderer.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\include\MINGUI\core\form_validator.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\io\parser\form_validator.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -587,9 +590,6 @@
     <ClCompile Include="libs\include\MINGUI\src\form.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="libs\include\MINGUI\src\form_validator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\image_button.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -612,6 +612,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\main_canvas.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\io\parser\form_validator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,19 +1,19 @@
-#include "MINGUI/validator/form_validator.hpp"
+#include "form_validator.hpp"
 //
 #include <algorithm>
 #include "engine/io/parser/validator.hpp"
 #include "engine/io/utf8/utf8.hpp"
 
-static inline bool isNotUnsignedIntegral(const char32_t symbol) {
+static inline constexpr bool isNotUnsignedIntegral(const char32_t symbol) {
     return symbol < U'0' || symbol > U'9';
 }
-static inline bool isNotIntegral(const char32_t symbol) {
+static inline constexpr bool isNotIntegral(const char32_t symbol) {
     return isNotUnsignedIntegral(symbol) && symbol != U'-';
 }
-static inline bool isNotFloat(const char32_t symbol) {
+static inline constexpr bool isNotFloat(const char32_t symbol) {
     return isNotIntegral(symbol) && symbol != U'.';
 }
-static inline bool isNotANSI(const char32_t symbol) {
+static inline constexpr bool isNotANSI(const char32_t symbol) {
     return symbol < 0 || symbol > 255;
 }
 

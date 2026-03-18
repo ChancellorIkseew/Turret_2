@@ -1,6 +1,7 @@
 #pragma once
 #include "MINGUI/widgets/container.hpp"
 #include <memory>
+#include "engine/io/parser/form_validator.hpp"
 
 struct TileData;
 struct ContentIndexes;
