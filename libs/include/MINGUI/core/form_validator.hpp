@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include "ui_config.hpp"
+
+START_NAMESPACE_MINGUI
 
 struct Validator {
     Validator() = default;
@@ -9,3 +12,5 @@ struct Validator {
     virtual void validateText(std::u32string& text) const = 0;
     virtual void validateValue(std::u32string& text) const = 0;
 };
+
+END_NAMESPACE_MINGUI
