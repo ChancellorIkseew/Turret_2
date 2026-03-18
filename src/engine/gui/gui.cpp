@@ -10,6 +10,7 @@
 #include "engine/util/time.hpp"
 #include "engine/window/window.hpp"
 #include "t1_ui_context.hpp"
+#include "t1_ui_renderer.hpp"
 
 constexpr uint32_t BLACK = 0x00'00'00'FF;
 constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
@@ -32,8 +33,10 @@ void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
     if (mainWindow.justResized())
         mainCanvas.resize(mainWindow.getSize().x, mainWindow.getSize().y);
     //
-    if (showGUI)
-        mainCanvas.draw(renderer);
+    if (showGUI) {
+        T1_UIRenderer uiRenderer(renderer);
+        mainCanvas.draw(uiRenderer);
+    }   
     if (showFPS)
         drawDebugPanel(renderer, mainWindow);
     if (showAtlas)

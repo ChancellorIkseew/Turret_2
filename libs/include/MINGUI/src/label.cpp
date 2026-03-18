@@ -2,7 +2,7 @@
 //
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/io/parser/validator.hpp"
-#include "MINGUI/render/ui_render.hpp"
+#include "MINGUI/render/render_queue.hpp"
 
 MINGUI
 

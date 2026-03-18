@@ -5,6 +5,7 @@ class Atlas;
 class Engine;
 class Input;
 class MainWindow;
+class Renderer;
 
 class GUI {
 protected:

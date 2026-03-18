@@ -31,13 +31,22 @@ void MainCanvas::update(UIContextBridge& contextBridge) {
     }
 }
 
-void MainCanvas::draw(const Renderer& renderer) {
+void MainCanvas::drawBatched(RenderBridge& renderBridge) {
     for (const auto& it : mainLayer) {
         it->draw(renderQueue);
     }
     if (hasOverlay())
         overlay.back()->draw(renderQueue);
-    renderQueue.drawAndClear(renderer);
+    renderQueue.drawBatchedAndClear(renderBridge);
+}
+
+void MainCanvas::draw(RenderBridge& renderBridge) {
+    for (const auto& it : mainLayer) {
+        it->draw(renderQueue);
+    }
+    if (hasOverlay())
+        overlay.back()->draw(renderQueue);
+    renderQueue.drawAndClear(renderBridge);
 }
 
 void MainCanvas::resize(const float windowSizeX, const float windowSizeY) {

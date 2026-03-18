@@ -25,7 +25,9 @@
     <ClInclude Include="libs\include\MINGUI\core\ui_config.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_context.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_defs.hpp" />
-    <ClInclude Include="libs\include\MINGUI\render\ui_render.hpp" />
+    <ClInclude Include="libs\include\MINGUI\render\primitives.hpp" />
+    <ClInclude Include="libs\include\MINGUI\render\render_bridge.hpp" />
+    <ClInclude Include="libs\include\MINGUI\render\render_queue.hpp" />
     <ClInclude Include="libs\include\MINGUI\validator\form_validator.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\button.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\checkbox.hpp" />
@@ -61,6 +63,7 @@
     <ClInclude Include="src\engine\gui\gui.hpp" />
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\gui\t1_ui_context.hpp" />
+    <ClInclude Include="src\engine\gui\t1_ui_renderer.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
     <ClInclude Include="src\engine\io\parser\jtin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\list_parser.hpp" />
@@ -139,7 +142,7 @@
     <ClCompile Include="libs\include\MINGUI\src\selector.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\ui_context.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\ui_node.cpp" />
-    <ClCompile Include="libs\include\MINGUI\src\ui_render.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\render_queue.cpp" />
     <ClCompile Include="src\engine\assets\assets.cpp" />
     <ClCompile Include="src\engine\assets\indexes.cpp" />
     <ClCompile Include="src\engine\assets\presets.cpp" />

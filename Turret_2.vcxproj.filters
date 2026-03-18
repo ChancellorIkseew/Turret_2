@@ -306,7 +306,7 @@
     <ClInclude Include="libs\include\MINGUI\validator\form_validator.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="libs\include\MINGUI\render\ui_render.hpp">
+    <ClInclude Include="libs\include\MINGUI\render\render_queue.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="libs\include\MINGUI\core\ui_config.hpp">
@@ -328,6 +328,15 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="libs\include\MINGUI\core\point.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\include\MINGUI\render\render_bridge.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\include\MINGUI\render\primitives.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\gui\t1_ui_renderer.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -599,7 +608,7 @@
     <ClCompile Include="libs\include\MINGUI\src\ui_node.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="libs\include\MINGUI\src\ui_render.cpp">
+    <ClCompile Include="libs\include\MINGUI\src\render_queue.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\main_canvas.cpp">

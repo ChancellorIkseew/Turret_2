@@ -1,6 +1,6 @@
 #pragma once
 #include "engine/io/parser/tin_parser.hpp"
-#include "MINGUI/render/ui_render.hpp"
+#include "MINGUI/render/render_queue.hpp"
 #include "MINGUI/widgets/container.hpp"
 
 START_NAMESPACE_MINGUI
@@ -22,7 +22,10 @@ public:
     void addToOverlay(std::unique_ptr<Container> container);
     //
     void update(UIContextBridge& contextBridge);
-    void draw(const Renderer& renderer); //?
+    ///@brief See RenderBridge.
+    void drawBatched(RenderBridge& renderBridge);
+    ///@brief See RenderBridge.
+    void draw(RenderBridge& renderBridge);
     void translate(tin::Data&& translations);
     //
     void resize(const float windowSizeX, const float windowSizeY);
