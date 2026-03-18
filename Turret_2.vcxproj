@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="libs\include\MINGUI\core\point.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_context_bridge.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\main_canvas.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_config.hpp" />

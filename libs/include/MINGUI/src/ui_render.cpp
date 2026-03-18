@@ -12,10 +12,10 @@ void RenderQueue::drawAndClear(const Renderer& renderer) noexcept {
 
 void RenderQueue::draw(const Renderer& renderer) const noexcept {
     for (const auto& rect : mainLayer) {
-        renderer.drawRect(rect.color, rect.position, rect.size);
+        renderer.drawRect(rect.color, { rect.position.x, rect.position.y }, { rect.size.x, rect.size.y });
     }
     for (const auto& text : mainLayerTexts) {
-        text::drawString(renderer, text.string, text.position);
+        text::drawString(renderer, text.string, { text.position.x, text.position.y });
     }
 }
 

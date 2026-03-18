@@ -26,7 +26,7 @@ public:
     void clear() { contents.clear(); }
     void setMargin(const float margin) { this->margin = margin; }
     void setPadding(const float padding) { this->padding = padding; }
-    void setPosition(const PixelCoord position) final {
+    void setPosition(const Point position) final {
         Node::setPosition(position);
         arrange();
     }

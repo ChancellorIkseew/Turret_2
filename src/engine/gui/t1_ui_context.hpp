@@ -8,8 +8,9 @@ class T1_UIContext : public mingui::UIContextBridge {
     Audio& audio;
 public:
     T1_UIContext(Input& input, Audio& audio) : audio(audio) {
+        const PixelCoord mouse = input.getMouseCoord();
+        UIContextBridge::mousePosition = { mouse.x, mouse.y };
         UIContextBridge::mouseClicked = input.jactive(LMB);
-        UIContextBridge::mousePosition = input.getMouseCoord();
     }
 
     void onIdled(mingui::Clickable& node) final {

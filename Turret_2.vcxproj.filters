@@ -327,6 +327,9 @@
     <ClInclude Include="src\engine\gui\t1_ui_context.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="libs\include\MINGUI\core\point.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">

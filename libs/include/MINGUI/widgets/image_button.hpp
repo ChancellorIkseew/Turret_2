@@ -9,7 +9,7 @@ class ImageButton : public Node {
     std::function<void()> action;
     Texture texture;
 public:
-    ImageButton(const PixelCoord size, Texture texture) :
+    ImageButton(const Point size, Texture texture) :
         Node(size), texture(texture) { }
     ~ImageButton() final = default;
     //

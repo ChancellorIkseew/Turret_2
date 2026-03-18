@@ -1,11 +1,8 @@
 #pragma once
 #include "ui_config.hpp"
-#include "engine/coords/pixel_coord.hpp" //temporary
+#include "point.hpp"
 
 START_NAMESPACE_MINGUI
-
-//struct Point { float x = 0.0f, y = 0.0f; };
-using Point = PixelCoord;
 
 class Clickable;
 

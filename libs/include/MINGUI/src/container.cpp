@@ -10,14 +10,14 @@ void Container::aplyAlignment(const Point windowSize) {
         setPosition((windowSize - getSize()) / 2.0f);
     //
     if ((align | Align::left) == align)
-        setPosition(PixelCoord(0.0f, getPosition().y));
+        setPosition(Point(0.0f, getPosition().y));
     else if ((align | Align::right) == align)
-        setPosition(PixelCoord(windowSize.x - getSize().x, getPosition().y));
+        setPosition(Point(windowSize.x - getSize().x, getPosition().y));
     //
     if ((align | Align::up) == align)
-        setPosition(PixelCoord(getPosition().x, 0.0f));
+        setPosition(Point(getPosition().x, 0.0f));
     else if ((align | Align::down) == align)
-        setPosition(PixelCoord(getPosition().x, windowSize.y - getSize().y));
+        setPosition(Point(getPosition().x, windowSize.y - getSize().y));
     //
     arrange();
 }
