@@ -10,7 +10,9 @@ class UIContextBridge {
 public:
     Point mousePosition;
     bool mouseClicked;
-
+    //
+    virtual ~UIContextBridge() = default;
+    //
     virtual void onIdled(Clickable& node) = 0;
     virtual void onHovered(Clickable& node) = 0;
     virtual void onClicked(Clickable& node) = 0;

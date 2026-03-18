@@ -7,6 +7,7 @@
 class T1_UIContext : public mingui::UIContextBridge {
     Audio& audio;
 public:
+    ~T1_UIContext() final = default;
     T1_UIContext(Input& input, Audio& audio) : audio(audio) {
         const PixelCoord mouse = input.getMouseCoord();
         UIContextBridge::mousePosition = { mouse.x, mouse.y };
