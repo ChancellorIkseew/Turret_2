@@ -1,4 +1,5 @@
 #pragma once
+#include "MINGUI/core/form_validator.hpp"
 #include <memory>
 #include <string>
 #include "config.hpp"
@@ -19,7 +20,7 @@ public:
     void moveCarriageToCursor(const Input& input, const std::u32string& text,
         const PixelCoord nodePosition, const float glyphWidth);
     void edit(const Input& input, std::u32string& text, const PixelCoord nodeSize,
-        const PixelCoord nodePosition, const float glyphWidth, const std::unique_ptr<Validator>& validator);
+        const PixelCoord nodePosition, const float glyphWidth, const std::unique_ptr<mingui::Validator>& validator);
     //
     size_t getCarrigePosition() const { return carPos; }
 private:

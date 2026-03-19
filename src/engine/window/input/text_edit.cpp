@@ -1,7 +1,6 @@
 #include "text_edit.hpp"
 //
 #include <SDL3/SDL_keyboard.h>
-#include "MINGUI/validator/form_validator.hpp"
 #include "engine/window/input/input.hpp"
 
 constexpr int INPUT_RELOAD = 120;
@@ -25,7 +24,7 @@ void TextEdit::moveCarriageToCursor(const Input& input, const std::u32string& te
 }
 
 static void editForm(const Input& input, std::u32string& text, const PixelCoord size,
-    const std::unique_ptr<Validator>& validator, size_t& carPos, int& inputTimer, const float glyphWidth) {
+    const std::unique_ptr<mingui::Validator>& validator, size_t& carPos, int& inputTimer, const float glyphWidth) {
     //
     if (input.active(Arrow_left) && carPos > 0 && inputTimer <= 0) {
         inputTimer = INPUT_RELOAD;
@@ -55,7 +54,7 @@ static void editForm(const Input& input, std::u32string& text, const PixelCoord 
 }
 
 void TextEdit::edit(const Input& input, std::u32string& text, const PixelCoord nodeSize,
-    const PixelCoord nodePosition, const float glyphWidth, const std::unique_ptr<Validator>& validator) {
+    const PixelCoord nodePosition, const float glyphWidth, const std::unique_ptr<mingui::Validator>& validator) {
     editingActive = true;
     if (input.jactive(LMB))
         moveCarriageToCursor(input, text, nodePosition, glyphWidth);
