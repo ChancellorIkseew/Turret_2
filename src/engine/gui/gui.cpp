@@ -17,7 +17,7 @@ constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
 
 GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
-mainCanvas(mainWindow.getSize().x, mainWindow.getSize().y, tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"))),
+mainCanvas(mainWindow.getSize(), tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"))),
 input(mainWindow.getInput()) { }
 
 static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindow) {
@@ -31,7 +31,7 @@ static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindo
 
 void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
     if (mainWindow.justResized())
-        mainCanvas.resize(mainWindow.getSize().x, mainWindow.getSize().y);
+        mainCanvas.resize(mainWindow.getSize());
     //
     if (showGUI) {
         T1_UIRenderer uiRenderer(renderer);
@@ -89,6 +89,5 @@ void GUI::acceptHotkeys() {
 }
 
 bool GUI::ownsMouse() const {
-    const PixelCoord mouseCoord = input.getMouseCoord();
-    return mainCanvas.ownsMouse(mouseCoord.x, mouseCoord.y);
+    return mainCanvas.ownsMouse(input.getMouseCoord());
 }

@@ -5,9 +5,6 @@ MINGUI
 MainCanvas::MainCanvas(const Point windowSize, tin::Data&& translations) :
     windowSize(windowSize), translations(std::move(translations)) {
 }
-MainCanvas::MainCanvas(const float windowSizeX, const float windowSizeY, tin::Data&& translations) :
-    windowSize({ windowSizeX, windowSizeY }), translations(std::move(translations)) {
-}
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
     prepareContainer(container);
@@ -49,17 +46,9 @@ void MainCanvas::draw(RenderBridge& renderBridge) {
     renderQueue.drawAndClear(renderBridge);
 }
 
-void MainCanvas::resize(const float windowSizeX, const float windowSizeY) {
-    relocateContainers({ windowSizeX, windowSizeY });
-}
-
 void MainCanvas::resize(const Point windowSize) {
     this->windowSize = windowSize;
     relocateContainers(windowSize);
-}
-
-bool MainCanvas::ownsMouse(const float mousePositionX, const float mousePositionY) const {
-    return ownsMouse({ mousePositionX , mousePositionY });
 }
 
 bool MainCanvas::ownsMouse(const Point mousePosition) const {
@@ -92,5 +81,5 @@ void MainCanvas::prepareContainer(std::unique_ptr<Container>& container) const {
 
 void MainCanvas::relocateContainers(const Point windowSize) {
     for (const auto& it : mainLayer) it->aplyAlignment(windowSize);
-    for (const auto& it : overlay)  it->aplyAlignment(windowSize);
+    for (const auto& it : overlay)   it->aplyAlignment(windowSize);
 }

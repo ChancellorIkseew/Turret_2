@@ -4,9 +4,19 @@
 
 START_NAMESPACE_MINGUI
 
+template<class T>
+concept IsPoint = requires(T point) {
+    point.x;
+    point.y;
+    std::convertible_to<decltype(point.x), float>;
+    std::convertible_to<decltype(point.y), float>;
+};
+
 struct Point {
     float x = 0.0f, y = 0.0f;
 
+    template<IsPoint T>
+    constexpr Point(const T other) : x(static_cast<float>(other.x)), y(static_cast<float>(other.y)) {}
     constexpr Point(const int x, const int y) noexcept : x(static_cast<float>(x)), y(static_cast<float>(y)) {}
     constexpr Point(const float x, const float y) noexcept : x(x), y(y) {}
     constexpr Point() noexcept = default;

@@ -13,8 +13,10 @@ class MainCanvas {
     Point windowSize;
     bool allwaysWithOverlay = false;
 public:
+    template<IsPoint T>
+    MainCanvas(const T windowSize, tin::Data&& translations) :
+        MainCanvas(Point(windowSize), std::move(translations)) {}
     MainCanvas(const Point windowSize, tin::Data&& translations);
-    MainCanvas(const float windowSizeX, const float windowSizeY, tin::Data&& translations);
     //
     ///@brief It is safe even there is no overlay.
     void closeLastOverlaped();
@@ -28,10 +30,12 @@ public:
     void draw(RenderBridge& renderBridge);
     void translate(tin::Data&& translations);
     //
-    void resize(const float windowSizeX, const float windowSizeY);
+    template<IsPoint T>
+    void resize(const T windowSize) { resize(Point(windowSize)); }
     void resize(const Point windowSize);
     //
-    bool ownsMouse(const float mousePositionX, const float mousePositionY) const;
+    template<IsPoint T>
+    bool ownsMouse(const T mousePosition) const { return ownsMouse(Point(mousePosition)); }
     bool ownsMouse(const Point mousePosition) const;
     //
     void setAllwaysWithOverlay(const bool flag) { allwaysWithOverlay = flag; }
