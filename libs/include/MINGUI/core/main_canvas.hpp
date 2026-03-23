@@ -1,5 +1,6 @@
 #pragma once
 #include "engine/io/parser/tin_parser.hpp"
+#include "MINGUI/core/text_edit.hpp"
 #include "MINGUI/render/render_queue.hpp"
 #include "MINGUI/widgets/container.hpp"
 
@@ -10,6 +11,7 @@ class MainCanvas {
     std::vector<std::unique_ptr<Container>> mainLayer;
     std::vector<std::unique_ptr<Container>> overlay;
     tin::Data translations;
+    TextEdit textEdit;
     Point windowSize;
     bool allwaysWithOverlay = false;
 public:
@@ -23,7 +25,7 @@ public:
     void addToMainLayer(std::unique_ptr<Container> container);
     void addToOverlay(std::unique_ptr<Container> container);
     //
-    void update(UIContextBridge& contextBridge);
+    void update(UIContextBridge& contextBridge, const int frameDelay);
     ///@brief See RenderBridge.
     void drawBatched(RenderBridge& renderBridge);
     ///@brief See RenderBridge.

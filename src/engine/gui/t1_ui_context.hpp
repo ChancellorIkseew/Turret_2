@@ -9,9 +9,14 @@ class T1_UIContext : public mingui::UIContextBridge {
 public:
     ~T1_UIContext() final = default;
     T1_UIContext(Input& input, Audio& audio) : audio(audio) {
-        const PixelCoord mouse = input.getMouseCoord();
-        UIContextBridge::mousePosition = { mouse.x, mouse.y };
+        UIContextBridge::mousePosition = mingui::Point(input.getMouseCoord());
         UIContextBridge::mouseClicked = input.jactive(LMB);
+
+        UIContextBridge::textInput.lastSymbolEntered = input.getLastSymbolEntered();
+        UIContextBridge::textInput.delete_     = input.jactive(Delete);
+        UIContextBridge::textInput.backspace_  = input.jactive(Backspace);
+        UIContextBridge::textInput.arrowLeft_  = input.jactive(Arrow_left);
+        UIContextBridge::textInput.arrowRight_ = input.jactive(Arrow_right);
     }
 
     void onIdled(mingui::Clickable& node) final {

@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include "ui_config.hpp"
 #include "point.hpp"
 
@@ -6,8 +7,18 @@ START_NAMESPACE_MINGUI
 
 class Clickable;
 
+struct TextInput {
+    std::optional<char32_t> lastSymbolEntered;
+    bool delete_     = false;
+    bool backspace_  = false;
+    bool arrowLeft_  = false;
+    bool arrowRight_ = false;
+    //TODO: arrowUp, arrowDown, cut, copy, paste
+};
+
 class UIContextBridge {
 public:
+    TextInput textInput;
     Point mousePosition;
     bool mouseClicked;
     //

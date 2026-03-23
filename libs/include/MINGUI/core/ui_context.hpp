@@ -5,13 +5,20 @@ START_NAMESPACE_MINGUI
 
 class Clickable;
 class Node;
+class TextEdit;
 
 class UIContext {
     Point mousePosition;
     bool mouseClicked;
     UIContextBridge& contextBridge;
+    TextEdit& textEdit;
 public:
-    UIContext(UIContextBridge& contextBridge);
+    UIContext(UIContextBridge& contextBridge, TextEdit& textEdit);
+    //
+    bool  getMouseClicked()         const noexcept { return mouseClicked; }
+    Point getMousePosition()        const noexcept { return mousePosition; }
+    const TextInput& getTextInput() const noexcept { return contextBridge.textInput; }
+    TextEdit& getTextEdit() noexcept { return textEdit; }
     //
     bool containsMouse(const Node& node) const noexcept;
     bool idled(const Clickable& node)    const noexcept;

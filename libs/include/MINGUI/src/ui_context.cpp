@@ -5,10 +5,10 @@
 
 MINGUI
 
-UIContext::UIContext(UIContextBridge& contextBridge) :
+UIContext::UIContext(UIContextBridge& contextBridge, TextEdit& textEdit) :
     mouseClicked(contextBridge.mouseClicked),
     mousePosition(contextBridge.mousePosition),
-    contextBridge(contextBridge) { }
+    contextBridge(contextBridge), textEdit(textEdit) { }
 
 bool UIContext::containsMouse(const Node& node) const noexcept {
     return node.containsMouse(mousePosition);

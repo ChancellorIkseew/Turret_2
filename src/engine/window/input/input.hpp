@@ -1,7 +1,7 @@
 #pragma once
 #include <optional>
 #include "binding.hpp"
-#include "text_edit.hpp"
+#include "engine/coords/pixel_coord.hpp"
 
 struct SDL_Window;
 union SDL_Event;
@@ -12,7 +12,7 @@ class Input {
     std::optional<char32_t> symbolJustEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
-    mutable TextEdit textEdit;
+    bool textInputActive;
 public:
     Input() = default;
 
@@ -31,11 +31,11 @@ public:
     std::optional<Binding> getLastKeyPressed() const;
     ///@brief Last symbol entered in any text field.
     std::optional<char32_t> getLastSymbolEntered() const;
-
-    TextEdit& getTextEdit() const { return textEdit; }
+    ///@brief start/stop checking.
+    void enableTextInput(const bool flag) { textInputActive = flag; }
 private:
     friend MainWindow;
     void update(const SDL_Event& event);
-    void reset();
+    void reset(SDL_Window* sdlWindow);
     t1_disable_copy_and_move(Input)
 };

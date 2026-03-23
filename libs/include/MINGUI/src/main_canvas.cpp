@@ -15,8 +15,9 @@ void MainCanvas::addToOverlay(std::unique_ptr<Container> container) {
     overlay.push_back(std::move(container));
 }
 
-void MainCanvas::update(UIContextBridge& contextBridge) {
-    UIContext context(contextBridge);
+void MainCanvas::update(UIContextBridge& contextBridge, const int frameDelay) {
+    textEdit.update(frameDelay);
+    UIContext context(contextBridge, textEdit);
     if (!overlay.empty()) {
         overlay.back()->callback(context);
         if (!overlay.back()->isOpen())

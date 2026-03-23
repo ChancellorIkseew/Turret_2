@@ -45,13 +45,18 @@ void Input::update(const SDL_Event& event) {
     }
 }
 
-void Input::reset() {
+void Input::reset(SDL_Window* sdlWindow) {
     mouseWheelScroll = MouseWheelScroll::none;
     symbolJustEntered.reset();
     lastKeyPressed.reset();
     for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
     }
+
+    if (textInputActive && !SDL_TextInputActive(sdlWindow))
+        SDL_StartTextInput(sdlWindow);
+    else if (!textInputActive && SDL_TextInputActive(sdlWindow))
+        SDL_StopTextInput(sdlWindow);
 }
 
 bool Input::active(cString bindName) const {
