@@ -12,7 +12,7 @@ class Input {
     std::optional<char32_t> symbolJustEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
-    bool textInputActive;
+    bool textInputActive = false;
 public:
     Input() = default;
 
