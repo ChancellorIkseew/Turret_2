@@ -13,8 +13,8 @@ public:
     //
     void aplyAlignment(const Point windowSize);
     //
-    bool isOpen() const { return open; }
-    void close() { open = false; }
+    bool isOpen() const noexcept { return open; }
+    void close() noexcept { open = false; }
 };
 
 END_NAMESPACE_MINGUI

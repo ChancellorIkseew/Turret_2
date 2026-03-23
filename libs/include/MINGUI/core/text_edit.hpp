@@ -21,7 +21,8 @@ public:
     void edit(const UIContext& context, std::u32string& text, const Point nodeSize,
         const Point nodePosition, const float glyphWidth, const std::unique_ptr<mingui::Validator>& validator);
     //
-    size_t getCarrigePosition() const { return carPos; }
+    size_t getCarrigePosition() const noexcept { return carPos; }
+    bool isEditingActive() const noexcept { return editingActive; }
 private:
     MINGUI_DISABLE_COPY_AND_MOVE(TextEdit)
 };

@@ -21,7 +21,7 @@ public:
     MainCanvas(const Point windowSize, tin::Data&& translations);
     //
     ///@brief It is safe even there is no overlay.
-    void closeLastOverlaped();
+    void closeLastOverlaped() noexcept;
     void addToMainLayer(std::unique_ptr<Container> container);
     void addToOverlay(std::unique_ptr<Container> container);
     //
@@ -33,15 +33,17 @@ public:
     void translate(tin::Data&& translations);
     //
     template<IsPoint T>
-    void resize(const T windowSize) { resize(Point(windowSize)); }
-    void resize(const Point windowSize);
+    void resize(const T windowSize) noexcept { resize(Point(windowSize)); }
+    void resize(const Point windowSize) noexcept;
     //
     template<IsPoint T>
-    bool ownsMouse(const T mousePosition) const { return ownsMouse(Point(mousePosition)); }
-    bool ownsMouse(const Point mousePosition) const;
+    bool ownsMouse(const T mousePosition) const noexcept { return ownsMouse(Point(mousePosition)); }
+    bool ownsMouse(const Point mousePosition) const noexcept;
     //
-    void setAllwaysWithOverlay(const bool flag) { allwaysWithOverlay = flag; }
-    bool hasOverlay() const { return !overlay.empty(); }
+    void setAllwaysWithOverlay(const bool flag) noexcept { allwaysWithOverlay = flag; }
+    bool hasOverlay() const noexcept { return !overlay.empty(); }
+    //
+    bool isTextEditingActive() const noexcept { return textEdit.isEditingActive(); }
 private:
     void prepareContainer(std::unique_ptr<Container>& container) const;
     void relocateContainers(const Point windowSize);

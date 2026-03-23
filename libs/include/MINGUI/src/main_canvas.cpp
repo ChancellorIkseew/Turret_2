@@ -47,12 +47,12 @@ void MainCanvas::draw(RenderBridge& renderBridge) {
     renderQueue.drawAndClear(renderBridge);
 }
 
-void MainCanvas::resize(const Point windowSize) {
+void MainCanvas::resize(const Point windowSize) noexcept {
     this->windowSize = windowSize;
     relocateContainers(windowSize);
 }
 
-bool MainCanvas::ownsMouse(const Point mousePosition) const {
+bool MainCanvas::ownsMouse(const Point mousePosition) const noexcept {
     if (hasOverlay())
         return true;
     for (const auto& it : mainLayer) {
@@ -69,7 +69,7 @@ void MainCanvas::translate(tin::Data&& translations) {
     relocateContainers(windowSize);
 }
 
-void MainCanvas::closeLastOverlaped() {
+void MainCanvas::closeLastOverlaped() noexcept {
     if (hasOverlay() && (!allwaysWithOverlay || overlay.size() > 1))
         overlay.back()->close();
 }
