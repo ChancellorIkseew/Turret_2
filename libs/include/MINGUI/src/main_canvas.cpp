@@ -7,15 +7,16 @@ MainCanvas::MainCanvas(const Point windowSize, Localization&& localization) :
 }
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
-    prepareContainer(container);
     mainLayer.push_back(std::move(container));
 }
 void MainCanvas::addToOverlay(std::unique_ptr<Container> container) {
-    prepareContainer(container);
     overlay.push_back(std::move(container));
 }
 
 void MainCanvas::update(UIContextBridge& contextBridge, const int frameDelay) {
+    for (auto& it : mainLayer) refreshContainer(*it);
+    for (auto& it : overlay)   refreshContainer(*it);
+
     textEdit.update(frameDelay);
     UIContext context(contextBridge, textEdit);
     if (!overlay.empty()) {
@@ -74,13 +75,16 @@ void MainCanvas::closeLastOverlaped() noexcept {
         overlay.back()->close();
 }
 
-void MainCanvas::prepareContainer(std::unique_ptr<Container>& container) const {
-    container->arrange();
-    container->translate(localization);
-    container->aplyAlignment(windowSize);
+void MainCanvas::refreshContainer(Container& container) const {
+    if (!container.isDirty())
+        return;
+    container.arrange();
+    container.translate(localization);
+    container.applyAlignment(windowSize);
+    container.markDirty(false);
 }
 
 void MainCanvas::relocateContainers(const Point windowSize) {
-    for (const auto& it : mainLayer) it->aplyAlignment(windowSize);
-    for (const auto& it : overlay)   it->aplyAlignment(windowSize);
+    for (const auto& it : mainLayer) it->applyAlignment(windowSize);
+    for (const auto& it : overlay)   it->applyAlignment(windowSize);
 }

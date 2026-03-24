@@ -45,7 +45,7 @@ public:
     //
     bool isTextEditingActive() const noexcept { return textEdit.isEditingActive(); }
 private:
-    void prepareContainer(std::unique_ptr<Container>& container) const;
+    void refreshContainer(Container& container) const;
     void relocateContainers(const Point windowSize);
 };
 
