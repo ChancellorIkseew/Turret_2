@@ -2,8 +2,8 @@
 
 MINGUI
 
-MainCanvas::MainCanvas(const Point windowSize, tin::Data&& translations) :
-    windowSize(windowSize), translations(std::move(translations)) {
+MainCanvas::MainCanvas(const Point windowSize, Localization&& localization) :
+    windowSize(windowSize), localization(std::move(localization)) {
 }
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
@@ -62,10 +62,10 @@ bool MainCanvas::ownsMouse(const Point mousePosition) const noexcept {
     return false;
 }
 
-void MainCanvas::translate(tin::Data&& translations) {
-    this->translations = std::move(translations);
-    for (auto& it : mainLayer) it->translate(this->translations);
-    for (auto& it : overlay)   it->translate(this->translations);
+void MainCanvas::translate(Localization&& localization) {
+    this->localization = std::move(localization);
+    for (auto& it : mainLayer) it->translate(this->localization);
+    for (auto& it : overlay)   it->translate(this->localization);
     relocateContainers(windowSize);
 }
 
@@ -76,7 +76,7 @@ void MainCanvas::closeLastOverlaped() noexcept {
 
 void MainCanvas::prepareContainer(std::unique_ptr<Container>& container) const {
     container->arrange();
-    container->translate(translations);
+    container->translate(localization);
     container->aplyAlignment(windowSize);
 }
 

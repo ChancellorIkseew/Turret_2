@@ -18,8 +18,13 @@ void Button::setPosition(const Point position) {
     centerText();
 }
 
-void Button::setText(const std::u32string& name) {
+void Button::setText(const std::string& name) {
     label.setText(name);
+    centerText();
+}
+
+void Button::setText(const std::string& name, const Localization& localization) {
+    label.setText(name, localization);
     centerText();
 }
 

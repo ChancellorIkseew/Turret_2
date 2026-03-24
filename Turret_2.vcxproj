@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\include\MINGUI\core\form_validator.hpp" />
+    <ClInclude Include="libs\include\MINGUI\core\localization.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\point.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\text_edit.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_context_bridge.hpp" />
@@ -27,6 +28,7 @@
     <ClInclude Include="libs\include\MINGUI\core\ui_config.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_context.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_defs.hpp" />
+    <ClInclude Include="libs\include\MINGUI\core\utf8.hpp" />
     <ClInclude Include="libs\include\MINGUI\render\primitives.hpp" />
     <ClInclude Include="libs\include\MINGUI\render\render_bridge.hpp" />
     <ClInclude Include="libs\include\MINGUI\render\render_queue.hpp" />
@@ -71,7 +73,6 @@
     <ClInclude Include="src\engine\io\parser\list_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\tin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\validator.hpp" />
-    <ClInclude Include="src\engine\io\utf8\utf8.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\renderer.hpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="libs\include\MINGUI\src\ui_context.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\ui_node.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\render_queue.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\utf8.cpp" />
     <ClCompile Include="src\engine\assets\assets.cpp" />
     <ClCompile Include="src\engine\assets\indexes.cpp" />
     <ClCompile Include="src\engine\assets\presets.cpp" />
@@ -162,7 +164,6 @@
     <ClCompile Include="src\engine\io\parser\list_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\tin_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\validator.cpp" />
-    <ClCompile Include="src\engine\io\utf8\utf8.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />

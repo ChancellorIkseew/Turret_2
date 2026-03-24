@@ -4,7 +4,6 @@
 #include "MINGUI/widgets/label.hpp"
 #include "MINGUI/widgets/selector.hpp"
 #include "engine/engine.hpp"
-#include "engine/io/utf8/utf8.hpp"
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 
@@ -26,13 +25,13 @@ public:
         for (const auto& [bindName, binding] : Controls::getBindings()) {
             if (!binding.changable)
                 continue;
-            bindNames->addNode(new Label(utf8::to_u32string(bindName)));
-            auto btn = bindings->addNode(new Button(BTN_SIZE, U'[' + Controls::getKeyName(bindName) + U']', false));
+            bindNames->addNode(new Label(bindName));
+            auto btn = bindings->addNode(new Button(BTN_SIZE, '[' + Controls::getKeyName(bindName) + ']', false));
             btn->addCallback([=, this] { targetBinding(btn, bindName); });
         }
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
         //lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
         //lower->addNode(new Button(BTN_SIZE, U"Reset"))->addCallback([&] { reset(engine); });
     }

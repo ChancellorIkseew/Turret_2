@@ -12,11 +12,14 @@ public:
         UIContextBridge::mousePosition = mingui::Point(input.getMouseCoord());
         UIContextBridge::mouseClicked = input.jactive(LMB);
 
-        UIContextBridge::textInput.lastSymbolEntered = input.getLastSymbolEntered();
         UIContextBridge::textInput.delete_     = input.jactive(Delete);
         UIContextBridge::textInput.backspace_  = input.jactive(Backspace);
         UIContextBridge::textInput.arrowLeft_  = input.jactive(Arrow_left);
         UIContextBridge::textInput.arrowRight_ = input.jactive(Arrow_right);
+
+        const char32_t symbol = mingui::utf8::to_char32_t(input.getLastSymbolEntered());
+        if (symbol != '\0')
+            UIContextBridge::textInput.lastSymbolEntered = symbol;
     }
 
     void onIdled(mingui::Clickable& node) final {

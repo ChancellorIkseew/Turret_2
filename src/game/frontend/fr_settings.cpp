@@ -10,12 +10,12 @@ constexpr Point BTN_SIZE(200.0f, 50.0f);
 std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     auto settings = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
-    auto back     = settings->addNode(new Button(BTN_SIZE, U"Back"));
-    auto controls = settings->addNode(new Button(BTN_SIZE, U"Controls"));
-    auto graphics = settings->addNode(new Button(BTN_SIZE, U"Graphics"));
-    auto audio    = settings->addNode(new Button(BTN_SIZE, U"Audio"));
-    auto gui      = settings->addNode(new Button(BTN_SIZE, U"GUI"));
-    auto language = settings->addNode(new Button(BTN_SIZE, U"Language"));
+    auto back     = settings->addNode(new Button(BTN_SIZE, "Back"));
+    auto controls = settings->addNode(new Button(BTN_SIZE, "Controls"));
+    auto graphics = settings->addNode(new Button(BTN_SIZE, "Graphics"));
+    auto audio    = settings->addNode(new Button(BTN_SIZE, "Audio"));
+    auto gui      = settings->addNode(new Button(BTN_SIZE, "GUI"));
+    auto language = settings->addNode(new Button(BTN_SIZE, "Language"));
     
     back    ->addCallback([container = settings.get()] { container->close(); });
     controls->addCallback([&] { engine.getGUI().addToOverlay(frontend::initControls(engine)); });

@@ -1,4 +1,6 @@
-#include "utf8.hpp"
+#include "MINGUI/core/utf8.hpp"
+
+MINGUI
 
 char32_t utf8::to_char32_t(const char* s) noexcept {
     if (!s || *s == '\0') return 0;

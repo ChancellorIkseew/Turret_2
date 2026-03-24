@@ -5,7 +5,6 @@
 #include <filesystem>
 #include "engine/debug/logger.hpp"
 #include "engine/io/parser/tin_parser.hpp"
-#include "engine/io/utf8/utf8.hpp"
 
 constexpr std::array<cString, 6> MOUSE_CODES{ "_", LMB, MidMB, RMB, "Mouse_4", "Mouse_5"};
 static std::filesystem::path controls = "controls.tin";
@@ -25,8 +24,8 @@ static Binding getBinding(const std::string& keyName) {
     return Binding(SDL_GetScancodeFromName(keyName.c_str()), InputType::keyboard);
 }
 
-std::u32string Controls::getKeyName(const std::string& bindName) {
-    return utf8::to_u32string(getKeyNameCStr(bindings.at(bindName)));
+std::string Controls::getKeyName(const std::string& bindName) {
+    return getKeyNameCStr(bindings.at(bindName));
 }
 
 void Controls::rebind(const std::string& bindName, const Binding binding) {

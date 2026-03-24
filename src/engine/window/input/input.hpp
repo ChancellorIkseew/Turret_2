@@ -9,7 +9,7 @@ class MainWindow;
 
 class Input {
     std::optional<Binding> lastKeyPressed;
-    std::optional<char32_t> symbolJustEntered;
+    const char* symbolJustEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
     bool textInputActive = false;
@@ -30,7 +30,7 @@ public:
     /// Is used for controls rebinding, but can have other usages.
     std::optional<Binding> getLastKeyPressed() const;
     ///@brief Last symbol entered in any text field.
-    std::optional<char32_t> getLastSymbolEntered() const;
+    const char* getLastSymbolEntered() const;
     ///@brief start/stop checking.
     void enableTextInput(const bool flag) { textInputActive = flag; }
 private:

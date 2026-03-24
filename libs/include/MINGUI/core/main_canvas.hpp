@@ -1,5 +1,5 @@
 #pragma once
-#include "engine/io/parser/tin_parser.hpp"
+#include "MINGUI/core/localization.hpp"
 #include "MINGUI/core/text_edit.hpp"
 #include "MINGUI/render/render_queue.hpp"
 #include "MINGUI/widgets/container.hpp"
@@ -10,15 +10,15 @@ class MainCanvas {
     RenderQueue renderQueue;
     std::vector<std::unique_ptr<Container>> mainLayer;
     std::vector<std::unique_ptr<Container>> overlay;
-    tin::Data translations;
+    Localization localization;
     TextEdit textEdit;
     Point windowSize;
     bool allwaysWithOverlay = false;
 public:
     template<IsPoint T>
-    MainCanvas(const T windowSize, tin::Data&& translations) :
-        MainCanvas(Point(windowSize), std::move(translations)) {}
-    MainCanvas(const Point windowSize, tin::Data&& translations);
+    MainCanvas(const T windowSize, Localization&& localization) :
+        MainCanvas(Point(windowSize), std::move(localization)) {}
+    MainCanvas(const Point windowSize, Localization&& localization);
     //
     ///@brief It is safe even there is no overlay.
     void closeLastOverlaped() noexcept;
@@ -30,7 +30,7 @@ public:
     void drawBatched(RenderBridge& renderBridge);
     ///@brief See RenderBridge.
     void draw(RenderBridge& renderBridge);
-    void translate(tin::Data&& translations);
+    void translate(Localization&& localization);
     //
     template<IsPoint T>
     void resize(const T windowSize) noexcept { resize(Point(windowSize)); }

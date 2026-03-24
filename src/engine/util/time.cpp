@@ -3,7 +3,6 @@
 #include <chrono>
 #include <ctime>
 #include <sstream>
-#include "engine/io/utf8/utf8.hpp"
 #pragma warning(disable : 4996)
 
 uint64_t util::time::getLocalTimeSeconds() noexcept {
@@ -25,10 +24,6 @@ std::string util::time::yyyyMMddHHmmSS(const uint64_t seconds) {
     return ss.str();
 }
 
-std::u32string util::time::u32yyyyMMddHHmmSS(const uint64_t seconds) {
-    return utf8::to_u32string(yyyyMMddHHmmSS(seconds));
-}
-
 std::string util::time::timerFormat(const uint64_t seconds) {
     const uint64_t hours = seconds / 3600;
     const uint64_t minutes = (seconds / 60) % 60;
@@ -44,8 +39,4 @@ std::string util::time::timerFormat(const uint64_t seconds) {
     else/*----------------------*/ss << secondsOnly;
     //
     return ss.str();
-}
-
-std::u32string util::time::u32timerFormat(const uint64_t seconds) {
-    return utf8::to_u32string(timerFormat(seconds));
 }

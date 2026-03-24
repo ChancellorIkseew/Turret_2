@@ -25,14 +25,14 @@ public:
         frequency = addNode(new Layout(Orientation::vertical));
         deposite  = addNode(new Layout(Orientation::vertical));
 
-        frequency->addNode(new Label(U"Frequency"));
-        deposite ->addNode(new Label(U"Deposite"));
-        labels   ->addNode(new Label(U""/*empty label*/));
+        frequency->addNode(new Label("Frequency"));
+        deposite ->addNode(new Label("Deposite"));
+        labels   ->addNode(new Label(""/*empty label*/));
 
         for (const auto& [id, f, d] : overlayPresets) {
             std::u32string str;
             str += text::getCustomSymbol(id);
-            labels->addNode(new Label(str, false))->setSize(ICON_SIZE);
+            labels->addNode(new Label("?", false))->setSize(ICON_SIZE);
             frequency->addNode(new Form(f, new Int32Validator(0, 10000)));
             deposite->addNode(new Form(d, new Int32Validator(0, 100)));
         }
@@ -64,9 +64,9 @@ public:
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->addNode(new Label(U"Seed"));
-        labels->addNode(new Label(U"Width"));
-        labels->addNode(new Label(U"Height"));
+        labels->addNode(new Label("Seed"));
+        labels->addNode(new Label("Width"));
+        labels->addNode(new Label("Height"));
 
         auto forms = main->addNode(new Layout(Orientation::vertical));
         seed   = forms->addNode(new Form(0U, new Uint64Validator(0U, MAX_SEED)));
@@ -76,8 +76,8 @@ public:
         oProps = main->addNode(new OProps());
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { createWorld(engine); });
+        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, "Apply"))->addCallback([&] { createWorld(engine); });
     }
 private:
     void createWorld(Engine& engine) {

@@ -4,7 +4,6 @@
 #include "MINGUI/widgets/label.hpp"
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
-#include "engine/io/utf8/utf8.hpp"
 #include "game/world/world.hpp"
 #include "engine/util/time.hpp"
 
@@ -19,12 +18,12 @@ class FrTimer : public Container {
     Label* shellCount;
 public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
-        addNode(new Button(BTN_SIZE, U"Next wave"));
-        currentWave = addNode(new Label(U"", false));
-        timeToWave = addNode(new Label(U"", false));
-        time = addNode(new Label(U"", false));
-        mobCount = addNode(new Label(U"", false));
-        shellCount = addNode(new Label(U"", false));
+        addNode(new Button(BTN_SIZE, "Next wave"));
+        currentWave = addNode(new Label("", false));
+        timeToWave = addNode(new Label("", false));
+        time = addNode(new Label("", false));
+        mobCount = addNode(new Label("", false));
+        shellCount = addNode(new Label("", false));
     }
 
     void callback(UIContext& context) final {
@@ -32,11 +31,11 @@ public:
         const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
         const auto fps = engine.getMainWindow().getFPS();
         const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
-        currentWave->setText(utf8::to_u32string(waveCount));
-        timeToWave->setText(util::time::u32timerFormat(ticksToWave / fps));
-        time->setText(utf8::to_u32string(engine.getMainWindow().getTime()));
-        mobCount->setText(utf8::to_u32string(engine.getSession().getWorld().getMobs().getSoa().mobCount));
-        shellCount->setText(utf8::to_u32string(engine.getSession().getWorld().getShells().getSoa().shellCount));
+        currentWave->setText(std::to_string(waveCount));
+        timeToWave->setText(util::time::timerFormat(ticksToWave / fps));
+        time->setText(std::to_string(engine.getMainWindow().getTime()));
+        mobCount->setText(std::to_string(engine.getSession().getWorld().getMobs().getSoa().mobCount));
+        shellCount->setText(std::to_string(engine.getSession().getWorld().getShells().getSoa().shellCount));
     }
 };
 

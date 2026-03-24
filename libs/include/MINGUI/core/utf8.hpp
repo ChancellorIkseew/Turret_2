@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include "ui_config.hpp"
+
+START_NAMESPACE_MINGUI
 
 namespace utf8 {
     std::string to_string(const std::u32string& u32Str);
@@ -49,3 +52,5 @@ namespace utf8 {
         return to_u32string(std::to_string(value));
     }
 }
+
+END_NAMESPACE_MINGUI

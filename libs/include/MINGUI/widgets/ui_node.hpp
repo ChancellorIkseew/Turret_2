@@ -3,10 +3,9 @@
 #include "MINGUI/core/ui_context.hpp"
 #include "MINGUI/core/ui_defs.hpp"
 
-namespace tin { class Data; }
-
 START_NAMESPACE_MINGUI
 
+class Localization;
 class RenderQueue;
 
 class Node {
@@ -20,7 +19,7 @@ public:
     virtual ~Node() = default;
     //
     virtual void draw(RenderQueue& queue);
-    virtual void translate(const tin::Data& translations) { }
+    virtual void translate(const Localization& localization) { }
     virtual void callback(UIContext& context) = 0;
     //
     Point getPosition() const noexcept { return position; }

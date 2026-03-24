@@ -29,15 +29,15 @@ public:
         maxParticles  = clickable->addNode(new Form(Settings::gameplay.maxParticles, new Uint64Validator(0U, 800'000U), BIG_FORM_SIZE));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->addNode(new Label(U"FPS|TPS"));
-        labels->addNode(new Label(U"fullscreen"));
-        labels->addNode(new Label(U"camera inertia"));
-        labels->addNode(new Label(U"show particles"));
-        labels->addNode(new Label(U"max particles"));
+        labels->addNode(new Label("FPS|TPS"));
+        labels->addNode(new Label("fullscreen"));
+        labels->addNode(new Label("camera inertia"));
+        labels->addNode(new Label("show particles"));
+        labels->addNode(new Label("max particles"));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, "Apply"))->addCallback([&] { applySettings(engine); });
     }
 
     void applySettings(Engine& engine) {

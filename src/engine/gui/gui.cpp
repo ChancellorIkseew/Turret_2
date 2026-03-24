@@ -17,16 +17,16 @@ constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
 
 GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
-mainCanvas(mainWindow.getSize(), tin::read(io::folders::LANG / (Settings::gui.lang + ".tin"))),
+mainCanvas(mainWindow.getSize(), tin::read(io::folders::LANG / (Settings::gui.lang + ".tin")).release()),
 input(mainWindow.getInput()) { }
 
 static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindow) {
     PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
     renderer.drawRect(BLACK, position, DEBUD_PANEL_SIZE);
     position += PixelCoord(20.f, 20.f);
-    text::drawString(renderer, U"FPS|TPS: " + utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
+    text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
     position.y += 20.f;
-    text::drawString(renderer, U"Frame|tick time: " + utf8::to_u32string(mainWindow.getRealFrameDelay()), position);
+    text::drawString(renderer, U"Frame|tick time: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelay()), position);
 }
 
 void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
@@ -44,7 +44,8 @@ void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
 }
 
 void GUI::translate(const std::string& lang) {
-    mainCanvas.translate(tin::read(io::folders::LANG / (lang + ".tin")));
+    tin::Data translation = tin::read(io::folders::LANG / (lang + ".tin"));
+    mainCanvas.translate(translation.release());
 }
 
 void GUI::callback() {

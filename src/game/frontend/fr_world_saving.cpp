@@ -14,8 +14,8 @@ public:
         saves = addNode(new FrSaves());
         auto lower = addNode(new Layout(Orientation::horizontal));
 
-        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, U"Save"))->addCallback([&] { saveWorld(engine); });
+        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, "Save"))->addCallback([&] { saveWorld(engine); });
         worldName = lower->addNode(new Form());
     }
 private:

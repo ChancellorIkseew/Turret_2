@@ -4,10 +4,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "validator.hpp"
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/coords/tile_coord.hpp"
-#include "engine/io/utf8/utf8.hpp"
+#include "validator.hpp"
 
 namespace tin {
     class Data {
@@ -51,6 +50,8 @@ namespace tin {
             }
             return list;
         }
+
+        auto release() noexcept { return std::move(data); }
 
         auto cbegin() const noexcept { return data.cbegin(); }
         auto begin()  const noexcept { return data.begin(); }

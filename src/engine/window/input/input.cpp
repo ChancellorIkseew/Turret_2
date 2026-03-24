@@ -2,7 +2,6 @@
 //
 #include <SDL3/SDL_events.h>
 #include "controls.hpp"
-#include "engine/io/utf8/utf8.hpp"
 
 void Input::update(const SDL_Event& event) {
     if (event.type == SDL_EVENT_MOUSE_WHEEL) {
@@ -17,7 +16,7 @@ void Input::update(const SDL_Event& event) {
         return;
     }
     if (event.type == SDL_EVENT_TEXT_INPUT) {
-        symbolJustEntered = utf8::to_char32_t(event.text.text);
+        symbolJustEntered = event.text.text;
         return;
     }
 
@@ -47,7 +46,7 @@ void Input::update(const SDL_Event& event) {
 
 void Input::reset(SDL_Window* sdlWindow) {
     mouseWheelScroll = MouseWheelScroll::none;
-    symbolJustEntered.reset();
+    symbolJustEntered = nullptr;
     lastKeyPressed.reset();
     for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
@@ -76,6 +75,6 @@ MouseWheelScroll Input::getMouseWheelScroll() const {
 std::optional<Binding> Input::getLastKeyPressed() const {
     return lastKeyPressed;
 }
-std::optional<char32_t> Input::getLastSymbolEntered() const {
+const char* Input::getLastSymbolEntered() const {
     return symbolJustEntered;
 }

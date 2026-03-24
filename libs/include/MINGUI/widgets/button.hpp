@@ -9,16 +9,17 @@ class Button : public Clickable {
     std::function<void()> action;
     Label label;
 public:
-    Button(const Point size, const std::u32string& name, const bool translateble = true)
+    Button(const Point size, const std::string& name, const bool translateble = true)
         : Clickable(size), label(name, translateble) { }
     ~Button() final = default;
     //
     void draw(RenderQueue& queue) final;
     void callback(UIContext& context) final;
     void setPosition(const Point position) final;
-    void setText(const std::u32string& name);
-    void translate(const tin::Data& translations) final {
-        label.translate(translations);
+    void setText(const std::string& name);
+    void setText(const std::string& name, const Localization& localization);
+    void translate(const Localization& localization) final {
+        label.translate(localization);
         centerText();
     }
     void addCallback(std::function<void()> action) {

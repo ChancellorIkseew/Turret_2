@@ -19,12 +19,12 @@ public:
         showConsole  = clickable->addNode(new Checkbox(Settings::gui.showConsole));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->addNode(new Label(U"custom cursor"));
-        labels->addNode(new Label(U"show console"));
+        labels->addNode(new Label("custom cursor"));
+        labels->addNode(new Label("show console"));
         
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, U"Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, "Apply"))->addCallback([&] { applySettings(engine); });
     }
 
     void applySettings(Engine& engine) {

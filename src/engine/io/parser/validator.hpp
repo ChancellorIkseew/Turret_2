@@ -1,10 +1,10 @@
 #pragma once
+#include "MINGUI/core/utf8.hpp"
 #include <cstdint>
 #include <optional>
 #include <string_view>
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/coords/tile_coord.hpp"
-#include "engine/io/utf8/utf8.hpp"
 
 namespace validator {
     template <class T>
@@ -18,7 +18,7 @@ namespace validator {
     template <class T>
     inline std::optional<T> to(const std::string& str) {
         if constexpr (std::is_same_v<T, std::string>) return str;
-        else if constexpr (std::is_same_v<T, std::u32string>) return utf8::to_u32string(str);
+        else if constexpr (std::is_same_v<T, std::u32string>) return mingui::utf8::to_u32string(str);
         else if constexpr (std::is_same_v<T, uint64_t>) return stringToNumber<uint64_t>(str);
         else if constexpr (std::is_same_v<T, uint32_t>) return stringToNumber<uint32_t>(str);
         else if constexpr (std::is_same_v<T, uint16_t>) return stringToNumber<uint16_t>(str);
@@ -40,6 +40,6 @@ namespace validator {
     template <class T>
     inline std::optional<T> to(const std::u32string& u32str) {
         if constexpr (std::is_same_v<T, std::u32string>) return u32str;
-        return to<T>(utf8::to_string(u32str));
+        return to<T>(mingui::utf8::to_string(u32str));
     }
 }
