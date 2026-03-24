@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "ui_config.hpp"
+#include "MINGUI/core/palette.hpp"
 
 START_NAMESPACE_MINGUI
 
@@ -24,23 +25,18 @@ enum class Orientation : uint8_t {
     horizontal
 };
 
-enum class SizePolicy : uint8_t {
-    fixed,
-    minimized
-};
-
 enum class ButtonState : uint8_t {
     idle,
     hover,
     checked
 };
 
-enum class UIColor : uint32_t {
-    non_interactive = 0x5A'6D'75'80,
-    idle            = 0x00'09'0D'A0,
-    hover           = 0x02'2B'3D'A0,
-    checked         = 0xA3'BC'C6'A0,
-    carrige         = 0xFF'FF'FF'FF
+constexpr Palette defaultPalette{
+    0x5A'6D'75'80, // nonInteractive
+    0x00'09'0D'A0, // idle
+    0x02'2B'3D'A0, // hover
+    0xA3'BC'C6'A0, // checked
+    0xFF'FF'FF'FF  // text
 };
 
 END_NAMESPACE_MINGUI

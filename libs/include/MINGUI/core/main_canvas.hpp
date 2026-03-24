@@ -12,13 +12,14 @@ class MainCanvas {
     std::vector<std::unique_ptr<Container>> overlay;
     Localization localization;
     TextEdit textEdit;
+    Palette palette;
     Point windowSize;
     bool allwaysWithOverlay = false;
 public:
     template<IsPoint T>
-    MainCanvas(const T windowSize, Localization&& localization) :
-        MainCanvas(Point(windowSize), std::move(localization)) {}
-    MainCanvas(const Point windowSize, Localization&& localization);
+    MainCanvas(const T windowSize, Localization&& localization, const Palette palette) :
+        MainCanvas(Point(windowSize), std::move(localization), palette) {}
+    MainCanvas(const Point windowSize, Localization&& localization, const Palette palette);
     //
     ///@brief It is safe even there is no overlay.
     void closeLastOverlaped() noexcept;

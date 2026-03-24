@@ -1,5 +1,6 @@
 #pragma once
 #include <type_traits>
+#include "MINGUI/core/palette.hpp"
 #include "MINGUI/core/ui_context.hpp"
 #include "MINGUI/core/ui_defs.hpp"
 
@@ -9,12 +10,11 @@ class Localization;
 class RenderQueue;
 
 class Node {
-    UIColor color = UIColor::non_interactive;
+    Palette palette = NULL_PALETTE;
     Point size, position;
 public:
-    Node(const Point size, const Point position) : size(size), position(position) { }
-    Node(const Point size, const UIColor color)  : size(size), color(color) { }
-    Node(const Point size)                       : size(size) { }
+    Node(const Point size, const Point position)  : size(size), position(position) { }
+    Node(const Point size)                        : size(size) { }
     Node() = default;
     virtual ~Node() = default;
     //
@@ -25,8 +25,9 @@ public:
     Point getPosition() const noexcept { return position; }
     Point getSize() const noexcept { return size; }
     virtual void setPosition(const Point position) { this->position = position; }
-    void setSize(const Point size) { this->size = size; }
-    void setColor(const UIColor color) { this->color = color; }
+    void setSize(const Point size) noexcept { this->size = size; }
+    void setPalette(const Palette& palette) noexcept { this->palette = palette; }
+    const Palette& getPalette() const noexcept { return palette; }
     bool containsMouse(const Point mousePosition) const noexcept;
 private:
     MINGUI_DISABLE_COPY_AND_MOVE(Node)

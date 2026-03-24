@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="libs\include\MINGUI\core\form_validator.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\localization.hpp" />
+    <ClInclude Include="libs\include\MINGUI\core\palette.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\point.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\text_edit.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_context_bridge.hpp" />

@@ -6,13 +6,13 @@
 MINGUI
 
 void Form::draw(RenderQueue& queue) {
-    Node::draw(queue);
-    queue.add(getPosition(), text);
+    Clickable::draw(queue);
+    queue.add(getPosition(), text, getPalette().text);
     if (state == ButtonState::checked) {
         auto position = getPosition();
         position.x += static_cast<float>(carrigePosition) * (glyphSize.x / 2.0f);
         position.y += 1.0f;
-        queue.add(position, Point(1.0f, glyphSize.y), static_cast<uint32_t>(UIColor::carrige));
+        queue.add(position, Point(1.0f, glyphSize.y), getPalette().text);
     }
 }
 

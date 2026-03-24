@@ -8,9 +8,10 @@ protected:
     ButtonState state = ButtonState::idle;
 public:
     Clickable(const Point size, const ButtonState state) : Node(size) { setState(state); }
-    Clickable(const Point size)                          : Node(size, UIColor::idle) { }
+    Clickable(const Point size)                          : Node(size) { }
     ~Clickable() override = default;
     //
+    void draw(RenderQueue& queue) override;
     void callback(UIContext& context) override;
     void setState(const ButtonState state) { this->state = state; };
     const ButtonState getState() const { return state; }

@@ -6,7 +6,7 @@
 MINGUI
 
 void Label::draw(RenderQueue& queue) {
-    queue.add(getPosition(), visibleText);
+    queue.add(getPosition(), visibleText, getPalette().text);
 }
 
 void Label::translate(const Localization& localization) {

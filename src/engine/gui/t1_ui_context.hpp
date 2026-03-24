@@ -23,17 +23,16 @@ public:
     }
 
     void onIdled(mingui::Clickable& node) final {
-        node.setColor(mingui::UIColor::idle);
+        /* nothings */
     }
     void onHovered(mingui::Clickable& node) final {
         static const std::string UI_ON_HOVER = "ui_on_hover";
         audio.playUI(UI_ON_HOVER);
-        node.setColor(mingui::UIColor::hover);
     }
     void onClicked(mingui::Clickable& node) final {
         /* nothings */
     }
     void onChecked(mingui::Clickable& node) final {
-        node.setColor(mingui::UIColor::checked);
+        /* nothings */
     }
 };

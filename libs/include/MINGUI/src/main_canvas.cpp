@@ -2,8 +2,8 @@
 
 MINGUI
 
-MainCanvas::MainCanvas(const Point windowSize, Localization&& localization) :
-    windowSize(windowSize), localization(std::move(localization)) {
+MainCanvas::MainCanvas(const Point windowSize, Localization&& localization, const Palette palette) :
+    windowSize(windowSize), localization(std::move(localization)), palette(palette) {
 }
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
@@ -78,6 +78,9 @@ void MainCanvas::closeLastOverlaped() noexcept {
 void MainCanvas::refreshContainer(Container& container) const {
     if (!container.isDirty())
         return;
+    if (!container.getPalette().isValid())
+        container.setPalette(palette);
+    container.applyPalette();
     container.arrange();
     container.translate(localization);
     container.applyAlignment(windowSize);

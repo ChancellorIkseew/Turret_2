@@ -9,7 +9,7 @@ void Button::callback(UIContext& context) {
 }
 
 void Button::draw(RenderQueue& queue) {
-    Node::draw(queue);
+    Clickable::draw(queue);
     label.draw(queue);
 }
 

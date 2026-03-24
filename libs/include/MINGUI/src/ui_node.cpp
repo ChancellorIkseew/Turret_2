@@ -5,7 +5,7 @@
 MINGUI
 
 void Node::draw(RenderQueue& queue) {
-    queue.add(position, size, static_cast<uint32_t>(color));
+    queue.add(position, size, palette.nonInteractive);
 }
 
 bool Node::containsMouse(const Point mousePosition) const noexcept {

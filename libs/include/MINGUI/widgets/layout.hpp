@@ -21,6 +21,7 @@ public:
         contents.emplace_back(node);
         return node;
     }
+    void applyPalette();
     void arrange();
     void draw(RenderQueue& queue) final;
     void clear() { contents.clear(); }
