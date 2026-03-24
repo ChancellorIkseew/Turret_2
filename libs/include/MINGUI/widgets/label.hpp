@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include "ui_node.hpp"
 #include "MINGUI/core/utf8.hpp"
 
@@ -17,7 +16,6 @@ public:
     ~Label() final = default;
     //
     void setText(const std::string& text);
-    void setText(const std::string& text, const Localization& localization);
     void resizeBy(const std::u32string& visibleText);
     //
     void draw(RenderQueue& queue) final;

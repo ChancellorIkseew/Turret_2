@@ -22,12 +22,9 @@ void Label::resizeBy(const std::u32string& visibleText) {
 }
 
 void Label::setText(const std::string& text) {
+    if (!translatable)
+        return;
     translationKeyText = text;
     visibleText = utf8::to_u32string(text);;
-    resizeBy(visibleText);
-}
-void Label::setText(const std::string& text, const Localization& localization) {
-    translationKeyText = text;
-    translate(localization);
     resizeBy(visibleText);
 }

@@ -17,7 +17,6 @@ public:
     void callback(UIContext& context) final;
     void setPosition(const Point position) final;
     void setText(const std::string& name);
-    void setText(const std::string& name, const Localization& localization);
     void translate(const Localization& localization) final {
         label.translate(localization);
         centerText();

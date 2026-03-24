@@ -23,11 +23,6 @@ void Button::setText(const std::string& name) {
     centerText();
 }
 
-void Button::setText(const std::string& name, const Localization& localization) {
-    label.setText(name, localization);
-    centerText();
-}
-
 void Button::centerText() {
     Point margin = (getSize() - label.getSize()) / 2;
     label.setPosition(getPosition() + margin);
