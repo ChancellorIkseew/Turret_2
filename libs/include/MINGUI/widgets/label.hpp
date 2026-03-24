@@ -16,11 +16,12 @@ public:
     ~Label() final = default;
     //
     void setText(const std::string& text);
-    void resizeBy(const std::u32string& visibleText);
     //
     void draw(RenderQueue& queue) final;
     void translate(const Localization& localization) final;
     void callback(UIContext& context) final { };
+private:
+    void resizeBy(const std::u32string& visibleText);
 };
 
 END_NAMESPACE_MINGUI

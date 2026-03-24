@@ -46,18 +46,18 @@ public:
 
     void callback(UIContext& context) final {
         Container::callback(context);
-        /*
+        
         if (inputReload > 0) {
             inputReload -= engine.getMainWindow().getRealFrameDelay();
             return;
         }
-        if (!bindings->getTarget().lock() || !context.input.getLastKeyPressed().has_value())
+        const Input& input = engine.getMainWindow().getInput();
+        if (!bindings->getTarget().lock() || !input.getLastKeyPressed().has_value())
             return;
         inputReload = INPUT_RELOAD;
-        Controls::rebind(bindName, context.input.getLastKeyPressed().value());
-        bindings->getTarget().lock()->setText(U'[' + Controls::getKeyName(bindName) + U']');
+        Controls::rebind(bindName, input.getLastKeyPressed().value());
+        bindings->getTarget().lock()->setText('[' + Controls::getKeyName(bindName) + ']');
         bindings->resetTarget();
-        */
     }
 };
 

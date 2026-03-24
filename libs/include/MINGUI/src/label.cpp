@@ -10,10 +10,11 @@ void Label::draw(RenderQueue& queue) {
 }
 
 void Label::translate(const Localization& localization) {
-    if (!translatable)
-        return;
     auto& key = translationKeyText;
-    visibleText = utf8::to_u32string(localization.get(key).value_or(key));
+    if (!translatable)
+        visibleText = utf8::to_u32string(key);
+    else
+        visibleText = utf8::to_u32string(localization.get(key).value_or(key));
     resizeBy(visibleText);
 }
 
@@ -22,9 +23,5 @@ void Label::resizeBy(const std::u32string& visibleText) {
 }
 
 void Label::setText(const std::string& text) {
-    if (!translatable)
-        return;
     translationKeyText = text;
-    visibleText = utf8::to_u32string(text);;
-    resizeBy(visibleText);
 }
