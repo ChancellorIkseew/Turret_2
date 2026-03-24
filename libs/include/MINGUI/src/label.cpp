@@ -12,10 +12,8 @@ void Label::draw(RenderQueue& queue) {
 void Label::translate(const Localization& localization) {
     if (!translatable)
         return;
-    if (localization.contains(translationKeyText))
-        visibleText = utf8::to_u32string(localization.at(translationKeyText));
-    else
-        visibleText = utf8::to_u32string(translationKeyText);
+    auto& key = translationKeyText;
+    visibleText = utf8::to_u32string(localization.get(key).value_or(key));
     resizeBy(visibleText);
 }
 
