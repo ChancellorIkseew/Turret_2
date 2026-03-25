@@ -11,6 +11,7 @@ public:
     //
     virtual void drawRect(const Rect rect) = 0;
     virtual void drawText(const Text text) = 0;
+    virtual void drawSprite(const Sprite sprite) = 0;
     virtual void drawRectsBatched(const std::span<const Rect> rects) = 0;
     virtual void drawTextsBatched(const std::span<const Text> texts) = 0;
 };

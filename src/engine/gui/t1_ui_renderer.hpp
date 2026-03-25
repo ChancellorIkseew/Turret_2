@@ -3,6 +3,13 @@
 #include "engine/render/renderer.hpp"
 #include "engine/render/text.hpp"
 
+struct T1_UITexture : mingui::TextureBridge {
+    Texture texture;
+public:
+    T1_UITexture(const Texture texture) : texture(texture) {}
+    ~T1_UITexture() final = default;
+};
+
 class T1_UIRenderer : public mingui::RenderBridge {
     const Renderer& renderer;
 public:
@@ -14,6 +21,10 @@ public:
     }
     void drawText(mingui::Text text) final {
         text::drawString(renderer, text.string, { text.position.x, text.position.y });
+    }
+    void drawSprite(mingui::Sprite sprite) final {
+        const Texture texture = static_cast<T1_UITexture*>(sprite.textureBridge)->texture;
+        renderer.drawFast(texture, { sprite.position.x, sprite.position.y }, { sprite.size.x, sprite.size.y });
     }
     //
     void drawRectsBatched(std::span<const mingui::Rect> rects) final { /* not needded */ }

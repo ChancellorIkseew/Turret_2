@@ -4,6 +4,7 @@
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
+#include "engine/gui/t1_ui_renderer.hpp"
 #include "game/world/world.hpp"
 
 enum class TileComponent : uint8_t { floor, overlay, block };
@@ -37,7 +38,8 @@ public:
     }
 
     void addButton(const std::string& name, int id, TileComponent component, int& btnsCount, std::unique_ptr<Layout>& line) {
-        auto btn = line->addNode(new ImageButton(BTN_SIZE, engine.getAssets().getAtlas().at(name)));
+        const Texture texture = engine.getAssets().getAtlas().at(name);
+        auto btn = line->addNode(new ImageButton(BTN_SIZE, new T1_UITexture(texture)));
         btn->addCallback([id, component, this]() {
             tileData.id = id;
             tileData.component = component;
@@ -52,17 +54,17 @@ public:
 
     void callback(UIContext& context) override {
         Container::callback(context);
-        /*
-        if (!context.input.active(Build) || engine.getGUI().ownsMouse())
+        const Input& input = engine.getMainWindow().getInput();
+        if (!input.active(Build) || engine.getGUI().ownsMouse())
             return;
         WorldMap& map = engine.getSession().getWorld().getMap();
-        const TileCoord tile = t1::tile(engine.getSession().getCamera().fromScreenToMap(context.input.getMouseCoord()));
+        const TileCoord tile = t1::tile(engine.getSession().getCamera().fromScreenToMap(input.getMouseCoord()));
         switch (tileData.component) {
         case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
         case TileComponent::block: break;
         }
-        */
+        
     }
 };
 

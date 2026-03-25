@@ -1,15 +1,17 @@
 #pragma once
+#include <memory>
 #include <functional>
-#include "engine/render/texture.hpp"
 #include "ui_node.hpp"
 
 START_NAMESPACE_MINGUI
 
+struct TextureBridge;
+
 class ImageButton : public Node {
     std::function<void()> action;
-    Texture texture;
+    std::unique_ptr<TextureBridge> texture;
 public:
-    ImageButton(const Point size, Texture texture) :
+    ImageButton(const Point size, TextureBridge* texture) :
         Node(size), texture(texture) { }
     ~ImageButton() final = default;
     //
