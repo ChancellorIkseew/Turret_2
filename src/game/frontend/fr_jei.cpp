@@ -1,11 +1,29 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/image_button.hpp"
+#include "MINGUI/widgets/icon.hpp"
+#include <functional>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "game/world/world.hpp"
+
+class IconButton : public mingui::Icon {
+    std::function<void()> action;
+public:
+    IconButton(const Point size, TextureBridge* texture) :
+        Icon(size, texture) {
+    }
+    ~IconButton() final = default;
+    //
+    void callback(UIContext& context) final {
+        if (action && context.clicked(*this))
+            action();
+    }
+    void addCallback(std::function<void()> action) {
+        this->action = action;
+    }
+};
 
 enum class TileComponent : uint8_t { floor, overlay, block };
 constexpr int ROW_SIZE = 6;
@@ -39,7 +57,7 @@ public:
 
     void addButton(const std::string& name, int id, TileComponent component, int& btnsCount, std::unique_ptr<Layout>& line) {
         const Texture texture = engine.getAssets().getAtlas().at(name);
-        auto btn = line->addNode(new ImageButton(BTN_SIZE, new T1_UITexture(texture)));
+        auto btn = line->addNode(new IconButton(BTN_SIZE, new T1_UITexture(texture)));
         btn->addCallback([id, component, this]() {
             tileData.id = id;
             tileData.component = component;
