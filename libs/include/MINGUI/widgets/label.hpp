@@ -1,6 +1,6 @@
 #pragma once
-#include "ui_node.hpp"
-#include "MINGUI/core/utf8.hpp"
+#include <MINGUI/widgets/ui_node.hpp>
+#include <MINGUI/core/utf8.hpp>
 
 START_NAMESPACE_MINGUI
 

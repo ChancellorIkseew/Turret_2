@@ -1,5 +1,5 @@
 #pragma once
-#include "layout.hpp"
+#include <MINGUI/widgets/layout.hpp>
 
 START_NAMESPACE_MINGUI
 

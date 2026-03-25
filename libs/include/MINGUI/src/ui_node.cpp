@@ -1,6 +1,6 @@
-#include "MINGUI/widgets/ui_node.hpp"
+#include <MINGUI/widgets/ui_node.hpp>
 //
-#include "MINGUI/render/render_queue.hpp"
+#include <MINGUI/render/render_queue.hpp>
 
 MINGUI
 

@@ -1,7 +1,6 @@
-#include "MINGUI/core/ui_context.hpp"
+#include <MINGUI/core/ui_context.hpp>
 //
-#include "MINGUI/widgets/clickable.hpp"
-#include "engine/window/input/input.hpp"
+#include <MINGUI/widgets/clickable.hpp>
 
 MINGUI
 

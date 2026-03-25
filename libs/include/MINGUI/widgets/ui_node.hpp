@@ -1,8 +1,8 @@
 #pragma once
 #include <type_traits>
-#include "MINGUI/core/palette.hpp"
-#include "MINGUI/core/ui_context.hpp"
-#include "MINGUI/core/ui_defs.hpp"
+#include <MINGUI/core/palette.hpp>
+#include <MINGUI/core/ui_context.hpp>
+#include <MINGUI/core/ui_defs.hpp>
 
 START_NAMESPACE_MINGUI
 
@@ -13,8 +13,8 @@ class Node {
     Palette palette = NULL_PALETTE;
     Point size, position;
 public:
-    Node(const Point size, const Point position)  : size(size), position(position) { }
-    Node(const Point size)                        : size(size) { }
+    Node(const Point size, const Point position) : size(size), position(position) { }
+    Node(const Point size)                       : size(size) { }
     Node() = default;
     virtual ~Node() = default;
     //

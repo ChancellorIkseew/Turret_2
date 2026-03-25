@@ -1,4 +1,4 @@
-#include "MINGUI/widgets/checkbox.hpp"
+#include <MINGUI/widgets/checkbox.hpp>
 
 MINGUI
 

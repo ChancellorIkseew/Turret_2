@@ -1,4 +1,4 @@
-#include "MINGUI/core/main_canvas.hpp"
+#include <MINGUI/core/main_canvas.hpp>
 
 MINGUI
 

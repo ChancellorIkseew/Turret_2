@@ -1,5 +1,5 @@
 #pragma once
-#include "ui_context_bridge.hpp"
+#include <MINGUI/core/ui_context_bridge.hpp>
 
 START_NAMESPACE_MINGUI
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <compare>
-#include "ui_config.hpp"
+#include <MINGUI/core/config.hpp>
 
 START_NAMESPACE_MINGUI
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <span>
-#include "MINGUI/core/ui_config.hpp"
-#include "MINGUI/render/primitives.hpp"
+#include <MINGUI/core/config.hpp>
+#include <MINGUI/render/primitives.hpp>
 
 START_NAMESPACE_MINGUI
 

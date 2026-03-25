@@ -1,7 +1,7 @@
 #pragma once
-#include "MINGUI/core/point.hpp"
 #include <memory>
 #include <string>
+#include <MINGUI/core/point.hpp>
 
 START_NAMESPACE_MINGUI
 

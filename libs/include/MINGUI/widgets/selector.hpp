@@ -1,6 +1,6 @@
 #pragma once
-#include "button.hpp"
-#include "layout.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/layout.hpp>
 
 START_NAMESPACE_MINGUI
 

@@ -1,8 +1,8 @@
 #pragma once
 #include <cstdint>
 #include <string_view>
-#include "MINGUI/core/ui_config.hpp"
-#include "MINGUI/core/point.hpp"
+#include <MINGUI/core/config.hpp>
+#include <MINGUI/core/point.hpp>
 
 START_NAMESPACE_MINGUI
 

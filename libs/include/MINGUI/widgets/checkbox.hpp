@@ -1,5 +1,5 @@
 #pragma once
-#include "clickable.hpp"
+#include <MINGUI/widgets/clickable.hpp>
 
 START_NAMESPACE_MINGUI
 

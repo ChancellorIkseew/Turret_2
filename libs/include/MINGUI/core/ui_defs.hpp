@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
-#include "ui_config.hpp"
-#include "MINGUI/core/palette.hpp"
+#include <MINGUI/core/config.hpp>
+#include <MINGUI/core/palette.hpp>
 
 START_NAMESPACE_MINGUI
 

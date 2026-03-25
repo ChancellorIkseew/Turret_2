@@ -1,7 +1,7 @@
-#include "MINGUI/core/text_edit.hpp"
-//
-#include "MINGUI/core/form_validator.hpp"
-#include "MINGUI/core/ui_context.hpp"
+#include <MINGUI/core/text_edit.hpp>
+//<
+#include <MINGUI/core/form_validator.hpp>
+#include <MINGUI/core/ui_context.hpp>
 
 MINGUI
 

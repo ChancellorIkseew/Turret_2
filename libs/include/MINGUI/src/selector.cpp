@@ -1,6 +1,6 @@
-#include "MINGUI/widgets/selector.hpp"
+#include <MINGUI/widgets/selector.hpp>
 //
-#include "MINGUI/widgets/button.hpp"
+#include <MINGUI/widgets/button.hpp>
 
 MINGUI
 

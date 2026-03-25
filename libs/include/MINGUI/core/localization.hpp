@@ -2,7 +2,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
-#include "ui_config.hpp"
+#include <MINGUI/core/config.hpp>
 
 START_NAMESPACE_MINGUI
 

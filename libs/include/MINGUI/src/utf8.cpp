@@ -1,4 +1,4 @@
-#include "MINGUI/core/utf8.hpp"
+#include <MINGUI/core/utf8.hpp>
 
 MINGUI
 

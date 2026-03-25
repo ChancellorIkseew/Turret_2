@@ -1,6 +1,6 @@
-#include "MINGUI/render/render_queue.hpp"
+#include <MINGUI/render/render_queue.hpp>
 //
-#include "MINGUI/render/render_bridge.hpp"
+#include <MINGUI/render/render_bridge.hpp>
 
 MINGUI
 

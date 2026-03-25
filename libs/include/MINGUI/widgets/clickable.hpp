@@ -1,5 +1,5 @@
 #pragma once
-#include "ui_node.hpp"
+#include <MINGUI/widgets/ui_node.hpp>
 
 START_NAMESPACE_MINGUI
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
-#include "clickable.hpp"
-#include "label.hpp"
+#include <MINGUI/widgets/clickable.hpp>
+#include <MINGUI/widgets/label.hpp>
 
 START_NAMESPACE_MINGUI
 

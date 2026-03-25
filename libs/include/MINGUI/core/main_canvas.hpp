@@ -1,8 +1,8 @@
 #pragma once
-#include "MINGUI/core/localization.hpp"
-#include "MINGUI/core/text_edit.hpp"
-#include "MINGUI/render/render_queue.hpp"
-#include "MINGUI/widgets/container.hpp"
+#include <MINGUI/core/localization.hpp>
+#include <MINGUI/core/text_edit.hpp>
+#include <MINGUI/render/render_queue.hpp>
+#include <MINGUI/widgets/container.hpp>
 
 START_NAMESPACE_MINGUI
 

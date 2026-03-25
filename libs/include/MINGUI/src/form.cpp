@@ -1,7 +1,7 @@
-#include "MINGUI/widgets/form.hpp"
+#include <MINGUI/widgets/form.hpp>
 //
-#include "MINGUI/core/text_edit.hpp"
-#include "MINGUI/render/render_queue.hpp"
+#include <MINGUI/core/text_edit.hpp>
+#include <MINGUI/render/render_queue.hpp>
 
 MINGUI
 

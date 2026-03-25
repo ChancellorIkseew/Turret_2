@@ -1,7 +1,7 @@
-#include "MINGUI/widgets/label.hpp"
+#include <MINGUI/widgets/label.hpp>
 //
-#include "MINGUI/core/localization.hpp"
-#include "MINGUI/render/render_queue.hpp"
+#include <MINGUI/core/localization.hpp>
+#include <MINGUI/render/render_queue.hpp>
 
 MINGUI
 

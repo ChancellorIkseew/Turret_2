@@ -1,6 +1,6 @@
-#include "MINGUI/widgets/clickable.hpp"
+#include <MINGUI/widgets/clickable.hpp>
 //
-#include "MINGUI/render/render_queue.hpp"
+#include <MINGUI/render/render_queue.hpp>
 
 MINGUI
 

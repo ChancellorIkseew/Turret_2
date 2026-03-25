@@ -1,4 +1,4 @@
-#include "MINGUI/widgets/layout.hpp"
+#include <MINGUI/widgets/layout.hpp>
 
 MINGUI
 

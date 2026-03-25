@@ -1,6 +1,6 @@
-#include "MINGUI/widgets/icon.hpp"
+#include <MINGUI/widgets/icon.hpp>
 //
-#include "MINGUI/render/render_queue.hpp"
+#include <MINGUI/render/render_queue.hpp>
 
 MINGUI
 
