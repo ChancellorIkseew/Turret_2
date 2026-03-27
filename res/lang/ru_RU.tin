@@ -31,3 +31,15 @@ show particles=отображать частицы
 toggle sound=включить звук
 ui=интерфейс
 world=игровой мир
+#base_pack
+snow=снег
+ice=лёд
+water=вода
+soil=земля
+stone=камень
+magma=магма
+lava=лава
+iron=железо
+copper=медь
+coal=уголь
+manganum=марганец

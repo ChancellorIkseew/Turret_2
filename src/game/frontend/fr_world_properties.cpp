@@ -8,6 +8,7 @@
 #include "engine/io/parser/validator.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/render/text.hpp"
+#include "engine/util/string_util.hpp"
 #include "game/generation/generation.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 
@@ -34,7 +35,8 @@ public:
         icons    ->addNode(new Icon(ICON_SIZE, nullptr));
 
         for (const auto& [id, f, d] : overlayPresets) {
-            icons->addNode(new Icon(ICON_SIZE, new T1_UITexture(atlas.at("item_copper"))));
+            std::string itemName = util::removePrefix(id, "item_");
+            icons->addNode(new Icon(ICON_SIZE, new T1_UITexture(atlas.at(itemName))));
             frequency->addNode(new Form(f, new Int32Validator(0, 10000)));
             deposite->addNode(new Form(d, new Int32Validator(0, 100)));
         }

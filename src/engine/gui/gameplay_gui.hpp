@@ -10,6 +10,7 @@ class GameplayGUI : public GUI {
 public:
     GameplayGUI(Engine& engine) : GUI(engine) {
         mainCanvas.addToMainLayer(frontend::initTimer(engine));
+        mainCanvas.addToMainLayer(frontend::initHint(engine));
     }
     ~GameplayGUI() final = default;
 

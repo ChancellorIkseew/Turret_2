@@ -16,6 +16,10 @@ public:
     //
     void draw(RenderQueue& queue) override;
     void callback(UIContext& context) override { }
+    //
+    void setTexture(TextureBridge* texture) {
+        this->texture.reset(texture);
+    }
 };
 
 END_NAMESPACE_MINGUI

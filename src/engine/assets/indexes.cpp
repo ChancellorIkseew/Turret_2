@@ -14,11 +14,11 @@ void Indexes::load() {
         throw std::runtime_error("Could not find content indexes file. Path: " + path.string());
     tin::Data data = tin::read(path);
     for (const auto& [name, id] : data) {
-        if (name.find("floor_") != std::string::npos)
+        if (name.starts_with("floor_"))
             floor.emplace(name, validator::to<uint8_t>(id).value_or(0U));
-        else if (name.find("overlay_") != std::string::npos)
+        else if (name.starts_with("overlay_"))
             overlay.emplace(name, validator::to<uint8_t>(id).value_or(0U));
-        else if (name.find("block_") != std::string::npos)
+        else if (name.starts_with("block_"))
             blocks.emplace(name, validator::to<uint16_t>(id).value_or(0U));
     }
 }

@@ -31,7 +31,8 @@ struct TurretSoA {
 };
 
 struct DrillSoA {
-
+    std::vector<TileCoord> tile;
+    std::vector<TickCount> restReloadTime;
 };
 
 struct ConveyorSoA {

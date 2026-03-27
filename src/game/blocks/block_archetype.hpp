@@ -13,3 +13,6 @@ enum class BlockArchetype : uint8_t {
 namespace block_archetype {
     BlockArchetype getBlockArchetype(const std::string& name);
 }
+
+using Item = uint8_t;
+using ItemCount = int64_t;
