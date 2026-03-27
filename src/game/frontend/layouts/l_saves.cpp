@@ -15,7 +15,6 @@ void FrSaves::update() {
         auto btn = addNode(new Button(BTN_SIZE, it, false));
         btn->addCallback([&, it] { targetFolder = it; });
     }
-    arrange();
 }
 
 void FrSaves::deleteWorld() {

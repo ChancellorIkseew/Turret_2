@@ -21,7 +21,7 @@ public:
 private:
     void saveWorld(Engine& engine) {
         saves->saveWorld(engine, utf8::to_string(worldName->getText()));
-        arrange();
+        markDirty();
     }
 };
 

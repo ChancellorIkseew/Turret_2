@@ -19,7 +19,7 @@ public:
 private:
     void deleteWorld() {
         saves->deleteWorld();
-        arrange();
+        markDirty();
     }
 };
 
