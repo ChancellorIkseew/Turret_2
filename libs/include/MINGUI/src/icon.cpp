@@ -5,5 +5,6 @@
 MINGUI
 
 void Icon::draw(RenderQueue& queue) {
-    queue.add(getPosition(), getSize(), texture.get());
+    if (texture)
+        queue.add(getPosition(), getSize(), texture.get());
 }

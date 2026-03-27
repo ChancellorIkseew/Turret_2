@@ -12,10 +12,8 @@ static void loadTextures(Atlas& atlas, Renderer& renderer) {
 
     atlas.addTexture(io::folders::FONTS / "vc_latin.png");
     atlas.addTexture(io::folders::FONTS / "vc_cyrilic.png");
-    atlas.addTexture(io::folders::FONTS / "t1_custom.png");
     atlas.build(renderer);
-    text::setFont(atlas, "vc_latin", "vc_cyrilic", "t1_custom");
-    text::loadCustomSymbols();
+    text::setFont(atlas, "vc_latin", "vc_cyrilic");
 }
 
 static void loadSounds(Audio& audio) {

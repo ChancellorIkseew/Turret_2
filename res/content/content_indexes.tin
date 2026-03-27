@@ -11,4 +11,5 @@ floor_plate=8
 overlay_iron=1
 overlay_coal=2
 overlay_copper=3
+overlay_manganum=4
 #block

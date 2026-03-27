@@ -1,38 +1,40 @@
 #include "frontend.hpp"
 //
 #include "MINGUI/widgets/button.hpp"
+#include "MINGUI/widgets/icon.hpp"
 #include "MINGUI/widgets/form.hpp"
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/validator.hpp"
+#include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/render/text.hpp"
 #include "game/generation/generation.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 
 constexpr uint64_t MAX_SEED = std::numeric_limits<uint64_t>::max();
 constexpr Point BTN_SIZE(120.0f, 30.0f);
-constexpr Point ICON_SIZE(0.0f, 20.0f);
+constexpr Point ICON_SIZE(16.0f, 16.0f);
 
 class OProps : public Layout {
     OverlayPresets overlayPresets;
-    Layout* labels    = nullptr;
+    Layout* icons     = nullptr;
     Layout* frequency = nullptr;
     Layout* deposite  = nullptr;
 public:
-    OProps() : Layout(Orientation::horizontal),
+    OProps(const Atlas& atlas) : Layout(Orientation::horizontal),
         overlayPresets(serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT)) {
-        labels    = addNode(new Layout(Orientation::vertical));
+        icons     = addNode(new Layout(Orientation::vertical));
         frequency = addNode(new Layout(Orientation::vertical));
         deposite  = addNode(new Layout(Orientation::vertical));
+        icons->setMargin(8.0f);
+        icons->setPadding(8.0f);
 
         frequency->addNode(new Label("Frequency"));
         deposite ->addNode(new Label("Deposite"));
-        labels   ->addNode(new Label(""/*empty label*/));
+        icons    ->addNode(new Icon(ICON_SIZE, nullptr));
 
         for (const auto& [id, f, d] : overlayPresets) {
-            std::u32string str;
-            str += text::getCustomSymbol(id);
-            labels->addNode(new Label("?", false))->setSize(ICON_SIZE);
+            icons->addNode(new Icon(ICON_SIZE, new T1_UITexture(atlas.at("item_copper"))));
             frequency->addNode(new Form(f, new Int32Validator(0, 10000)));
             deposite->addNode(new Form(d, new Int32Validator(0, 100)));
         }
@@ -73,7 +75,7 @@ public:
         width  = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
         height = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
 
-        oProps = main->addNode(new OProps());
+        oProps = main->addNode(new OProps(engine.getAssets().getAtlas()));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });

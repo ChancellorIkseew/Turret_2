@@ -36,6 +36,7 @@ public:
         time->setText(std::to_string(engine.getMainWindow().getTime()));
         mobCount->setText(std::to_string(engine.getSession().getWorld().getMobs().getSoa().mobCount));
         shellCount->setText(std::to_string(engine.getSession().getWorld().getShells().getSoa().shellCount));
+        markDirty();
     }
 };
 
