@@ -42,6 +42,7 @@ public:
     bool isPaused() const { return paused; }
     int getTickSpeed() const { return tickSpeed; }
     const TimeCount& getTimeCount() { return timeCount; }
+    void startNewWave() { timeCount.startWave(); }
     BuiltInScripts& getBuiltInScripts() { return builtInScripts; }
 private:
     void prepare(const Presets& presets);

@@ -7,6 +7,7 @@ class TimeCount {
     uint64_t ticksToNextWave;
     uint32_t waveCount;
     bool waveJustChanged = false;
+    bool startWaveNow = false;
 public:
     TimeCount(const uint64_t tickCount, const uint64_t ticksPerWave) :
         tickCount(tickCount),
@@ -20,12 +21,16 @@ public:
     bool isWaveJustChanged() const { return waveJustChanged; }
     //
     void update() {
-        waveJustChanged = ticksToNextWave == 0;
+        waveJustChanged = ticksToNextWave == 0 || startWaveNow;
         if (waveJustChanged) {
             ++waveCount;
             ticksToNextWave = ticksPerWave;
+            startWaveNow = false;
         }   
         ++tickCount;
         --ticksToNextWave;
+    }
+    void startWave() {
+        startWaveNow = true;
     }
 };

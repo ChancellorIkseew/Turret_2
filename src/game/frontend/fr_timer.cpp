@@ -18,7 +18,7 @@ class FrTimer : public Container {
     Label* shellCount;
 public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
-        addNode(new Button(BTN_SIZE, "Next wave"));
+        addNode(new Button(BTN_SIZE, "Next wave"))->addCallback([&] { engine.getSession().startNewWave(); });
         currentWave = addNode(new Label("", false));
         timeToWave = addNode(new Label("", false));
         time = addNode(new Label("", false));
