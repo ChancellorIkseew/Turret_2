@@ -35,7 +35,7 @@ public:
         icons    ->addNode(new Icon(ICON_SIZE, nullptr));
 
         for (const auto& [id, f, d] : overlayPresets) {
-            std::string itemName = util::removePrefix(id, "item_");
+            std::string itemName = util::swapPrefix(id, "item_");
             icons->addNode(new Icon(ICON_SIZE, new T1_UITexture(atlas.at(itemName))));
             frequency->addNode(new Form(f, new Int32Validator(0, 10000)));
             deposite->addNode(new Form(d, new Int32Validator(0, 100)));

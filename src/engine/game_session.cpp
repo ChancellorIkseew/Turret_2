@@ -27,6 +27,13 @@ void GameSession::prepare(const Presets& presets) {
     TeamID playerTeamID = playerTeam->getID();
 
     {
+        const auto presetID = presets.getBlockID("drill");
+        const auto& preset = presets.getBlock(presetID);
+
+        world->getBlocks().addBlock(presets, TileCoord(10, 9), preset.archetype, presetID, preset.maxHealth, playerTeamID);
+    }
+
+    {
         const auto presetID = presets.getBlockID("iron_wall");
         const auto& preset = presets.getBlock(presetID);
 

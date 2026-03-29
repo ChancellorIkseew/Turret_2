@@ -13,11 +13,13 @@ constexpr Point ICON_SIZE(16.0f, 16.0f);
 class FrHint : public Container {
     Icon*  icon  = nullptr;
     Label* label = nullptr;
+    Label* position = nullptr;
     Engine& engine;
 public:
-    FrHint(Engine& engine) : Container(Align::right | Align::centre, Orientation::horizontal), engine(engine) {
+    FrHint(Engine& engine) : Container(Align::down | Align::centre, Orientation::horizontal), engine(engine) {
         icon = addNode(new Icon(ICON_SIZE, nullptr));
         label = addNode(new Label(""));
+        position = addNode(new Label(""));
     }
 
     void callback(UIContext& context) final {
@@ -43,6 +45,7 @@ public:
             icon->setTexture(new T1_UITexture(assets.getAtlas().at(floorName)));
         }
         label->setText(trimedName);
+        position->setText("X: " + std::to_string(targetTile.x) + " Y: " + std::to_string(targetTile.y));
         markDirty();
     }
 };
