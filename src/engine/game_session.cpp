@@ -29,27 +29,25 @@ void GameSession::prepare(const Presets& presets) {
     {
         const auto presetID = presets.getBlockID("drill");
         const auto& preset = presets.getBlock(presetID);
-
-        world->getBlocks().addBlock(presets, TileCoord(10, 9), preset.archetype, presetID, preset.maxHealth, playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 9), playerTeamID);
     }
 
     {
         const auto presetID = presets.getBlockID("iron_wall");
         const auto& preset = presets.getBlock(presetID);
-
-        world->getBlocks().addBlock(presets, TileCoord(10, 10), preset.archetype, presetID, preset.maxHealth, playerTeamID);
-        world->getBlocks().addBlock(presets, TileCoord(11, 10), preset.archetype, presetID, preset.maxHealth, playerTeamID);
-        world->getBlocks().addBlock(presets, TileCoord(10, 11), preset.archetype, presetID, preset.maxHealth, playerTeamID);
-        world->getBlocks().addBlock(presets, TileCoord(10, 12), preset.archetype, presetID, preset.maxHealth, playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 10), playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(11, 10), playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 11), playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 12), playerTeamID);
     }
     
     {
         const auto presetID = presets.getBlockID("gatling_turret");
         const auto& preset = presets.getBlock(presetID);
-        world->getBlocks().addBlock(presets, TileCoord(10, 13), preset.archetype, presetID, preset.maxHealth, playerTeamID);
-        world->getBlocks().addBlock(presets, TileCoord(10, 14), preset.archetype, presetID, preset.maxHealth, playerTeamID);
-        world->getBlocks().addBlock(presets, TileCoord(10, 15), preset.archetype, presetID, preset.maxHealth, playerTeamID);
-        world->getBlocks().addBlock(presets, TileCoord(10, 16), preset.archetype, presetID, preset.maxHealth, playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 13), playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 14), playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 15), playerTeamID);
+        builtInScripts.placeBlock(presetID, TileCoord(10, 16), playerTeamID);
     }
 }
 

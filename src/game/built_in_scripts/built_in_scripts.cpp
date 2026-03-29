@@ -31,3 +31,10 @@ void BuiltInScripts::spawnMob(const MobPresetID presetID, const PixelCoord posit
     mobs.addMob(presetID, preset.turret, position, 0.0f, preset.maxHealth, teamID,
         preset.hitboxRadius, mData, sData, 0, 0.0f);
 }
+
+void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID) {
+    const auto& presets = assets.getPresets();
+    const auto& preset = presets.getBlock(presetID);
+    auto& blocks = world.getBlocks();
+    blocks.addBlock(presets, tile, preset.archetype, presetID, preset.maxHealth, teamID);
+}
