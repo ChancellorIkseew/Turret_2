@@ -1,31 +1,14 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/icon.hpp"
 #include <MINGUI/widgets/grid_layout.hpp>
-#include <functional>
+#include <MINGUI/widgets/icon.hpp>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "game/world/world.hpp"
 
-class IconButton : public mingui::Icon {
-    std::function<void()> action;
-public:
-    IconButton(const Point size, TextureBridge* texture) :
-        Icon(size, texture) {
-    }
-    ~IconButton() final = default;
-    //
-    void callback(UIContext& context) final {
-        if (action && context.clicked(*this))
-            action();
-    }
-    void addCallback(std::function<void()> action) {
-        this->action = action;
-    }
-};
-
+class JEI;
 enum class TileComponent : uint8_t { floor, overlay, block };
 constexpr int ROW_SIZE = 6;
 constexpr Point BTN_SIZE(32.0f, 32.0f);
@@ -33,6 +16,17 @@ constexpr Point BTN_SIZE(32.0f, 32.0f);
 struct TileData {
     TileComponent component = TileComponent::floor;
     uint8_t id = 0U;
+};
+
+class JEISlot : public mingui::Icon {
+    TileData tileData;
+    JEI* jei;
+public:
+    JEISlot(const Point size, TextureBridge* texture, JEI* jei, TileData tileData) :
+        Icon(size, texture), jei(jei), tileData(tileData) {
+    }
+    ~JEISlot() final = default;
+    void callback(UIContext& context) final;
 };
 
 class JEI : public Container {
@@ -55,8 +49,7 @@ public:
 
     void addButton(const std::string& name, int id, TileComponent component, GridLayout* grid) {
         const Texture texture = engine.getAssets().getAtlas().at(name);
-        auto btn = grid->addNode(new IconButton(BTN_SIZE, new T1_UITexture(texture)));
-        btn->addCallback([id, component, this] { tileData.id = id; tileData.component = component; });
+        grid->addNode(new JEISlot(BTN_SIZE, new T1_UITexture(texture), this, TileData(component, id)));
     }
 
     void callback(UIContext& context) override {
@@ -72,7 +65,16 @@ public:
         case TileComponent::block: break;
         }
     }
+
+    void setTileData(const TileData tileData) {
+        this->tileData = tileData;
+    }
 };
+
+void JEISlot::callback(UIContext& context){
+    if (context.clicked(*this))
+        jei->setTileData(tileData);
+}
 
 std::unique_ptr<Container> frontend::initJEI(Engine& engine) {
     return std::make_unique<JEI>(engine);
