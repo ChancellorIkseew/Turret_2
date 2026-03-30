@@ -1,6 +1,7 @@
 #include "frontend.hpp"
 //
 #include "MINGUI/widgets/icon.hpp"
+#include <MINGUI/widgets/grid_layout.hpp>
 #include <functional>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
@@ -39,35 +40,23 @@ class JEI : public Container {
     TileData tileData;
 public:
     JEI(Engine& engine) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
-        int btnsCount = 0;
-        auto line = std::make_unique<Layout>(Orientation::horizontal);
+        auto grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
+        grid->setPalette(transparentPalette);
 
         for (const auto& [floorName, id] : engine.getAssets().getIndexes().getFloor()) {
-            addButton(floorName, id, TileComponent::floor, btnsCount, line);
+            addButton(floorName, id, TileComponent::floor, grid);
         }
         for (const auto& [overlayName, id] : engine.getAssets().getIndexes().getOverlay()) {
-            addButton(overlayName, id, TileComponent::overlay, btnsCount, line);
+            addButton(overlayName, id, TileComponent::overlay, grid);
         }
 
         tileData.id = engine.getAssets().getIndexes().getFloor().begin()->second; // Reset tileData to avoid errors.
-
-        if (btnsCount != 0)
-            addNode(line.release());
     }
 
-    void addButton(const std::string& name, int id, TileComponent component, int& btnsCount, std::unique_ptr<Layout>& line) {
+    void addButton(const std::string& name, int id, TileComponent component, GridLayout* grid) {
         const Texture texture = engine.getAssets().getAtlas().at(name);
-        auto btn = line->addNode(new IconButton(BTN_SIZE, new T1_UITexture(texture)));
-        btn->addCallback([id, component, this]() {
-            tileData.id = id;
-            tileData.component = component;
-            });
-        btnsCount++;
-        if (btnsCount >= ROW_SIZE) {
-            this->addNode(line.release());
-            line = std::make_unique<Layout>(Orientation::horizontal);
-            btnsCount = 0;
-        }
+        auto btn = grid->addNode(new IconButton(BTN_SIZE, new T1_UITexture(texture)));
+        btn->addCallback([id, component, this] { tileData.id = id; tileData.component = component; });
     }
 
     void callback(UIContext& context) override {
@@ -82,7 +71,6 @@ public:
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
         case TileComponent::block: break;
         }
-        
     }
 };
 

@@ -11,6 +11,7 @@ class Layout : public Node {
     Orientation orientation;
 protected:
     std::vector<std::shared_ptr<Node>> contents;
+    virtual void emplaceNode(Node* node) { contents.emplace_back(node); }
 public:
     Layout(const Orientation orientation) :
         Node(), orientation(orientation) { }
@@ -18,12 +19,12 @@ public:
     //
     template<DerivedFromNode T>
     T* addNode(T* node) {
-        contents.emplace_back(node);
+        emplaceNode(node);
         return node;
     }
     void applyPalette();
-    void arrange();
-    void draw(RenderQueue& queue) final;
+    virtual void arrange();
+    void draw(RenderQueue& queue) override;
     void clear() { contents.clear(); }
     void setMargin(const float margin) { this->margin = margin; }
     void setPadding(const float padding) { this->padding = padding; }

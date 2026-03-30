@@ -25,6 +25,11 @@ enum class Orientation : uint8_t {
     horizontal
 };
 
+enum class GridType : uint8_t {
+    from_colls,
+    from_rows
+};
+
 enum class ButtonState : uint8_t {
     idle,
     hover,
@@ -37,6 +42,15 @@ constexpr Palette defaultPalette{
     0x02'2B'3D'A0, // hover
     0xA3'BC'C6'A0, // checked
     0xFF'FF'FF'FF  // text
+};
+
+// Not 0x00'00'00'00 becuase of null palette check
+constexpr Palette transparentPalette{
+    0xFF'FF'FF'00, // nonInteractive
+    0xFF'FF'FF'00, // idle
+    0xFF'FF'FF'00, // hover
+    0xFF'FF'FF'00, // checked
+    0xFF'FF'FF'00  // text
 };
 
 END_NAMESPACE_MINGUI

@@ -348,6 +348,9 @@
     <ClInclude Include="src\engine\util\string_util.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="libs\include\MINGUI\widgets\grid_layout.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">
@@ -618,6 +621,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\icon.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\include\MINGUI\src\grid_layout.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
