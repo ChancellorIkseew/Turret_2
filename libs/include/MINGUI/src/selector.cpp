@@ -8,21 +8,21 @@ void Selector::callback(UIContext& context) {
     for (auto& it : contents) {
         it->callback(context);
         if (context.clicked(*it)) {
-            if (std::dynamic_pointer_cast<Button>(it))
-                setTarget(std::static_pointer_cast<Button>(it));
+            if (std::dynamic_pointer_cast<AbstractButton>(it))
+                setTarget(std::static_pointer_cast<AbstractButton>(it));
             return;
         }
     }
 }
 
-void Selector::setTarget(const Button* const button) {
+void Selector::setTarget(const AbstractButton* const button) {
     for (auto& it : contents) {
         if (it.get() == button)
-            setTarget(std::static_pointer_cast<Button>(it));
+            setTarget(std::static_pointer_cast<AbstractButton>(it));
     }
 }
 
-void Selector::setTarget(std::shared_ptr<Button> button) {
+void Selector::setTarget(std::shared_ptr<AbstractButton> button) {
     if (target.lock())
         target.lock()->setState(ButtonState::idle);
     target = button;

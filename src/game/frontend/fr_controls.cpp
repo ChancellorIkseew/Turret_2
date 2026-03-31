@@ -56,7 +56,8 @@ public:
             return;
         inputReload = INPUT_RELOAD;
         Controls::rebind(bindName, input.getLastKeyPressed().value());
-        bindings->getTarget().lock()->setText('[' + Controls::getKeyName(bindName) + ']');
+        Button* button = static_cast<Button*>(bindings->getTarget().lock().get());
+        button->setText('[' + Controls::getKeyName(bindName) + ']');
         bindings->resetTarget();
     }
 };
