@@ -84,6 +84,8 @@ void MainCanvas::refreshContainer(Container& container) const {
     container.arrange();
     container.translate(localization);
     container.applyAlignment(windowSize);
+    container.arrange();                  // temporary. needs bugfix
+    container.applyAlignment(windowSize); //
     container.markDirty(false);
 }
 

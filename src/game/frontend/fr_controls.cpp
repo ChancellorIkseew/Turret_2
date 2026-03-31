@@ -1,8 +1,8 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/label.hpp"
-#include "MINGUI/widgets/selector.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/label.hpp>
+#include <MINGUI/widgets/selector.hpp>
 #include "engine/engine.hpp"
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
@@ -33,7 +33,6 @@ public:
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
         //lower->addNode(new Button(BTN_SIZE, U"Apply"))->addCallback([&] { applySettings(engine); });
-        //lower->addNode(new Button(BTN_SIZE, U"Reset"))->addCallback([&] { reset(engine); });
     }
 
     void targetBinding(Button* btn, const std::string& bindName) {
@@ -51,14 +50,15 @@ public:
             inputReload -= engine.getMainWindow().getRealFrameDelay();
             return;
         }
-        const Input& input = engine.getMainWindow().getInput();
-        if (!bindings->getTarget().lock() || !input.getLastKeyPressed().has_value())
+        const std::optional<Binding> lastKey = engine.getMainWindow().getInput().getLastKeyPressed();
+        if (!bindings->getTarget().lock() || !lastKey.has_value())
             return;
         inputReload = INPUT_RELOAD;
-        Controls::rebind(bindName, input.getLastKeyPressed().value());
+        Controls::rebind(bindName, lastKey.value());
         Button* button = static_cast<Button*>(bindings->getTarget().lock().get());
         button->setText('[' + Controls::getKeyName(bindName) + ']');
         bindings->resetTarget();
+        markDirty();
     }
 };
 
