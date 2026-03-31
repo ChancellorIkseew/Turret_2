@@ -1,13 +1,16 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/label.hpp"
+#include <MINGUI/widgets/icon_button.hpp>
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/label.hpp>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
+#include "engine/gui/t1_ui_renderer.hpp"
 #include "game/world/world.hpp"
 #include "engine/util/time.hpp"
 
 constexpr Point BTN_SIZE(200.0f, 50.0f);
+constexpr Point ICON_SIZE(18, 18);
 
 class FrTimer : public Container {
     Engine& engine;
@@ -19,6 +22,7 @@ class FrTimer : public Container {
 public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
         addNode(new Button(BTN_SIZE, "Next wave"))->addCallback([&] { engine.getSession().startNewWave(); });
+        addNode(new IconButton(ICON_SIZE, 1.0f, new T1_UITexture(engine.getAssets().getAtlas().at("pause"))));
         currentWave = addNode(new Label("", false));
         timeToWave = addNode(new Label("", false));
         time = addNode(new Label("", false));

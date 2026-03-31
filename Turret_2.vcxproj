@@ -33,6 +33,7 @@
     <ClInclude Include="libs\include\MINGUI\render\primitives.hpp" />
     <ClInclude Include="libs\include\MINGUI\render\render_bridge.hpp" />
     <ClInclude Include="libs\include\MINGUI\render\render_queue.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\abstract_button.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\button.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\checkbox.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\clickable.hpp" />
@@ -40,6 +41,7 @@
     <ClInclude Include="libs\include\MINGUI\widgets\form.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\grid_layout.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\icon.hpp" />
+    <ClInclude Include="libs\include\MINGUI\widgets\icon_button.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\label.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\layout.hpp" />
     <ClInclude Include="libs\include\MINGUI\widgets\selector.hpp" />
@@ -140,6 +142,7 @@
     <ClCompile Include="libs\include\MINGUI\src\form.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\grid_layout.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\icon.cpp" />
+    <ClCompile Include="libs\include\MINGUI\src\icon_button.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\label.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\layout.cpp" />
     <ClCompile Include="libs\include\MINGUI\src\main_canvas.cpp" />

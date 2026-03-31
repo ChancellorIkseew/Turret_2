@@ -2,12 +2,6 @@
 
 MINGUI
 
-void Button::callback(UIContext& context) {
-    Clickable::callback(context);
-    if (context.clicked(*this) && action)
-        action();
-}
-
 void Button::draw(RenderQueue& queue) {
     Clickable::draw(queue);
     label.draw(queue);
@@ -20,6 +14,11 @@ void Button::setPosition(const Point position) {
 
 void Button::setText(const std::string& name) {
     label.setText(name);
+    centerText();
+}
+
+void Button::translate(const Localization& localization) {
+    label.translate(localization);
     centerText();
 }
 

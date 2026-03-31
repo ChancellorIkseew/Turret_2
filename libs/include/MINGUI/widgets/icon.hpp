@@ -1,10 +1,9 @@
 #pragma once
 #include <memory>
+#include <MINGUI/render/render_bridge.hpp>
 #include <MINGUI/widgets/ui_node.hpp>
 
 START_NAMESPACE_MINGUI
-
-struct TextureBridge;
 
 class Icon : public Node {
     std::unique_ptr<TextureBridge> texture;

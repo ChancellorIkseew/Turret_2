@@ -351,6 +351,12 @@
     <ClInclude Include="libs\include\MINGUI\widgets\grid_layout.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="libs\include\MINGUI\widgets\abstract_button.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\include\MINGUI\widgets\icon_button.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">
@@ -624,6 +630,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\grid_layout.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\include\MINGUI\src\icon_button.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

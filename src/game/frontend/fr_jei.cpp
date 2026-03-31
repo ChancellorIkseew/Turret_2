@@ -43,6 +43,10 @@ public:
         for (const auto& [overlayName, id] : engine.getAssets().getIndexes().getOverlay()) {
             addButton(overlayName, id, TileComponent::overlay, grid);
         }
+        for (const auto& [overlayName, id] : engine.getAssets().getIndexes().getBlocks()) {
+            addButton(overlayName, id, TileComponent::block , grid);
+            // TODO: update blocks assets
+        }
 
         tileData.id = engine.getAssets().getIndexes().getFloor().begin()->second; // Reset tileData to avoid errors.
     }
@@ -57,12 +61,17 @@ public:
         const Input& input = engine.getMainWindow().getInput();
         if (!input.active(Build) || engine.getGUI().ownsMouse())
             return;
-        WorldMap& map = engine.getSession().getWorld().getMap();
-        const TileCoord tile = t1::tile(engine.getSession().getCamera().fromScreenToMap(input.getMouseCoord()));
+        GameSession& session = engine.getSession();
+        WorldMap& map = session.getWorld().getMap();
+        const TileCoord tile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
         switch (tileData.component) {
         case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
-        case TileComponent::block: break;
+        case TileComponent::block: {
+            const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
+            session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID);
+            break;
+        }
         }
     }
 
