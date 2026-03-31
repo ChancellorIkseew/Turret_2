@@ -43,6 +43,8 @@ public:
         }
     }
     const auto& getContents() const { return contents; }
+    //
+    Layout* asLayout() noexcept final { return this; }
 private:
     void arrangeVertical();
     void arrangeHorizontal();

@@ -8,6 +8,9 @@ START_NAMESPACE_MINGUI
 
 class Localization;
 class RenderQueue;
+//
+class Layout;
+class AbstractButton;
 
 class Node {
     Palette palette = NULL_PALETTE;
@@ -29,6 +32,9 @@ public:
     void setPalette(const Palette& palette) noexcept { this->palette = palette; }
     const Palette& getPalette() const noexcept { return palette; }
     bool containsMouse(const Point mousePosition) const noexcept;
+    //
+    virtual Layout*         asLayout()         noexcept { return nullptr; }
+    virtual AbstractButton* asAbstarctButton() noexcept { return nullptr; }
 private:
     MINGUI_DISABLE_COPY_AND_MOVE(Node)
 };

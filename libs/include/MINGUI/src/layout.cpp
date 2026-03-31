@@ -6,8 +6,8 @@ void Layout::applyPalette() {
     for (const auto& it : contents) {
         if (!it->getPalette().isValid())
             it->setPalette(getPalette());
-        if (dynamic_cast<Layout*>(it.get()))
-            static_cast<Layout*>(it.get())->applyPalette();
+        if (Layout* layout = it->asLayout())
+            layout->applyPalette();
     }
 }
 

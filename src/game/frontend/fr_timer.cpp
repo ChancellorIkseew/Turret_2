@@ -81,6 +81,7 @@ public:
     }
     void setTickSpeed(const int speed) {
         engine.getSession().setTickSpeed(speed);
+        engine.getSession().setPaused(false, engine);
     }
 };
 

@@ -18,6 +18,8 @@ public:
     void addCallback(std::function<void()> action) {
         this->action = action;
     }
+    //
+    AbstractButton* asAbstarctButton() noexcept final { return this; }
 };
 
 END_NAMESPACE_MINGUI

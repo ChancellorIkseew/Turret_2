@@ -8,9 +8,8 @@ void Selector::callback(UIContext& context) {
     for (auto& it : contents) {
         it->callback(context);
         if (context.clicked(*it)) {
-            if (std::dynamic_pointer_cast<AbstractButton>(it))
-                setTarget(std::static_pointer_cast<AbstractButton>(it));
-            return;
+            if (AbstractButton* abstractButton = it->asAbstarctButton())
+                setTarget(abstractButton);
         }
     }
 }
