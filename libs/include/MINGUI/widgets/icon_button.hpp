@@ -8,7 +8,7 @@ class IconButton : public AbstractButton {
     Icon icon;
 public:
     IconButton(const Point size, const float padding, TextureBridge* texture) :
-        AbstractButton(size), icon(size - Point(padding, padding), texture) {}
+        AbstractButton(size), icon(size - Point(padding, padding) * 2, texture) {}
     ~IconButton() final = default;
     void draw(RenderQueue& queue) final;
     void setPosition(const Point position) final;

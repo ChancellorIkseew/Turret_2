@@ -23,6 +23,8 @@ Width=Ширина
 camera inertia=инерция камеры
 custom cursor=изменённый курсор
 fullscreen=полный экран
+start wave=запустить волну
+starts in :=до начала :
 master=общая громкость
 max particles=максимум частиц
 music=музыка
@@ -30,6 +32,7 @@ show console=показать консоль
 show particles=отображать частицы
 toggle sound=включить звук
 ui=интерфейс
+wave :=волна :
 world=игровой мир
 #base_pack
 snow=снег
