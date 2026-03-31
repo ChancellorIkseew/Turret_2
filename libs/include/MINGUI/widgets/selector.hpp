@@ -12,7 +12,8 @@ public:
     //
     const std::weak_ptr<AbstractButton> getTarget() const { return target; }
     void setTarget(const AbstractButton* const button);
-    void resetTarget() { target.reset(); }
+    void resetTarget();
+    bool isTarget(const AbstractButton* const button) const;
     void callback(UIContext& context) final;
 private:
     void setTarget(std::shared_ptr<AbstractButton> button);

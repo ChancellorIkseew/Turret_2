@@ -22,8 +22,17 @@ void Selector::setTarget(const AbstractButton* const button) {
 }
 
 void Selector::setTarget(std::shared_ptr<AbstractButton> button) {
-    if (target.lock())
-        target.lock()->setState(ButtonState::idle);
+    resetTarget();
     target = button;
     target.lock()->setState(ButtonState::checked);
+}
+
+void Selector::resetTarget() {
+    if (target.lock())
+        target.lock()->setState(ButtonState::idle);
+    target.reset();
+}
+
+bool Selector::isTarget(const AbstractButton* const button) const {
+    return target.lock().get() == button;
 }

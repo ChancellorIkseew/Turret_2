@@ -6,8 +6,8 @@
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
-#include "game/world/world.hpp"
 #include "engine/util/time.hpp"
+#include "game/world/world.hpp"
 
 constexpr Point BTN_SIZE(120.0f, 20.0f);
 constexpr Point ICON_SIZE(20, 20);
@@ -16,6 +16,7 @@ class FrTimer : public Container {
     Engine& engine;
     Label* currentWave;
     Label* timeToWave;
+    Selector* playback;
     IconButton* pause;
     IconButton* x1;
     IconButton* x2;
@@ -24,13 +25,13 @@ public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
         addNode(new Button(BTN_SIZE, "start wave"))->addCallback([&] { engine.getSession().startNewWave(); });
 
-        auto selector = addNode(new Selector(Orientation::horizontal));
-        selector->setPadding(1.0f);
+        playback = addNode(new Selector(Orientation::horizontal));
+        playback->setPadding(1.0f);
         const Atlas& atlas = engine.getAssets().getAtlas();
-        pause = selector->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("pause_btn"))));
-        x1    = selector->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x1_btn"))));
-        x2    = selector->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x2_btn"))));
-        x4    = selector->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x4_btn"))));
+        pause = playback->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("pause_btn"))));
+        x1    = playback->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x1_btn"))));
+        x2    = playback->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x2_btn"))));
+        x4    = playback->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x4_btn"))));
         pause->addCallback([&] { pauseWorld(); });
         x1   ->addCallback([&] { setTickSpeed(1); });
         x2   ->addCallback([&] { setTickSpeed(2); });
@@ -52,32 +53,24 @@ public:
         const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
         currentWave->setText(std::to_string(waveCount));
         timeToWave->setText(util::time::timerFormat(ticksToWave / fps));
-        inspectPlayButtons();
+        updatePlayback();
         markDirty();
     }
 
-    void inspectPlayButtons() {
+    void updatePlayback() {
         const bool paused = engine.getSession().isPaused();
-        const bool pauseButtonChecked = pause->getState() == ButtonState::checked;
-        if (paused && !pauseButtonChecked) {
-            pause->setState(ButtonState::checked);
-            x1->setState(ButtonState::idle);
-            x2->setState(ButtonState::idle);
-            x4->setState(ButtonState::idle);
-        } 
-        if (!paused && pauseButtonChecked) {
-            pause->setState(ButtonState::idle);
-            switch (engine.getSession().getTickSpeed()) {
-            case 1: x1->setState(ButtonState::checked); break;
-            case 2: x2->setState(ButtonState::checked); break;
-            case 4: x4->setState(ButtonState::checked); break;
-            }
+        const auto tickSpeed = paused ? 0 : engine.getSession().getTickSpeed();
+        playback->resetTarget();
+        switch (tickSpeed) {
+        case 0: playback->setTarget(pause); break;
+        case 1: playback->setTarget(x1); break;
+        case 2: playback->setTarget(x2); break;
+        case 4: playback->setTarget(x4); break;
         }
     }
 
     void pauseWorld() {
-        const bool paused = engine.getSession().isPaused();
-        engine.getSession().setPaused(!paused, engine);
+        engine.getSession().setPaused(true, engine);
     }
     void setTickSpeed(const int speed) {
         engine.getSession().setTickSpeed(speed);
