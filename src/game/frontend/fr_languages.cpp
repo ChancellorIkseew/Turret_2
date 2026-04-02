@@ -9,7 +9,7 @@
 #include "engine/settings/settings.hpp"
 
 constexpr Point LANG_BTN_SIZE(110.0f, 30.0f);
-constexpr Point BACK_BTN_SIZE(120.0f, 30.0f);
+constexpr Point BACK_BTN_SIZE(116.0f, 30.0f);
 
 static void changeLang(Engine& engine, const std::string& lang) {
     Settings::gui.lang = lang;

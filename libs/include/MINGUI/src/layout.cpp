@@ -27,7 +27,7 @@ void Layout::arrangeVertical() {
         if (it->getSize().x > maxWidth)
             maxWidth = it->getSize().x;
     }
-    setSize(Point(maxWidth + padding * 2.0f, position.y - getPosition().y));
+    setSize(Point(maxWidth + padding * 2.0f, position.y - getPosition().y - margin + padding));
 }
 
 void Layout::arrangeHorizontal() {
@@ -39,7 +39,7 @@ void Layout::arrangeHorizontal() {
         if (it->getSize().y > maxHeight)
             maxHeight = it->getSize().y;
     }
-    setSize(Point(position.x - getPosition().x, maxHeight + padding * 2.0f));
+    setSize(Point(position.x - getPosition().x - margin + padding, maxHeight + padding * 2.0f));
 }
 
 void Layout::draw(RenderQueue& queue) {
