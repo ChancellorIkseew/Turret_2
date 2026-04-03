@@ -43,9 +43,8 @@ public:
         for (const auto& [overlayName, id] : engine.getAssets().getIndexes().getOverlay()) {
             addButton(overlayName, id, TileComponent::overlay, grid);
         }
-        for (const auto& [overlayName, id] : engine.getAssets().getIndexes().getBlocks()) {
-            addButton(overlayName, id, TileComponent::block , grid);
-            // TODO: update blocks assets
+        for (const auto& [blockName, id] : engine.getAssets().getPresets().getBlocks()) {
+            addButton(blockName, id.asUint(), TileComponent::block, grid);
         }
 
         tileData.id = engine.getAssets().getIndexes().getFloor().begin()->second; // Reset tileData to avoid errors.

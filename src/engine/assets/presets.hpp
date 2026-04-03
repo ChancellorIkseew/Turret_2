@@ -48,6 +48,7 @@ public:
     const TurretPreset& getTurret(TurretPresetID id) const noexcept {
         return turretStore[id.asUint()];
     }
+    const auto& getBlocks() const { return blockIDByName; }
 private:
     template<class PresetType>
     void loadPresets(const std::string& folder, const Atlas& atlas);
