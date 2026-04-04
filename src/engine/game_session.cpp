@@ -25,30 +25,6 @@ void GameSession::prepare(const Presets& presets) {
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
     TeamID playerTeamID = playerTeam->getID();
-
-    {
-        const auto presetID = presets.getBlockID("drill");
-        const auto& preset = presets.getBlock(presetID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 9), playerTeamID);
-    }
-
-    {
-        const auto presetID = presets.getBlockID("iron_wall");
-        const auto& preset = presets.getBlock(presetID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 10), playerTeamID);
-        builtInScripts.placeBlock(presetID, TileCoord(11, 10), playerTeamID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 11), playerTeamID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 12), playerTeamID);
-    }
-    
-    {
-        const auto presetID = presets.getBlockID("gatling_turret");
-        const auto& preset = presets.getBlock(presetID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 13), playerTeamID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 14), playerTeamID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 15), playerTeamID);
-        builtInScripts.placeBlock(presetID, TileCoord(10, 16), playerTeamID);
-    }
 }
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {

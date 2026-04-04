@@ -11,6 +11,7 @@ public:
     GameplayGUI(Engine& engine) : GUI(engine) {
         mainCanvas.addToMainLayer(frontend::initTimer(engine));
         mainCanvas.addToMainLayer(frontend::initHint(engine));
+        mainCanvas.addToMainLayer(frontend::initJEI(engine));
     }
     ~GameplayGUI() final = default;
 
