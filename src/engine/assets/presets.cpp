@@ -12,6 +12,15 @@ using TurretFindMap = FindMap<preset_tag::TurretTag>;
 
 static debug::Logger logger("presets");
 
+static BlockType getBlockType(const std::string name) {
+    if (name == "wall")    return BlockType::wall;
+    if (name == "drill")   return BlockType::drill;
+    if (name == "factory") return BlockType::factory;
+    if (name == "turret")  return BlockType::turret;
+    if (name == "core")    return BlockType::core;
+    return BlockType::air;
+}
+
 static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName) {
     std::array<uint8_t, 16> frames;
     size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
@@ -25,10 +34,10 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
         frames
     };
     BlockPreset preset;
-    preset.archetype = block_archetype::getBlockArchetype(reader.get<std::string>("archetype"));
+    preset.archetype = getBlockType(reader.get<std::string>("archetype"));
     preset.maxHealth = reader.get<Health>("health");
     preset.visual = visual;
-    if (preset.archetype == BlockArchetype::turret)
+    if (preset.archetype == BlockType::turret)
         preset.turret = reader.getID(turretIDByName, "turret");
     return preset;
 }

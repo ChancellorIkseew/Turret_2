@@ -1,7 +1,7 @@
 #pragma once
 #include <span>
 #include "mob_manager.hpp"
-#include "game/blocks/block_manager.hpp"
+//#include "game/blocks/block_manager.hpp"
 
 struct TurretComponents {
     std::span<PixelCoord> position;
@@ -14,21 +14,21 @@ struct TurretComponents {
     std::span<AngleRad> turretAngle;
     size_t mobCount = 0;
 };
-
+/*
 inline TurretComponents fromBlocks(TurretSoA& src) {
     return {
         src.position,
         std::span<PixelCoord>(), // empty
-        src.preset,
-        src.teamID,
+        src.turretPreset,
+        src.block.teamID,
         src.shootingData,
         src.restReloadTime,
         src.currentBarrel,
         src.turretAngle,
-        src.turretCount
+        src.last + 1
     };
 }
-
+*/
 inline TurretComponents fromMobs(MobSoA& src) {
     return {
         src.position,
