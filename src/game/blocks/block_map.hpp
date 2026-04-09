@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "game/physics/id_manager.hpp"
-#include "game/physics/physics_base.hpp"
+#include "game/common/id_manager.hpp"
+#include "game/common/physics_base.hpp"
 #include "block.hpp"
 
 constexpr TeamID INVALID_TEAM_ID = IDManager<TeamID>::INVALID_ID;
@@ -15,8 +15,8 @@ struct BlockTile {
     BlockTile() = default;
     BlockTile(TeamID teamID, std::unique_ptr<Block> block) :
         teamID(teamID), block(std::move(block)) {
-        if (block)
-            type = block->getType();
+        if (this->block)
+            type = this->block->getType();
     }
 
     void place(TeamID teamID, std::unique_ptr<Block>& block) {

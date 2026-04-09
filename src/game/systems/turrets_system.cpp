@@ -6,8 +6,8 @@
 #include "engine/render/renderer.hpp"
 #include "game/particles/particle_manager.hpp"
 #include "game/player/camera.hpp"
-#include "mob_manager.hpp"
-#include "shell_manager.hpp"
+#include "game/entities/mob_manager.hpp"
+#include "game/entities/shell_manager.hpp"
 #include "turret_components.hpp"
 
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);

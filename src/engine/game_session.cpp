@@ -4,13 +4,13 @@
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "game/particles/particles_system.hpp"
-#include "game/physics/ai_system.hpp"
-#include "game/physics/mobs_system.hpp"
-#include "game/physics/shells_system.hpp"
-#include "game/physics/turrets_system.hpp"
+#include "game/systems/ai_system.hpp"
+#include "game/systems/mobs_system.hpp"
+#include "game/systems/shells_system.hpp"
+#include "game/systems/turrets_system.hpp"
+#include "game/systems/turret_components.hpp"
 #include "game/world/world.hpp"
 #include "game/events/events.hpp"
-#include "game/physics/turret_components.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :

@@ -1,7 +1,7 @@
 #pragma once
 #include "engine/assets/preset_defs.hpp"
 #include "engine/coords/pixel_coord.hpp"
-#include "game/physics/physics_base.hpp"
+#include "game/common/physics_base.hpp"
 
 class Assets;
 class TimeCount;

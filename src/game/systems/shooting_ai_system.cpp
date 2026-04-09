@@ -5,7 +5,7 @@
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
 #include "game/player/player_controller.hpp"
-#include "mob_manager.hpp"
+#include "game/entities/mob_manager.hpp"
 #include "turret_components.hpp"
 #include "game/blocks/block_map.hpp"
 

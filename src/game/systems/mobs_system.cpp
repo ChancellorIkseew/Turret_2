@@ -6,10 +6,10 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
 #include "game/blocks/block_map.hpp"
-#include "game/physics/chunk_grid.hpp"
+#include "game/entities/chunk_grid.hpp"
+#include "game/entities/mob_manager.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
-#include "mob_manager.hpp"
 
 constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
 constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;

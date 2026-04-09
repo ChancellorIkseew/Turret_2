@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "engine/coords/pixel_coord.hpp"
-#include "game/physics/physics_base.hpp"
+#include "game/common/physics_base.hpp"
 
 struct ParticleSoA {
     std::vector<PixelCoord> position;

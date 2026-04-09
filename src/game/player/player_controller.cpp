@@ -4,7 +4,7 @@
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
-#include "game/physics/team/team.hpp"
+#include "game/common/team.hpp"
 
 using PlCtr = PlayerController;
 

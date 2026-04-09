@@ -1,10 +1,10 @@
 #pragma once
 #include "game/blocks/block_map.hpp"
+#include "game/common/teams_pool.hpp"
+#include "game/entities/chunk_grid.hpp"
+#include "game/entities/mob_manager.hpp"
+#include "game/entities/shell_manager.hpp"
 #include "game/particles/particle_manager.hpp"
-#include "game/physics/chunk_grid.hpp"
-#include "game/physics/mob_manager.hpp"
-#include "game/physics/shell_manager.hpp"
-#include "game/physics/team/teams_pool.hpp"
 #include "world_map.hpp"
 
 class World {

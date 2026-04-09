@@ -3,7 +3,7 @@
 #include "engine/debug/logger.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
-#include "game/physics/physics_base.hpp"
+#include "game/common/physics_base.hpp"
 #include "preset_id.hpp"
 
 template<class Tag>

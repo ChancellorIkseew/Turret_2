@@ -5,9 +5,9 @@
 #include "engine/render/renderer.hpp"
 #include "game/blocks/block_map.hpp"
 #include "game/player/camera.hpp"
-#include "game/physics/chunk_grid.hpp"
-#include "game/physics/mob_manager.hpp"
-#include "game/physics/shell_manager.hpp"
+#include "game/entities/chunk_grid.hpp"
+#include "game/entities/mob_manager.hpp"
+#include "game/entities/shell_manager.hpp"
 
 static inline void reduceShellsLifeTime(ShellSoA& soa) {
     for (auto& time : soa.restLifeTime) {

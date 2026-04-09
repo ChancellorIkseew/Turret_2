@@ -1,6 +1,6 @@
 #pragma once
 #include "engine/render/texture.hpp"
-#include "game/physics/physics_base.hpp"
+#include "game/common/physics_base.hpp"
 
 class Renderer;
 

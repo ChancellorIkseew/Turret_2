@@ -1,6 +1,6 @@
 #include "script_libs.hpp"
 //
-#include "game/physics/team/team.hpp"
+#include "game/common/team.hpp"
 #include "game/player/player_controller.hpp"
 
 static TeamID getTeamID() {
