@@ -5,7 +5,7 @@
 #include "engine/render/renderer.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/settings/settings.hpp"
-#include "game/blocks/block_manager.hpp"
+#include "game/blocks/block_map.hpp"
 #include "game/physics/chunk_grid.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
@@ -51,7 +51,7 @@ static inline void resolveCollisions(MobSoA& soa, const ChunkGrid& chunks) {
     }
 }
 
-static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, const BlockManager& blocks) {
+static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, const BlockMap& blocks) {
     for (size_t i = 0; i < mobCount; ++i) {
         const float radius = soa.hitboxRadius[i];
         const PixelCoord center = soa.position[i];
@@ -62,7 +62,7 @@ static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, co
         for (int32_t x = start.x; x <= end.x; ++x) {
             for (int32_t y = start.y; y <= end.y; ++y) {
                 const TileCoord tile{ x,y };
-                if (!blocks.isFilledBlock(tile))
+                if (!blocks.isFilled(tile))
                     continue;
                 const RectHitbox tileHitbox{ t1::pixel(tile), t1::pixel(tile) + t1::TILE_PC };
                 resolveWorldCollision(soa, i, tileHitbox);
@@ -77,7 +77,7 @@ static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
     }
 }
 
-void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockManager& blocks) {
+void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks) {
     const size_t mobCount = soa.mobCount;
     moveByAI(soa, mobCount);
     resolveCollisions(soa, chunks);

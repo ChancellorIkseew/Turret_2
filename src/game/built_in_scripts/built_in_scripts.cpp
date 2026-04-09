@@ -36,5 +36,5 @@ void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord ti
     const auto& presets = assets.getPresets();
     const auto& preset = presets.getBlock(presetID);
     auto& blocks = world.getBlocks();
-    blocks.addBlock(presets, tile, preset.archetype, presetID, preset.maxHealth, teamID);
+    //blocks.at(tile).place(teamID, );   addBlock(presets, tile, preset.archetype, presetID, preset.maxHealth, teamID);
 }

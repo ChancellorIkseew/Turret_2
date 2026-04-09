@@ -7,6 +7,7 @@
 #include "game/player/player_controller.hpp"
 #include "mob_manager.hpp"
 #include "turret_components.hpp"
+#include "game/blocks/block_map.hpp"
 
 static inline void updatePlayerControlled(TurretComponents& soa, const Presets& presets,
     const size_t index, const PlayerController& playerController) {
@@ -14,7 +15,7 @@ static inline void updatePlayerControlled(TurretComponents& soa, const Presets& 
     soa.shootingData[index].target = playerController.getAimCoord();
 }
 
-static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const BlockManager& blocks, const Presets& presets, const size_t index) {
+static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const BlockMap& blocks, const Presets& presets, const size_t index) {
     const float range = presets.getTurret(soa.preset[index]).range;
     const PixelCoord position = soa.position[index];
     const TeamID teamID = soa.teamID[index];
@@ -32,7 +33,6 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
     }
 
     //aim to block
-    const auto& blockSoa = blocks.getCommonSoa();
     const int tileRange = t1::tile(range);
     const TileCoord tilePosition = t1::tile(position);
     const TileCoord mapSize = blocks.getSize();
@@ -45,9 +45,10 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
             const PixelCoord blockCenter = t1::tileCenter({ x, y });
             if (!t1::areCloserCircle(position, blockCenter, range))
                 continue;
-            if (blockSoa.archetype[blocks.at(x, y)] == BlockArchetype::air)
+            const BlockTile& blockTile = blocks.at(x, y);
+            if (blockTile.type == BlockType::air)
                 continue;
-            if (blockSoa.teamID[blocks.at(x, y)] == teamID)
+            if (blockTile.teamID == teamID)
                 continue;
             soa.shootingData[index].isShooting = true;
             soa.shootingData[index].target = blockCenter;
@@ -56,7 +57,7 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
     }
 }
 
-void ai::updateShootingAI(TurretComponents& soa, const MobSoA& mobs, const BlockManager& blocks,
+void ai::updateShootingAI(TurretComponents& soa, const MobSoA& mobs, const BlockMap& blocks,
     const Presets& presets, const PlayerController& playerController) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {

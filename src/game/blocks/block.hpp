@@ -15,8 +15,10 @@ enum class BlockType {
 };
 
 struct Block {
+    Health health = 0;
+    //
     virtual ~Block() = default;
-    virtual BlockType getType() const noexcept = 0;
+    virtual BlockType getType() const noexcept { return BlockType::air; }
 };
 
 struct CoreBlock : Block {

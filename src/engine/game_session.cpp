@@ -34,15 +34,15 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto& shells    = world->getShells();
     auto& particles = world->getParticles();
     auto mobTurrets   = fromMobs(mobs.getSoa());
-    auto blockTurrets = fromBlocks(blocks.getTurretSoa());
+    //auto blockTurrets = fromBlocks(blocks.getTurretSoa());
     //
     chunks.update(mobs.getSoa());
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
     mobs::processMobs(mobs.getSoa(), chunks, blocks);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
-    ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
+    //ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
-    turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera);
+    //turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera);
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera);
     particles::updateParticles(particles);
     // Clean up only after all processing.

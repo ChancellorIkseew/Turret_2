@@ -13,8 +13,11 @@ struct BlockTile {
     std::unique_ptr<Block> block;
     //
     BlockTile() = default;
-    BlockTile(TeamID teamID, std::unique_ptr<Block>& block) :
-        teamID(teamID), type(block->getType()), block(std::move(block)) {}
+    BlockTile(TeamID teamID, std::unique_ptr<Block> block) :
+        teamID(teamID), block(std::move(block)) {
+        if (block)
+            type = block->getType();
+    }
 
     void place(TeamID teamID, std::unique_ptr<Block>& block) {
         this->teamID = teamID;
@@ -27,6 +30,10 @@ struct BlockTile {
         type = BlockType::air;
         block.reset();
     }
+
+    BlockTile(BlockTile&&) noexcept = default;
+    BlockTile& operator=(BlockTile&&) noexcept = default;
+    t1_disable_copy(BlockTile)
 };
 
 class BlockMap {
@@ -34,16 +41,24 @@ class BlockMap {
     TileCoord mapSize;
 public:
     BlockMap(TileCoord mapSize) : mapSize(mapSize) {
-        blocks.assign(mapSize.x * mapSize.y, BlockTile());
+        blocks.resize(mapSize.x * mapSize.y);
     }
     //
-    BlockTile& at(const int x, const int y) noexcept { return blocks[x + y * mapSize.x]; }
-    BlockTile& at(const TileCoord tile)     noexcept { return at(tile.x, tile.y); }
+    const BlockTile& at(int x, int y)   const noexcept { return blocks[x + y * mapSize.x]; }
+    const BlockTile& at(TileCoord tile) const noexcept { return at(tile.x, tile.y); }
+    BlockTile& at(int x, int y)   noexcept { return blocks[x + y * mapSize.x]; }
+    BlockTile& at(TileCoord tile) noexcept { return at(tile.x, tile.y); }
     TileCoord getSize() const noexcept { return mapSize; }
     auto& getRaw() noexcept { return blocks; }
+    //
+    bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }
+    bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type == BlockType::air; }
+    bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type != BlockType::air;
+    }
+    t1_disable_copy_and_move(BlockMap)
 };
 
-void update(BlockMap& map) {
+inline void update(BlockMap& map) { // replace later
     const TileCoord size = map.getSize();
     for (int x = 0; x < size.x; ++x) {
         for (int y = 0; y < size.y; ++y) {
