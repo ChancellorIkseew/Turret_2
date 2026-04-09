@@ -354,6 +354,9 @@
     <ClInclude Include="src\game\blocks\block_map.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\blocks\blocks_system.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\debug\logger.cpp">
@@ -621,6 +624,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\icon_button.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\blocks\blocks_system.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\blocks\block.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

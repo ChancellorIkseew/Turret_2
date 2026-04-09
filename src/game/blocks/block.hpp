@@ -1,5 +1,8 @@
 #pragma once
+#include "engine/render/texture.hpp"
 #include "game/physics/physics_base.hpp"
+
+class Renderer;
 
 struct ItemStack {
    
@@ -16,9 +19,11 @@ enum class BlockType {
 
 struct Block {
     Health health = 0;
+    Texture texture;
     //
     virtual ~Block() = default;
-    virtual BlockType getType() const noexcept { return BlockType::air; }
+    virtual BlockType getType() const noexcept = 0;
+    virtual void draw(const Renderer& renderer, TileCoord tile);
 };
 
 struct CoreBlock : Block {

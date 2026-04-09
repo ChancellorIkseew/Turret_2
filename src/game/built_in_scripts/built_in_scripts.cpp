@@ -33,8 +33,15 @@ void BuiltInScripts::spawnMob(const MobPresetID presetID, const PixelCoord posit
 }
 
 void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID) {
+    auto& blocks = world.getBlocks();
+    if (!blocks.contains(tile))
+        return;
+    
     const auto& presets = assets.getPresets();
     const auto& preset = presets.getBlock(presetID);
-    auto& blocks = world.getBlocks();
-    //blocks.at(tile).place(teamID, );   addBlock(presets, tile, preset.archetype, presetID, preset.maxHealth, teamID);
+
+    std::unique_ptr<Block> block = std::make_unique<CoreBlock>(); //temporary
+    block->texture = preset.visual.texture;
+    block->health = preset.maxHealth;
+    blocks.at(tile).place(teamID, block);
 }
