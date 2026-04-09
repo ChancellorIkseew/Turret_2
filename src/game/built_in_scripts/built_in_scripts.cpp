@@ -34,7 +34,7 @@ void BuiltInScripts::spawnMob(const MobPresetID presetID, const PixelCoord posit
 
 void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID) {
     auto& blocks = world.getBlocks();
-    if (!blocks.contains(tile))
+    if (!blocks.isAir(tile))
         return;
     
     const auto& presets = assets.getPresets();

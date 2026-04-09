@@ -52,8 +52,8 @@ public:
     auto& getRaw() noexcept { return blocks; }
     //
     bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }
-    bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type == BlockType::air; }
-    bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type != BlockType::air;
+    bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type != BlockType::air; }
+    bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type == BlockType::air;
     }
     t1_disable_copy_and_move(BlockMap)
 };

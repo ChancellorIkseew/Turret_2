@@ -94,7 +94,6 @@
     <ClInclude Include="src\engine\window\input\input.hpp" />
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\blocks\block.hpp" />
-    <ClInclude Include="src\game\blocks\blocks_system.hpp" />
     <ClInclude Include="src\game\blocks\block_map.hpp" />
     <ClInclude Include="src\game\built_in_scripts\built_in_scripts.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
@@ -124,6 +123,7 @@
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
     <ClInclude Include="src\game\world\world_map.hpp" />
+    <ClInclude Include="src\game\world_drawer\blocks_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\entities_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\particles_drawer.hpp" />
@@ -182,7 +182,6 @@
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\blocks\block.cpp" />
-    <ClCompile Include="src\game\blocks\blocks_system.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
     <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
@@ -218,6 +217,7 @@
     <ClCompile Include="src\game\script_libs\lib_util.cpp" />
     <ClCompile Include="src\game\script_libs\lib_world.cpp" />
     <ClCompile Include="src\game\world\world_map.cpp" />
+    <ClCompile Include="src\game\world_drawer\blocks_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\particles_drawer.cpp" />
