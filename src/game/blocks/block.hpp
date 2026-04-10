@@ -19,7 +19,7 @@ enum class BlockType {
 
 struct Block {
     Health health = 0;
-    Texture texture;
+    Texture texture = NULL_TEXTURE;
     //
     virtual ~Block() = default;
     virtual BlockType getType() const noexcept = 0;
@@ -33,7 +33,7 @@ struct CoreBlock : Block {
 
 struct DrillBlock : Block {
     uint8_t itemPerTick;
-    TickCount reatReloadTime;
+    TickCount restReloadTime;
     virtual ~DrillBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::drill; }
 public: //
@@ -50,4 +50,9 @@ struct FactoryBlock : Block {
 struct TurretBlock : Block {
     virtual ~TurretBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::turret; }
+};
+
+struct WallBlock : Block {
+    virtual ~WallBlock() final = default;
+    virtual BlockType getType() const noexcept final { return BlockType::wall; }
 };

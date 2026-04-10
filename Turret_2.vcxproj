@@ -95,6 +95,7 @@
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\blocks\block.hpp" />
     <ClInclude Include="src\game\blocks\block_map.hpp" />
+    <ClInclude Include="src\game\blocks\make_block.hpp" />
     <ClInclude Include="src\game\built_in_scripts\built_in_scripts.hpp" />
     <ClInclude Include="src\game\common\id_manager.hpp" />
     <ClInclude Include="src\game\common\mob_ai.hpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="src\game\entities\chunk_grid.hpp" />
     <ClInclude Include="src\game\entities\mob_manager.hpp" />
     <ClInclude Include="src\game\entities\shell_manager.hpp" />
+    <ClInclude Include="src\game\entities\turret_manager.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
@@ -187,6 +189,7 @@
     <ClCompile Include="src\game\entities\chunk_grid.cpp" />
     <ClCompile Include="src\game\entities\mob_manager.cpp" />
     <ClCompile Include="src\game\entities\shell_manager.cpp" />
+    <ClCompile Include="src\game\entities\turret_manager.cpp" />
     <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />

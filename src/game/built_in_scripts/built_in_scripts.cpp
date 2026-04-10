@@ -2,6 +2,7 @@
 //
 #include "engine/assets/assets.hpp"
 #include "engine/game_session.hpp"
+#include "game/blocks/make_block.hpp"
 
 void BuiltInScripts::execute(const TimeCount& timeCount) {
     if (timeCount.isWaveJustChanged())
@@ -36,12 +37,7 @@ void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord ti
     auto& blocks = world.getBlocks();
     if (!blocks.isAir(tile))
         return;
-    
-    const auto& presets = assets.getPresets();
-    const auto& preset = presets.getBlock(presetID);
-
-    std::unique_ptr<Block> block = std::make_unique<CoreBlock>(); //temporary
-    block->texture = preset.visual.texture;
-    block->health = preset.maxHealth;
+    const auto& preset = assets.getPresets().getBlock(presetID);
+    std::unique_ptr<Block> block = makeBlock(preset);
     blocks.at(tile).place(teamID, block);
 }
