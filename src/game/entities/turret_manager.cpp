@@ -1,8 +1,4 @@
 #include "turret_manager.hpp"
-//
-#include "engine/debug/logger.hpp"
-
-static debug::Logger logger("mob_manager");
 
 void TurretManager::reserve(const size_t capacity) {
     soa.position.reserve(capacity);

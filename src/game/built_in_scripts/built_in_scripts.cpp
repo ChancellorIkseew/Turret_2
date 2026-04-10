@@ -39,5 +39,5 @@ void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord ti
         return;
     const auto& preset = assets.getPresets().getBlock(presetID);
     std::unique_ptr<Block> block = makeBlock(preset);
-    blocks.at(tile).place(teamID, block);
+    blocks.place(tile, teamID, block);
 }

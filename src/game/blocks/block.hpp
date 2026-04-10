@@ -1,4 +1,5 @@
 #pragma once
+#include "engine/assets/preset_id.hpp"
 #include "engine/render/texture.hpp"
 #include "game/common/physics_base.hpp"
 
@@ -48,6 +49,9 @@ struct FactoryBlock : Block {
 };
 
 struct TurretBlock : Block {
+    TurretPresetID turretPreset;
+    //
+    TurretBlock(TurretPresetID turretPreset) : turretPreset(turretPreset) {}
     virtual ~TurretBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::turret; }
 };

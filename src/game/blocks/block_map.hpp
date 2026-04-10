@@ -5,6 +5,37 @@
 #include "game/common/physics_base.hpp"
 #include "block.hpp"
 
+#include "engine/coords/transforms.hpp"
+#include "game/entities/turret_manager.hpp"
+
+class BlocksMeta {
+    TurretManager turrets;
+    std::vector<size_t> markedForRemove;
+public:
+    BlocksMeta() : turrets(64) {}
+    //
+    auto& getTurrets() { return turrets; }
+    //
+    void markForRemove(TileCoord tile) {
+        auto& soa = turrets.getSoa();
+        for (size_t i = 0; i < soa.turretCount; ++i) {
+            if (tile == t1::tile(soa.position[i]))
+                return markedForRemove.push_back(i);
+        }
+    }
+    void cleanUp() {
+        if (markedForRemove.empty())
+            return;
+        std::ranges::sort(markedForRemove, std::greater<size_t>());
+        auto [first, last] = std::ranges::unique(markedForRemove);
+        markedForRemove.erase(first, last);
+        for (size_t targetIndex : markedForRemove) {
+            turrets.removeTurret(targetIndex);
+        }
+        markedForRemove.clear();
+    }
+};
+
 constexpr TeamID INVALID_TEAM_ID = IDManager<TeamID>::INVALID_ID;
 
 struct BlockTile {
@@ -38,6 +69,7 @@ struct BlockTile {
 
 class BlockMap {
     std::vector<BlockTile> blocks;
+    BlocksMeta meta;
     TileCoord mapSize;
 public:
     BlockMap(TileCoord mapSize) : mapSize(mapSize) {
@@ -50,11 +82,25 @@ public:
     BlockTile& at(TileCoord tile) noexcept { return at(tile.x, tile.y); }
     TileCoord getSize() const noexcept { return mapSize; }
     auto& getRaw() noexcept { return blocks; }
+    auto& getMeta() noexcept { return meta; }
     //
     bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }
     bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type != BlockType::air; }
-    bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type == BlockType::air;
+    bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type == BlockType::air; }
+    //
+    void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
+        if (block->getType() == BlockType::turret) {
+            TurretPresetID preset = static_cast<TurretBlock*>(block.get())->turretPreset;
+            meta.getTurrets().addTurret(preset, t1::tileCenter(tile), 0.0f, teamID, ShootingData(), 0);
+        }
+        at(tile).place(teamID, block);
     }
+    void demolish(TileCoord tile) {
+        if (at(tile).type == BlockType::turret)
+            meta.markForRemove(tile);
+        at(tile).demolish();
+    }
+
     t1_disable_copy_and_move(BlockMap)
 };
 

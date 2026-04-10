@@ -58,7 +58,7 @@ static inline void hitBlocks(ShellSoA& shells, BlockMap& blocks, const size_t sh
             continue;
         registerDamage(blockTile.block->health, shells.restDamage[shell]);
         if (blockTile.block->health < 1)
-            blockTile.demolish();
+            blocks.demolish(tile);
     }
 }
 

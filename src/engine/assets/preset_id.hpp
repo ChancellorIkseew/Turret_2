@@ -1,4 +1,5 @@
 #pragma once
+#include <compare>
 #include <cstdint>
 
 namespace preset_tag {

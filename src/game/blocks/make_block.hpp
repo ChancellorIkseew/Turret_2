@@ -16,7 +16,7 @@ inline std::unique_ptr<Block> makeBlock(BlockPreset preset) {
         block = std::make_unique<FactoryBlock>();
         break;
     case BlockType::turret:
-        block = std::make_unique<TurretBlock>();
+        block = std::make_unique<TurretBlock>(preset.turret);
         break;
     case BlockType::wall:
         block = std::make_unique<WallBlock>();
