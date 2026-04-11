@@ -15,6 +15,7 @@ static debug::Logger logger("presets");
 static BlockType getBlockType(const std::string name) {
     if (name == "wall")    return BlockType::wall;
     if (name == "drill")   return BlockType::drill;
+    if (name == "belt")    return BlockType::belt;
     if (name == "factory") return BlockType::factory;
     if (name == "turret")  return BlockType::turret;
     if (name == "core")    return BlockType::core;
