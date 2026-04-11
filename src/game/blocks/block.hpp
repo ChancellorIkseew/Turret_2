@@ -3,14 +3,17 @@
 #include "engine/render/texture.hpp"
 #include "game/common/physics_base.hpp"
 
+class BlockMap;
 class Renderer;
 
 struct ItemStack {
-   
+    uint8_t item = 0;
+    uint8_t count = 0;
 };
 
 enum class BlockType {
     air,
+    belt,
     wall,
     drill,
     factory,
@@ -25,6 +28,7 @@ struct Block {
     virtual ~Block() = default;
     virtual BlockType getType() const noexcept = 0;
     virtual void draw(const Renderer& renderer, TileCoord tile);
+    virtual bool canAccept(uint8_t item, uint8_t direction) { return false; }
 };
 
 struct CoreBlock : Block {
@@ -41,6 +45,37 @@ public: //
     void mine(TickCount deltaTick) {
 
     }
+};
+
+struct BeltBlock : Block {
+
+    uint8_t ids[3]; // Item IDs
+    float ys[3]; // progress 0.0-1.0
+    float xs[3];
+    int len; // itemCount
+    float minitem = 0.f; //last item progress
+    int mid = 0; //current central item
+    int lastInserted = 0;
+
+    static constexpr float ITEM_SPACE = 4.f;
+    static constexpr int CAPACITY = 3;
+
+    Block* next = nullptr; // any block
+    BeltBlock* nextBelt = nullptr;
+
+    uint8_t rotation = 0;
+    bool aligned = true;
+    //
+    virtual ~BeltBlock() final = default;
+    virtual BlockType getType() const noexcept final { return BlockType::belt; }
+    //
+    virtual void draw(const Renderer& renderer, TileCoord tile);
+    virtual bool canAccept(uint8_t item, uint8_t direction) final;
+    void update(TileCoord tile, const BlockMap& map);
+private:
+    static BeltBlock* findNext(TileCoord tile, const BlockMap& map) noexcept;
+    void moveItems();
+    bool pass(uint8_t item, uint8_t direction);
 };
 
 struct FactoryBlock : Block {

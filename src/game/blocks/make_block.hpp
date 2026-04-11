@@ -6,6 +6,9 @@
 inline std::unique_ptr<Block> makeBlock(BlockPreset preset) {
     std::unique_ptr<Block> block;
     switch (preset.archetype) {
+    case BlockType::belt:
+        block = std::make_unique<BeltBlock>();
+        break;
     case BlockType::core:
         block = std::make_unique<CoreBlock>();
         break;
