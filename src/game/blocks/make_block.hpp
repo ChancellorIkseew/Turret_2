@@ -4,12 +4,12 @@
 #include "engine/assets/preset_defs.hpp"
 #include "engine/debug/logger.hpp"
 
-inline std::unique_ptr<Block> makeBlock(BlockPreset preset) {
+inline std::unique_ptr<Block> makeBlock(BlockPreset preset, BlockRot rotation) {
     static debug::Logger bmLogger("bloc_make");
     std::unique_ptr<Block> block;
     switch (preset.archetype) {
     case BlockType::belt:
-        block = std::make_unique<BeltBlock>();
+        block = std::make_unique<BeltBlock>(rotation);
         break;
     case BlockType::core:
         block = std::make_unique<CoreBlock>();

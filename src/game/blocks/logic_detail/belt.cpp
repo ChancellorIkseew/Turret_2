@@ -7,10 +7,8 @@ static constexpr float approach(float current, float target, float step) {
     else                  return std::max(current - step, target);
 }
 
-bool BeltBlock::pass(uint8_t item, uint8_t direction) {
-    if (!next || !next->canAccept(item, direction))
-        return false;
-    return true;
+bool BeltBlock::pass(uint8_t item, BlockRot srcRot) {
+    return next && next->canAccept(item, srcRot);
 }
 
 void BeltBlock::moveItems() {
@@ -55,21 +53,21 @@ BeltBlock* BeltBlock::findNext(TileCoord tile, const BlockMap& map) noexcept {
 }
 
 void BeltBlock::update(TileCoord tile, const BlockMap& map) {
-    next = findNext(tile, map);
-    moveItems();
+    //next = findNext(tile, map);
+    //moveItems();
 }
 
-static constexpr int getRelativeDir(TileCoord from, TileCoord to) {
-    if (from.y > to.y) return 0; // UP
-    if (from.x > to.x) return 1; // RIGHT
-    if (from.y < to.y) return 2; // DOWN
-    if (from.x < to.x) return 3; // LEFT
-    return -1;
+static constexpr BlockRot getRelativeDir(TileCoord from, TileCoord to) {
+    if (from.y > to.y) return up;
+    if (from.x > to.x) return right;
+    if (from.y < to.y) return down;
+    if (from.x < to.x) return left;
+    return none;
 }
 
-bool BeltBlock::canAccept(uint8_t item, uint8_t direction) {
+bool BeltBlock::canAccept(uint8_t item, BlockRot srcRot) {
     if (len >= CAPACITY) return false;
-    int diff = std::abs(direction - rotation);
+    int diff = std::abs(srcRot - rotation);
     if (diff == 0) return minitem >= ITEM_SPACE;
     if (diff % 2 == 1) return minitem > 0.7f;
     return false;

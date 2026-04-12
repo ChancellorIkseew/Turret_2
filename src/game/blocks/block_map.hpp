@@ -104,12 +104,15 @@ public:
     t1_disable_copy_and_move(BlockMap)
 };
 
-inline void update(BlockMap& map) { // replace later
+inline void updateBlocks(BlockMap& map) { // replace later
     const TileCoord size = map.getSize();
     for (int x = 0; x < size.x; ++x) {
         for (int y = 0; y < size.y; ++y) {
             BlockTile& blockTile = map.at(x, y);
             switch (blockTile.type) {
+            case BlockType::belt:
+                static_cast<BeltBlock*>(blockTile.block.get())->update({ x, y }, map);;
+                break;
             case BlockType::drill:
                 static_cast<DrillBlock*>(blockTile.block.get());
                 // do sth

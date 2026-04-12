@@ -33,11 +33,11 @@ void BuiltInScripts::spawnMob(const MobPresetID presetID, const PixelCoord posit
         preset.hitboxRadius, mData, sData, 0, 0.0f);
 }
 
-void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID) {
+void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, BlockRot rotation) {
     auto& blocks = world.getBlocks();
     if (!blocks.isAir(tile))
         return;
     const auto& preset = assets.getPresets().getBlock(presetID);
-    std::unique_ptr<Block> block = makeBlock(preset);
+    std::unique_ptr<Block> block = makeBlock(preset, rotation);
     blocks.place(tile, teamID, block);
 }
