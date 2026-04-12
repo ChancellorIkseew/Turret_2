@@ -1,14 +1,14 @@
 #pragma once
-#include "game/blocks/block_manager.hpp"
+#include "game/blocks/block_map.hpp"
+#include "game/common/teams_pool.hpp"
+#include "game/entities/chunk_grid.hpp"
+#include "game/entities/mob_manager.hpp"
+#include "game/entities/shell_manager.hpp"
 #include "game/particles/particle_manager.hpp"
-#include "game/physics/chunk_grid.hpp"
-#include "game/physics/mob_manager.hpp"
-#include "game/physics/shell_manager.hpp"
-#include "game/physics/team/teams_pool.hpp"
 #include "world_map.hpp"
 
 class World {
-    BlockManager blocks;
+    BlockMap blocks;
     ChunkGrid chunkGrid;
     //
     WorldMap map;
@@ -24,14 +24,14 @@ public:
         shells(256) { }
     //
     const WorldMap& getMap() const noexcept { return map; }
-    const BlockManager& getBlocks() const noexcept { return blocks; }
+    const BlockMap& getBlocks() const noexcept { return blocks; }
     const TeamsPool& getTeams() const noexcept { return teams; }
     const ChunkGrid& getChunks() const noexcept { return chunkGrid; }
     const MobManager& getMobs() const noexcept { return mobs; }
     const ShellManager& getShells() const noexcept { return shells; }
     const ParticleManager& getParticles() const noexcept { return particles; }
     WorldMap& getMap() noexcept { return map; }
-    BlockManager& getBlocks() noexcept { return blocks; }
+    BlockMap& getBlocks() noexcept { return blocks; }
     TeamsPool& getTeams() noexcept { return teams; }
     ChunkGrid& getChunks() noexcept { return chunkGrid; }
     MobManager& getMobs() noexcept { return mobs; }

@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "game/physics/mob_manager.hpp"
+#include "game/entities/mob_manager.hpp"
 
 class Camera;
 class Engine;

@@ -3,11 +3,11 @@
 #include <cmath>
 #include "engine/assets/presets.hpp"
 #include "engine/render/renderer.hpp"
-#include "game/blocks/block_manager.hpp"
+#include "game/blocks/block_map.hpp"
 #include "game/player/camera.hpp"
-#include "game/physics/chunk_grid.hpp"
-#include "game/physics/mob_manager.hpp"
-#include "game/physics/shell_manager.hpp"
+#include "game/entities/chunk_grid.hpp"
+#include "game/entities/mob_manager.hpp"
+#include "game/entities/shell_manager.hpp"
 
 static inline void reduceShellsLifeTime(ShellSoA& soa) {
     for (auto& time : soa.restLifeTime) {
@@ -44,22 +44,25 @@ static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCou
     }
 }
 
-static inline void hitBlocks(ShellSoA& shells, BlockManager& blocks, const size_t shellCount) {
-    auto& blockSoa = blocks.getCommonSoa();
+static inline void hitBlocks(ShellSoA& shells, BlockMap& blocks, const size_t shellCount) {
     for (size_t shell = 0; shell < shellCount; ++shell) {
         if (shells.restDamage[shell] < 1)
             continue;
         const TileCoord tile = t1::tile(shells.position[shell]);
-        const size_t index = blocks.at(tile);
-        if (blockSoa.archetype[index] == BlockArchetype::air)
+        if (!blocks.contains(tile))
             continue;
-        if (blockSoa.teamID[index] == shells.teamID[shell])
+        BlockTile& blockTile = blocks.at(tile);
+        if (blockTile.type == BlockType::air)
             continue;
-        registerDamage(blockSoa.health[index], shells.restDamage[shell]);
+        if (blockTile.teamID == shells.teamID[shell])
+            continue;
+        registerDamage(blockTile.block->health, shells.restDamage[shell]);
+        if (blockTile.block->health < 1)
+            blocks.demolish(tile);
     }
 }
 
-void shells::processShells(ShellSoA& shells, MobSoA& mobs, const ChunkGrid& chunks, BlockManager& blocks) {
+void shells::processShells(ShellSoA& shells, MobSoA& mobs, const ChunkGrid& chunks, BlockMap& blocks) {
     const size_t shellCount = shells.shellCount;
     reduceShellsLifeTime(shells);
     moveShells(shells, shellCount);

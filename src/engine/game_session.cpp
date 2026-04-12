@@ -4,13 +4,13 @@
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "game/particles/particles_system.hpp"
-#include "game/physics/ai_system.hpp"
-#include "game/physics/mobs_system.hpp"
-#include "game/physics/shells_system.hpp"
-#include "game/physics/turrets_system.hpp"
+#include "game/systems/ai_system.hpp"
+#include "game/systems/mobs_system.hpp"
+#include "game/systems/shells_system.hpp"
+#include "game/systems/turrets_system.hpp"
+#include "game/systems/turret_components.hpp"
 #include "game/world/world.hpp"
 #include "game/events/events.hpp"
-#include "game/physics/turret_components.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
@@ -34,9 +34,10 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto& shells    = world->getShells();
     auto& particles = world->getParticles();
     auto mobTurrets   = fromMobs(mobs.getSoa());
-    auto blockTurrets = fromBlocks(blocks.getTurretSoa());
+    auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
     //
     chunks.update(mobs.getSoa());
+    updateBlocks(blocks);
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
     mobs::processMobs(mobs.getSoa(), chunks, blocks);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
@@ -48,7 +49,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets, playerController);
-    blocks::cleanupBlocks(blocks);
+    blocks.getMeta().cleanUp();
     timeCount.update();
     builtInScripts.execute(timeCount);
 }

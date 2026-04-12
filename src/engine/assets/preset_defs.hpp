@@ -2,9 +2,9 @@
 #include <array>
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/render/texture.hpp"
-#include "game/blocks/block_archetype.hpp"
-#include "game/physics/mob_ai.hpp"
-#include "game/physics/physics_base.hpp"
+#include "game/blocks/block.hpp"
+#include "game/common/mob_ai.hpp"
+#include "game/common/physics_base.hpp"
 #include "preset_id.hpp"
 
 struct ShellVisualPreset {
@@ -69,7 +69,7 @@ struct BlockVisualPreset {
 };
 
 struct BlockPreset {
-    BlockArchetype archetype;
+    BlockType archetype;
     Health maxHealth;
     BlockVisualPreset visual;
     union {

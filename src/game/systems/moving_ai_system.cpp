@@ -2,7 +2,7 @@
 //
 #include "engine/assets/presets.hpp"
 #include "engine/coords/math.hpp"
-#include "mob_manager.hpp"
+#include "game/entities/mob_manager.hpp"
 #include "game/player/player_controller.hpp"
 
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);

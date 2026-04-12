@@ -1,7 +1,7 @@
 #pragma once
 #include "engine/assets/preset_defs.hpp"
 #include "engine/coords/pixel_coord.hpp"
-#include "game/physics/physics_base.hpp"
+#include "game/common/physics_base.hpp"
 
 class Assets;
 class TimeCount;
@@ -17,7 +17,7 @@ public:
     void spawnWave(const uint32_t wavenumber);
 
     void spawnMob(const MobPresetID presetID, const PixelCoord position, const TeamID teamID);
-    void placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID);
+    void placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, BlockRot rotation);
 private:
     t1_disable_copy_and_move(BuiltInScripts)
 };

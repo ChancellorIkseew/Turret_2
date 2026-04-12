@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include <string>
-#include "game/physics/physics_base.hpp"
+#include "game/common/physics_base.hpp"
 
 class Camera;
 class World;

@@ -2,7 +2,7 @@
 #include <cassert>
 #include <vector>
 #include "engine/assets/preset_defs.hpp"
-#include "id_manager.hpp"
+#include "game/common/id_manager.hpp"
 
 using MobID = uint16_t;
 using MobIndex = MobID;

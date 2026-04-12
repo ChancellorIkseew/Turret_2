@@ -32,6 +32,7 @@ public:
 class JEI : public Container {
     Engine& engine;
     TileData tileData;
+    BlockRot rotation = up;
 public:
     JEI(Engine& engine) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
         auto grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
@@ -58,6 +59,8 @@ public:
     void callback(UIContext& context) override {
         Container::callback(context);
         const Input& input = engine.getMainWindow().getInput();
+        if (input.jactive(Rotate_building))
+            rotation = static_cast<BlockRot>((rotation + 1) % 4);
         if (!input.active(Build) || engine.getGUI().ownsMouse())
             return;
         GameSession& session = engine.getSession();
@@ -68,7 +71,7 @@ public:
         case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
         case TileComponent::block: {
             const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
-            session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID);
+            session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID, rotation);
             break;
         }
         }
