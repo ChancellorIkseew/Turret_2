@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL3/SDL_render.h>
 #include "config.hpp"
-#include "engine/coords/math.hpp"
 #include "engine/coords/pixel_coord.hpp"
 #include "texture.hpp"
 
@@ -48,7 +47,7 @@ public:
         const PixelCoord dstPosition = position - origin - translation;
         const SDL_FRect dstRect(dstPosition.x, dstPosition.y, size.x, size.y);
         SDL_RenderTextureRotated(sdlRenderer, commonTexture,
-            &texture.rect, &dstRect, t1::radToDegree(angleRad), &sdlOrigin, SDL_FlipMode::SDL_FLIP_NONE);
+            &texture.rect, &dstRect, t1RadianToSDLDegree(angleRad), &sdlOrigin, SDL_FlipMode::SDL_FLIP_NONE);
     }
     void drawAnimated(const Texture texture, const PixelCoord position, const PixelCoord size,
         const PixelCoord origin, const double angleRad, const uint8_t frame, const float frameHeight) const noexcept {
@@ -90,5 +89,10 @@ public:
         setScaleMode(ScaleMode::nearest);
     }
 private:
+    static t1_finline_cxpr double t1RadianToSDLDegree(const double radian) noexcept {
+        constexpr double PI_DOUBLE = 3.1415926535897931;
+        // X+ is screen_right. Y+ is screen_down.
+        return 180.0f - radian * (180.0f / PI_DOUBLE);
+    }
     t1_disable_copy_and_move(Renderer)
 };

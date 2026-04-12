@@ -9,10 +9,10 @@ namespace t1 {
     constexpr double PI_D = 3.1415926535897931;
 
     t1_finline_cxpr float radToDegree(const float radian) noexcept {
-        return 180.0f - radian * (180.0f / PI_F);
+        return radian * (180.0f / PI_F);
     }
     t1_finline_cxpr double radToDegree(const double radian) noexcept {
-        return 180.0f - radian * (180.0f / PI_D);
+        return radian * (180.0f / PI_D);
     }
 
     t1_finline_cxpr int pow2i(const int value) noexcept {

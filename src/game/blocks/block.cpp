@@ -7,33 +7,32 @@ void Block::draw(const Renderer& renderer, TileCoord tile) {
     renderer.drawFast(texture, t1::pixel(tile), t1::TILE_PC);
 }
 
+static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Down, Right, Up, Left
+static constexpr float dirY[] = { 1.0f, 0.0f, -1.0f, 0.0f }; // Предполагая Y+ это Up
+
 void BeltBlock::draw(const Renderer& renderer, TileCoord tile) {
+    // works perfect (do not touch logic)
     AngleRad angleRad = static_cast<float>(rotation) * t1::PI_F * 0.5f;
     renderer.draw(texture, t1::tileCenter(tile), t1::TILE_PC, t1::TILE_PC / 2, angleRad);
-    //TODO: draw items
-    /*PixelCoord itemPos;
+
+    // Кэшируем векторы для текущего поворота
+    float dx = dirX[rotation];
+    float dy = dirY[rotation];
+
+    // Перпендикуляр (px, py) — это просто поворот (dx, dy)
+    float px = -dy;
+    float py = dx;
+
+    PixelCoord center = t1::tileCenter(tile);
+
     for (int i = 0; i < len; i++) {
-        switch (rotation) {
-        case up:
-            itemPos.y = t1::pixelF(tile.y) + t1::TILE_F - ys[len];
-            itemPos.x = t1::tileCenterF(tile.x) + xs[len];
-            break;
-        case down:
-            itemPos.y = t1::pixelF(tile.y) + ys[len];
-            itemPos.x = t1::tileCenterF(tile.x) + xs[len];
-            break;
-        case left:
-            itemPos.x = t1::pixelF(tile.y) + t1::TILE_F - ys[len];
-            itemPos.y = t1::tileCenterF(tile.x) + xs[len];
-            //
-            break;
-        case right:
-            itemPos.x = t1::pixelF(tile.y) + ys[len];
-            itemPos.y = t1::tileCenterF(tile.x) + xs[len];
-            break;
-        default:
-            return;
-        }
-        renderer.drawFast(texture, itemPos, PixelCoord(16, 16));
-    }*/
+        float shiftForward = (itemY[i] - 0.5f) * t1::TILE_F;
+        float shiftSide    = (itemX[i] * 0.5f) * t1::TILE_F;
+        PixelCoord itemPos {
+            center.x + (dx * shiftForward) + (px * shiftSide),
+            center.y + (dy * shiftForward) + (py * shiftSide)
+        };
+        renderer.drawFast(texture, itemPos - PixelCoord(8, 8), PixelCoord(16, 16));
+        //TODO replace with blockDrawer.addItem(item[i], position);
+    }
 }
