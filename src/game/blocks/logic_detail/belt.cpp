@@ -23,24 +23,24 @@ void BeltBlock::moveItems() {
     const float moved = 1.f;
 
     for (int8_t i = len - 1; i >= 0; i--) {
-        const float nextPos = (i == len - 1 ? 100.f : ys[i + 1]) - ITEM_SPACE;
-        const float maxMove = std::clamp(nextPos - ys[i], 0.f, moved);
+        const float nextPos = (i == len - 1 ? 100.f : itemY[i + 1]) - ITEM_SPACE;
+        const float maxMove = std::clamp(nextPos - itemY[i], 0.f, moved);
 
-        ys[i] += maxMove;
+        itemY[i] += maxMove;
 
-        if (ys[i] > nextMax) ys[i] = nextMax;
-        if (ys[i] > 0.5 && i > 0) mid = i - 1;
-        xs[i] = approach(xs[i], 0, moved * 2);
-
-        if (ys[i] >= 1.f && pass(ids[i], rotation)) {
+        if (itemY[i] > nextMax) itemY[i] = nextMax;
+        if (itemY[i] > 0.5 && i > 0) mid = i - 1;
+        itemX[i] = approach(itemX[i], 0, moved * 2);
+        
+        if (itemY[i] >= 1.f && pass(itemID[i], rotation)) {
             //align X position if passing forwards
             if (aligned)
-                nextBelt->xs[nextBelt->lastInserted] = xs[i];
+                nextBelt->itemX[nextBelt->lastInserted] = itemX[i];
             //remove last item
             len = std::min(i, len);
         }
-        else if (ys[i] < minitem)
-            minitem = ys[i];
+        else if (itemY[i] < minitem)
+            minitem = itemY[i];
     }
 }
 
@@ -71,4 +71,17 @@ bool BeltBlock::canAccept(uint8_t item, BlockRot srcRot) {
     const int8_t diff = std::abs(srcRot - rotation);
     if (diff % 2 == 1) return minitem > 0.7f;
     return false;
+}
+
+void BeltBlock::accept(uint8_t item, BlockRot srcRot) {
+    itemID[len] = item;
+    if (srcRot == rotation) {
+        itemX[len] = 0.f;
+        itemY[len] = 0.f;
+    }
+    else {
+        itemX[len] = +-0.5;
+        itemY[len] = 0.5;
+    }
+    ++len;
 }

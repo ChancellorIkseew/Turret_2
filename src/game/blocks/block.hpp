@@ -37,6 +37,7 @@ struct Block {
     virtual BlockType getType() const noexcept = 0;
     virtual void draw(const Renderer& renderer, TileCoord tile);
     virtual bool canAccept(uint8_t item, BlockRot srcRot) { return false; }
+    virtual void accept(uint8_t item, BlockRot srcRot) {}
 };
 
 struct CoreBlock : Block {
@@ -57,9 +58,9 @@ public: //
 };
 
 struct BeltBlock : Block {
-    uint8_t ids[3]; // Item IDs
-    float ys[3]; // progress 0.0-1.0
-    float xs[3];
+    uint8_t itemID[3]; // Item IDs
+    float itemY[3]; //
+    float itemX[3];
     float minitem = 0.f; //last item progress
 
     int8_t len = 0; // itemCount
@@ -80,6 +81,7 @@ struct BeltBlock : Block {
     //
     virtual void draw(const Renderer& renderer, TileCoord tile);
     virtual bool canAccept(uint8_t item, BlockRot srcRot) final;
+    virtual void accept(uint8_t item, BlockRot srcRot) final;
     void update(TileCoord tile, const BlockMap& map);
 private:
     static BeltBlock* findNext(TileCoord tile, const BlockMap& map) noexcept;
