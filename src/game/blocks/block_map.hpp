@@ -111,10 +111,10 @@ inline void updateBlocks(BlockMap& map) { // replace later
             BlockTile& blockTile = map.at(x, y);
             switch (blockTile.type) {
             case BlockType::belt:
-                static_cast<BeltBlock*>(blockTile.block.get())->update({ x, y }, map);;
+                static_cast<BeltBlock*>(blockTile.block.get())->update({ x, y }, map);
                 break;
             case BlockType::drill:
-                static_cast<DrillBlock*>(blockTile.block.get());
+                static_cast<DrillBlock*>(blockTile.block.get())->throwItem({x, y}, map);
                 // do sth
                 break;
             case BlockType::factory:

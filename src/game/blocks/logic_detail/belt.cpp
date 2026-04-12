@@ -22,7 +22,7 @@ void BeltBlock::moveItems() {
     const float nextMax = aligned ? 1.f - std::max(ITEM_SPACE - nextBelt->minitem, 0.f) : 1.f;
     const float moved = 1.f;
 
-    for (int i = len - 1; i >= 0; i--) {
+    for (int8_t i = len - 1; i >= 0; i--) {
         const float nextPos = (i == len - 1 ? 100.f : ys[i + 1]) - ITEM_SPACE;
         const float maxMove = std::clamp(nextPos - ys[i], 0.f, moved);
 
@@ -67,8 +67,8 @@ static constexpr BlockRot getRelativeDir(TileCoord from, TileCoord to) {
 
 bool BeltBlock::canAccept(uint8_t item, BlockRot srcRot) {
     if (len >= CAPACITY) return false;
-    int diff = std::abs(srcRot - rotation);
-    if (diff == 0) return minitem >= ITEM_SPACE;
+    if (srcRot == rotation) return true; // minitem >= ITEM_SPACE; //temp
+    const int8_t diff = std::abs(srcRot - rotation);
     if (diff % 2 == 1) return minitem > 0.7f;
     return false;
 }

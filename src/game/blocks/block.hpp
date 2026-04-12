@@ -21,12 +21,12 @@ enum class BlockType {
     core
 };
 
-enum BlockRot : uint8_t {
+enum BlockRot : int8_t {
     down  = 0,
     right = 1,
     up    = 2,
     left  = 3,
-    none  = 255
+    none  = -1
 };
 
 struct Block {
@@ -53,26 +53,26 @@ public: //
     void mine(TickCount deltaTick) {
 
     }
+    void throwItem(TileCoord tile, const BlockMap& map);
 };
 
 struct BeltBlock : Block {
-
     uint8_t ids[3]; // Item IDs
     float ys[3]; // progress 0.0-1.0
     float xs[3];
-    int len; // itemCount
     float minitem = 0.f; //last item progress
-    int mid = 0; //current central item
-    int lastInserted = 0;
+
+    int8_t len = 0; // itemCount
+    int8_t mid = 0; //current central item
+    int8_t lastInserted = 0;
+    BlockRot rotation = left;
+    bool aligned = true;
 
     static constexpr float ITEM_SPACE = 4.f;
-    static constexpr int CAPACITY = 3;
+    static constexpr int8_t CAPACITY = 3;
 
     Block* next = nullptr; // any block
     BeltBlock* nextBelt = nullptr;
-
-    BlockRot rotation = left;
-    bool aligned = true;
     //
     BeltBlock(BlockRot rotation) : rotation(rotation) {}
     virtual ~BeltBlock() final = default;
