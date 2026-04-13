@@ -6,14 +6,16 @@
 
 static debug::Logger logger("t1_test");
 
+static constexpr int dirX[] = { 0, 1, 0, -1 }; // Down, Right, Up, Left
+static constexpr int dirY[] = { 1, 0, -1, 0 }; // Y+ - Down, X+ - Right
+
 static constexpr float approach(float current, float target, float step) {
     if (current < target) return std::min(current + step, target);
     else                  return std::max(current - step, target);
 }
 
-BeltBlock* BeltBlock::findNext(TileCoord tile, const BlockMap& map) noexcept {
-    // TODO: add rotation depend
-    const BlockTile& blockTile = map.at(tile + TileCoord(0, -1));
+static inline BeltBlock* findNext(TileCoord tile, const BlockMap& map, BlockRot rotation) noexcept {
+    const BlockTile& blockTile = map.at(tile + TileCoord(dirX[rotation], dirY[rotation]));
     if (blockTile.type != BlockType::belt)
         return nullptr;
     return static_cast<BeltBlock*>(blockTile.block.get());
@@ -29,7 +31,7 @@ static void removeHead(BeltBlock& belt) {
 }
 
 void BeltBlock::update(TileCoord tile, const BlockMap& map) {
-    next = findNext(tile, map);
+    next = findNext(tile, map, rotation);
     bool needsRemove = false;
 
     for (int i = 0; i < len; ++i) {
@@ -51,14 +53,6 @@ void BeltBlock::update(TileCoord tile, const BlockMap& map) {
         next->accept(itemID[0], rotation);
         removeHead(*this);
     }
-}
-
-static constexpr BlockRot getRelativeDir(TileCoord from, TileCoord to) {
-    if (from.y > to.y) return up;
-    if (from.x > to.x) return right;
-    if (from.y < to.y) return down;
-    if (from.x < to.x) return left;
-    return none;
 }
 
 bool BeltBlock::canAccept(uint8_t item, BlockRot srcRot) {

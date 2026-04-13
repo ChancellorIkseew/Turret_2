@@ -85,7 +85,6 @@ struct BeltBlock : Block {
     virtual void accept(uint8_t item, BlockRot srcRot) final;
     void update(TileCoord tile, const BlockMap& map);
 private:
-    static BeltBlock* findNext(TileCoord tile, const BlockMap& map) noexcept;
     void moveItems();
     bool pass(uint8_t item, BlockRot srcRot);
 };

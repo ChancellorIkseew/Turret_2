@@ -9,7 +9,7 @@ void Block::draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord 
 }
 
 static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Down, Right, Up, Left
-static constexpr float dirY[] = { 1.0f, 0.0f, -1.0f, 0.0f }; // Предполагая Y+ это Up
+static constexpr float dirY[] = { 1.0f, 0.0f, -1.0f, 0.0f }; // Y+ - Down, X+ - Right
 
 void BeltBlock::draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile) {
     // works perfect (do not touch logic)
