@@ -6,8 +6,8 @@
 
 static debug::Logger logger("t1_test");
 
-static constexpr int dirX[] = { 0, 1, 0, -1 }; // Down, Right, Up, Left
-static constexpr int dirY[] = { 1, 0, -1, 0 }; // Y+ - Down, X+ - Right
+// Down, Right, Up, Left. Y+ - Down, X+ - Right.
+constexpr TileCoord DIR[] = { {0,1}, {1,0}, {0,-1}, {-1,0} };
 
 static constexpr float approach(float current, float target, float step) {
     if (current < target) return std::min(current + step, target);
@@ -15,7 +15,9 @@ static constexpr float approach(float current, float target, float step) {
 }
 
 static inline BeltBlock* findNext(TileCoord tile, const BlockMap& map, BlockRot rotation) noexcept {
-    const BlockTile& blockTile = map.at(tile + TileCoord(dirX[rotation], dirY[rotation]));
+    if (!map.contains(tile + DIR[rotation]))
+        return nullptr;
+    const BlockTile& blockTile = map.at(tile + DIR[rotation]);
     if (blockTile.type != BlockType::belt)
         return nullptr;
     return static_cast<BeltBlock*>(blockTile.block.get());
