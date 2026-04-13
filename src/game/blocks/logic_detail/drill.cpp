@@ -21,8 +21,10 @@ void DrillBlock::throwItem(TileCoord tile, const BlockMap& map) {
             continue;
         auto belt = static_cast<BeltBlock*>(map.at(targetTile).block.get());
 
-        bool b = belt->canAccept(1, static_cast<BlockRot>(i));
-
-        logger.warning() << b;
+        if (belt->canAccept(1, static_cast<BlockRot>(i))) {
+            logger.warning() << "can";
+            belt->accept(1, static_cast<BlockRot>(i));
+            logger.warning() << int(belt->len);
+        }
     }
 }

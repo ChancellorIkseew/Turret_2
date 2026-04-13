@@ -61,7 +61,7 @@ struct BeltBlock : Block {
     uint8_t itemID[3]; // Item IDs
     float itemY[3]; //
     float itemX[3];
-    float minitem = 0.f; //last item progress
+    float minitem = ITEM_SPACE; //last item progress
 
     int8_t len = 0; // itemCount
     int8_t mid = 0; //current central item
@@ -69,7 +69,7 @@ struct BeltBlock : Block {
     BlockRot rotation = left;
     bool aligned = true;
 
-    static constexpr float ITEM_SPACE = 4.f;
+    static constexpr float ITEM_SPACE = 0.33f;
     static constexpr int8_t CAPACITY = 3;
 
     Block* next = nullptr; // any block
