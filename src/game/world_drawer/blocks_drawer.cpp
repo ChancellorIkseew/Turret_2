@@ -27,6 +27,14 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
     }
     renderer.resetColorModifier();
     for (const auto& tile : cashedTiles) {
-        blocks.at(tile).block->draw(renderer, tile);
+        blocks.at(tile).block->draw(*this, renderer, tile);
+    }
+
+    int i = 0;
+    for (uint8_t itemID : itemIDs) {
+        constexpr PixelCoord ITEM_SIZE(16.f, 16.f);
+        Texture texture = assets.getAtlas().at("item_iron"); // TODO add item textures table
+        renderer.drawFast(texture, itemPositions[i], ITEM_SIZE);
+        ++i;
     }
 }

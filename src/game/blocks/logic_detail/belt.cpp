@@ -11,43 +11,6 @@ static constexpr float approach(float current, float target, float step) {
     else                  return std::max(current - step, target);
 }
 
-bool BeltBlock::pass(uint8_t item, BlockRot srcRot) {
-    return next && next->canAccept(item, srcRot);
-}
-
-void BeltBlock::moveItems() {
-    minitem = 1.f;
-    mid = 0;
-
-    //skip updates if possible
-    if (len == 0)
-        return;
-
-    const float nextMax = aligned ? 1.f - std::max(ITEM_SPACE - nextBelt->minitem, 0.f) : 1.f;
-    const float moved = 1.f;
-
-    for (int8_t i = len - 1; i >= 0; i--) {
-        const float nextPos = (i == len - 1 ? 100.f : itemY[i + 1]) - ITEM_SPACE;
-        const float maxMove = std::clamp(nextPos - itemY[i], 0.f, moved);
-
-        itemY[i] += maxMove;
-
-        if (itemY[i] > nextMax) itemY[i] = nextMax;
-        if (itemY[i] > 0.5 && i > 0) mid = i - 1;
-        itemX[i] = approach(itemX[i], 0, moved * 2);
-        
-        if (itemY[i] >= 1.f && pass(itemID[i], rotation)) {
-            //align X position if passing forwards
-            if (aligned)
-                nextBelt->itemX[nextBelt->lastInserted] = itemX[i];
-            //remove last item
-            len = std::min(i, len);
-        }
-        else if (itemY[i] < minitem)
-            minitem = itemY[i];
-    }
-}
-
 BeltBlock* BeltBlock::findNext(TileCoord tile, const BlockMap& map) noexcept {
     // TODO: add rotation depend
     const BlockTile& blockTile = map.at(tile + TileCoord(0, -1));

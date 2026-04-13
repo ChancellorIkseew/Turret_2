@@ -3,6 +3,7 @@
 #include "engine/render/texture.hpp"
 #include "game/common/physics_base.hpp"
 
+class BlocksDrawer;
 class BlockMap;
 class Renderer;
 
@@ -35,7 +36,7 @@ struct Block {
     //
     virtual ~Block() = default;
     virtual BlockType getType() const noexcept = 0;
-    virtual void draw(const Renderer& renderer, TileCoord tile);
+    virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile);
     virtual bool canAccept(uint8_t item, BlockRot srcRot) { return false; }
     virtual void accept(uint8_t item, BlockRot srcRot) {}
 };
@@ -79,7 +80,7 @@ struct BeltBlock : Block {
     virtual ~BeltBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::belt; }
     //
-    virtual void draw(const Renderer& renderer, TileCoord tile);
+    virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile) final;
     virtual bool canAccept(uint8_t item, BlockRot srcRot) final;
     virtual void accept(uint8_t item, BlockRot srcRot) final;
     void update(TileCoord tile, const BlockMap& map);
