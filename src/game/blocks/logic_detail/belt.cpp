@@ -56,15 +56,22 @@ BeltBlock* BeltBlock::findNext(TileCoord tile, const BlockMap& map) noexcept {
     return static_cast<BeltBlock*>(blockTile.block.get());
 }
 
+static void removeHead(BeltBlock& belt) {
+    --belt.len;
+    for (int i = 0; i < belt.len; ++i) {
+        belt.itemID[i] = belt.itemID[i + 1];
+        belt.itemY[i] = belt.itemY[i + 1];
+        belt.itemX[i] = belt.itemX[i + 1];
+    }
+}
+
 void BeltBlock::update(TileCoord tile, const BlockMap& map) {
     next = findNext(tile, map);
+    bool needsRemove = false;
 
     for (int i = 0; i < len; ++i) {
         if (itemY[i] >= 1.0f) {
-            if (next && next->canAccept(itemID[i], rotation)) {
-                next->accept(itemID[i], rotation);
-                //remove from this belt
-            }
+            needsRemove = true;
             continue;
         } 
         if (i > 0 && itemY[i] + ITEM_SPACE >= itemY[i - 1])
@@ -76,6 +83,11 @@ void BeltBlock::update(TileCoord tile, const BlockMap& map) {
         minitem = itemY[len - 1];  
     else
         minitem = ITEM_SPACE;
+
+    if (needsRemove && next && next->canAccept(itemID[0], rotation)) {
+        next->accept(itemID[0], rotation);
+        removeHead(*this);
+    }
 }
 
 static constexpr BlockRot getRelativeDir(TileCoord from, TileCoord to) {
