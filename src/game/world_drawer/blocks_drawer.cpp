@@ -13,6 +13,8 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
     const TileCoord end = camera.getEndTile();
     const Texture shadowTexture = assets.getAtlas().at("block_shadow");
     cashedTiles.clear();
+    itemPositions.clear();
+    itemIDs.clear();
     //
     for (int x = start.x; x < end.x; ++x) {
         for (int y = start.y; y < end.y; ++y) {
