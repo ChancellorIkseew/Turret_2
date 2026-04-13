@@ -12,10 +12,11 @@ struct ItemStack {
     uint8_t count = 0;
 };
 
+// order of types does mater
 enum class BlockType {
     air,
-    belt,
     wall,
+    belt,
     drill,
     factory,
     turret,
@@ -62,7 +63,7 @@ struct BeltBlock : Block {
     uint8_t itemID[3]; // Item IDs
     float itemY[3]; //
     float itemX[3];
-    float minitem = ITEM_SPACE; //last item progress
+    float minItem = ITEM_SPACE; //last item progress
 
     int8_t len = 0; // itemCount
     int8_t mid = 0; //current central item
@@ -72,9 +73,6 @@ struct BeltBlock : Block {
 
     static constexpr float ITEM_SPACE = 0.33f;
     static constexpr int8_t CAPACITY = 3;
-
-    Block* next = nullptr; // any block
-    BeltBlock* nextBelt = nullptr;
     //
     BeltBlock(BlockRot rotation) : rotation(rotation) {}
     virtual ~BeltBlock() final = default;
