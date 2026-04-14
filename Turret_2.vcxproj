@@ -186,6 +186,7 @@
     <ClCompile Include="src\game\blocks\block.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\belt.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\drill.cpp" />
+    <ClCompile Include="src\game\blocks\logic_detail\router.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
     <ClCompile Include="src\game\common\mob_ai.cpp" />
     <ClCompile Include="src\game\entities\chunk_grid.cpp" />

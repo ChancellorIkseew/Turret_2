@@ -114,16 +114,16 @@ inline void updateBlocks(BlockMap& map) { // replace later
                 static_cast<BeltBlock*>(blockTile.block.get())->update({ x, y }, map);
                 break;
             case BlockType::drill:
-                static_cast<DrillBlock*>(blockTile.block.get())->throwItem({x, y}, map);
-                // do sth
+                static_cast<DrillBlock*>(blockTile.block.get())->throwItem({ x, y }, map);
                 break;
             case BlockType::factory:
                 static_cast<FactoryBlock*>(blockTile.block.get());
-                // do sth
+                break;
+            case BlockType::router:
+                static_cast<RouterBlock*>(blockTile.block.get())->provide({ x,y }, map);
                 break;
             case BlockType::turret:
                 static_cast<TurretBlock*>(blockTile.block.get());
-                // do sth
                 break;
             }
         }

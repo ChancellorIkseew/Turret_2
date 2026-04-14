@@ -20,6 +20,9 @@ inline std::unique_ptr<Block> makeBlock(BlockPreset preset, BlockRot rotation) {
     case BlockType::factory:
         block = std::make_unique<FactoryBlock>();
         break;
+    case BlockType::router:
+        block = std::make_unique<RouterBlock>();
+        break;
     case BlockType::turret:
         block = std::make_unique<TurretBlock>(preset.turret);
         break;

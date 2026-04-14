@@ -17,8 +17,10 @@ enum class BlockType {
     air,
     wall,
     belt,
+    bridge,
     drill,
     factory,
+    router,
     turret,
     core
 };
@@ -98,6 +100,17 @@ struct TurretBlock : Block {
     TurretBlock(TurretPresetID turretPreset) : turretPreset(turretPreset) {}
     virtual ~TurretBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::turret; }
+};
+
+struct RouterBlock : Block {
+    ItemStack inventory;
+    //
+    virtual ~RouterBlock() final = default;
+    virtual BlockType getType() const noexcept final { return BlockType::router; }
+    //
+    virtual bool canAccept(uint8_t item, BlockRot srcRot) { return inventory.count == 0; }
+    virtual void accept(uint8_t item, BlockRot srcRot) { inventory.item = item; inventory.count = 1; }
+    void provide(TileCoord tile, const BlockMap& map);
 };
 
 struct WallBlock : Block {
