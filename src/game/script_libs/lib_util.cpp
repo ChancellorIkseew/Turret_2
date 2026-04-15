@@ -1,7 +1,7 @@
 #include "script_libs.hpp"
 
 static void print(const std::string& str) {
-    script_libs::logger.info() << str;
+    script_libs::logger.attention() << str;
 }
 
 void script_libs::registerUtil(const ScriptsHandler& scriptsHandler) {

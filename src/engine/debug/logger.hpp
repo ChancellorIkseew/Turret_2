@@ -3,7 +3,7 @@
 #include <sstream>
 
 namespace debug {
-    enum class LogLevel : uint8_t { debug, info, warning, error };
+    enum class LogLevel : uint8_t { attention, debug, info, warning, error };
     class Logger;
 
     class LogMessage {
@@ -29,9 +29,10 @@ namespace debug {
         //
         static void init(const std::string& filename);
         //
-        LogMessage debug()   { return LogMessage(this, LogLevel::debug); }
-        LogMessage info()    { return LogMessage(this, LogLevel::info); }
-        LogMessage error()   { return LogMessage(this, LogLevel::error); }
-        LogMessage warning() { return LogMessage(this, LogLevel::warning); }
+        LogMessage attention() { return LogMessage(this, LogLevel::attention); }
+        LogMessage debug()     { return LogMessage(this, LogLevel::debug); }
+        LogMessage info()      { return LogMessage(this, LogLevel::info); }
+        LogMessage warning()   { return LogMessage(this, LogLevel::warning); }
+        LogMessage error()     { return LogMessage(this, LogLevel::error); }
     };
 }
