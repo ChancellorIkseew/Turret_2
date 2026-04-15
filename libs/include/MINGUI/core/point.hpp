@@ -8,8 +8,8 @@ template<class T>
 concept IsPoint = requires(T point) {
     point.x;
     point.y;
-    std::convertible_to<decltype(point.x), float>;
-    std::convertible_to<decltype(point.y), float>;
+    requires std::convertible_to<decltype(point.x), float>;
+    requires std::convertible_to<decltype(point.y), float>;
 };
 
 struct Point {
