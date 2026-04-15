@@ -69,6 +69,7 @@ struct BlockVisualPreset {
 };
 
 struct BlockPreset {
+    bool rotatable;
     BlockType archetype;
     Health maxHealth;
     BlockVisualPreset visual;

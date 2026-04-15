@@ -108,6 +108,7 @@
     <ClInclude Include="src\game\entities\turret_manager.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
+    <ClInclude Include="src\game\frontend\fr_jei.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
@@ -198,7 +199,6 @@
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />
     <ClCompile Include="src\game\frontend\fr_languages.cpp" />
     <ClCompile Include="src\game\frontend\fr_hint.cpp" />
-    <ClCompile Include="src\game\frontend\fr_jei.cpp" />
     <ClCompile Include="src\game\frontend\layouts\l_saves.cpp" />
     <ClCompile Include="src\game\frontend\fr_main_menu.cpp" />
     <ClCompile Include="src\game\frontend\fr_menu.cpp" />

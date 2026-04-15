@@ -6,6 +6,7 @@
 struct TileData;
 struct ContentIndexes;
 class Engine;
+class JEI;
 
 using namespace mingui;
 
@@ -18,7 +19,7 @@ namespace frontend {
     std::unique_ptr<Container> initSettings(Engine& engine);
     std::unique_ptr<Container> initTimer(Engine& engine);
     std::unique_ptr<Container> initWorldProperties(Engine& engine);
-    std::unique_ptr<Container> initJEI(Engine& engine);
+    std::unique_ptr<JEI> initJEI(Engine& engine);
     std::unique_ptr<Container> initHint(Engine& engine);
     std::unique_ptr<Container> initLanguages(Engine& engine);
     std::unique_ptr<Container> initGraphics(Engine& engine);

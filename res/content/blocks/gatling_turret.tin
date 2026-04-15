@@ -7,5 +7,6 @@ frame_height=32
 frame_order=0
 #logic
 archetype=turret
+rotatable=false
 health=200
 turret=gatling_turret

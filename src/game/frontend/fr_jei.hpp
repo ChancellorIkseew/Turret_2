@@ -1,3 +1,4 @@
+#pragma once
 #include "frontend.hpp"
 //
 #include <MINGUI/widgets/grid_layout.hpp>
@@ -80,6 +81,29 @@ public:
     void setTileData(const TileData tileData) {
         this->tileData = tileData;
     }
+
+    void drawBlock(const Renderer& renderer, const PixelCoord mousePosition) {
+        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(tileData.id));
+        const Camera& camera = engine.getSession().getCamera();
+        const PixelCoord size = preset.visual.size * camera.getMapScale();
+
+        const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
+        const PixelCoord position = camera.fromMapToScreen(t1::pixel(targetTile));
+
+        const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(targetTile);
+
+        if (canBuild) const_cast<Renderer&>(renderer).setColorModifier(255, 255, 255, 255);
+        else          const_cast<Renderer&>(renderer).setColorModifier(180, 52, 52, 200);
+
+        if (!preset.rotatable)
+            renderer.drawFast(preset.visual.texture, position, size);
+        else {
+            const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
+            const PixelCoord origin = size / 2.f;
+            renderer.draw(preset.visual.texture, position + origin, size, origin, angleRad);
+        }
+        const_cast<Renderer&>(renderer).resetColorModifier();
+    }
 };
 
 void JEISlot::callback(UIContext& context){
@@ -87,6 +111,6 @@ void JEISlot::callback(UIContext& context){
         jei->setTileData(tileData);
 }
 
-std::unique_ptr<Container> frontend::initJEI(Engine& engine) {
+std::unique_ptr<JEI> frontend::initJEI(Engine& engine) {
     return std::make_unique<JEI>(engine);
 }

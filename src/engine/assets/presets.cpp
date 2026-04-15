@@ -38,6 +38,7 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     };
     BlockPreset preset;
     preset.archetype = getBlockType(reader.get<std::string>("archetype"));
+    preset.rotatable = reader.get<bool>("rotatable");
     preset.maxHealth = reader.get<Health>("health");
     preset.visual = visual;
     if (preset.archetype == BlockType::turret)
