@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-24.04, windows-latest] # chacge ubuntu version to latest, when letest would be 24.04+ 
 
     steps:
       - name: Checkout code
