@@ -13,7 +13,8 @@ namespace tin {
         std::unordered_map<std::string, std::string> data;
     public:
         Data() = default;
-        bool empty() { return data.empty(); }
+        size_t size() const noexcept { return data.size(); }
+        bool empty() const noexcept { return data.empty(); }
         void emplace(std::string key, std::string value) {
             data.emplace(std::move(key), std::move(value));
         }
@@ -73,8 +74,8 @@ namespace tin {
         }
     };
 
-    void write(std::ostream& text, const Data& data);
-    Data read(std::istream& text);
+    std::string writeToString(const Data& data);
+    Data readFromString(std::string_view text);
     namespace fs = std::filesystem;
     enum class Log : uint8_t { only_error, error_and_success };
     void write(const fs::path& path, const Data& data, const Log log = Log::error_and_success);
