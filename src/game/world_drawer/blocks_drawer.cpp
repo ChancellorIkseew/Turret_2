@@ -14,7 +14,7 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
     const Texture shadowTexture = assets.getAtlas().at("block_shadow");
     cashedTiles.clear();
     itemPositions.clear();
-    itemIDs.clear();
+    itemPresetIDs.clear();
     //
     for (int x = start.x; x < end.x; ++x) {
         for (int y = start.y; y < end.y; ++y) {
@@ -33,9 +33,9 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
     }
 
     int i = 0;
-    for (uint8_t itemID : itemIDs) {
+    for (ItemPresetID itemPresetID : itemPresetIDs) {
         constexpr PixelCoord ITEM_SIZE(16.f, 16.f);
-        Texture texture = assets.getAtlas().at("item_iron"); // TODO add item textures table
+        Texture texture = assets.getPresets().getItem(itemPresetID).texture;
         renderer.drawFast(texture, itemPositions[i], ITEM_SIZE);
         ++i;
     }

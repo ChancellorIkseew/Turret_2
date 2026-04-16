@@ -6,9 +6,10 @@
 class BlocksDrawer;
 class BlockMap;
 class Renderer;
+class WorldMap;
 
 struct ItemStack {
-    uint8_t item = 0;
+    ItemPresetID item = ItemPresetID(0);
     uint8_t count = 0;
 };
 
@@ -40,8 +41,8 @@ struct Block {
     virtual ~Block() = default;
     virtual BlockType getType() const noexcept = 0;
     virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile);
-    virtual bool canAccept(uint8_t item, BlockRot srcRot) { return false; }
-    virtual void accept(uint8_t item, BlockRot srcRot) {}
+    virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return false; }
+    virtual void accept(ItemPresetID item, BlockRot srcRot) {}
 };
 
 struct CoreBlock : Block {
@@ -58,11 +59,11 @@ public: //
     void mine(TickCount deltaTick) {
 
     }
-    void throwItem(TileCoord tile, const BlockMap& map);
+    void throwItem(TileCoord tile, const BlockMap& map, const WorldMap& terrain);
 };
 
 struct BeltBlock : Block {
-    uint8_t itemID[3]; // Item IDs
+    ItemPresetID itemID[3]; // Item IDs
     float itemY[3]; //
     float itemX[3];
     float minItem = ITEM_SPACE; //last item progress
@@ -81,12 +82,12 @@ struct BeltBlock : Block {
     virtual BlockType getType() const noexcept final { return BlockType::belt; }
     //
     virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile) final;
-    virtual bool canAccept(uint8_t item, BlockRot srcRot) final;
-    virtual void accept(uint8_t item, BlockRot srcRot) final;
+    virtual bool canAccept(ItemPresetID item, BlockRot srcRot) final;
+    virtual void accept(ItemPresetID item, BlockRot srcRot) final;
     void update(TileCoord tile, const BlockMap& map);
 private:
     void moveItems();
-    bool pass(uint8_t item, BlockRot srcRot);
+    bool pass(ItemPresetID item, BlockRot srcRot);
 };
 
 struct FactoryBlock : Block {
@@ -108,8 +109,8 @@ struct RouterBlock : Block {
     virtual ~RouterBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::router; }
     //
-    virtual bool canAccept(uint8_t item, BlockRot srcRot) { return inventory.count == 0; }
-    virtual void accept(uint8_t item, BlockRot srcRot) { inventory.item = item; inventory.count = 1; }
+    virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return inventory.count == 0; }
+    virtual void accept(ItemPresetID item, BlockRot srcRot) { inventory.item = item; inventory.count = 1; }
     void provide(TileCoord tile, const BlockMap& map);
 };
 

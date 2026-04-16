@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <vector>
+#include "engine/assets/preset_defs.hpp"
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/coords/tile_coord.hpp"
 
@@ -13,11 +14,11 @@ class BlocksDrawer {
     std::vector<TileCoord> cashedTiles;
     //
     std::vector<PixelCoord> itemPositions;
-    std::vector<uint8_t> itemIDs;
+    std::vector<ItemPresetID> itemPresetIDs;
 public:
     void draw(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer);
-    void addItem(uint8_t itemID, PixelCoord position) {
-        itemIDs.push_back(itemID);
+    void addItem(ItemPresetID itemPresetID, PixelCoord position) {
+        itemPresetIDs.push_back(itemPresetID);
         itemPositions.push_back(position);
     }
 };

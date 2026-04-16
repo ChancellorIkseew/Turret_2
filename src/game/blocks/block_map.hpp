@@ -104,7 +104,7 @@ public:
     t1_disable_copy_and_move(BlockMap)
 };
 
-inline void updateBlocks(BlockMap& map) { // replace later
+inline void updateBlocks(BlockMap& map, const WorldMap& terrain) { // replace later
     const TileCoord size = map.getSize();
     for (int x = 0; x < size.x; ++x) {
         for (int y = 0; y < size.y; ++y) {
@@ -114,7 +114,7 @@ inline void updateBlocks(BlockMap& map) { // replace later
                 static_cast<BeltBlock*>(blockTile.block.get())->update({ x, y }, map);
                 break;
             case BlockType::drill:
-                static_cast<DrillBlock*>(blockTile.block.get())->throwItem({ x, y }, map);
+                static_cast<DrillBlock*>(blockTile.block.get())->throwItem({ x, y }, map, terrain);
                 break;
             case BlockType::factory:
                 static_cast<FactoryBlock*>(blockTile.block.get());

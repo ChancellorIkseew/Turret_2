@@ -7,6 +7,10 @@
 #include "game/common/physics_base.hpp"
 #include "preset_id.hpp"
 
+struct ItemPreset {
+    Texture texture;
+};
+
 struct ShellVisualPreset {
     Texture texture;
     PixelCoord origin;

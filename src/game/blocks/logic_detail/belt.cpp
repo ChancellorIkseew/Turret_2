@@ -55,7 +55,7 @@ void BeltBlock::update(TileCoord tile, const BlockMap& map) {
     }
 }
 
-bool BeltBlock::canAccept(uint8_t item, BlockRot srcRot) {
+bool BeltBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
     if (len >= CAPACITY) return false;
     if (srcRot == rotation) return minItem >= ITEM_SPACE;
     const int8_t diff = std::abs(srcRot - rotation);
@@ -63,7 +63,7 @@ bool BeltBlock::canAccept(uint8_t item, BlockRot srcRot) {
     return false;
 }
 
-void BeltBlock::accept(uint8_t item, BlockRot srcRot) {
+void BeltBlock::accept(ItemPresetID item, BlockRot srcRot) {
     assert(len + 1 >= CAPACITY);
     //
     itemID[len] = item;
