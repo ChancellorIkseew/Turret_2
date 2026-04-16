@@ -44,7 +44,7 @@ void Logger::log(LogLevel level, const std::string& message) const {
         std::lock_guard lock(mutex);
         if (fout.good())
             fout << finalString << std::endl; // std::endl calls fout.flush() 
-        std::println("{}{}", color, finalString);
+        std::println("{}{}{}", color, finalString, DEFAULT);
     }
 }
 
