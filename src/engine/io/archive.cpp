@@ -1,6 +1,7 @@
 #include "archive.hpp"
 //
 #include <ZLIB/zlib.h>
+#include <cstdint>
 
 std::string archive::pack(std::string_view source) {
     if (source.empty()) return "";
