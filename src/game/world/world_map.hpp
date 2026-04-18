@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdint>
 #include <vector>
-#include "config.hpp"
 #include "engine/coords/tile_coord.hpp"
 
 struct MapTile {
@@ -10,28 +9,31 @@ struct MapTile {
 };
 
 class WorldMap {
-    std::vector<MapTile> terrain;
+    std::vector<uint8_t> floor;
+    std::vector<uint8_t> overlay;
     const TileCoord mapSize;
 public:
-    WorldMap(const TileCoord mapSize);
-
+    WorldMap(const TileCoord mapSize, std::vector<uint8_t>& floor, std::vector<uint8_t>& overlay);
+    //
     void placeFloor(const TileCoord tile, const uint8_t floorID);
     void placeOverlay(const TileCoord tile, const uint8_t overlayID);
-
-    t1_finline bool tileExists(const int tileX, const int tileY) const {
+    //
+    constexpr bool tileExists(const int tileX, const int tileY) const {
         return tileX >= 0 && tileX < mapSize.x &&
-            tileY >= 0 && tileY < mapSize.y;
+               tileY >= 0 && tileY < mapSize.y;
     }
-    t1_finline bool tileExists(const TileCoord tile) const {
+    constexpr bool tileExists(const TileCoord tile) const {
         return tileExists(tile.x, tile.y);
     }
-
-    t1_finline const MapTile& at(const int x, const int y) const noexcept { return terrain[x + y * mapSize.x]; }
-    t1_finline const MapTile& at(const TileCoord tile)     const noexcept { return at(tile.x, tile.y); }
-    t1_finline const MapTile& at(const int i)              const noexcept { return terrain[i]; }
-    t1_finline       MapTile& at(const int x, const int y)       noexcept { return terrain[x + y * mapSize.x]; }
-    t1_finline       MapTile& at(const TileCoord tile)           noexcept { return at(tile.x, tile.y); }
-    t1_finline       MapTile& at(const int i)                    noexcept { return terrain[i]; }
     //
-    TileCoord getSize() const noexcept { return mapSize; }
+    constexpr MapTile at(const int x, const int y) const noexcept {
+        return MapTile(floor[x + y * mapSize.x], overlay[x + y * mapSize.x]);
+    }
+    constexpr MapTile at(const TileCoord tile) const noexcept {
+        return at(tile.x, tile.y);
+    }
+    //
+    TileCoord   getSize()    const noexcept { return mapSize; }
+    const auto& getFloor()   const noexcept { return floor; }
+    const auto& getOverlay() const noexcept { return overlay; }
 };

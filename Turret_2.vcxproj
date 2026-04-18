@@ -71,7 +71,7 @@
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\gui\t1_ui_context.hpp" />
     <ClInclude Include="src\engine\gui\t1_ui_renderer.hpp" />
-    <ClInclude Include="src\engine\io\compress.hpp" />
+    <ClInclude Include="src\engine\io\archive.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
     <ClInclude Include="src\engine\io\io.hpp" />
     <ClInclude Include="src\engine\io\parser\form_validator.hpp" />
@@ -169,6 +169,7 @@
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\game_session.cpp" />
     <ClCompile Include="src\engine\gui\gui.cpp" />
+    <ClCompile Include="src\engine\io\archive.cpp" />
     <ClCompile Include="src\engine\io\comon_pathes.cpp" />
     <ClCompile Include="src\engine\io\folders.cpp" />
     <ClCompile Include="src\engine\io\io.cpp" />

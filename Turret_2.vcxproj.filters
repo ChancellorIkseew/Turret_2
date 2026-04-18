@@ -369,7 +369,7 @@
     <ClInclude Include="src\engine\io\io.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\io\compress.hpp">
+    <ClInclude Include="src\engine\io\archive.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\world_saver\shells_saver.hpp">
@@ -660,6 +660,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\io\io.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\io\archive.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
