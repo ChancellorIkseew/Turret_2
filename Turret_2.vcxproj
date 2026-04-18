@@ -71,6 +71,7 @@
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\gui\t1_ui_context.hpp" />
     <ClInclude Include="src\engine\gui\t1_ui_renderer.hpp" />
+    <ClInclude Include="src\engine\io\compress.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
     <ClInclude Include="src\engine\io\io.hpp" />
     <ClInclude Include="src\engine\io\parser\form_validator.hpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
     <ClInclude Include="src\game\world_saver\properties_saver.hpp" />
     <ClInclude Include="src\game\world_saver\serializer_error.hpp" />
+    <ClInclude Include="src\game\world_saver\shells_saver.hpp" />
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
