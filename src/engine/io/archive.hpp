@@ -1,4 +1,5 @@
 #pragma once
+#include <cstring> // std::memcpy
 #include <string>
 #include <string_view>
 #include <vector>
