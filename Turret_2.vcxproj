@@ -71,7 +71,9 @@
     <ClInclude Include="src\engine\gui\menu_gui.hpp" />
     <ClInclude Include="src\engine\gui\t1_ui_context.hpp" />
     <ClInclude Include="src\engine\gui\t1_ui_renderer.hpp" />
+    <ClInclude Include="src\engine\io\archive.hpp" />
     <ClInclude Include="src\engine\io\folders.hpp" />
+    <ClInclude Include="src\engine\io\io.hpp" />
     <ClInclude Include="src\engine\io\parser\form_validator.hpp" />
     <ClInclude Include="src\engine\io\parser\jtin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\list_parser.hpp" />
@@ -134,7 +136,7 @@
     <ClInclude Include="src\game\world_saver\gen_preset_saver.hpp" />
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
     <ClInclude Include="src\game\world_saver\properties_saver.hpp" />
-    <ClInclude Include="src\game\world_saver\serializer_error.hpp" />
+    <ClInclude Include="src\game\world_saver\shells_saver.hpp" />
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +168,10 @@
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\game_session.cpp" />
     <ClCompile Include="src\engine\gui\gui.cpp" />
+    <ClCompile Include="src\engine\io\archive.cpp" />
     <ClCompile Include="src\engine\io\comon_pathes.cpp" />
     <ClCompile Include="src\engine\io\folders.cpp" />
+    <ClCompile Include="src\engine\io\io.cpp" />
     <ClCompile Include="src\engine\io\parser\form_validator.cpp" />
     <ClCompile Include="src\engine\io\parser\jtin_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\list_parser.cpp" />

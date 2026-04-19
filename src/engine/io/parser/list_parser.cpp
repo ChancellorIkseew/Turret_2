@@ -1,38 +1,29 @@
 #include "list_parser.hpp"
 //
-#include <fstream>
 #include "engine/debug/logger.hpp"
+#include "engine/io/io.hpp"
+#include "engine/util/string_util.hpp"
 
 namespace fs = std::filesystem;
 static debug::Logger logger("list_parser");
 
 void list::write(fs::path path, const list::Data& data) {
-    std::ofstream fout(path);
-    if (!fout.is_open()) {
-        logger.error() << "Could not open file to write. File: " << path;
-        return;
-    }
-
-    std::stringstream fileText;
+    std::string text;
+    text.reserve(data.size() * 16);
     for (const auto& str : data) {
-        fileText << str << '\n';
+        text += str + '\n';
     }
-    fout << fileText.str();
-    logger.info() << "Writen file: " << path;
+    io::writeFile(path, text);
 }
 
 list::Data list::read(fs::path path) {
-    std::ifstream fin(path);
-    if (!fin.is_open()) {
-        logger.error() << "Could not open file to read. File: " << path;
-        return list::Data();
-    }
-
+    const std::string text = io::readFile(path, io::Log::only_error);
+    std::string_view rest(text);
     list::Data data;
-    std::string line;
-    while (std::getline(fin, line)) {
+    while (!rest.empty()) {
+        const auto line = util::getLine(rest);
         if (!line.empty() && line[0] != '#')
-            data.push_back(line);
+            data.push_back(std::string(line));
     }
     logger.info() << "Readen file: " << path;
     return data;

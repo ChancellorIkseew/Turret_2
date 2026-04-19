@@ -1,54 +1,45 @@
 #include "jtin_parser.hpp"
 //
-#include <fstream>
 #include "engine/debug/logger.hpp"
+#include "engine/io/io.hpp"
 
 static debug::Logger logger("jtin_parser");
 
-void jtin::write(std::ostream& text, const Data& data) {
+std::string jtin::writeToString(const Data& data) {
+    std::string text;
     for (const tin::Data& block : data) {
-        text << "{\n";
+        text += "{\n";
         tin::write(text, block);
-        text << "}\n";
+        text += "}\n";
     }
+    return text;
 }
 
-jtin::Data jtin::read(std::istream& text) {
-    std::vector<tin::Data> data;
-    std::string line;
-    while (std::getline(text, line)) {
-        if (line != "{")
+jtin::Data jtin::readFromString(std::string_view text) {
+    jtin::Data data;
+    while (!text.empty()) {
+        const size_t startBlock = text.find_first_of('{');
+        const size_t endBlock   = text.find_first_of('}');
+        if (startBlock == std::string_view::npos || endBlock == std::string_view::npos)
+            break;
+        if (endBlock <= startBlock) {
+            text.remove_prefix(endBlock + 1);
             continue;
-        std::string blockContent;
-        while (std::getline(text, line) && line != "}") {
-            blockContent += line + "\n";
         }
-        std::istringstream blockStream(blockContent);
-        data.push_back(tin::read(blockStream));
+        data.push_back(tin::readFromString(text.substr(startBlock + 1, endBlock - 1)));
+        text.remove_prefix(endBlock + 1);
     }
     return data;
 }
 
 void jtin::write(const fs::path& path, const jtin::Data& data, const Log log) {
-    std::ofstream fout(path);
-    if (!fout.is_open()) {
-        logger.error() << "Could not open file to write. File: " << path;
-        return;
-    }
-    std::stringstream fileText;
-    write(fileText, data);
-    fout << fileText.str();
-    if (log == Log::error_and_success)
-        logger.info() << "Writen file: " << path;
+    std::string text = writeToString(data);
+    io::writeFile(path, text);
 }
 
 jtin::Data jtin::read(const fs::path& path, const Log log) {
-    std::ifstream fin(path);
-    if (!fin.is_open()) {
-        logger.error() << "Could not open file to read. File: " << path;
-        return Data();
-    }
-    const Data data = read(fin);
+    const std::string text = io::readFile(path, static_cast<io::Log>(Log::only_error));
+    const Data data = readFromString(text);
     if (log == Log::error_and_success)
         logger.info() << "Readen file: " << path;
     return data;

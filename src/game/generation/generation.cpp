@@ -55,29 +55,31 @@ static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const In
 
 static WorldMap generateMap(const WorldProperties& properties, const Indexes& indexes) {
     const auto mapSize = properties.mapSize;
-    PerlinNoise2D mainNoise(properties.seed);
-    PerlinNoise2D supportNoise(properties.seed + 100U);
-    WorldMap map(mapSize);
     const auto floorPresets = prepareFloorPresets(properties.floorPresets, indexes);
     const auto overlayPresets = prepareOverlayPresets(properties.overlayPresets, indexes);
-
-    SquirellNoise2D squirellNoise(properties.seed);
-    SpotGenerator2D spotGenerator(properties.seed);
-
+    //
+    const PerlinNoise2D mainNoise(properties.seed);
+    const PerlinNoise2D supportNoise(properties.seed + 100U);
+    const SquirellNoise2D squirellNoise(properties.seed);
+    const SpotGenerator2D spotGenerator(properties.seed);
+    //
+    std::vector<uint8_t> floor(mapSize.x * mapSize.y);
+    std::vector<uint8_t> overlay(mapSize.x * mapSize.y);
+    //
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
             const float m = mainNoise.createTile(x, y + 1, MAIN_NOISE_SCALE);
             const float s = supportNoise.createTile(x, y + 1, SUPPORT_NOISE_SCALE);
-            map.at(x, y).floor = calculateTileType(m * 0.85f + s * 0.25f, floorPresets);
- 
+            floor[x + y * mapSize.x] = calculateTileType(m * 0.85f + s * 0.25f, floorPresets);
+
             for (const auto& [id, frequency, deposit] : overlayPresets) {
                 const uint32_t seedOffset = id * SEED_OFFSET;
                 if (squirellNoise.createTile(x, y, frequency, seedOffset))
-                    spotGenerator.generateSpot(map, TileCoord(x, y), id, deposit);
+                    spotGenerator.generateSpot(overlay, TileCoord(x, y), id, deposit, mapSize);
             }
         }
     }
-    return map;
+    return WorldMap(mapSize, floor, overlay);
 }
 
 std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Indexes& indexes) {
