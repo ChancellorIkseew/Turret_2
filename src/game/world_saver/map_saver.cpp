@@ -15,15 +15,15 @@ void serializer::saveMap(const WorldMap& map, const std::filesystem::path& path)
 
 WorldMap serializer::loadMap(const std::filesystem::path& path) {
     const std::string packedData = io::readFile(path / "world_map.dat");
-    const std::string blobOwner = archive::unpack(packedData);
-    std::string_view blob = blobOwner;
+    const std::string blob = archive::unpack(packedData);
+    archive::Reader reader(blob);
     //
     TileCoord mapSize;
     std::vector<uint8_t> floor;
     std::vector<uint8_t> overlay;
     //
-    archive::get(blob, mapSize);
-    archive::get(blob, floor,   mapSize.x * mapSize.y);
-    archive::get(blob, overlay, mapSize.x * mapSize.y);
+    reader.get(mapSize);
+    reader.get(floor,   mapSize.x * mapSize.y);
+    reader.get(overlay, mapSize.x * mapSize.y);
     return WorldMap(mapSize, floor, overlay);
 }

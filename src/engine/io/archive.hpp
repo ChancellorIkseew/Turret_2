@@ -1,11 +1,14 @@
 #pragma once
 #include <cstring> // std::memcpy
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
 
 namespace archive {
+    ///@brief Throws std::runtime_error.
     std::string pack(std::string_view source);
+    ///@brief Throws std::runtime_error.
     std::string unpack(std::string_view packed);
 
     template<class T>
@@ -37,4 +40,26 @@ namespace archive {
         std::memcpy(&data, blob.data(), sizeof(T));
         blob.remove_prefix(sizeof(T));
     }
+
+    class Reader {
+        std::string_view data;
+    public:
+        Reader(std::string_view source) : data(source) {}
+
+        ///@brief Throws std::runtime_error.
+        template<class T>
+        void get(T& dest) {
+            if (data.size() < sizeof(T))
+                throw std::runtime_error("Unexpected end of data.");
+            archive::get(data, dest);
+        }
+
+        ///@brief Throws std::runtime_error.
+        template<class T>
+        void get(std::vector<T>& dest, size_t count) {
+            if (data.size() < sizeof(T) * count)
+                throw std::runtime_error("Unexpected end of data.");
+            archive::get(data, dest, count);
+        }
+    };
 }

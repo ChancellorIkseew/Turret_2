@@ -144,9 +144,6 @@
     <ClInclude Include="src\engine\debug\console.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\world_saver\serializer_error.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\world_saver\gen_preset_saver.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

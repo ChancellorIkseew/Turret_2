@@ -136,7 +136,6 @@
     <ClInclude Include="src\game\world_saver\gen_preset_saver.hpp" />
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
     <ClInclude Include="src\game\world_saver\properties_saver.hpp" />
-    <ClInclude Include="src\game\world_saver\serializer_error.hpp" />
     <ClInclude Include="src\game\world_saver\shells_saver.hpp" />
     <ClInclude Include="src\game\world_saver\world_saver.hpp" />
   </ItemGroup>

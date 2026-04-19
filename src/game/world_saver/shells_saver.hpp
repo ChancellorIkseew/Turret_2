@@ -19,16 +19,16 @@ void saveShells(const ShellSoA& soa, const std::filesystem::path& path) {
 
 ShellSoA loadShells(const std::filesystem::path& path) {
     const std::string packedData = io::readFile(path / "shells.dat");
-    const std::string blobOwner = archive::unpack(packedData);
-    std::string_view blob = blobOwner;
+    const std::string blob = archive::unpack(packedData);
+    archive::Reader reader(blob);
     ShellSoA soa;
-    archive::get(blob, soa.shellCount);
-    archive::get(blob, soa.position,     soa.shellCount);
-    archive::get(blob, soa.velocity,     soa.shellCount);
-    archive::get(blob, soa.angle,        soa.shellCount);
-    archive::get(blob, soa.restDamage,   soa.shellCount);
-    archive::get(blob, soa.restLifeTime, soa.shellCount);
-    archive::get(blob, soa.preset,       soa.shellCount);
-    archive::get(blob, soa.teamID,       soa.shellCount);
+    reader.get(soa.shellCount);
+    reader.get(soa.position,     soa.shellCount);
+    reader.get(soa.velocity,     soa.shellCount);
+    reader.get(soa.angle,        soa.shellCount);
+    reader.get(soa.restDamage,   soa.shellCount);
+    reader.get(soa.restLifeTime, soa.shellCount);
+    reader.get(soa.preset,       soa.shellCount);
+    reader.get(soa.teamID,       soa.shellCount);
     return soa;
 }
