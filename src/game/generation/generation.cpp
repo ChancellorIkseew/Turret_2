@@ -1,7 +1,7 @@
 #include "generation.hpp"
 //
 #include <algorithm>
-#include "engine/assets/indexes.hpp"
+#include "engine/assets/assets.hpp"
 #include "engine/debug/logger.hpp"
 #include "game/world/world.hpp"
 #include "perlin_noise.hpp"
@@ -41,30 +41,30 @@ static auto prepareFloorPresets(const FloorPresets& floorPresets, const Indexes&
     return result;
 }
 
-static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Indexes& indexes) {
+static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Presets& presets) {
     std::vector<PreparedOverlay> result;
     for (const auto& [name, frequency, deposit] : overlayPresets) {
-        if (!indexes.getOverlay().contains(name)) {
+        if (!presets.getOres().contains(name)) {
             logger.warning() << "Content is not registred: \"" << name << "\"";
             continue;
         }
-        result.emplace_back(indexes.getOverlay().at(name), frequency, deposit);
+        result.emplace_back(presets.getOres().at(name).asUint(), frequency, deposit);
     }
     return result;
 }
 
-static WorldMap generateMap(const WorldProperties& properties, const Indexes& indexes) {
+static WorldMap generateMap(const WorldProperties& properties, const Assets& assets) {
     const auto mapSize = properties.mapSize;
-    const auto floorPresets = prepareFloorPresets(properties.floorPresets, indexes);
-    const auto overlayPresets = prepareOverlayPresets(properties.overlayPresets, indexes);
+    const auto floorPresets = prepareFloorPresets(properties.floorPresets, assets.getIndexes());
+    const auto overlayPresets = prepareOverlayPresets(properties.overlayPresets, assets.getPresets());
     //
     const PerlinNoise2D mainNoise(properties.seed);
     const PerlinNoise2D supportNoise(properties.seed + 100U);
     const SquirellNoise2D squirellNoise(properties.seed);
     const SpotGenerator2D spotGenerator(properties.seed);
     //
-    std::vector<uint8_t> floor(mapSize.x * mapSize.y);
-    std::vector<uint8_t> overlay(mapSize.x * mapSize.y);
+    std::vector<uint8_t>   floor(mapSize.x * mapSize.y);
+    std::vector<OrePresetID> ore(mapSize.x * mapSize.y);
     //
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
@@ -75,14 +75,14 @@ static WorldMap generateMap(const WorldProperties& properties, const Indexes& in
             for (const auto& [id, frequency, deposit] : overlayPresets) {
                 const uint32_t seedOffset = id * SEED_OFFSET;
                 if (squirellNoise.createTile(x, y, frequency, seedOffset))
-                    spotGenerator.generateSpot(overlay, TileCoord(x, y), id, deposit, mapSize);
+                    spotGenerator.generateSpot(ore, TileCoord(x, y), OrePresetID(id), deposit, mapSize);
             }
         }
     }
-    return WorldMap(mapSize, floor, overlay);
+    return WorldMap(mapSize, floor, ore);
 }
 
-std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Indexes& indexes) {
-    auto map = generateMap(properties, indexes);
+std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Assets& assets) {
+    auto map = generateMap(properties, assets);
     return std::make_unique<World>(map);
 }

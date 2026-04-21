@@ -12,10 +12,10 @@ class WorldMap;
 
 class MapDrawer {
     std::map<uint8_t, std::vector<PixelCoord>> cachedFloor;
-    std::map<uint8_t, std::vector<PixelCoord>> cachedOverlay;
+    std::map<uint8_t, std::vector<PixelCoord>> cachedOre;
     TileCoord cashedStart, cashedEnd;
     std::map<uint8_t, Texture> floorTextures;
-    std::map<uint8_t, Texture> overlayTextures;
+    std::map<uint8_t, Texture> oreTextures;
     std::vector<float> positions;
     std::vector<float> uvs;
     std::vector<int> indexCache;

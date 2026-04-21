@@ -37,7 +37,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
     //
     chunks.update(mobs.getSoa());
-    updateBlocks(blocks, world->getMap());
+    updateBlocks(blocks, world->getMap(), presets);
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
     mobs::processMobs(mobs.getSoa(), chunks, blocks);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);

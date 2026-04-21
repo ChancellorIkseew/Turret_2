@@ -1,5 +1,6 @@
 #include "game/blocks/block.hpp"
 //
+#include "engine/assets/presets.hpp"
 #include "game/blocks/block_map.hpp"
 #include "game/world/world_map.hpp"
 
@@ -14,10 +15,10 @@ static constexpr TileCoord DIR_VECS[] = {
     {-1, 0}  // left
 };
 
-void DrillBlock::throwItem(TileCoord tile, const BlockMap& map, const WorldMap& terrain) {
-    if (terrain.at(tile).overlay == 0)
+void DrillBlock::throwItem(TileCoord tile, const BlockMap& map, const WorldMap& terrain, const Presets& presets) {
+    if (terrain.at(tile).ore == OrePresetID(0))
         return;
-    ItemPresetID item = ItemPresetID(terrain.at(tile).overlay - 1);
+    ItemPresetID item = presets.getOre(OrePresetID(terrain.at(tile).ore)).item;
 
     for (int i = 0; i < 4; ++i) {
         //logger.error() << int(map.at(tile + DIR_VECS[i]).type);

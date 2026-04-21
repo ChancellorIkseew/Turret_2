@@ -4,7 +4,7 @@
 #include <vector>
 #include "engine/coords/tile_coord.hpp"
 
-class Indexes;
+class Assets;
 class World;
 
 struct FloorPreset {
@@ -41,5 +41,5 @@ struct WorldProperties {
 };
 
 namespace gen {
-    std::unique_ptr<World> generateWorld(const WorldProperties& properties, const Indexes& indexes);
+    std::unique_ptr<World> generateWorld(const WorldProperties& properties, const Assets& indexes);
 }

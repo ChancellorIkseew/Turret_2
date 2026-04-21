@@ -11,6 +11,11 @@ struct ItemPreset {
     Texture texture;
 };
 
+struct OrePreset {
+    ItemPresetID item;
+    std::string visibleName;
+};
+
 struct ShellVisualPreset {
     Texture texture;
     PixelCoord origin;

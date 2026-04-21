@@ -9,8 +9,8 @@ static debug::Logger logger("scripts_lib_world");
 static void placeFloor(int x, int y, uint8_t floorID) {
     script_libs::world->getMap().placeFloor(TileCoord(x, y), floorID);
 }
-static void placeOverlay(int x, int y, uint8_t overlayID) {
-    script_libs::world->getMap().placeOverlay(TileCoord(x, y), overlayID);
+static void placeOre(int x, int y, uint8_t oreID) {
+    script_libs::world->getMap().placeOverlay(TileCoord(x, y), OrePresetID(oreID));
 }
 
 static int getWidth() {
@@ -54,7 +54,7 @@ void script_libs::registerWorld(const ScriptsHandler& scriptsHandler) {
     scriptsHandler.registerFunction("int world_getWidth()", asFunctionPtr(getWidth));
     scriptsHandler.registerFunction("int world_getHeight()", asFunctionPtr(getHeight));
     scriptsHandler.registerFunction("void world_placeFloor(int x, int y, uint8 floorID)", asFunctionPtr(placeFloor));
-    scriptsHandler.registerFunction("void world_placeOverlay(int x, int y, uint8 overlayID)", asFunctionPtr(placeFloor));
+    scriptsHandler.registerFunction("void world_placeOre(int x, int y, uint8 oreID)", asFunctionPtr(placeFloor));
     scriptsHandler.registerFunction("void world_spawnMob(string preset, int x, int y, uint8 teamID)", asFunctionPtr(spawnMob));
     scriptsHandler.registerFunction("void world_spawnShell(string preset, int x, int y, float angle, uint8 teamID)", asFunctionPtr(spawnShell));
 }

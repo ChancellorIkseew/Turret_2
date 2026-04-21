@@ -5,6 +5,7 @@
 
 class BlocksDrawer;
 class BlockMap;
+class Presets;
 class Renderer;
 class WorldMap;
 
@@ -59,7 +60,7 @@ public: //
     void mine(TickCount deltaTick) {
 
     }
-    void throwItem(TileCoord tile, const BlockMap& map, const WorldMap& terrain);
+    void throwItem(TileCoord tile, const BlockMap& map, const WorldMap& terrain, const Presets& presets);
 };
 
 struct BeltBlock : Block {

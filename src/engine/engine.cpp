@@ -21,7 +21,7 @@ static std::unique_ptr<World> createWorld(const EngineCommand command, const std
     WorldProperties& properties, const Assets& assets) {
     if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
         return serializer::loadWorld(folder);
-    return gen::generateWorld(properties, assets.getIndexes());
+    return gen::generateWorld(properties, assets);
 }
 
 static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engine) {

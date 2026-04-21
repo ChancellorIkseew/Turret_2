@@ -7,6 +7,7 @@
 
 template<class Tag>
 using FindMap = std::unordered_map<std::string, preset_tag::StrongID<Tag>>;
+using ItemFindMap = FindMap<preset_tag::ItemTag>;
 using ShellFindMap = FindMap<preset_tag::ShellTag>;
 using TurretFindMap = FindMap<preset_tag::TurretTag>;
 
@@ -49,6 +50,13 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
 static auto createItemPreset(const PresetReader& reader, const Atlas& atlas) {
     return ItemPreset{
         reader.getTexture(atlas, "texture"),
+    };
+}
+
+static auto createOrePreset(const PresetReader& reader, const Atlas& atlas, const ItemFindMap& itemIDByName) {
+    return OrePreset{
+        reader.getID(itemIDByName, "item"),
+        reader.get<std::string>("visible_name")
     };
 }
 
@@ -139,6 +147,8 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
                 addPreset(name, createBlockPreset(reader, atlas, turretIDByName), blockStore, blockIDByName, nextBlockID);
             if constexpr (std::is_same_v<PresetType, ItemPreset>)
                 addPreset(name, createItemPreset(reader, atlas), itemStore, itemIDByName, nextItemID);
+            if constexpr (std::is_same_v<PresetType, OrePreset>)
+                addPreset(name, createOrePreset(reader, atlas, itemIDByName), oreStore, oreIDByName, nextOreID);
             if constexpr (std::is_same_v<PresetType, MobPreset>)
                 addPreset(name, createMobPreset(reader, atlas, turretIDByName), mobStore, mobIDByName, nextMobID);
             if constexpr (std::is_same_v<PresetType, ShellPreset>)
@@ -158,6 +168,7 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
 
 void Presets::load(const Atlas& atlas) {
     loadPresets<ItemPreset>("items", atlas);
+    loadPresets<OrePreset>("ores", atlas);
     loadPresets<ShellPreset>("shells", atlas);
     loadPresets<TurretPreset>("turrets", atlas);
     loadPresets<MobPreset>("mobs", atlas);

@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include "engine/assets/preset_id.hpp"
 #include "engine/coords/tile_coord.hpp"
 #include "game/world/world_map.hpp"
 #include "squirell_noise.hpp"
@@ -9,7 +10,7 @@ class SpotGenerator2D {
 public:
     SpotGenerator2D(const uint64_t seed) : squirellNoise(seed) { }
     
-    void generateSpot(std::vector<uint8_t>& overlay, const TileCoord start, const uint8_t tileType,
+    void generateSpot(std::vector<OrePresetID>& ore, const TileCoord start, const OrePresetID tileType,
         const int spotSize, const TileCoord mapSize) const {
         TileCoord tile = start;
         constexpr uint32_t SEED_OFFSET = 0;
@@ -18,7 +19,7 @@ public:
             for (const TileCoord offset : spotPreset) {
                 const TileCoord target = tile + offset;
                 if (tileExists(target, mapSize))
-                    overlay[getIndex(target, mapSize)] = tileType;
+                    ore[getIndex(target, mapSize)] = tileType;
             }
         }
     }

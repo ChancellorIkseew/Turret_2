@@ -17,9 +17,9 @@ void MapDrawer::updateTextures(const Assets& assets) {
         cachedFloor.emplace(id, std::vector<PixelCoord>());
         floorTextures.emplace(id, assets.getAtlas().at(name));
     }
-    for (const auto& [name, id] : assets.getIndexes().getOverlay()) {
-        cachedOverlay.emplace(id, std::vector<PixelCoord>());
-        overlayTextures.emplace(id, assets.getAtlas().at(name));
+    for (const auto& [name, id] : assets.getPresets().getOres()) {
+        cachedOre.emplace(id.asUint(), std::vector<PixelCoord>());
+        oreTextures.emplace(id.asUint(), assets.getAtlas().at(name));
     }
     atlasSize = assets.getAtlas().getSize();
 }
@@ -38,14 +38,14 @@ void MapDrawer::cacheFloor(const WorldMap& map) {
 }
 
 void MapDrawer::cacheOverlay(const WorldMap& map) {
-    for (auto& [_type, layer] : cachedOverlay) {
+    for (auto& [_type, layer] : cachedOre) {
         layer.clear();
     }
     //
     for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
         for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
-            if (map.at(x, y).overlay != 0)
-                cachedOverlay.at(map.at(x, y).overlay).push_back(t1::pixel(x, y));
+            if (map.at(x, y).ore != OrePresetID(0))
+                cachedOre.at(map.at(x, y).ore.asUint()).push_back(t1::pixel(x, y));
         }
     }
 }
@@ -109,5 +109,5 @@ void MapDrawer::draw(const Camera& camera, const Renderer& renderer, const World
         cacheOverlay(map);
     }
     renderLayer(renderer, cachedFloor, floorTextures, FLOOR_SIZE, camera.getTranslation() + BLENDING_AREA);
-    renderLayer(renderer, cachedOverlay, overlayTextures, TILE_SIZE, camera.getTranslation());
+    renderLayer(renderer, cachedOre, oreTextures, TILE_SIZE, camera.getTranslation());
 }

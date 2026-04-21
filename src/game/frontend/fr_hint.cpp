@@ -31,12 +31,13 @@ public:
         const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
         if (!map.tileExists(targetTile))
             return;
-        const uint8_t index = map.at(targetTile).overlay;
+        const uint8_t index = map.at(targetTile).ore.asUint();
         std::string trimedName;
         if (index != 0) {
-            const std::string& overlayName = assets.getIndexes().getOverlayByIndex(index);
-            trimedName = util::removePrefix(overlayName, "overlay_");
-            icon->setTexture(new T1_UITexture(assets.getAtlas().at("item_" + trimedName)));
+            const OrePreset& orePreset = assets.getPresets().getOre(OrePresetID(index));
+            trimedName = assets.getPresets().getOre(OrePresetID(index)).visibleName;
+            const Texture texture = assets.getPresets().getItem(orePreset.item).texture;
+            icon->setTexture(new T1_UITexture(texture));
         }
         else {
             const uint8_t floorIndex = map.at(targetTile).floor;

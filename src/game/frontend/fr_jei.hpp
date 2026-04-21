@@ -42,8 +42,8 @@ public:
         for (const auto& [floorName, id] : engine.getAssets().getIndexes().getFloor()) {
             addButton(floorName, id, TileComponent::floor, grid);
         }
-        for (const auto& [overlayName, id] : engine.getAssets().getIndexes().getOverlay()) {
-            addButton(overlayName, id, TileComponent::overlay, grid);
+        for (const auto& [oreName, id] : engine.getAssets().getPresets().getOres()) {
+            addButton(oreName, id.asUint(), TileComponent::overlay, grid);
         }
         for (const auto& [blockName, id] : engine.getAssets().getPresets().getBlocks()) {
             addButton(blockName, id.asUint(), TileComponent::block, grid);
@@ -69,7 +69,7 @@ public:
         const TileCoord tile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
         switch (tileData.component) {
         case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
-        case TileComponent::overlay: map.placeOverlay(tile, tileData.id); break;
+        case TileComponent::overlay: map.placeOverlay(tile, OrePresetID(tileData.id)); break;
         case TileComponent::block: {
             const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
             session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID, rotation);
