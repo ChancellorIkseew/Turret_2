@@ -18,7 +18,7 @@ enum class ShootingAI : uint8_t {
 using HeatMapID = uint16_t;
 
 struct MotionData {
-    MovingAI aiType;
+    MovingAI aiType = MovingAI::basic;
     HeatMapID heatmapID; // Used only by mobs with pathfinding.
     PixelCoord target; 
 };

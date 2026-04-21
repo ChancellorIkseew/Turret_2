@@ -11,6 +11,7 @@
 class BlocksMeta {
     TurretManager turrets;
     std::vector<size_t> markedForRemove;
+    TileCoord core = {50, 50}; // temp
 public:
     BlocksMeta() : turrets(64) {}
     //
@@ -34,6 +35,8 @@ public:
         }
         markedForRemove.clear();
     }
+
+    TileCoord getCore() const { return core; }
 };
 
 constexpr TeamID INVALID_TEAM_ID = IDManager<TeamID>::INVALID_ID;
