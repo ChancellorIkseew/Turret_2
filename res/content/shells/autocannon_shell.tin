@@ -3,7 +3,7 @@ texture=autocannon_shell
 origin=0.5|1.0
 size=1.0|2.0
 #logic
-speed=2.5
+speed=4.0
 damage=1
 life_time=120
 explosion_damage=0
