@@ -10,7 +10,7 @@ class EditorGUI : public GUI {
     JEI* jei = nullptr;
 public:
     EditorGUI(Engine& engine) : GUI(engine) {
-        jei = frontend::initJEI(engine).release();
+        jei = frontend::initJEI(engine, JEIContent::all).release();
         mainCanvas.addToMainLayer(std::unique_ptr<Container>(jei));
     }
     ~EditorGUI() final = default;

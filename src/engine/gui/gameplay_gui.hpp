@@ -11,7 +11,7 @@ class GameplayGUI : public GUI {
     JEI* jei = nullptr;
 public:
     GameplayGUI(Engine& engine) : GUI(engine) {
-        jei = frontend::initJEI(engine).release();
+        jei = frontend::initJEI(engine, JEIContent::only_blocks).release();
         mainCanvas.addToMainLayer(frontend::initTimer(engine));
         mainCanvas.addToMainLayer(frontend::initHint(engine));
         mainCanvas.addToMainLayer(std::unique_ptr<Container>(jei));

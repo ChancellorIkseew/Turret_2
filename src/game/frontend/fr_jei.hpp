@@ -35,15 +35,17 @@ class JEI : public Container {
     TileData tileData;
     BlockRot rotation = up;
 public:
-    JEI(Engine& engine) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
+    JEI(Engine& engine, JEIContent content) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
         auto grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
         grid->setPalette(transparentPalette);
 
-        for (const auto& [floorName, id] : engine.getAssets().getIndexes().getFloor()) {
-            addButton(floorName, id, TileComponent::floor, grid);
-        }
-        for (const auto& [oreName, id] : engine.getAssets().getPresets().getOres()) {
-            addButton(oreName, id.asUint(), TileComponent::overlay, grid);
+        if (content == JEIContent::all) {
+            for (const auto& [floorName, id] : engine.getAssets().getIndexes().getFloor()) {
+                addButton(floorName, id, TileComponent::floor, grid);
+            }
+            for (const auto& [oreName, id] : engine.getAssets().getPresets().getOres()) {
+                addButton(oreName, id.asUint(), TileComponent::overlay, grid);
+            }
         }
         for (const auto& [blockName, id] : engine.getAssets().getPresets().getBlocks()) {
             addButton(blockName, id.asUint(), TileComponent::block, grid);
@@ -111,6 +113,6 @@ void JEISlot::callback(UIContext& context){
         jei->setTileData(tileData);
 }
 
-std::unique_ptr<JEI> frontend::initJEI(Engine& engine) {
-    return std::make_unique<JEI>(engine);
+std::unique_ptr<JEI> frontend::initJEI(Engine& engine, JEIContent content) {
+    return std::make_unique<JEI>(engine, content);
 }
