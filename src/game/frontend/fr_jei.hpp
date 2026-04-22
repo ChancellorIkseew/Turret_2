@@ -17,6 +17,7 @@ constexpr Point BTN_SIZE(32.0f, 32.0f);
 struct TileData {
     TileComponent component = TileComponent::floor;
     uint8_t id = 0U;
+    constexpr bool operator==(const TileData& other) const noexcept = default;
 };
 
 class JEISlot : public mingui::Icon {
@@ -32,7 +33,7 @@ public:
 
 class JEI : public Container {
     Engine& engine;
-    TileData tileData;
+    std::optional<TileData> optTileData;
     BlockRot rotation = up;
 public:
     JEI(Engine& engine, JEIContent content) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
@@ -50,8 +51,6 @@ public:
         for (const auto& [blockName, id] : engine.getAssets().getPresets().getBlocks()) {
             addButton(blockName, id.asUint(), TileComponent::block, grid);
         }
-
-        tileData.id = engine.getAssets().getIndexes().getFloor().begin()->second; // Reset tileData to avoid errors.
     }
 
     void addButton(const std::string& name, int id, TileComponent component, GridLayout* grid) {
@@ -64,8 +63,9 @@ public:
         const Input& input = engine.getMainWindow().getInput();
         if (input.jactive(Rotate_building))
             rotation = static_cast<BlockRot>((rotation + 1) % 4);
-        if (!input.active(Build) || engine.getGUI().ownsMouse())
+        if (!optTileData || !input.active(Build) || engine.getGUI().ownsMouse())
             return;
+        const TileData tileData = optTileData.value();
         GameSession& session = engine.getSession();
         WorldMap& map = session.getWorld().getMap();
         const TileCoord tile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
@@ -81,11 +81,15 @@ public:
     }
 
     void setTileData(const TileData tileData) {
-        this->tileData = tileData;
+        if (optTileData && optTileData.value() == tileData)
+            return optTileData.reset();
+        optTileData = tileData;
     }
 
     void drawBlock(const Renderer& renderer, const PixelCoord mousePosition) {
-        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(tileData.id));
+        if (!optTileData)
+            return;
+        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id));
         const Camera& camera = engine.getSession().getCamera();
         const PixelCoord size = preset.visual.size * camera.getMapScale();
 
