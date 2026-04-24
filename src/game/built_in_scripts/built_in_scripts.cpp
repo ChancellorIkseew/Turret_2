@@ -61,6 +61,6 @@ void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord ti
     if (!blocks.isAir(tile))
         return;
     const auto& preset = assets.getPresets().getBlock(presetID);
-    std::unique_ptr<Block> block = makeBlock(preset, rotation);
+    std::unique_ptr<Block> block = makeBlock(presetID, preset, rotation);
     blocks.place(tile, teamID, block);
 }

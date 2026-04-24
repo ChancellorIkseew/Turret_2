@@ -4,7 +4,7 @@
 #include "engine/assets/preset_defs.hpp"
 #include "engine/debug/logger.hpp"
 
-inline std::unique_ptr<Block> makeBlock(BlockPreset preset, BlockRot rotation) {
+inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset preset, BlockRot rotation) {
     static debug::Logger bmLogger("bloc_make");
     std::unique_ptr<Block> block;
     switch (preset.archetype) {
@@ -33,6 +33,7 @@ inline std::unique_ptr<Block> makeBlock(BlockPreset preset, BlockRot rotation) {
         break;
     }
 
+    block->presetID = presetID;
     block->health = preset.maxHealth;
     block->texture = preset.visual.texture;
     return block;

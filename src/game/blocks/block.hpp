@@ -37,6 +37,7 @@ enum BlockRot : int8_t {
 
 struct Block {
     Health health = 0;
+    BlockPresetID presetID = BlockPresetID(0);
     Texture texture = NULL_TEXTURE;
     //
     virtual ~Block() = default;

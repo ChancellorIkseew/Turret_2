@@ -25,7 +25,7 @@ class JEISlot : public mingui::Icon {
     JEI* jei;
     const Input& input;
 public:
-    JEISlot(const Point size, TextureBridge* texture, JEI* jei, const Input& input, TileData tileData) :
+    JEISlot(const Point size, TextureBridge* texture, JEI* jei, const Input& input, const TileData tileData) :
         Icon(size, texture), jei(jei), input(input), tileData(tileData) {
     }
     ~JEISlot() final = default;
@@ -62,17 +62,37 @@ public:
 
     void callback(UIContext& context) override {
         Container::callback(context);
+        if (!engine.getGUI().ownsMouse())
+            updateTools();
+    }
+
+    void updateTools() {
         const Input& input = engine.getMainWindow().getInput();
-        if (input.jactive(Rotate_building))
-            rotation = static_cast<BlockRot>((rotation + 1) % 4);
-        if (!optTileData || !input.active(Build) || engine.getGUI().ownsMouse())
-            return;
-        const TileData tileData = optTileData.value();
         GameSession& session = engine.getSession();
         WorldMap& map = session.getWorld().getMap();
+        BlockMap& blocks = session.getWorld().getBlocks();
         const TileCoord tile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
+        //
+        if (input.jactive(Rotate_building))
+            rotation = static_cast<BlockRot>((rotation + 1) % 4);
+        if (input.jactive(Pipette)) {
+            if (blocks.isAir(tile))
+                optTileData.reset();
+            else if (blocks.contains(tile)) {
+                const auto& block = blocks.at(tile).block;
+                optTileData = TileData(TileComponent::block, block->presetID.asUint());
+                // TODO: add rotation copy for rotatable blocks
+            }
+        }
+        if (optTileData && input.active(Build)) {
+            build(session, tile, optTileData.value());
+        }
+    }
+
+    void build(GameSession& session, const TileCoord tile, const TileData tileData) const {
+        WorldMap& map = session.getWorld().getMap();
         switch (tileData.component) {
-        case TileComponent::floor:   map.placeFloor(tile, tileData.id);   break;
+        case TileComponent::floor:   map.placeFloor(tile, tileData.id);                break;
         case TileComponent::overlay: map.placeOverlay(tile, OrePresetID(tileData.id)); break;
         case TileComponent::block: {
             const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
