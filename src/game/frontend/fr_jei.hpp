@@ -23,9 +23,10 @@ struct TileData {
 class JEISlot : public mingui::Icon {
     TileData tileData;
     JEI* jei;
+    const Input& input;
 public:
-    JEISlot(const Point size, TextureBridge* texture, JEI* jei, TileData tileData) :
-        Icon(size, texture), jei(jei), tileData(tileData) {
+    JEISlot(const Point size, TextureBridge* texture, JEI* jei, const Input& input, TileData tileData) :
+        Icon(size, texture), jei(jei), input(input), tileData(tileData) {
     }
     ~JEISlot() final = default;
     void callback(UIContext& context) final;
@@ -39,23 +40,24 @@ public:
     JEI(Engine& engine, JEIContent content) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
         auto grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
         grid->setPalette(transparentPalette);
+        const Input& input = engine.getMainWindow().getInput();
 
         if (content == JEIContent::all) {
             for (const auto& [floorName, id] : engine.getAssets().getIndexes().getFloor()) {
-                addButton(floorName, id, TileComponent::floor, grid);
+                addButton(floorName, id, TileComponent::floor, grid, input);
             }
             for (const auto& [oreName, id] : engine.getAssets().getPresets().getOres()) {
-                addButton(oreName, id.asUint(), TileComponent::overlay, grid);
+                addButton(oreName, id.asUint(), TileComponent::overlay, grid, input);
             }
         }
         for (const auto& [blockName, id] : engine.getAssets().getPresets().getBlocks()) {
-            addButton(blockName, id.asUint(), TileComponent::block, grid);
+            addButton(blockName, id.asUint(), TileComponent::block, grid, input);
         }
     }
 
-    void addButton(const std::string& name, int id, TileComponent component, GridLayout* grid) {
+    void addButton(const std::string& name, int id, TileComponent component, GridLayout* grid, const Input& input) {
         const Texture texture = engine.getAssets().getAtlas().at(name);
-        grid->addNode(new JEISlot(BTN_SIZE, new T1_UITexture(texture), this, TileData(component, id)));
+        grid->addNode(new JEISlot(BTN_SIZE, new T1_UITexture(texture), this, input, TileData(component, id)));
     }
 
     void callback(UIContext& context) override {
@@ -113,7 +115,8 @@ public:
 };
 
 void JEISlot::callback(UIContext& context){
-    if (context.clicked(*this))
+    const bool clickedByPipette = context.containsMouse(*this) && input.jactive(Pipette);
+    if (context.clicked(*this) || clickedByPipette)
         jei->setTileData(tileData);
 }
 
