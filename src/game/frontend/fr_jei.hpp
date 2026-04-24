@@ -75,17 +75,19 @@ public:
         //
         if (input.jactive(Rotate_building))
             rotation = static_cast<BlockRot>((rotation + 1) % 4);
-        if (input.jactive(Pipette)) {
-            if (blocks.isAir(tile))
-                optTileData.reset();
-            else if (blocks.contains(tile)) {
-                const auto& block = blocks.at(tile).block;
-                optTileData = TileData(TileComponent::block, block->presetID.asUint());
-                // TODO: add rotation copy for rotatable blocks
-            }
-        }
-        if (optTileData && input.active(Build)) {
+        if (input.jactive(Pipette))
+            usePipette(blocks, tile);
+        if (optTileData && input.active(Build))
             build(session, tile, optTileData.value());
+    }
+
+    void usePipette(const BlockMap& blocks, const TileCoord tile) {
+        if (blocks.isAir(tile))
+            optTileData.reset();
+        else if (blocks.contains(tile)) {
+            const auto& block = blocks.at(tile).block;
+            optTileData = TileData(TileComponent::block, block->presetID.asUint());
+            // TODO: add rotation copy for rotatable blocks
         }
     }
 
