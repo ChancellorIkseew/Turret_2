@@ -36,8 +36,10 @@ class JEI : public Container {
     Engine& engine;
     std::optional<TileData> optTileData;
     BlockRot rotation = up;
+    JEIContent content;
 public:
-    JEI(Engine& engine, JEIContent content) : Container(Align::right | Align::down, Orientation::vertical), engine(engine) {
+    JEI(Engine& engine, const JEIContent content) : Container(Align::right | Align::down, Orientation::vertical),
+        engine(engine), content(content) {
         auto grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
         grid->setPalette(transparentPalette);
         const Input& input = engine.getMainWindow().getInput();
@@ -79,6 +81,8 @@ public:
             usePipette(blocks, tile);
         if (optTileData && input.active(Build))
             build(session, tile, optTileData.value());
+        if (input.active(Demolish))
+            demolish(map, blocks, tile);
     }
 
     void usePipette(const BlockMap& blocks, const TileCoord tile) {
@@ -102,6 +106,14 @@ public:
             break;
         }
         }
+    }
+
+    void demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile) const {
+        if (blocks.isFilled(tile))
+            return blocks.demolish(tile);
+        if (content == JEIContent::all && map.tileExists(tile))
+            return map.placeOverlay(tile, OrePresetID(0));
+        // TODO: add area demolish
     }
 
     void setTileData(const TileData tileData) {
