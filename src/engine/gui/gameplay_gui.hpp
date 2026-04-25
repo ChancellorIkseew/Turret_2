@@ -4,17 +4,17 @@
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/window/input/input.hpp"
+#include "game/frontend/build_tools/build_tools.hpp"
 #include "game/frontend/frontend.hpp"
-#include "game/frontend/fr_jei.hpp"
 
 class GameplayGUI : public GUI {
-    JEI* jei = nullptr;
+    std::shared_ptr<BuildTools> buildTools;
 public:
     GameplayGUI(Engine& engine) : GUI(engine) {
-        jei = frontend::initJEI(engine, JEIContent::only_blocks).release();
+        buildTools = std::make_unique<BuildTools>(JEIContent::only_blocks);
         mainCanvas.addToMainLayer(frontend::initTimer(engine));
         mainCanvas.addToMainLayer(frontend::initHint(engine));
-        mainCanvas.addToMainLayer(std::unique_ptr<Container>(jei));
+        mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
     }
     ~GameplayGUI() final = default;
 
@@ -29,7 +29,7 @@ public:
 
     void draw(const Renderer& renderer, const Atlas& atlas) final {
         if (!ownsMouse())
-            jei->drawBlock(renderer, input.getMouseCoord());
+            buildTools->drawBlock(engine, renderer, input.getMouseCoord());
         GUI::draw(renderer, atlas);
     }
 };

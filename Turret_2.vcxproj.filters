@@ -357,9 +357,6 @@
     <ClInclude Include="src\game\entities\turret_manager.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\frontend\fr_jei.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\debug\logger.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -370,6 +367,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\world_saver\shells_saver.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\frontend\build_tools\build_tools.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -660,6 +660,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\io\archive.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\frontend\fr_jei.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\frontend\build_tools\build_tools.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
