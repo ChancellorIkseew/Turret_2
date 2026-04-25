@@ -91,7 +91,8 @@ public:
         else if (blocks.contains(tile)) {
             const auto& block = blocks.at(tile).block;
             optTileData = TileData(TileComponent::block, block->presetID.asUint());
-            // TODO: add rotation copy for rotatable blocks
+            if (block->getRotation() != BlockRot::none)
+                rotation = block->getRotation();
         }
     }
 

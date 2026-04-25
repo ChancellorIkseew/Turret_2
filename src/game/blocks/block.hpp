@@ -42,6 +42,7 @@ struct Block {
     //
     virtual ~Block() = default;
     virtual BlockType getType() const noexcept = 0;
+    virtual BlockRot getRotation() const noexcept { return BlockRot::none; }
     virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile);
     virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return false; }
     virtual void accept(ItemPresetID item, BlockRot srcRot) {}
@@ -82,6 +83,7 @@ struct BeltBlock : Block {
     BeltBlock(BlockRot rotation) : rotation(rotation) {}
     virtual ~BeltBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::belt; }
+    virtual BlockRot getRotation() const noexcept final { return rotation; }
     //
     virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile) final;
     virtual bool canAccept(ItemPresetID item, BlockRot srcRot) final;
