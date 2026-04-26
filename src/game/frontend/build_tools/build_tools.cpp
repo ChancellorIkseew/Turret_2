@@ -34,8 +34,6 @@ void BuildTools::update(Engine& engine) {
         rotation = static_cast<BlockRot>((rotation + 1) % 4);
     if (input.jactive(Pipette))
         usePipette(blocks, tile);
-    //if (optTileData && input.active(Build))
-        //build(session, tile, optTileData.value());
     if (input.active(Demolish))
         demolish(map, blocks, tile);
     // TODO: update and refactoring for building functions 
@@ -43,9 +41,9 @@ void BuildTools::update(Engine& engine) {
         optBuildStart = tile;
     if (optTileData && optBuildStart && input.active(Build))
         updateBlueprint(optBuildStart.value(), tile);
-    if (!input.active(Build) /*jreleased*/) {
+    if (optTileData && optBuildStart && !input.active(Build) /*jreleased*/) {
+        buildBlueprint(session, optTileData.value());
         optBuildStart.reset();
-        //build blueprint
         blueprint.clear();
     }
 }
@@ -80,6 +78,12 @@ void BuildTools::demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile)
     if (content == JEIContent::all && map.tileExists(tile))
         return map.placeOverlay(tile, OrePresetID(0));
     // TODO: add area demolish
+}
+
+void BuildTools::buildBlueprint(GameSession& session, const TileData tileData) const {
+    for (const TileCoord tile : blueprint) {
+        build(session, tile, tileData);
+    }
 }
 
 void BuildTools::drawBlueprint(Engine& engine, const Renderer& renderer) {

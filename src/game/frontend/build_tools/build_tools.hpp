@@ -33,6 +33,7 @@ private:
     void usePipette(const BlockMap& blocks, const TileCoord tile);
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const;
     void demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile) const;
+    void buildBlueprint(GameSession& session, const TileData tileData) const;
     //
     void updateBlueprint(const TileCoord start, TileCoord target);
     void drawOneBlock(Engine& engine, const Renderer& renderer, const TileCoord tile) const;
