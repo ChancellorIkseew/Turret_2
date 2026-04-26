@@ -1,5 +1,28 @@
 #include "build_tools.hpp"
 
+static TileCoord calculateStep(const TileCoord start, const TileCoord target) {
+    const TileCoord delta = target - start;
+    if (delta.x != 0 && std::abs(delta.x) > std::abs(delta.y))
+        return TileCoord(delta.x / std::abs(delta.x), 0);
+    if (delta.y != 0)
+        return TileCoord(0, delta.y / std::abs(delta.y));
+    return TileCoord(0, 0);
+}
+
+void BuildTools::updateBlueprint(const TileCoord start, TileCoord target) {
+    const bool hor = std::abs(target.x - start.x) > std::abs(target.y - start.y);
+    if (hor) target.y = start.y;
+    else     target.x = start.x;
+    //
+    const TileCoord step = calculateStep(start, target);
+    const int len = std::abs(hor ? target.x - start.x : target.y - start.y);
+    //
+    blueprint.clear();
+    for (int i = 0; i <= len; ++i) {
+        blueprint.push_back(start + step * i);
+    }
+}
+
 void BuildTools::update(Engine& engine) {
     const Input& input = engine.getMainWindow().getInput();
     GameSession& session = engine.getSession();
@@ -11,10 +34,20 @@ void BuildTools::update(Engine& engine) {
         rotation = static_cast<BlockRot>((rotation + 1) % 4);
     if (input.jactive(Pipette))
         usePipette(blocks, tile);
-    if (optTileData && input.active(Build))
-        build(session, tile, optTileData.value());
+    //if (optTileData && input.active(Build))
+        //build(session, tile, optTileData.value());
     if (input.active(Demolish))
         demolish(map, blocks, tile);
+    // TODO: update and refactoring for building functions 
+    if (optTileData && input.jactive(Build))
+        optBuildStart = tile;
+    if (optTileData && optBuildStart && input.active(Build))
+        updateBlueprint(optBuildStart.value(), tile);
+    if (!input.active(Build) /*jreleased*/) {
+        optBuildStart.reset();
+        //build blueprint
+        blueprint.clear();
+    }
 }
 
 void BuildTools::usePipette(const BlockMap& blocks, const TileCoord tile) {
@@ -49,19 +82,23 @@ void BuildTools::demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile)
     // TODO: add area demolish
 }
 
-void BuildTools::drawBlock(Engine& engine, const Renderer& renderer, const PixelCoord mousePosition) {
-    if (!optTileData)
+void BuildTools::drawBlueprint(Engine& engine, const Renderer& renderer) {
+    if (!optTileData || !optBuildStart)
         return;
+    for (const TileCoord tile : blueprint) {
+        drawOneBlock(engine, renderer, tile);
+    }
+}
+
+void BuildTools::drawOneBlock(Engine& engine, const Renderer& renderer, const TileCoord tile) const {
     const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id));
     const Camera& camera = engine.getSession().getCamera();
     const PixelCoord size = preset.visual.size * camera.getMapScale();
+    const PixelCoord position = camera.fromMapToScreen(t1::pixel(tile));
 
-    const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
-    const PixelCoord position = camera.fromMapToScreen(t1::pixel(targetTile));
+    const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
 
-    const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(targetTile);
-
-    if (canBuild) const_cast<Renderer&>(renderer).setColorModifier(255, 255, 255, 255);
+    if (canBuild) const_cast<Renderer&>(renderer).setColorModifier(127, 127, 127, 127);
     else          const_cast<Renderer&>(renderer).setColorModifier(180, 52, 52, 200);
 
     if (!preset.rotatable)

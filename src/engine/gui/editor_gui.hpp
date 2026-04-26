@@ -23,7 +23,7 @@ public:
 
     void draw(const Renderer& renderer, const Atlas& atlas) final {
         if (!ownsMouse())
-            buildTools->drawBlock(engine, renderer, input.getMouseCoord());
+            buildTools->drawBlueprint(engine, renderer);
         GUI::draw(renderer, atlas);
     }
 };

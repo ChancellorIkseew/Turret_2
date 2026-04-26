@@ -15,7 +15,8 @@ class BuildTools {
     std::optional<TileData> optTileData;
     BlockRot rotation = BlockRot::up;
     JEIContent content;
-    std::optional<TileCoord> buildStart;
+    std::optional<TileCoord> optBuildStart;
+    std::vector<TileCoord> blueprint;
 public:
     BuildTools(JEIContent content) : content(content) {}
     //
@@ -27,8 +28,12 @@ public:
     }
     //
     void update(Engine& engine);
+    void drawBlueprint(Engine& engine, const Renderer& renderer);
+private:
     void usePipette(const BlockMap& blocks, const TileCoord tile);
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const;
     void demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile) const;
-    void drawBlock(Engine& engine, const Renderer& renderer, const PixelCoord mousePosition);
+    //
+    void updateBlueprint(const TileCoord start, TileCoord target);
+    void drawOneBlock(Engine& engine, const Renderer& renderer, const TileCoord tile) const;
 };
