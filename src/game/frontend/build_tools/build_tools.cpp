@@ -28,24 +28,29 @@ void BuildTools::update(Engine& engine) {
     GameSession& session = engine.getSession();
     WorldMap& map = session.getWorld().getMap();
     BlockMap& blocks = session.getWorld().getBlocks();
-    const TileCoord tile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
+    targetTile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
     //
     if (input.jactive(Rotate_building))
         rotation = static_cast<BlockRot>((rotation + 1) % 4);
     if (input.jactive(Pipette))
-        usePipette(blocks, tile);
-    if (input.active(Demolish))
-        demolish(map, blocks, tile);
-    // TODO: update and refactoring for building functions 
+        usePipette(blocks, targetTile);
+    // Build:
     if (optTileData && input.jactive(Build))
-        optBuildStart = tile;
+        optBuildStart = targetTile;
     if (optTileData && optBuildStart && input.active(Build))
-        updateBlueprint(optBuildStart.value(), tile);
+        updateBlueprint(optBuildStart.value(), targetTile);
     if (optTileData && optBuildStart && input.released(Build)) {
         buildBlueprint(session, optTileData.value());
         optBuildStart.reset();
         blueprint.clear();
     }
+    // Demolish:
+    if (input.jactive(Demolish))
+        optDemolishStart = targetTile;
+    if (optDemolishStart && input.released(Demolish)) {
+        demolish(map, blocks, optDemolishStart.value(), targetTile);
+        optDemolishStart.reset();
+    }  
 }
 
 void BuildTools::usePipette(const BlockMap& blocks, const TileCoord tile) {
@@ -75,12 +80,18 @@ void BuildTools::build(GameSession& session, const TileCoord tile, const TileDat
     }
 }
 
-void BuildTools::demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile) const {
-    if (blocks.isFilled(tile))
-        return blocks.demolish(tile);
-    if (content == JEIContent::all && map.tileExists(tile))
-        return map.placeOverlay(tile, OrePresetID(0));
-    // TODO: add area demolish
+void BuildTools::demolish(WorldMap& map, BlockMap& blocks, const TileCoord start, const TileCoord end) const {
+    if (content == JEIContent::all && map.tileExists(end))
+        map.placeOverlay(end, OrePresetID(0)); //needs refactoring
+    const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
+    const TileCoord nEnd   = TileCoord(std::max(start.x, end.x), std::max(start.y, end.y));
+    for (int x = nStart.x; x <= nEnd.x; ++x) {
+        for (int y = nStart.y; y <= nEnd.y; ++y) {
+            const TileCoord tile(x, y);
+            if (blocks.isFilled(tile))
+                blocks.demolish(tile);
+        }
+    }
 }
 
 void BuildTools::buildBlueprint(GameSession& session, const TileData tileData) const {
@@ -89,32 +100,41 @@ void BuildTools::buildBlueprint(GameSession& session, const TileData tileData) c
     }
 }
 
+static void drawDemolitonRect(const Renderer& renderer, const TileCoord start, const TileCoord end) {
+    const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
+    const TileCoord size = TileCoord(std::abs(start.x - end.x) + 1, std::abs(start.y - end.y) + 1);
+    renderer.drawRect(0x88'88'88'FF, t1::pixel(nStart), t1::pixel(size)); //change color, maybe update renderer
+}
+
 void BuildTools::drawBlueprint(Engine& engine, const Renderer& renderer) {
     if (!optTileData)
         return;
-    if (!optBuildStart) {
-        const Camera& camera = engine.getSession().getCamera();
-        const PixelCoord mousePosition = engine.getMainWindow().getInput().getMouseCoord();
-        const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
+    const Camera& camera = engine.getSession().getCamera();
+    engine.getMainWindow().setRenderTranslation(camera.getTranslation());
+    engine.getMainWindow().setRenderScale(camera.getMapScale());
+    if (optDemolishStart)
+        drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
+    if (!optBuildStart)
         drawOneBlock(engine, renderer, targetTile);
-        return;
+    else {
+        for (const TileCoord tile : blueprint) {
+            drawOneBlock(engine, renderer, tile);
+        }
     }
-    for (const TileCoord tile : blueprint) {
-        drawOneBlock(engine, renderer, tile);
-    }
+    engine.getMainWindow().setRenderTranslation(PixelCoord(0, 0));
+    engine.getMainWindow().setRenderScale(1.f);
 }
 
 void BuildTools::drawOneBlock(Engine& engine, const Renderer& renderer, const TileCoord tile) const {
     const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id));
-    const Camera& camera = engine.getSession().getCamera();
-    const PixelCoord size = preset.visual.size * camera.getMapScale();
-    const PixelCoord position = camera.fromMapToScreen(t1::pixel(tile));
+    const PixelCoord size = preset.visual.size;
+    const PixelCoord position = t1::pixel(tile);
 
     const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
 
     if (canBuild) const_cast<Renderer&>(renderer).setColorModifier(127, 127, 127, 127);
     else          const_cast<Renderer&>(renderer).setColorModifier(180, 52, 52, 200);
-
+ 
     if (!preset.rotatable)
         renderer.drawFast(preset.visual.texture, position, size);
     else {
