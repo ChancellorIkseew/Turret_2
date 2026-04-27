@@ -41,7 +41,7 @@ void BuildTools::update(Engine& engine) {
         optBuildStart = tile;
     if (optTileData && optBuildStart && input.active(Build))
         updateBlueprint(optBuildStart.value(), tile);
-    if (optTileData && optBuildStart && !input.active(Build) /*jreleased*/) {
+    if (optTileData && optBuildStart && input.released(Build)) {
         buildBlueprint(session, optTileData.value());
         optBuildStart.reset();
         blueprint.clear();

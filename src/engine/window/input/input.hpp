@@ -9,7 +9,7 @@ class MainWindow;
 
 class Input {
     std::optional<Binding> lastKeyPressed;
-    const char* symbolJustEntered;
+    const char* symbolJustEntered = nullptr;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
     bool textInputActive = false;
@@ -20,6 +20,8 @@ public:
     bool active(const cString bindName) const;
     ///@brief Check only short press/click.
     bool jactive(const cString bindName) const;
+    ///@brief Check any press/click ended.
+    bool released(const cString bindName) const;
 
     ///@brief Coordinate in window.
     PixelCoord getMouseCoord() const;
