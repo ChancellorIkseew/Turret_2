@@ -90,8 +90,15 @@ void BuildTools::buildBlueprint(GameSession& session, const TileData tileData) c
 }
 
 void BuildTools::drawBlueprint(Engine& engine, const Renderer& renderer) {
-    if (!optTileData || !optBuildStart)
+    if (!optTileData)
         return;
+    if (!optBuildStart) {
+        const Camera& camera = engine.getSession().getCamera();
+        const PixelCoord mousePosition = engine.getMainWindow().getInput().getMouseCoord();
+        const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
+        drawOneBlock(engine, renderer, targetTile);
+        return;
+    }
     for (const TileCoord tile : blueprint) {
         drawOneBlock(engine, renderer, tile);
     }
