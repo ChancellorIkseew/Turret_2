@@ -49,8 +49,11 @@ void BuildTools::update(Engine& engine) {
 }
 
 void BuildTools::usePipette(const BlockMap& blocks, const TileCoord tile) {
-    if (blocks.isAir(tile))
+    if (blocks.isAir(tile)) {
         optTileData.reset();
+        optBuildStart.reset();
+        blueprint.clear();
+    } 
     else if (blocks.contains(tile)) {
         const auto& block = blocks.at(tile).block;
         optTileData = TileData(TileComponent::block, block->presetID.asUint());
