@@ -90,7 +90,7 @@ void GBuildTools::buildBlueprint(GameSession& session, const TileData tileData) 
 static void drawDemolitonRect(const Renderer& renderer, const TileCoord start, const TileCoord end) {
     const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
     const TileCoord size = TileCoord(std::abs(start.x - end.x) + 1, std::abs(start.y - end.y) + 1);
-    renderer.drawRect(0x88'88'88'FF, t1::pixel(nStart), t1::pixel(size)); //change color, maybe update renderer
+    renderer.drawRect(0x84'34'34'C8, t1::pixel(nStart), t1::pixel(size)); // maybe add hex->rgba and rgba->hex
 }
 
 void GBuildTools::drawBlueprint(Engine& engine, Renderer& renderer) {
