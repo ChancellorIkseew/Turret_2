@@ -23,14 +23,14 @@ public:
             demolish(map, blocks, targetTile);
     }
 
-    virtual void drawBlueprint(Engine& engine, const Renderer& renderer) final {
+    virtual void drawBlueprint(Engine& engine, Renderer& renderer) final {
         const Camera& camera = engine.getSession().getCamera();
-        engine.getMainWindow().setRenderTranslation(camera.getTranslation());
-        engine.getMainWindow().setRenderScale(camera.getMapScale());
+        renderer.setTranslation(camera.getTranslation());
+        renderer.setScale(camera.getMapScale());
         if (optTileData)
             drawOneBlock(engine, renderer, targetTile);
-        engine.getMainWindow().setRenderTranslation(PixelCoord(0, 0));
-        engine.getMainWindow().setRenderScale(1.f);
+        renderer.setTranslation(PixelCoord(0, 0));
+        renderer.setScale(1.f);
     }
 
     void demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile) {

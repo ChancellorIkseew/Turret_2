@@ -12,7 +12,7 @@ public:
     GameplayBuildTools() : BuildTools(JEIContent::only_blocks) {}
     //
     virtual void update(Engine& engine) final;
-    virtual void drawBlueprint(Engine& engine, const Renderer& renderer) final;
+    virtual void drawBlueprint(Engine& engine, Renderer& renderer) final;
 private:
     void usePipette(const BlockMap& blocks, const TileCoord tile);
     void demolish(WorldMap& map, BlockMap& blocks, const TileCoord start, const TileCoord end) const;

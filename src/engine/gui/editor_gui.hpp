@@ -21,7 +21,7 @@ public:
             GUI::callback();
     }
 
-    void draw(const Renderer& renderer, const Atlas& atlas) final {
+    void draw(Renderer& renderer, const Atlas& atlas) final {
         if (!ownsMouse())
             buildTools->drawBlueprint(engine, renderer);
         GUI::draw(renderer, atlas);

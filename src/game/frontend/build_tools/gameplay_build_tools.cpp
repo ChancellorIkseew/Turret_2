@@ -93,12 +93,12 @@ static void drawDemolitonRect(const Renderer& renderer, const TileCoord start, c
     renderer.drawRect(0x88'88'88'FF, t1::pixel(nStart), t1::pixel(size)); //change color, maybe update renderer
 }
 
-void GBuildTools::drawBlueprint(Engine& engine, const Renderer& renderer) {
+void GBuildTools::drawBlueprint(Engine& engine, Renderer& renderer) {
     if (!optTileData)
         return;
     const Camera& camera = engine.getSession().getCamera();
-    engine.getMainWindow().setRenderTranslation(camera.getTranslation());
-    engine.getMainWindow().setRenderScale(camera.getMapScale());
+    renderer.setTranslation(camera.getTranslation());
+    renderer.setScale(camera.getMapScale());
     if (optDemolishStart)
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
     if (!optBuildStart)
@@ -108,6 +108,6 @@ void GBuildTools::drawBlueprint(Engine& engine, const Renderer& renderer) {
             drawOneBlock(engine, renderer, tile);
         }
     }
-    engine.getMainWindow().setRenderTranslation(PixelCoord(0, 0));
-    engine.getMainWindow().setRenderScale(1.f);
+    renderer.setTranslation(PixelCoord(0, 0));
+    renderer.setScale(1.f);
 }

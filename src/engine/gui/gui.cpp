@@ -31,7 +31,7 @@ static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindo
     text::drawString(renderer, U"Frame|tick time: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelay()), position);
 }
 
-void GUI::draw(const Renderer& renderer, const Atlas& atlas) {
+void GUI::draw(Renderer& renderer, const Atlas& atlas) {
     if (mainWindow.justResized())
         mainCanvas.resize(mainWindow.getSize());
     //
