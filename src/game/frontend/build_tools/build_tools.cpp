@@ -1,33 +1,5 @@
 #include "build_tools.hpp"
 
-void BuildTools::update(Engine& engine) {
-    const Input& input = engine.getMainWindow().getInput();
-    GameSession& session = engine.getSession();
-    WorldMap& map = session.getWorld().getMap();
-    BlockMap& blocks = session.getWorld().getBlocks();
-    const TileCoord tile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
-    //
-    if (input.jactive(Rotate_building))
-        rotation = static_cast<BlockRot>((rotation + 1) % 4);
-    if (input.jactive(Pipette))
-        usePipette(blocks, tile);
-    if (optTileData && input.active(Build))
-        build(session, tile, optTileData.value());
-    if (input.active(Demolish))
-        demolish(map, blocks, tile);
-}
-
-void BuildTools::usePipette(const BlockMap& blocks, const TileCoord tile) {
-    if (blocks.isAir(tile))
-        optTileData.reset();
-    else if (blocks.contains(tile)) {
-        const auto& block = blocks.at(tile).block;
-        optTileData = TileData(TileComponent::block, block->presetID.asUint());
-        if (block->getRotation() != BlockRot::none)
-            rotation = block->getRotation();
-    }
-}
-
 void BuildTools::build(GameSession& session, const TileCoord tile, const TileData tileData) const {
     WorldMap& map = session.getWorld().getMap();
     switch (tileData.component) {
@@ -41,35 +13,40 @@ void BuildTools::build(GameSession& session, const TileCoord tile, const TileDat
     }
 }
 
-void BuildTools::demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile) const {
-    if (blocks.isFilled(tile))
-        return blocks.demolish(tile);
-    if (content == JEIContent::all && map.tileExists(tile))
-        return map.placeOverlay(tile, OrePresetID(0));
-    // TODO: add area demolish
-}
+void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData) const {
+    const PixelCoord position = t1::pixel(tile);
+    //
+    if (tileData.component == TileComponent::block) {
+        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(tileData.id));
+        const PixelCoord size = preset.visual.size;
+        const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
 
-void BuildTools::drawBlock(Engine& engine, const Renderer& renderer, const PixelCoord mousePosition) {
-    if (!optTileData)
+        if (canBuild) renderer.setColorModifier(127, 127, 127, 127);
+        else          renderer.setColorModifier(180, 52, 52, 200);
+
+        if (!preset.rotatable)
+            renderer.drawFast(preset.visual.texture, position, size);
+        else {
+            const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
+            const PixelCoord origin = size / 2.f;
+            renderer.draw(preset.visual.texture, position + origin, size, origin, angleRad);
+        }
+        renderer.resetColorModifier();
         return;
-    const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id));
-    const Camera& camera = engine.getSession().getCamera();
-    const PixelCoord size = preset.visual.size * camera.getMapScale();
-
-    const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
-    const PixelCoord position = camera.fromMapToScreen(t1::pixel(targetTile));
-
-    const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(targetTile);
-
-    if (canBuild) const_cast<Renderer&>(renderer).setColorModifier(255, 255, 255, 255);
-    else          const_cast<Renderer&>(renderer).setColorModifier(180, 52, 52, 200);
-
-    if (!preset.rotatable)
-        renderer.drawFast(preset.visual.texture, position, size);
-    else {
-        const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
-        const PixelCoord origin = size / 2.f;
-        renderer.draw(preset.visual.texture, position + origin, size, origin, angleRad);
     }
-    const_cast<Renderer&>(renderer).resetColorModifier();
+    //
+    if (tileData.component == TileComponent::overlay) {
+        const OrePreset& preset = engine.getAssets().getPresets().getOre(OrePresetID(tileData.id));
+        renderer.drawFast(preset.texture, position, t1::TILE_PC);
+        return;
+    }
+    //
+    if (tileData.component == TileComponent::floor) {
+        const std::string& textureName = engine.getAssets().getIndexes().getFloorByIndex(tileData.id);
+        const Texture texture = engine.getAssets().getAtlas().at(textureName);
+        constexpr PixelCoord BLENDING_AREA(4.f, 4.f);
+        constexpr PixelCoord FLOOR_SIZE = t1::TILE_PC + BLENDING_AREA * 2.f;
+        renderer.drawFast(texture, position - BLENDING_AREA, FLOOR_SIZE);
+        return;
+    }
 }
