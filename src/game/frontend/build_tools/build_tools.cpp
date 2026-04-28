@@ -13,9 +13,8 @@ void BuildTools::build(GameSession& session, const TileCoord tile, const TileDat
     }
 }
 
-void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile) const {
+void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData) const {
     const PixelCoord position = t1::pixel(tile);
-    const TileData tileData = optTileData.value();
     //
     if (tileData.component == TileComponent::block) {
         const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(tileData.id));

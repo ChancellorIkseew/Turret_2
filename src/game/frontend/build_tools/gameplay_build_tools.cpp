@@ -94,18 +94,18 @@ static void drawDemolitonRect(const Renderer& renderer, const TileCoord start, c
 }
 
 void GBuildTools::drawBlueprint(Engine& engine, Renderer& renderer) {
-    if (!optTileData)
-        return;
     const Camera& camera = engine.getSession().getCamera();
     renderer.setTranslation(camera.getTranslation());
     renderer.setScale(camera.getMapScale());
     if (optDemolishStart)
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
-    if (!optBuildStart)
-        drawOneBlock(engine, renderer, targetTile);
-    else {
-        for (const TileCoord tile : blueprint) {
-            drawOneBlock(engine, renderer, tile);
+    if (optTileData) {
+        if (!optBuildStart)
+            drawOneBlock(engine, renderer, targetTile, optTileData.value());
+        else {
+            for (const TileCoord tile : blueprint) {
+                drawOneBlock(engine, renderer, tile, optTileData.value());
+            }
         }
     }
     renderer.setTranslation(PixelCoord(0, 0));

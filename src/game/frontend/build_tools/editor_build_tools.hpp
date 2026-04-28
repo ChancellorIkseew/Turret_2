@@ -28,7 +28,7 @@ public:
         renderer.setTranslation(camera.getTranslation());
         renderer.setScale(camera.getMapScale());
         if (optTileData)
-            drawOneBlock(engine, renderer, targetTile);
+            drawOneBlock(engine, renderer, targetTile, optTileData.value());
         renderer.setTranslation(PixelCoord(0, 0));
         renderer.setScale(1.f);
     }
