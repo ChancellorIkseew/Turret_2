@@ -12,15 +12,13 @@ struct TileData {
 };
 
 class BuildTools {
+protected:
     std::optional<TileData> optTileData;
     BlockRot rotation = BlockRot::up;
     JEIContent content;
-    std::optional<TileCoord> optBuildStart;
-    std::optional<TileCoord> optDemolishStart;
-    std::vector<TileCoord> blueprint;
-    TileCoord targetTile;
 public:
     BuildTools(JEIContent content) : content(content) {}
+    virtual ~BuildTools() = default;
     //
     JEIContent getContentLevel() const noexcept { return content; }
     void setTileData(const TileData tileData) {
@@ -29,14 +27,9 @@ public:
         optTileData = tileData;
     }
     //
-    void update(Engine& engine);
-    void drawBlueprint(Engine& engine, const Renderer& renderer);
-private:
-    void usePipette(const BlockMap& blocks, const TileCoord tile);
+    virtual void update(Engine& engine) = 0;
+    virtual void drawBlueprint(Engine& engine, const Renderer& renderer) = 0;
+protected:
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const;
-    void demolish(WorldMap& map, BlockMap& blocks, const TileCoord start, const TileCoord end) const;
-    void buildBlueprint(GameSession& session, const TileData tileData) const;
-    //
-    void updateBlueprint(const TileCoord start, TileCoord target);
     void drawOneBlock(Engine& engine, const Renderer& renderer, const TileCoord tile) const;
 };

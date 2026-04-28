@@ -110,6 +110,8 @@
     <ClInclude Include="src\game\entities\turret_manager.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\build_tools\build_tools.hpp" />
+    <ClInclude Include="src\game\frontend\build_tools\editor_build_tools.hpp" />
+    <ClInclude Include="src\game\frontend\build_tools\gameplay_build_tools.hpp" />
     <ClInclude Include="src\game\frontend\frontend.hpp" />
     <ClInclude Include="src\game\frontend\layouts\l_saves.hpp" />
     <ClInclude Include="src\game\generation\generation.hpp" />
@@ -199,6 +201,7 @@
     <ClCompile Include="src\game\entities\shell_manager.cpp" />
     <ClCompile Include="src\game\entities\turret_manager.cpp" />
     <ClCompile Include="src\game\frontend\build_tools\build_tools.cpp" />
+    <ClCompile Include="src\game\frontend\build_tools\gameplay_build_tools.cpp" />
     <ClCompile Include="src\game\frontend\fr_audio.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />
