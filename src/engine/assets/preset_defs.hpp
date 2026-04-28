@@ -14,6 +14,7 @@ struct ItemPreset {
 struct OrePreset {
     ItemPresetID item;
     std::string visibleName;
+    Texture texture;
 };
 
 struct ShellVisualPreset {
