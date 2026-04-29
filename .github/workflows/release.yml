@@ -1,0 +1,67 @@
+name: Create Release Assets
+
+on:
+  push:
+    tags:
+      - 'v*' # v1.0, v2.0.4 etc
+
+jobs:
+  build_assets:
+    name: Build Release for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest] # chacge ubuntu version to latest, when letest would be 24.04+ 
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Build Tools (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Configure CMake
+        # C++23, GCC 14
+        run: >
+          cmake -S cmake_proj -B build 
+          -DCMAKE_BUILD_TYPE=Release
+          ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
+          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}"
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      # ---Windows---
+      - name: Package Windows
+        if: runner.os == 'Windows'
+        run: |
+          mkdir release_dist
+          copy build\Release\Turret_2.exe release_dist\
+          # MSVC_dll
+          copy libs\MSVC_dll\*.dll release_dist\ 2>$null || echo "No DLLs found"
+          compress-archive -Path release_dist\* -DestinationPath Turret_2_win_x64.zip
+
+      # ---Linux---
+      - name: Package Linux
+        if: runner.os == 'Linux'
+        run: |
+          mkdir release_dist
+          cp build/Turret_2 release_dist/
+          # GCC_so
+          cp libs/GCC_so/*.so* release_dist/ 2>/dev/null || echo "No SOs found"
+          tar -czvf Turret_2_linux.tar.gz -C release_dist .
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            Turret_2_win_x64.zip
+            Turret_2_linux.tar.gz
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
