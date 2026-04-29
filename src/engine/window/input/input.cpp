@@ -40,6 +40,7 @@ void Input::update(const SDL_Event& event) {
         if (inputType != binding.inputType || code != binding.code)
             continue;
         binding.justTriggered = !binding.active && pressed;
+        binding.released = binding.active && !pressed;
         binding.active = pressed;
     }
 }
@@ -50,6 +51,7 @@ void Input::reset(SDL_Window* sdlWindow) {
     lastKeyPressed.reset();
     for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
+        binding.released = false;
     }
 
     if (textInputActive && !SDL_TextInputActive(sdlWindow))
@@ -63,6 +65,9 @@ bool Input::active(cString bindName) const {
 }
 bool Input::jactive(cString bindName) const {
     return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).justTriggered;
+}
+bool Input::released(cString bindName) const {
+    return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).released;
 }
 
 PixelCoord Input::getMouseCoord() const {

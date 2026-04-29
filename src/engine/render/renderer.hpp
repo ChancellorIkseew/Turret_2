@@ -68,6 +68,7 @@ public:
     }
     //
     void setTranslation(const PixelCoord translation) noexcept { this->translation = translation; }
+    void setScale(const float scale) noexcept { SDL_SetRenderScale(sdlRenderer, scale, scale); }
     void setScaleMode(const ScaleMode mode) noexcept {
         SDL_SetTextureScaleMode(commonTexture, static_cast<SDL_ScaleMode>(mode));
     }

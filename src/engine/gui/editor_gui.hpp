@@ -3,13 +3,13 @@
 //
 #include "engine/window/input/input.hpp"
 #include "game/frontend/frontend.hpp"
-#include "game/frontend/build_tools/build_tools.hpp"
+#include "game/frontend/build_tools/editor_build_tools.hpp"
 
 class EditorGUI : public GUI {
     std::shared_ptr<BuildTools> buildTools;
 public:
     EditorGUI(Engine& engine) : GUI(engine) {
-        buildTools = std::make_unique<BuildTools>(JEIContent::all);
+        buildTools = std::make_unique<EditorBuildTools>();
         mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
     }
     ~EditorGUI() final = default;
@@ -21,9 +21,9 @@ public:
             GUI::callback();
     }
 
-    void draw(const Renderer& renderer, const Atlas& atlas) final {
+    void draw(Renderer& renderer, const Atlas& atlas) final {
         if (!ownsMouse())
-            buildTools->drawBlock(engine, renderer, input.getMouseCoord());
+            buildTools->drawBlueprint(engine, renderer);
         GUI::draw(renderer, atlas);
     }
 };

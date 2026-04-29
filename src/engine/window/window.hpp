@@ -47,7 +47,7 @@ public:
         renderer.setTranslation(translation);
     }
     void setRenderScale(const float scale) {
-        SDL_SetRenderScale(sdlRenderer, scale, scale);
+        renderer.setScale(scale);
     }
     void clear() {
         SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);

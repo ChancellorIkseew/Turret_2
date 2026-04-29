@@ -18,7 +18,7 @@ public:
     GUI(Engine& engine);
     virtual ~GUI() = default;
 
-    virtual void draw(const Renderer& renderer, const Atlas& atlas);
+    virtual void draw(Renderer& renderer, const Atlas& atlas);
     void translate(const std::string& lang);
     virtual void callback();
     void addToOverlay(std::unique_ptr<mingui::Container> container);
