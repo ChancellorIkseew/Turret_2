@@ -14,7 +14,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/
 #------OS_settings---------------------
 if(WIN32)
     set(LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/MSVC_lib")
-    target_link_directories(${PROJECT_NAME} PRIVATE ${LIB_DIR})
+    target_link_directories(${PROJECT_NAME} PRIVATE ${LIBS_DIR})
     target_link_libraries(${PROJECT_NAME} PRIVATE
         "${LIBS_DIR}/zlib.lib"
         "${LIBS_DIR}/SDL3.lib"
