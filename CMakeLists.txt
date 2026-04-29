@@ -8,9 +8,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/build")
 set(CMAKE_INSTALL_RPATH "\$ORIGIN")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 #-----find_sources---------------------
-file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "/src/*.cpp" "/libs/include/MINGUI/src/*.cpp") #temporary
+file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "src/*.cpp" "libs/include/MINGUI/src/*.cpp") #temporary
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_include_directories(${PROJECT_NAME} PRIVATE "/src" "/libs/include")
+target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/libs/include")
 #------OS_settings---------------------
 if(WIN32)
     set(LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/MSVC_lib")
