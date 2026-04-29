@@ -35,8 +35,14 @@ jobs:
           [ "${{ runner.os }}" == "Windows" ] && cp build/Release/*.exe dist/ || cp build/Turret_2 dist/
           
           # copy libs and res
-          [ -d "libs/MSVC_dll" ] && cp libs/MSVC_dll/*.dll dist/ || true
-          [ -d "libs/GCC_so" ] && cp libs/GCC_so/*.so* dist/ || true
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            cp build/Release/Turret_2.exe dist/
+            [ -d "libs/MSVC_dll" ] && cp libs/MSVC_dll/*.dll dist/ || true
+          else
+            cp build/Turret_2 dist/
+            [ -d "libs/GCC_so" ] && cp libs/GCC_so/*.so* dist/ || true
+          fi
+          [ -d "libs/licenses" ] && cp -r licenses dist/ || true
           [ -d "res" ] && cp -r res dist/ || true
 
           if [ "${{ runner.os }}" == "Windows" ]; then
