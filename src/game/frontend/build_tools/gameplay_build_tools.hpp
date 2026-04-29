@@ -2,8 +2,6 @@
 #include "build_tools.hpp"
 
 class GameplayBuildTools : public BuildTools {
-    //std::optional<TileData> optTileData;
-    //BlockRot rotation = BlockRot::up;
     std::optional<TileCoord> optBuildStart;
     std::optional<TileCoord> optDemolishStart;
     std::vector<TileCoord> blueprint;

@@ -15,13 +15,19 @@ void BuildTools::build(GameSession& session, const TileCoord tile, const TileDat
 
 void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData) const {
     const PixelCoord position = t1::pixel(tile);
+    uint8_t alpha = 255;
+    if (content == JEIContent::only_blocks) { // maybe needs refactoring
+        const float timeMs = static_cast<float>(engine.getMainWindow().getTime());
+        const float modifier = std::sin(timeMs / 500.f) * 64.f;
+        alpha = uint8_t(modifier) + 191; // 255 - 64
+    }
     //
     if (tileData.component == TileComponent::block) {
         const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(tileData.id));
         const PixelCoord size = preset.visual.size;
         const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
 
-        if (canBuild) renderer.setColorModifier(127, 127, 127, 127);
+        if (canBuild) renderer.setColorModifier(255, 255, 255, alpha);
         else          renderer.setColorModifier(180, 52, 52, 200);
 
         if (!preset.rotatable)
