@@ -27,6 +27,6 @@ elseif(UNIX AND NOT APPLE)
         "${LIBS_DIR}/libz.so.1"
         "${LIBS_DIR}/libSDL3.so.0"
         "${LIBS_DIR}/libSDL3_mixer.so.0"
-        "${LIBS_DIR}/libangelscript64.so.2.37.0")
+        "${LIBS_DIR}/libangelscript.so.2.37.0")
     #target_link_libraries(${PROJECT_NAME} PRIVATE pthread atomic) # Linux std::atomic (not needed now)
 endif()
