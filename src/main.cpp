@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     try {
         Settings::readSettings();
         Controls::readBindings();
-        Engine engine("Turret_2.0.0");
+        Engine engine("Turret_2.0.1 - pre-alpha");
         Settings::applySettings(engine);
         engine.run();
     }
