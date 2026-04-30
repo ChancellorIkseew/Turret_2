@@ -17,7 +17,7 @@ namespace archive {
         blob.append(reinterpret_cast<const char*>(vec.data()), vec.size() * sizeof(T));
     }
 
-    template<typename T>
+    template<class T>
     inline void add(std::string& blob, const T& data) {
         static_assert(std::is_trivially_copyable_v<T>);
         blob.append(reinterpret_cast<const char*>(&data), sizeof(T));
