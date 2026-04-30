@@ -14,20 +14,20 @@ void MainCanvas::addToOverlay(std::unique_ptr<Container> container) {
 }
 
 void MainCanvas::update(UIContextBridge& contextBridge, const int frameDelay) {
-    for (auto& it : mainLayer) refreshContainer(*it);
-    for (auto& it : overlay)   refreshContainer(*it);
-
     textEdit.update(frameDelay);
     UIContext context(contextBridge, textEdit);
     if (!overlay.empty()) {
         overlay.back()->callback(context);
         if (!overlay.back()->isOpen())
             overlay.pop_back();
-        return; // Do not callback other containers.
     }
-    for (const auto& it : mainLayer) {
-        it->callback(context);
+    else { // (overlay.empty)
+        for (const auto& it : mainLayer) {
+            it->callback(context);
+        }
     }
+    for (auto& it : mainLayer) refreshContainer(*it);
+    for (auto& it : overlay)   refreshContainer(*it);
 }
 
 void MainCanvas::drawBatched(RenderBridge& renderBridge) {
@@ -84,8 +84,7 @@ void MainCanvas::refreshContainer(Container& container) const {
     container.arrange();
     container.translate(localization);
     container.applyAlignment(windowSize);
-    container.arrange();                  // temporary. needs bugfix
-    container.applyAlignment(windowSize); //
+    container.applyAlignment(windowSize); // temporary. needs bugfix
     container.markDirty(false);
 }
 
