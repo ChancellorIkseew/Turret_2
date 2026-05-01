@@ -3,6 +3,7 @@
 
 class EditorBuildTools : public BuildTools {
     TileCoord targetTile;
+    bool lastDeletedWasBlock = false;
 public:
     EditorBuildTools() : BuildTools(JEIContent::all) {}
 
@@ -19,8 +20,13 @@ public:
             usePipette(map, blocks, targetTile);
         if (optTileData && input.active(Build))
             build(session, targetTile, optTileData.value());
-        if (input.active(Demolish))
+        // fixes block and ore demolishing in one click, maybe needs refactoring
+        const bool currentIsBlock = blocks.isFilled(targetTile);
+        const bool sameComponent = currentIsBlock == lastDeletedWasBlock;
+        if (input.jactive(Demolish) || input.active(Demolish) && sameComponent) {
+            lastDeletedWasBlock = currentIsBlock;
             demolish(map, blocks, targetTile);
+        }
     }
 
     virtual void drawBlueprint(Engine& engine, Renderer& renderer) final {
