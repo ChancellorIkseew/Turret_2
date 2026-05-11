@@ -62,8 +62,8 @@ static auto createOrePreset(const PresetReader& reader, const Atlas& atlas, cons
 }
 
 static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName) {
-    std::array<uint8_t, 16> frames;
-    size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
+    std::array<uint8_t, 16> frameOrder;
+    size_t frameCount = reader.getArray<uint8_t>("frame_order", frameOrder);
     MobVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
@@ -71,7 +71,7 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
         reader.get<uint8_t>("frame_ticks"),
         reader.get<float>("frame_height"),
         static_cast<uint8_t>(frameCount),
-        frames
+        frameOrder
     };
     return MobPreset{
         reader.get<float>("speed"),
