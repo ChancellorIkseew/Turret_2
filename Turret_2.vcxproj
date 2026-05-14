@@ -109,6 +109,7 @@
     <ClInclude Include="src\game\entities\shell_manager.hpp" />
     <ClInclude Include="src\game\entities\turret_manager.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
+    <ClInclude Include="src\game\frontend\build_tools\blueprint.hpp" />
     <ClInclude Include="src\game\frontend\build_tools\build_tools.hpp" />
     <ClInclude Include="src\game\frontend\build_tools\editor_build_tools.hpp" />
     <ClInclude Include="src\game\frontend\build_tools\gameplay_build_tools.hpp" />
