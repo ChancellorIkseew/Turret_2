@@ -9,6 +9,7 @@ frame_order=0
 speed=8.0
 hitbox_radius=10.5
 health=20
+can_build=true
 moving_ai=basic
 shooting_ai=basic
 turret=shuttle_turret

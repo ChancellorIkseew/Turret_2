@@ -62,6 +62,7 @@ struct MobPreset {
     float maxSpeed;
     float hitboxRadius;
     Health maxHealth;
+    bool canBuild;
     MovingAI defaultMovingAI;
     ShootingAI defaultShootingAI;
     TurretPresetID turret;

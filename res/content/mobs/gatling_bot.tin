@@ -9,6 +9,7 @@ frame_order=0,1,2,2,1,0,3,4,3,3
 speed=0.33
 hitbox_radius=9.0
 health=50
+can_build=false
 moving_ai=basic
 shooting_ai=basic
 turret=gatling_bot_turret
