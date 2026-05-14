@@ -11,9 +11,10 @@ public:
 };
 
 class T1_UIRenderer : public mingui::RenderBridge {
-    const Renderer& renderer;
+    Renderer& renderer;
+    const float scale = 1;
 public:
-    T1_UIRenderer(const Renderer& renderer) : renderer(renderer) { }
+    T1_UIRenderer(Renderer& renderer) : renderer(renderer) { }
     ~T1_UIRenderer() final = default;
     //
     void drawRect(mingui::Rect rect) final {
@@ -29,4 +30,8 @@ public:
     //
     void drawRectsBatched(std::span<const mingui::Rect> rects) final { /* not needded */ }
     void drawTextsBatched(std::span<const mingui::Text> texts) final { /* not needded */ }
+    //
+    void setScale(const float scale) final {
+        renderer.setScale(scale);
+    }
 };

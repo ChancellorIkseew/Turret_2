@@ -1,4 +1,5 @@
 #include <MINGUI/core/main_canvas.hpp>
+#include <MINGUI/render/render_bridge.hpp>
 
 MINGUI
 
@@ -15,7 +16,7 @@ void MainCanvas::addToOverlay(std::unique_ptr<Container> container) {
 
 void MainCanvas::update(UIContextBridge& contextBridge, const int frameDelay) {
     textEdit.update(frameDelay);
-    UIContext context(contextBridge, textEdit);
+    UIContext context(contextBridge, textEdit, scale);
     if (!overlay.empty()) {
         overlay.back()->callback(context);
         if (!overlay.back()->isOpen())
@@ -36,6 +37,7 @@ void MainCanvas::drawBatched(RenderBridge& renderBridge) {
     }
     if (hasOverlay())
         overlay.back()->draw(renderQueue);
+    renderBridge.setScale(scale);
     renderQueue.drawBatchedAndClear(renderBridge);
 }
 
@@ -45,6 +47,7 @@ void MainCanvas::draw(RenderBridge& renderBridge) {
     }
     if (hasOverlay())
         overlay.back()->draw(renderQueue);
+    renderBridge.setScale(scale);
     renderQueue.drawAndClear(renderBridge);
 }
 
@@ -83,12 +86,14 @@ void MainCanvas::refreshContainer(Container& container) const {
     container.applyPalette();
     container.arrange();
     container.translate(localization);
-    container.applyAlignment(windowSize);
-    container.applyAlignment(windowSize); // temporary. needs bugfix
+    const Point canvasSize = windowSize / scale;
+    container.applyAlignment(canvasSize);
+    container.applyAlignment(canvasSize); // temporary. needs bugfix
     container.markDirty(false);
 }
 
 void MainCanvas::relocateContainers(const Point windowSize) {
-    for (const auto& it : mainLayer) it->applyAlignment(windowSize);
-    for (const auto& it : overlay)   it->applyAlignment(windowSize);
+    const Point canvasSize = windowSize / scale;
+    for (const auto& it : mainLayer) it->applyAlignment(canvasSize);
+    for (const auto& it : overlay)   it->applyAlignment(canvasSize);
 }

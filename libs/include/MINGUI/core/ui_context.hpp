@@ -10,10 +10,11 @@ class TextEdit;
 class UIContext {
     Point mousePosition;
     bool mouseClicked;
+    float canvasScale;
     UIContextBridge& contextBridge;
     TextEdit& textEdit;
 public:
-    UIContext(UIContextBridge& contextBridge, TextEdit& textEdit);
+    UIContext(UIContextBridge& contextBridge, TextEdit& textEdit, const float canvasScale);
     //
     bool  getMouseClicked()         const noexcept { return mouseClicked; }
     Point getMousePosition()        const noexcept { return mousePosition; }

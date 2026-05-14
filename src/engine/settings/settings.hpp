@@ -26,6 +26,7 @@ public:
     } gameplay;
     static struct _GUI {
         std::string lang = "en_US";
+        uint8_t scale = 1U;
         bool customCursor = true;
         bool showConsole = false;
     } gui;

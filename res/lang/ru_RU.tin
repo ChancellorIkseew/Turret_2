@@ -23,6 +23,7 @@ Width=Ширина
 camera inertia=инерция камеры
 custom cursor=изменённый курсор
 fullscreen=полный экран
+GUI scale=масштаб интерфейса
 start wave=запустить волну
 starts in :=до начала :
 master=общая громкость

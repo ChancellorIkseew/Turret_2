@@ -15,6 +15,7 @@ class MainCanvas {
     Palette palette;
     Point windowSize;
     bool allwaysWithOverlay = false;
+    float scale = 1;
 public:
     template<IsPoint T>
     MainCanvas(const T windowSize, Localization&& localization, const Palette palette) :
@@ -43,6 +44,9 @@ public:
     //
     void setAllwaysWithOverlay(const bool flag) noexcept { allwaysWithOverlay = flag; }
     bool hasOverlay() const noexcept { return !overlay.empty(); }
+    //
+    void setScale(const float scale) noexcept { this->scale = scale; }
+    float getScale() const noexcept { return scale; }
     //
     bool isTextEditingActive() const noexcept { return textEdit.isEditingActive(); }
 private:
