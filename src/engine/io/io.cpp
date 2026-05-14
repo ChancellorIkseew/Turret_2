@@ -8,7 +8,10 @@ static debug::Logger logger("io");
 std::string io::readFile(const fs::path& path, const Log log) {
     std::error_code errCode;
     if (!fs::exists(path, errCode) || !fs::is_regular_file(path, errCode)) {
-        logger.error() << "File issue: " << path << " " << errCode.message();
+        if (!errCode.value())
+            logger.error() << "File does not exist or is not regular: " << path;
+        else
+            logger.error() << "Failed to check file: " << path << " Error messege: " << errCode.message();
         return "";
     }
     //
