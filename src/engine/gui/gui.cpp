@@ -19,7 +19,8 @@ GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
 mainCanvas(mainWindow.getSize(),
     tin::read(io::folders::LANG / (Settings::gui.lang + ".tin")).release(),
-    mingui::defaultPalette),
+    mingui::defaultPalette,
+    Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
 static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindow) {

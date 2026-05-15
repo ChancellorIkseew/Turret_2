@@ -12,7 +12,7 @@ public:
         Layout(orientation), align(align) { }
     ~Container() override = default;
     //
-    void applyAlignment(const Point windowSize);
+    void applyAlignment(const Point canvasSize);
     //
     bool isOpen() const noexcept { return open; }
     bool isDirty() const noexcept { return dirty; }

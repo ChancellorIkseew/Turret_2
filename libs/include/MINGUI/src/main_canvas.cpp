@@ -3,8 +3,8 @@
 
 MINGUI
 
-MainCanvas::MainCanvas(const Point windowSize, Localization&& localization, const Palette palette) :
-    windowSize(windowSize), localization(std::move(localization)), palette(palette) {
+MainCanvas::MainCanvas(const Point windowSize, Localization&& localization, const Palette palette, const float scale) :
+    windowSize(windowSize), localization(std::move(localization)), palette(palette), scale(scale) {
 }
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
@@ -53,14 +53,15 @@ void MainCanvas::draw(RenderBridge& renderBridge) {
 
 void MainCanvas::resize(const Point windowSize) noexcept {
     this->windowSize = windowSize;
-    relocateContainers(windowSize);
+    canvasSize = windowSize / scale;
+    relocateContainers(canvasSize);
 }
 
 bool MainCanvas::ownsMouse(const Point mousePosition) const noexcept {
     if (hasOverlay())
         return true;
     for (const auto& it : mainLayer) {
-        if (it->containsMouse(mousePosition))
+        if (it->containsMouse(canvasSize))
             return true;
     }
     return false;
@@ -70,7 +71,7 @@ void MainCanvas::translate(Localization&& localization) {
     this->localization = std::move(localization);
     for (auto& it : mainLayer) it->translate(this->localization);
     for (auto& it : overlay)   it->translate(this->localization);
-    relocateContainers(windowSize);
+    relocateContainers(canvasSize);
 }
 
 void MainCanvas::closeLastOverlaped() noexcept {
@@ -86,14 +87,12 @@ void MainCanvas::refreshContainer(Container& container) const {
     container.applyPalette();
     container.arrange();
     container.translate(localization);
-    const Point canvasSize = windowSize / scale;
     container.applyAlignment(canvasSize);
     container.applyAlignment(canvasSize); // temporary. needs bugfix
     container.markDirty(false);
 }
 
-void MainCanvas::relocateContainers(const Point windowSize) {
-    const Point canvasSize = windowSize / scale;
+void MainCanvas::relocateContainers(const Point canvasSize) {
     for (const auto& it : mainLayer) it->applyAlignment(canvasSize);
     for (const auto& it : overlay)   it->applyAlignment(canvasSize);
 }

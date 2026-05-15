@@ -4,12 +4,10 @@
 #include "MINGUI/widgets/checkbox.hpp"
 #include "MINGUI/widgets/form.hpp"
 #include "MINGUI/widgets/label.hpp"
-#include "engine/io/parser/validator.hpp"
-#include "engine/settings/settings.hpp"
-
-//
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
+#include "engine/io/parser/validator.hpp"
+#include "engine/settings/settings.hpp"
 
 constexpr Point BTN_SIZE(120.0f, 30.0f);
 constexpr Point FORM_SIZE(20.0f, 20.0f);

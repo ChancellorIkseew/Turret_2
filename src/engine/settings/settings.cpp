@@ -79,7 +79,7 @@ void Settings::applySettings(Engine& engine) {
     // "pause_on_world_open": implemented in engine.cpp
     // "show_hitboxes" implemented in mobs_system.cpp
     // "lang" implemented in gui and main_canvas
-    //engine.getGUI().setScale(gui.scale);
+    // "gui_scale" implemented in gui.cpp and fr_gui.cpp
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     debug::Console::setVisible(Settings::gui.showConsole);
 }
