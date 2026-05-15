@@ -14,6 +14,8 @@ public:
     virtual void drawSprite(const Sprite sprite) = 0;
     virtual void drawRectsBatched(const std::span<const Rect> rects) = 0;
     virtual void drawTextsBatched(const std::span<const Text> texts) = 0;
+    //
+    virtual void setScale(const float scale) = 0;
 };
 
 END_NAMESPACE_MINGUI

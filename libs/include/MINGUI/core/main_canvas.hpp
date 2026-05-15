@@ -14,12 +14,14 @@ class MainCanvas {
     TextEdit textEdit;
     Palette palette;
     Point windowSize;
+    Point canvasSize;
     bool allwaysWithOverlay = false;
+    float scale;
 public:
     template<IsPoint T>
-    MainCanvas(const T windowSize, Localization&& localization, const Palette palette) :
-        MainCanvas(Point(windowSize), std::move(localization), palette) {}
-    MainCanvas(const Point windowSize, Localization&& localization, const Palette palette);
+    MainCanvas(const T windowSize, Localization&& localization, const Palette palette, const float scale) :
+        MainCanvas(Point(windowSize), std::move(localization), palette, scale) {}
+    MainCanvas(const Point windowSize, Localization&& localization, const Palette palette, const float scale);
     //
     ///@brief It is safe even there is no overlay.
     void closeLastOverlaped() noexcept;
@@ -44,10 +46,13 @@ public:
     void setAllwaysWithOverlay(const bool flag) noexcept { allwaysWithOverlay = flag; }
     bool hasOverlay() const noexcept { return !overlay.empty(); }
     //
+    void setScale(const float scale) noexcept { this->scale = scale; resize(windowSize); }
+    float getScale() const noexcept { return scale; }
+    //
     bool isTextEditingActive() const noexcept { return textEdit.isEditingActive(); }
 private:
     void refreshContainer(Container& container) const;
-    void relocateContainers(const Point windowSize);
+    void relocateContainers(const Point canvasSize);
 };
 
 END_NAMESPACE_MINGUI

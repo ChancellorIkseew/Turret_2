@@ -2,22 +2,22 @@
 
 MINGUI
 
-void Container::applyAlignment(const Point windowSize) {
+void Container::applyAlignment(const Point canvasSize) {
     if (align == Align::none)
         return;
     //
     if ((align | Align::centre) == align)
-        setPosition((windowSize - getSize()) / 2.0f);
+        setPosition((canvasSize - getSize()) / 2.0f);
     //
     if ((align | Align::left) == align)
         setPosition(Point(0.0f, getPosition().y));
     else if ((align | Align::right) == align)
-        setPosition(Point(windowSize.x - getSize().x, getPosition().y));
+        setPosition(Point(canvasSize.x - getSize().x, getPosition().y));
     //
     if ((align | Align::up) == align)
         setPosition(Point(getPosition().x, 0.0f));
     else if ((align | Align::down) == align)
-        setPosition(Point(getPosition().x, windowSize.y - getSize().y));
+        setPosition(Point(getPosition().x, canvasSize.y - getSize().y));
     //
     arrange();
 }

@@ -23,6 +23,7 @@ public:
     virtual void callback();
     void addToOverlay(std::unique_ptr<mingui::Container> container);
     bool ownsMouse() const;
+    void setScale(const uint8_t scale) { mainCanvas.setScale(scale); }
 protected:
     void acceptHotkeys();
 };

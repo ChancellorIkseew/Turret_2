@@ -31,6 +31,7 @@ void Settings::writeSettings() {
     data.emplace("max_particles",       gameplay.maxParticles);
     //
     data.emplace("lang",          gui.lang);
+    data.emplace("gui_scale",     gui.scale);
     data.emplace("custom_cursor", gui.customCursor);
     data.emplace("show_console",  gui.showConsole);
     tin::write("settings.tin", data);
@@ -59,6 +60,7 @@ void Settings::readSettings() {
     data.get("max_particles",       gameplay.maxParticles, 10000U);
     //
     data.get("lang",          gui.lang, std::string("en_US"));
+    data.get("gui_scale",     gui.scale, 1U);
     data.get("custom_cursor", gui.customCursor, true);
     data.get("show_console",  gui.showConsole, false);
 }
@@ -77,6 +79,7 @@ void Settings::applySettings(Engine& engine) {
     // "pause_on_world_open": implemented in engine.cpp
     // "show_hitboxes" implemented in mobs_system.cpp
     // "lang" implemented in gui and main_canvas
+    // "gui_scale" implemented in gui.cpp and fr_gui.cpp
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     debug::Console::setVisible(Settings::gui.showConsole);
 }
