@@ -61,7 +61,7 @@ bool MainCanvas::ownsMouse(const Point mousePosition) const noexcept {
     if (hasOverlay())
         return true;
     for (const auto& it : mainLayer) {
-        if (it->containsMouse(canvasSize))
+        if (it->containsMouse(mousePosition / scale))
             return true;
     }
     return false;
