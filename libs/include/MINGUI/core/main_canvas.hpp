@@ -46,7 +46,7 @@ public:
     void setAllwaysWithOverlay(const bool flag) noexcept { allwaysWithOverlay = flag; }
     bool hasOverlay() const noexcept { return !overlay.empty(); }
     //
-    void setScale(const float scale) noexcept { this->scale = scale; canvasSize = windowSize / scale; }
+    void setScale(const float scale) noexcept { this->scale = scale; resize(windowSize); }
     float getScale() const noexcept { return scale; }
     //
     bool isTextEditingActive() const noexcept { return textEdit.isEditingActive(); }

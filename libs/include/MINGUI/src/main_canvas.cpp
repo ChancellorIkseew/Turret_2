@@ -4,7 +4,7 @@
 MINGUI
 
 MainCanvas::MainCanvas(const Point windowSize, Localization&& localization, const Palette palette, const float scale) :
-    windowSize(windowSize), localization(std::move(localization)), palette(palette), scale(scale) {
+    windowSize(windowSize), localization(std::move(localization)), palette(palette), scale(scale), canvasSize(windowSize / scale) {
 }
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
