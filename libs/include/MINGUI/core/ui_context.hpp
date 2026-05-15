@@ -10,7 +10,6 @@ class TextEdit;
 class UIContext {
     Point mousePosition;
     bool mouseClicked;
-    float canvasScale;
     UIContextBridge& contextBridge;
     TextEdit& textEdit;
 public:

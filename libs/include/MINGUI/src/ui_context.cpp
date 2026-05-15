@@ -6,13 +6,11 @@ MINGUI
 
 UIContext::UIContext(UIContextBridge& contextBridge, TextEdit& textEdit, const float canvasScale) :
     mouseClicked(contextBridge.mouseClicked),
-    mousePosition(contextBridge.mousePosition),
-    canvasScale(canvasScale),
-    contextBridge(contextBridge),
-    textEdit(textEdit) { }
+    mousePosition(contextBridge.mousePosition / canvasScale),
+    contextBridge(contextBridge), textEdit(textEdit) { }
 
 bool UIContext::containsMouse(const Node& node) const noexcept {
-    return node.containsMouse(mousePosition / canvasScale);
+    return node.containsMouse(mousePosition);
 }
 
 bool UIContext::idled(const Clickable& node) const noexcept {
