@@ -39,7 +39,8 @@ void GUI::draw(Renderer& renderer, const Atlas& atlas) {
     if (showGUI) {
         T1_UIRenderer uiRenderer(renderer);
         mainCanvas.draw(uiRenderer);
-    }   
+    }
+    renderer.setScale(1.f); // temporary
     if (showFPS)
         drawDebugPanel(renderer, mainWindow);
     if (showAtlas)
