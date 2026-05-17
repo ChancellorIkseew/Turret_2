@@ -29,7 +29,7 @@ public:
         }
     }
 
-    virtual void drawBlueprint(Engine& engine, Renderer& renderer) final {
+    virtual void drawDraft(Engine& engine, Renderer& renderer) final {
         const Camera& camera = engine.getSession().getCamera();
         renderer.setTranslation(camera.getTranslation());
         renderer.setScale(camera.getMapScale());

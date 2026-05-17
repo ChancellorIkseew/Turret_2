@@ -6,8 +6,13 @@ void BuildTools::build(GameSession& session, const TileCoord tile, const TileDat
     case TileComponent::floor:   map.placeFloor(tile, tileData.id);                break;
     case TileComponent::overlay: map.placeOverlay(tile, OrePresetID(tileData.id)); break;
     case TileComponent::block: {
-        const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
-        session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID, rotation);
+        if (content == JEIContent::only_blocks) {
+            session.getWorld().getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation);
+        }
+        else {
+            const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
+            session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID, rotation);
+        }
         break;
     }
     }

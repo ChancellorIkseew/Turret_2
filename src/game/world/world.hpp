@@ -6,6 +6,7 @@
 #include "game/entities/shell_manager.hpp"
 #include "game/particles/particle_manager.hpp"
 #include "world_map.hpp"
+#include "game/frontend/build_tools/blueprint.hpp"
 
 class World {
     BlockMap blocks;
@@ -16,6 +17,7 @@ class World {
     MobManager mobs;
     ShellManager shells;
     ParticleManager particles;
+    Blueprints blueprints;
 public:
     World(WorldMap& map) :
         blocks(map.getSize()),
@@ -37,4 +39,5 @@ public:
     MobManager& getMobs() noexcept { return mobs; }
     ShellManager& getShells() noexcept { return shells; }
     ParticleManager& getParticles() noexcept { return particles; }
+    Blueprints& getBlueprints() noexcept { return blueprints; }
 };

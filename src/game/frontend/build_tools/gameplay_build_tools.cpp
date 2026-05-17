@@ -11,7 +11,7 @@ static TileCoord calculateStep(const TileCoord start, const TileCoord target) {
     return TileCoord(0, 0);
 }
 
-void GBuildTools::updateBlueprint(const TileCoord start, TileCoord target) {
+void GBuildTools::updateDraft(const TileCoord start, TileCoord target) {
     const bool hor = std::abs(target.x - start.x) > std::abs(target.y - start.y);
     if (hor) target.y = start.y;
     else     target.x = start.x;
@@ -19,9 +19,9 @@ void GBuildTools::updateBlueprint(const TileCoord start, TileCoord target) {
     const TileCoord step = calculateStep(start, target);
     const int len = std::abs(hor ? target.x - start.x : target.y - start.y);
     //
-    blueprint.clear();
+    draft.clear();
     for (int i = 0; i <= len; ++i) {
-        blueprint.push_back(start + step * i);
+        draft.push_back(start + step * i);
     }
 }
 
@@ -30,6 +30,7 @@ void GBuildTools::update(Engine& engine) {
     GameSession& session = engine.getSession();
     WorldMap& map = session.getWorld().getMap();
     BlockMap& blocks = session.getWorld().getBlocks();
+    Blueprints& blueprints = session.getWorld().getBlueprints();
     targetTile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
     //
     if (input.jactive(Rotate_building))
@@ -40,17 +41,17 @@ void GBuildTools::update(Engine& engine) {
     if (optTileData && input.jactive(Build))
         optBuildStart = targetTile;
     if (optTileData && optBuildStart && input.active(Build))
-        updateBlueprint(optBuildStart.value(), targetTile);
+        updateDraft(optBuildStart.value(), targetTile);
     if (optTileData && optBuildStart && input.released(Build)) {
-        buildBlueprint(session, optTileData.value());
+        buildDraft(session, optTileData.value());
         optBuildStart.reset();
-        blueprint.clear();
+        draft.clear();
     }
     // Demolish:
     if (input.jactive(Demolish))
         optDemolishStart = targetTile;
     if (optDemolishStart && input.released(Demolish)) {
-        demolish(map, blocks, optDemolishStart.value(), targetTile);
+        demolish(map, blocks, blueprints, optDemolishStart.value(), targetTile);
         optDemolishStart.reset();
     }
 }
@@ -59,7 +60,7 @@ void GBuildTools::usePipette(const BlockMap& blocks, const TileCoord tile) {
     if (blocks.isAir(tile)) {
         optTileData.reset();
         optBuildStart.reset();
-        blueprint.clear();
+        draft.clear();
     }
     else if (blocks.contains(tile)) {
         const auto& block = blocks.at(tile).block;
@@ -69,7 +70,7 @@ void GBuildTools::usePipette(const BlockMap& blocks, const TileCoord tile) {
     }
 }
 
-void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, const TileCoord start, const TileCoord end) const {
+void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprints, const TileCoord start, const TileCoord end) const {
     const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
     const TileCoord nEnd = TileCoord(std::max(start.x, end.x), std::max(start.y, end.y));
     for (int x = nStart.x; x <= nEnd.x; ++x) {
@@ -77,12 +78,13 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, const TileCoord star
             const TileCoord tile(x, y);
             if (blocks.isFilled(tile))
                 blocks.demolish(tile);
+            blueprints.removeIfExists(tile);
         }
     }
 }
 
-void GBuildTools::buildBlueprint(GameSession& session, const TileData tileData) const {
-    for (const TileCoord tile : blueprint) {
+void GBuildTools::buildDraft(GameSession& session, const TileData tileData) const {
+    for (const TileCoord tile : draft) {
         build(session, tile, tileData);
     }
 }
@@ -93,7 +95,7 @@ static void drawDemolitonRect(const Renderer& renderer, const TileCoord start, c
     renderer.drawRect(0x84'34'34'C8, t1::pixel(nStart), t1::pixel(size)); // maybe add hex->rgba and rgba->hex
 }
 
-void GBuildTools::drawBlueprint(Engine& engine, Renderer& renderer) {
+void GBuildTools::drawDraft(Engine& engine, Renderer& renderer) {
     const Camera& camera = engine.getSession().getCamera();
     renderer.setTranslation(camera.getTranslation());
     renderer.setScale(camera.getMapScale());
@@ -103,7 +105,7 @@ void GBuildTools::drawBlueprint(Engine& engine, Renderer& renderer) {
         if (!optBuildStart)
             drawOneBlock(engine, renderer, targetTile, optTileData.value());
         else {
-            for (const TileCoord tile : blueprint) {
+            for (const TileCoord tile : draft) {
                 drawOneBlock(engine, renderer, tile, optTileData.value());
             }
         }

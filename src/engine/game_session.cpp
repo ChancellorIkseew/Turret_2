@@ -27,6 +27,23 @@ void GameSession::prepare(const Presets& presets) {
     TeamID playerTeamID = playerTeam->getID();
 }
 
+#include "game/frontend/build_tools/blueprint.hpp"
+#include "game/built_in_scripts/built_in_scripts.hpp"
+
+static inline void buildBP(MobSoA& soa, const Presets& presets, Blueprints& blueprints, BuiltInScripts& scripts, TeamID player) {
+    if (blueprints.empty())
+        return;
+    for (size_t i = 0; i < soa.mobCount; ++i) {
+        if (!presets.getMob(soa.preset[i]).canBuild)
+            continue;
+        const auto bp = blueprints.getClosest(t1::tile(soa.position[i]));
+        if (t1::areCloserCircle(t1::pixel(bp.tile), soa.position[i], 40.f)) {
+            scripts.placeBlock(bp.presetID, bp.tile, player, bp.rotation);
+            blueprints.removeIfExists(bp.tile);
+        }  
+    }
+}
+
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto& blocks    = world->getBlocks();
     auto& chunks    = world->getChunks();
@@ -40,6 +57,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     updateBlocks(blocks, world->getMap(), presets);
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
     mobs::processMobs(mobs.getSoa(), chunks, blocks);
+    buildBP(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts, playerController.getPlayerTeam()->getID());
     ai::updateMovingAI(mobs.getSoa(), presets, playerController);
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
@@ -73,6 +91,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     mainWindow.setRenderScale(camera.getMapScale());
     mainWindow.setRenderTranslation(camera.getTranslation());
     worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, engine.getAssets(), timeCount.getTickCount());
+    world->getBlueprints().draw(mainWindow.getRenderer(), engine); // temporary
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
     mainWindow.setRenderScale(1.0f);
