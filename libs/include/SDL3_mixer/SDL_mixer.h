@@ -86,10 +86,10 @@
  *
  * This library offers several features on top of mixing sounds together: a
  * track can have its own gain, to adjust its volume, in addition to a master
- * gain applied as well. One can set the "frequency ratio" of a track, to
- * speed it up or slow it down, which also adjusts its pitch. A channel map
- * can also be applied per-track, to change what speaker a given channel of
- * audio is output to.
+ * gain applied as well. One can set the "frequency ratio" of a track or the
+ * final mixed output, to speed it up or slow it down, which also adjusts its
+ * pitch. A channel map can also be applied per-track, to change what speaker
+ * a given channel of audio is output to.
  *
  * Almost all timing in SDL_mixer is in _sample frames_. Stereo PCM audio data
  * in Sint16 format takes 4 bytes per sample frame (2 bytes per sample times 2
@@ -208,7 +208,7 @@ typedef struct MIX_Group MIX_Group;
  *
  * \since This macro is available since SDL_mixer 3.0.0.
  */
-#define SDL_MIXER_MINOR_VERSION   1
+#define SDL_MIXER_MINOR_VERSION   2
 
 /**
  * The current micro (or patchlevel) version of the SDL_mixer headers.
@@ -217,7 +217,7 @@ typedef struct MIX_Group MIX_Group;
  *
  * \since This macro is available since SDL_mixer 3.0.0.
  */
-#define SDL_MIXER_MICRO_VERSION   0
+#define SDL_MIXER_MICRO_VERSION   2
 
 /**
  * This is the current version number macro of the SDL_mixer headers.
@@ -268,7 +268,7 @@ extern SDL_DECLSPEC int SDLCALL MIX_Version(void);
  *
  * \returns true on success, false on error; call SDL_GetError() for details.
  *
- * \threadsafety It is safe to call this function from any thread.
+ * \threadsafety This function is not thread safe.
  *
  * \since This function is available since SDL_mixer 3.0.0.
  *
@@ -304,7 +304,7 @@ extern SDL_DECLSPEC bool SDLCALL MIX_Init(void);
  * encouraged to manage their resources carefully and clean up first, treating
  * this function as a safety net against memory leaks.
  *
- * \threadsafety It is safe to call this function from any thread.
+ * \threadsafety This function is not thread safe.
  *
  * \since This function is available since SDL_mixer 3.0.0.
  *
@@ -399,11 +399,11 @@ extern SDL_DECLSPEC const char * SDLCALL MIX_GetAudioDecoder(int index);
  *
  * \param devid the device to open for playback, or
  *              SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK for the default.
- * \param spec the audio format request from the device. May be NULL.
+ * \param spec the audio format to request from the device. May be NULL.
  * \returns a mixer that can be used to play audio, or NULL on failure; call
  *          SDL_GetError() for more information.
  *
- * \threadsafety It is safe to call this function from any thread.
+ * \threadsafety This function should only be called on the main thread.
  *
  * \since This function is available since SDL_mixer 3.0.0.
  *
@@ -454,7 +454,10 @@ extern SDL_DECLSPEC MIX_Mixer * SDLCALL MIX_CreateMixer(const SDL_AudioSpec *spe
  *
  * \param mixer the mixer to destroy.
  *
- * \threadsafety It is safe to call this function from any thread.
+ * \threadsafety If this is used with a MIX_Mixer from MIX_CreateMixerDevice,
+ *               then this function should only be called on the main thread.
+ *               If this is used with a MIX_Mixer from MIX_CreateMixer, then
+ *               it is safe to call this function from any thread.
  *
  * \since This function is available since SDL_mixer 3.0.0.
  *
@@ -516,6 +519,75 @@ extern SDL_DECLSPEC SDL_PropertiesID SDLCALL MIX_GetMixerProperties(MIX_Mixer *m
  * \since This function is available since SDL_mixer 3.0.0.
  */
 extern SDL_DECLSPEC bool SDLCALL MIX_GetMixerFormat(MIX_Mixer *mixer, SDL_AudioSpec *spec);
+
+/**
+ * Lock a mixer by obtaining its internal mutex.
+ *
+ * While locked, the mixer will not be able to mix more audio or change its
+ * internal state in another thread. Those other threads will block until the
+ * mixer is unlocked again.
+ *
+ * Under the hood, this function calls SDL_LockMutex(), so all the same rules
+ * apply: the lock can be recursive, it must be unlocked the same number of
+ * times from the same thread that locked it, etc.
+ *
+ * Just about every SDL_mixer API _also_ locks the mixer while doing its work,
+ * as does the SDL audio device thread while actual mixing is in progress, so
+ * basic use of this library never requires the app to explicitly lock the
+ * device to be thread safe. There are two scenarios where this can be useful,
+ * however:
+ *
+ * - The app has a provided a callback that the mixing thread might call, and
+ *   there is some app state that needs to be protected against race
+ *   conditions as changes are made and mixing progresses simultaneously. Any
+ *   lock can be used for this, but this is a conveniently-available lock.
+ * - The app wants to make multiple, atomic changes to the mix. For example,
+ *   to start several tracks at the exact same moment, one would lock the
+ *   mixer, call MIX_PlayTrack multiple times, and then unlock again; all the
+ *   tracks will start mixing on the same sample frame.
+ *
+ * Each call to this function must be paired with a call to MIX_UnlockMixer
+ * from the same thread. It is safe to lock a mixer multiple times; it remains
+ * locked until the final matching unlock call.
+ *
+ * Do not lock the mixer for significant amounts of time, or it can cause
+ * audio dropouts. Just do simple things quickly and unlock again.
+ *
+ * Locking a NULL mixer is a safe no-op.
+ *
+ * \param mixer the mixer to lock. May be NULL.
+ *
+ * \threadsafety It is safe to call this function from any thread.
+ *
+ * \since This function is available since SDL_mixer 3.0.0.
+ *
+ * \sa MIX_UnlockMixer
+ */
+extern SDL_DECLSPEC void SDLCALL MIX_LockMixer(MIX_Mixer *mixer);
+
+/**
+ * Unlock a mixer previously locked by a call to MIX_LockMixer().
+ *
+ * While locked, the mixer will not be able to mix more audio or change its
+ * internal state another thread. Those other threads will block until the
+ * mixer is unlocked again.
+ *
+ * Under the hood, this function calls SDL_LockMutex(), so all the same rules
+ * apply: the lock can be recursive, it must be unlocked the same number of
+ * times from the same thread that locked it, etc.
+ *
+ * Unlocking a NULL mixer is a safe no-op.
+ *
+ * \param mixer the mixer to unlock. May be NULL.
+ *
+ * \threadsafety This call must be paired with a previous MIX_LockMixer call
+ *               on the same thread.
+ *
+ * \since This function is available since SDL_mixer 3.0.0.
+ *
+ * \sa MIX_LockMixer
+ */
+extern SDL_DECLSPEC void SDLCALL MIX_UnlockMixer(MIX_Mixer *mixer);
 
 /**
  * Load audio for playback from an SDL_IOStream.
@@ -605,6 +677,65 @@ extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadAudio_IO(MIX_Mixer *mixer, SDL_I
  * \sa MIX_LoadAudioWithProperties
  */
 extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadAudio(MIX_Mixer *mixer, const char *path, bool predecode);
+
+/**
+ * Load audio for playback from a memory buffer without making a copy.
+ *
+ * When loading audio through most other LoadAudio functions, the data will be
+ * cached fully in RAM in its original data format, for decoding on-demand.
+ * This function does most of the same work as those functions, but instead
+ * uses a buffer of memory provided by the app that it does not make a copy
+ * of.
+ *
+ * This buffer must live for the entire time the returned MIX_Audio lives, as
+ * the mixer will access the buffer whenever it needs to mix more data.
+ *
+ * This function is meant to maximize efficiency: if the data is already in
+ * memory and can remain there, don't copy it. This data can be in any
+ * supported audio file format (WAV, MP3, etc); it will be decoded on the fly
+ * while mixing. Unlike MIX_LoadAudio(), there is no `predecode` option
+ * offered here, as this is meant to optimize for data that's already in
+ * memory and intends to exist there for significant time; since predecoding
+ * would only need the file format data once, upfront, one could simply wrap
+ * it in SDL_CreateIOFromConstMem() and pass that to MIX_LoadAudio_IO().
+ *
+ * MIX_Audio objects can be shared between multiple mixers. The `mixer`
+ * parameter just suggests the most likely mixer to use this audio, in case
+ * some optimization might be applied, but this is not required, and a NULL
+ * mixer may be specified.
+ *
+ * If `free_when_done` is true, SDL_mixer will call `SDL_free(data)` when the
+ * returned MIX_Audio is eventually destroyed. This can be useful when the
+ * data is not static, but rather loaded elsewhere for this specific MIX_Audio
+ * and simply wants to avoid the extra copy.
+ *
+ * As audio format information is obtained from the file format metadata, this
+ * isn't useful for raw PCM data; in that case, use MIX_LoadRawAudioNoCopy()
+ * instead, which offers an SDL_AudioSpec.
+ *
+ * Once a MIX_Audio is created, it can be assigned to a MIX_Track with
+ * MIX_SetTrackAudio(), or played without any management with MIX_PlayAudio().
+ *
+ * When done with a MIX_Audio, it can be freed with MIX_DestroyAudio().
+ *
+ * \param mixer a mixer this audio is intended to be used with. May be NULL.
+ * \param data the buffer where the audio data lives.
+ * \param datalen the size, in bytes, of the buffer.
+ * \param free_when_done if true, `data` will be given to SDL_free() when the
+ *                       MIX_Audio is destroyed.
+ * \returns an audio object that can be used to make sound on a mixer, or NULL
+ *          on failure; call SDL_GetError() for more information.
+ *
+ * \threadsafety It is safe to call this function from any thread.
+ *
+ * \since This function is available since SDL_mixer 3.0.0.
+ *
+ * \sa MIX_DestroyAudio
+ * \sa MIX_SetTrackAudio
+ * \sa MIX_LoadRawAudioNoCopy
+ * \sa MIX_LoadAudio_IO
+ */
+extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadAudioNoCopy(MIX_Mixer *mixer, const void *data, size_t datalen, bool free_when_done);
 
 /**
  * Load audio for playback through a collection of properties.
@@ -737,7 +868,7 @@ extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadRawAudio(MIX_Mixer *mixer, const
  * Load raw PCM data from a memory buffer without making a copy.
  *
  * This buffer must live for the entire time the returned MIX_Audio lives, as
- * it will access it whenever it needs to mix more data.
+ * the mixer will access the buffer whenever it needs to mix more data.
  *
  * This function is meant to maximize efficiency: if the data is already in
  * memory and can remain there, don't copy it. But it can also lead to some
@@ -781,12 +912,13 @@ extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadRawAudioNoCopy(MIX_Mixer *mixer,
  * This is useful just to have _something_ to play, perhaps for testing or
  * debugging purposes.
  *
- * The resulting MIX_Audio will generate infinite audio when assigned to a
- * track.
- *
  * You specify its frequency in Hz (determines the pitch of the sinewave's
  * audio) and amplitude (determines the volume of the sinewave: 1.0f is very
  * loud, 0.0f is silent).
+ *
+ * A number of milliseconds of audio to generate can be specified. Specifying
+ * a value less than zero will generate infinite audio (when assigned to a
+ * MIX_Track, the sinewave will play forever).
  *
  * MIX_Audio objects can be shared between multiple mixers. The `mixer`
  * parameter just suggests the most likely mixer to use this audio, in case
@@ -796,6 +928,8 @@ extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadRawAudioNoCopy(MIX_Mixer *mixer,
  * \param mixer a mixer this audio is intended to be used with. May be NULL.
  * \param hz the sinewave's frequency in Hz.
  * \param amplitude the sinewave's amplitude from 0.0f to 1.0f.
+ * \param ms the maximum number of milliseconds of audio to generate, or less
+ *           than zero to generate infinite audio.
  * \returns an audio object that can be used to make sound on a mixer, or NULL
  *          on failure; call SDL_GetError() for more information.
  *
@@ -807,7 +941,7 @@ extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_LoadRawAudioNoCopy(MIX_Mixer *mixer,
  * \sa MIX_SetTrackAudio
  * \sa MIX_LoadAudio_IO
  */
-extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_CreateSineWaveAudio(MIX_Mixer *mixer, int hz, float amplitude);
+extern SDL_DECLSPEC MIX_Audio * SDLCALL MIX_CreateSineWaveAudio(MIX_Mixer *mixer, int hz, float amplitude, Sint64 ms);
 
 
 /**
@@ -954,7 +1088,7 @@ extern SDL_DECLSPEC void SDLCALL MIX_DestroyAudio(MIX_Audio *audio);
  * will be processed and mixed together to form the final output from the
  * mixer.
  *
- * There are no limits to the number of tracks on may create, beyond running
+ * There are no limits to the number of tracks one may create, beyond running
  * out of memory, but in normal practice there are a small number of tracks
  * that are reused between all loaded audio as appropriate.
  *
@@ -981,7 +1115,10 @@ extern SDL_DECLSPEC MIX_Track * SDLCALL MIX_CreateTrack(MIX_Mixer *mixer);
  * MIX_SetTrackStoppedCallback(), it will _not_ be called.
  *
  * If the mixer is currently mixing in another thread, this will block until
- * it finishes.
+ * it finishes. Destroying a track from the mixer thread itself (during a
+ * callback) will cause it to be destroyed as soon as this iteration of the
+ * mixer thread is not using it; in this scenario, destroying a track and then
+ * making futher changes to it is considered undefined behavior.
  *
  * Destroying a NULL MIX_Track is a legal no-op.
  *
@@ -1285,8 +1422,8 @@ extern SDL_DECLSPEC char ** SDLCALL MIX_GetTrackTags(MIX_Track *track, int *coun
  * \param count a pointer filled in with the number of tracks returned, can be
  *              NULL.
  * \returns an array of the tracks, NULL-terminated, or NULL on failure; call
- *          SDL_GetError() for more information. The returned pointer hould be
- *          freed with SDL_free() when it is no longer needed.
+ *          SDL_GetError() for more information. The returned pointer should
+ *          be freed with SDL_free() when it is no longer needed.
  *
  * \threadsafety It is safe to call this function from any thread.
  *
@@ -1383,24 +1520,32 @@ extern SDL_DECLSPEC Sint64 SDLCALL MIX_GetTrackPlaybackPosition(MIX_Track *track
 extern SDL_DECLSPEC Sint64 SDLCALL MIX_GetTrackFadeFrames(MIX_Track *track);
 
 /**
- * Query whether a given track is looping.
+ * Query how many loops remain for a given track.
  *
- * This specifically checks if the track is _not stopped_ (paused or playing),
- * and there is at least one loop remaining. If a track _was_ looping but is
- * on its final iteration of the loop, this will return false.
+ * This returns the number of loops still pending; if a track will eventually
+ * complete and loop to play again one more time, this will return 1. If a
+ * track _was_ looping but is on its final iteration of the loop (will stop
+ * when this iteration completes), this will return zero.
+ *
+ * A track that is looping infinitely will return -1. This value does not
+ * report an error in this case.
+ *
+ * A track that is stopped (not playing and not paused) will have zero loops
+ * remaining.
  *
  * On various errors (MIX_Init() was not called, the track is NULL), this
- * returns false, but there is no mechanism to distinguish errors from
+ * returns zero, but there is no mechanism to distinguish errors from
  * non-looping tracks.
  *
  * \param track the track to query.
- * \returns true if looping, false otherwise.
+ * \returns the number of pending loops, zero if not looping, and -1 if
+ *          looping infinitely.
  *
  * \threadsafety It is safe to call this function from any thread.
  *
  * \since This function is available since SDL_mixer 3.0.0.
  */
-extern SDL_DECLSPEC bool SDLCALL MIX_TrackLooping(MIX_Track *track);
+extern SDL_DECLSPEC int SDLCALL MIX_GetTrackLoops(MIX_Track *track);
 
 /**
  * Change the number of times a currently-playing track will loop.
@@ -1429,7 +1574,7 @@ extern SDL_DECLSPEC bool SDLCALL MIX_TrackLooping(MIX_Track *track);
  *
  * \since This function is available since SDL_mixer 3.0.0.
  *
- * \sa MIX_TrackLooping
+ * \sa MIX_GetTrackLoops
  */
 extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackLoops(MIX_Track *track, int num_loops);
 
@@ -1709,6 +1854,10 @@ extern SDL_DECLSPEC Sint64 SDLCALL MIX_FramesToMS(int sample_rate, Sint64 frames
  *   MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER property, but the value is specified
  *   in milliseconds instead of sample frames. If both properties are
  *   specified, the sample frames value is favored. Default 0.
+ * - `MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT`: If fading in, start fading from
+ *   this volume level. 0.0f is silence and 1.0f is full volume, every in
+ *   between is a linear change in gain. The specified value will be clamped
+ *   between 0.0f and 1.0f. Default 0.0f.
  * - `MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER`: At the end of mixing this
  *   track, after all loops are complete, append this many sample frames of
  *   silence as if it were part of the audio file. This allows for apps to
@@ -1721,6 +1870,32 @@ extern SDL_DECLSPEC Sint64 SDLCALL MIX_FramesToMS(int sample_rate, Sint64 frames
  *   MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER property, but the value is
  *   specified in milliseconds instead of sample frames. If both properties
  *   are specified, the sample frames value is favored. Default 0.
+ * - `MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN`: If true, when input is
+ *   completely consumed for the track, the mixer will mark the track as
+ *   stopped (and call any appropriate MIX_TrackStoppedCallback, etc); to play
+ *   more, the track will need to be restarted. If false, the track will just
+ *   not contribute to the mix, but it will not be marked as stopped. There
+ *   may be clever logic tricks this exposes generally, but this property is
+ *   specifically useful when the track's input is an SDL_AudioStream assigned
+ *   via MIX_SetTrackAudioStream(). Setting this property to true can be
+ *   useful when pushing a complete piece of audio to the stream that has a
+ *   definite ending, as the track will operate like any other audio was
+ *   applied. Setting to false means as new data is added to the stream, the
+ *   mixer will start using it as soon as possible, which is useful when audio
+ *   should play immediately as it drips in: new VoIP packets, etc. Note that
+ *   in this situation, if the audio runs out when needed, there _will_ be
+ *   gaps in the mixed output, so try to buffer enough data to avoid this when
+ *   possible. Note that a track is not consider exhausted until all its loops
+ *   and appended silence have been mixed (and also, that loops don't mean
+ *   anything when the input is an AudioStream). Default true.
+ * - `MIX_PROP_PLAY_START_ORDER_NUMBER`: This is a special-case property that
+ *   most apps can ignore. For mod file formats, start mixing from a specific
+ *   "order" index instead of the start of the file. A value < 0 will cause
+ *   this property to be ignored. If the decoder doesn't support this
+ *   property, it will also be ignored. If this property is _not_ ignored, the
+ *   MIX_PROP_PLAY_START_FRAME_NUMBER and
+ *   MIX_PROP_PLAY_START_MILLISECOND_NUMBER properties will be ignored
+ *   instead. Default -1. Since SDL_mixer 3.2.2.
  *
  * If this function fails, mixing of this track will not start (or restart, if
  * it was already started).
@@ -1746,13 +1921,15 @@ extern SDL_DECLSPEC bool SDLCALL MIX_PlayTrack(MIX_Track *track, SDL_PropertiesI
 #define MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER "SDL_mixer.play.max_milliseconds"
 #define MIX_PROP_PLAY_START_FRAME_NUMBER "SDL_mixer.play.start_frame"
 #define MIX_PROP_PLAY_START_MILLISECOND_NUMBER "SDL_mixer.play.start_millisecond"
+#define MIX_PROP_PLAY_START_ORDER_NUMBER "SDL_mixer.play.start_order"
 #define MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER "SDL_mixer.play.loop_start_frame"
 #define MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER "SDL_mixer.play.loop_start_millisecond"
 #define MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER "SDL_mixer.play.fade_in_frames"
 #define MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER "SDL_mixer.play.fade_in_milliseconds"
+#define MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT "SDL_mixer.play.fade_in_start_gain"
 #define MIX_PROP_PLAY_APPEND_SILENCE_FRAMES_NUMBER "SDL_mixer.play.append_silence_frames"
 #define MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER "SDL_mixer.play.append_silence_milliseconds"
-
+#define MIX_PROP_PLAY_HALT_WHEN_EXHAUSTED_BOOLEAN "SDL_mixer.play.halt_when_exhausted"
 
 /**
  * Start (or restart) mixing all tracks with a specific tag for playback.
@@ -1872,8 +2049,12 @@ extern SDL_DECLSPEC bool SDLCALL MIX_StopTrack(MIX_Track *track, Sint64 fade_out
  *
  * Once a track has completed any fadeout and come to a stop, it will call its
  * MIX_TrackStoppedCallback, if any. It is legal to assign the track a new
- * input and/or restart it during this callback. This function does not
- * prevent new play requests from being made.
+ * input and/or restart it during this callback.
+ *
+ * This function does not prevent new play requests from being made; it’s
+ * legal to use this function to begin fading all playing tracks but then
+ * start other tracks playing normally while those fade-outs are still in
+ * progress.
  *
  * \param mixer the mixer on which to stop all tracks.
  * \param fade_out_ms the number of milliseconds to spend fading out to
@@ -2146,15 +2327,15 @@ extern SDL_DECLSPEC bool SDLCALL MIX_TrackPaused(MIX_Track *track);
  *
  * \since This function is available since SDL_mixer 3.0.0.
  *
- * \sa MIX_GetMasterGain
+ * \sa MIX_GetMixerGain
  * \sa MIX_SetTrackGain
  */
-extern SDL_DECLSPEC bool SDLCALL MIX_SetMasterGain(MIX_Mixer *mixer, float gain);
+extern SDL_DECLSPEC bool SDLCALL MIX_SetMixerGain(MIX_Mixer *mixer, float gain);
 
 /**
  * Get a mixer's master gain control.
  *
- * This returns the last value set through MIX_SetMasterGain(), or 1.0f if no
+ * This returns the last value set through MIX_SetMixerGain(), or 1.0f if no
  * value has ever been explicitly set.
  *
  * \param mixer the mixer to query.
@@ -2164,10 +2345,10 @@ extern SDL_DECLSPEC bool SDLCALL MIX_SetMasterGain(MIX_Mixer *mixer, float gain)
  *
  * \since This function is available since SDL_mixer 3.0.0.
  *
- * \sa MIX_SetMasterGain
+ * \sa MIX_SetMixerGain
  * \sa MIX_GetTrackGain
  */
-extern SDL_DECLSPEC float SDLCALL MIX_GetMasterGain(MIX_Mixer *mixer);
+extern SDL_DECLSPEC float SDLCALL MIX_GetMixerGain(MIX_Mixer *mixer);
 
 /**
  * Set a track's gain control.
@@ -2193,7 +2374,7 @@ extern SDL_DECLSPEC float SDLCALL MIX_GetMasterGain(MIX_Mixer *mixer);
  * \since This function is available since SDL_mixer 3.0.0.
  *
  * \sa MIX_GetTrackGain
- * \sa MIX_SetMasterGain
+ * \sa MIX_SetMixerGain
  */
 extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackGain(MIX_Track *track, float gain);
 
@@ -2211,7 +2392,7 @@ extern SDL_DECLSPEC bool SDLCALL MIX_SetTrackGain(MIX_Track *track, float gain);
  * \since This function is available since SDL_mixer 3.0.0.
  *
  * \sa MIX_SetTrackGain
- * \sa MIX_GetMasterGain
+ * \sa MIX_GetMixerGain
  */
 extern SDL_DECLSPEC float SDLCALL MIX_GetTrackGain(MIX_Track *track);
 
@@ -2247,13 +2428,63 @@ extern SDL_DECLSPEC float SDLCALL MIX_GetTrackGain(MIX_Track *track);
  *
  * \sa MIX_GetTrackGain
  * \sa MIX_SetTrackGain
- * \sa MIX_SetMasterGain
+ * \sa MIX_SetMixerGain
  * \sa MIX_TagTrack
  */
 extern SDL_DECLSPEC bool SDLCALL MIX_SetTagGain(MIX_Mixer *mixer, const char *tag, float gain);
 
 
 /* frequency ratio ... */
+
+/**
+ * Set a mixer's master frequency ratio.
+ *
+ * Each mixer has a master frequency ratio, that affects the entire mix. This
+ * can cause the final output to change speed and pitch. A value greater than
+ * 1.0f will play the audio faster, and at a higher pitch. A value less than
+ * 1.0f will play the audio slower, and at a lower pitch. 1.0f is normal
+ * speed.
+ *
+ * Each track _also_ has a frequency ratio; it will be applied when mixing
+ * that track's audio regardless of the master setting. The master setting
+ * affects the final output after all mixing has been completed.
+ *
+ * A mixer's master frequency ratio defaults to 1.0f.
+ *
+ * This value can be changed at any time to adjust the future mix.
+ *
+ * \param mixer the mixer to adjust.
+ * \param ratio the frequency ratio. Must be between 0.01f and 100.0f.
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety It is safe to call this function from any thread.
+ *
+ * \since This function is available since SDL_mixer 3.0.0.
+ *
+ * \sa MIX_GetMixerFrequencyRatio
+ * \sa MIX_SetTrackFrequencyRatio
+ */
+extern SDL_DECLSPEC bool SDLCALL MIX_SetMixerFrequencyRatio(MIX_Mixer *mixer, float ratio);
+
+/**
+ * Get a mixer's master frequency ratio.
+ *
+ * This returns the last value set through MIX_SetMixerFrequencyRatio(), or
+ * 1.0f if no value has ever been explicitly set.
+ *
+ * \param mixer the mixer to query.
+ * \returns the mixer's current master frequency ratio.
+ *
+ * \threadsafety It is safe to call this function from any thread.
+ *
+ * \since This function is available since SDL_mixer 3.0.0.
+ *
+ * \sa MIX_SetMixerFrequencyRatio
+ * \sa MIX_GetTrackFrequencyRatio
+ */
+extern SDL_DECLSPEC float SDLCALL MIX_GetMixerFrequencyRatio(MIX_Mixer *mixer);
+
 
 /**
  * Change the frequency ratio of a track.
@@ -2925,10 +3156,20 @@ extern SDL_DECLSPEC bool SDLCALL MIX_SetPostMixCallback(MIX_Mixer *mixer, MIX_Po
  * This function can not be used with mixers from MIX_CreateMixerDevice();
  * those generate audio as needed internally.
  *
+ * This function returns the number of _bytes_ of real audio mixed, which
+ * might be less than `buflen`. While all `buflen` bytes of `buffer` will be
+ * initialized, if available tracks to mix run out, the end of the buffer will
+ * be initialized with silence; this silence will not be counted in the return
+ * value, so the caller has the option to identify how much of the buffer has
+ * legimitate contents vs appended silence. As such, any value >= 0 signifies
+ * success. A return value of -1 means failure (out of memory, invalid
+ * parameters, etc).
+ *
  * \param mixer the mixer for which to generate more audio.
  * \param buffer a pointer to a buffer to store audio in.
  * \param buflen the number of bytes to store in buffer.
- * \returns true on success or false on failure; call SDL_GetError() for more
+ * \returns The number of bytes of mixed audio, discounting appended silence,
+ *          on success, or -1 on failure; call SDL_GetError() for more
  *          information.
  *
  * \threadsafety It is safe to call this function from any thread.
@@ -2937,7 +3178,7 @@ extern SDL_DECLSPEC bool SDLCALL MIX_SetPostMixCallback(MIX_Mixer *mixer, MIX_Po
  *
  * \sa MIX_CreateMixer
  */
-extern SDL_DECLSPEC bool SDLCALL MIX_Generate(MIX_Mixer *mixer, void *buffer, int buflen);
+extern SDL_DECLSPEC int SDLCALL MIX_Generate(MIX_Mixer *mixer, void *buffer, int buflen);
 
 
 /* Decode audio files directly without a mixer ... */
