@@ -34,13 +34,19 @@ static inline void buildBP(MobSoA& soa, const Presets& presets, Blueprints& blue
     if (blueprints.empty())
         return;
     for (size_t i = 0; i < soa.mobCount; ++i) {
-        if (!presets.getMob(soa.preset[i]).canBuild)
+        const auto& mobPreset = presets.getMob(soa.preset[i]);
+        if (!mobPreset.canBuild)
             continue;
-        const auto bp = blueprints.getClosest(t1::tile(soa.position[i]));
-        if (t1::areCloserCircle(t1::pixel(bp.tile), soa.position[i], 40.f)) {
-            scripts.placeBlock(bp.presetID, bp.tile, player, bp.rotation);
-            blueprints.removeIfExists(bp.tile);
-        }  
+        Blueprint& bp = blueprints.getClosest(t1::tile(soa.position[i]));
+        if (t1::areCloserCircle(t1::tileCenter(bp.tile), soa.position[i], 128.f)) {
+            if (bp.progress < 100)
+                bp.progress += mobPreset.buildSpeed;
+            else {
+                scripts.placeBlock(bp.presetID, bp.tile, player, bp.rotation);
+                blueprints.removeIfExists(bp.tile);
+            }
+            continue;
+        }
     }
 }
 

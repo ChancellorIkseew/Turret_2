@@ -10,6 +10,7 @@ struct Blueprint {
     TileCoord tile;
     BlockPresetID presetID;
     BlockRot rotation;
+    uint8_t progress;
 };
 
 struct TileHash {
@@ -28,7 +29,7 @@ public:
             blueprints.insert_or_assign(tile, Blueprint(tile, presetID, rotation));
     }
 
-    Blueprint getClosest(const TileCoord target) const noexcept {
+    Blueprint& getClosest(const TileCoord target) noexcept {
         int minSqrDistance = std::numeric_limits<int>::max();
         TileCoord best;
         for (const auto& [tile, _] : blueprints) {
