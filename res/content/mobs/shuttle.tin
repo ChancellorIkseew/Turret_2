@@ -1,9 +1,9 @@
 #visual
 texture=shuttle
-origin=13.5|13.5
-size=27|27
+origin=11.5|14
+size=23|25
 frame_ticks=4
-frame_height=27
+frame_height=25
 frame_order=0
 #logic
 speed=8.0
