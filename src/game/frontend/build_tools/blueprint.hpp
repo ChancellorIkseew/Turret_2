@@ -39,7 +39,7 @@ public:
                 best = tile;
             }
         }
-        return blueprints.at(best);
+        return blueprints.at(best); // needs out_of_range guard mb std::optional
     }
 
     void draw(Renderer& renderer, const Engine& engine) const {
@@ -51,6 +51,11 @@ public:
             const BlockPreset& preset = engine.getAssets().getPresets().getBlock(blueprint.presetID);
             const PixelCoord position = t1::pixel(tile);
             const PixelCoord size = preset.visual.size;
+            if (blueprint.progress > 0) {
+                constexpr PixelCoord OFFSET(1.f, 1.f);
+                renderer.drawRect(0x00'FF'00'FF, position - OFFSET, size + OFFSET * 2.f);
+                //TODO: update after renderer reimplementation
+            }
             if (!preset.rotatable)
                 renderer.drawFast(preset.visual.texture, position, size);
             else {
