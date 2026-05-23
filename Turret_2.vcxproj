@@ -201,6 +201,7 @@
     <ClCompile Include="src\game\entities\mob_manager.cpp" />
     <ClCompile Include="src\game\entities\shell_manager.cpp" />
     <ClCompile Include="src\game\entities\turret_manager.cpp" />
+    <ClCompile Include="src\game\frontend\build_tools\blueprint.cpp" />
     <ClCompile Include="src\game\frontend\build_tools\build_tools.cpp" />
     <ClCompile Include="src\game\frontend\build_tools\gameplay_build_tools.cpp" />
     <ClCompile Include="src\game\frontend\fr_audio.cpp" />
