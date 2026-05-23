@@ -3,6 +3,7 @@
 MovingAI mob_ai::getMovingAI(const std::string& name) {
     if (name == "none") return MovingAI::none;
     if (name == "basic") return MovingAI::basic;
+    if (name == "builder") return MovingAI::builder;
     if (name == "player_controlled") return MovingAI::player_controlled;
     return MovingAI::none;
 }

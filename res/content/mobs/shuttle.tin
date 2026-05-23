@@ -11,6 +11,6 @@ hitbox_radius=10.5
 health=20
 can_build=true
 build_speed=1
-moving_ai=basic
+moving_ai=builder
 shooting_ai=basic
 turret=shuttle_turret

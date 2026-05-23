@@ -6,6 +6,7 @@
 enum class MovingAI : uint8_t {
     none,
     basic,
+    builder,
     player_controlled
 };
 
