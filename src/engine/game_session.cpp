@@ -25,6 +25,9 @@ void GameSession::prepare(const Presets& presets) {
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
     playerController.setPlayerTeam(playerTeam);
     TeamID playerTeamID = playerTeam->getID();
+    // temporary for alpha-test
+    for (int i = 0; i < 10; ++i)
+        builtInScripts.spawnMob(presets.getMobID("shuttle"), PixelCoord(1600, 1600), playerTeamID);
 }
 
 #include "game/frontend/build_tools/blueprint.hpp"
