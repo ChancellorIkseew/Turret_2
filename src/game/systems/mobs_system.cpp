@@ -15,7 +15,12 @@ constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
 constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
 constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
 
-static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other) {
+static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other, const Presets& presets) {
+    const bool currentFlying = presets.getMob(soa.preset[current]).flying;
+    const bool otherFlying   = presets.getMob(soa.preset[other]).flying;
+    if (currentFlying != otherFlying) // both ground or both flying
+        return;
+
     const CircleHitbox currentHitbox(soa.position[current], soa.hitboxRadius[current]);
     const CircleHitbox otherHitbox(soa.position[other], soa.hitboxRadius[other]);
     if (!currentHitbox.intersects(otherHitbox))
@@ -41,18 +46,20 @@ static inline void resolveWorldCollision(MobSoA& soa, const size_t mob, const Re
         soa.position[mob] += overlap;
 }
 
-static inline void resolveCollisions(MobSoA& soa, const ChunkGrid& chunks) {
+static inline void resolveCollisions(MobSoA& soa, const ChunkGrid& chunks, const Presets& presets) {
     for (const Chunk chunk : chunks.getPopulatedChunks()) {
         for (const auto* currentMob = chunk.begin(); currentMob < chunk.end(); ++currentMob) {
             for (const auto* otherMob = currentMob + 1; otherMob < chunk.end(); ++otherMob) {
-                resolveCollision(soa, *currentMob, *otherMob);
+                resolveCollision(soa, *currentMob, *otherMob, presets);
             }
         }
     }
 }
 
-static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, const BlockMap& blocks) {
+static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, const BlockMap& blocks, const Presets& presets) {
     for (size_t i = 0; i < mobCount; ++i) {
+        if (presets.getMob(soa.preset[i]).flying) // no world collisions for flying mobs
+            continue;
         const float radius = soa.hitboxRadius[i];
         const PixelCoord center = soa.position[i];
 
@@ -77,11 +84,11 @@ static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
     }
 }
 
-void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks) {
+void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks, const Presets& presets) {
     const size_t mobCount = soa.mobCount;
     moveByAI(soa, mobCount);
-    resolveCollisions(soa, chunks);
-    resolveWorldCollisions(soa, mobCount, blocks);
+    resolveCollisions(soa, chunks, presets);
+    resolveWorldCollisions(soa, mobCount, blocks, presets);
 }
 
 void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerController& plCtr) {

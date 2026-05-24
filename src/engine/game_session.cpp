@@ -64,7 +64,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     chunks.update(mobs.getSoa());
     updateBlocks(blocks, world->getMap(), presets);
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
-    mobs::processMobs(mobs.getSoa(), chunks, blocks);
+    mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
     buildBP(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts, playerController.getPlayerTeam()->getID());
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, world->getBlueprints());
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);

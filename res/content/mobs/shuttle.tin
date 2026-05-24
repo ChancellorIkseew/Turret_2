@@ -9,6 +9,7 @@ frame_order=0
 speed=8.0
 hitbox_radius=10.5
 health=20
+flying=true
 can_build=true
 build_speed=1
 moving_ai=builder

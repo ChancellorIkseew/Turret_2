@@ -62,6 +62,7 @@ struct MobPreset {
     float maxSpeed;
     float hitboxRadius;
     Health maxHealth;
+    bool flying;
     bool canBuild;
     uint8_t buildSpeed;
     MovingAI defaultMovingAI;

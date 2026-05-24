@@ -9,6 +9,7 @@ frame_order=0,1,2,3,2,2,1,1,0,6,5,4,5,5,6,6
 speed=0.33
 hitbox_radius=17.0
 health=100
+flying=false
 can_build=false
 build_speed=0
 moving_ai=basic
