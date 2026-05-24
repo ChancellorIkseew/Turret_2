@@ -85,7 +85,8 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
 
 void GBuildTools::buildDraft(GameSession& session, const TileData tileData) const {
     for (const TileCoord tile : draft) {
-        build(session, tile, tileData);
+        if (session.getWorld().getBlocks().isAir(tile))
+            session.getWorld().getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation);
     }
 }
 
