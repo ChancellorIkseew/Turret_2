@@ -22,6 +22,7 @@ enum class BlockType {
     bridge,
     drill,
     factory,
+    intersection,
     router,
     turret,
     core

@@ -19,6 +19,7 @@ static BlockType getBlockType(const std::string name) {
     if (name == "belt")    return BlockType::belt;
     if (name == "bridge")  return BlockType::bridge;
     if (name == "factory") return BlockType::factory;
+    if (name == "intersection") return BlockType::intersection;
     if (name == "router")  return BlockType::router;
     if (name == "turret")  return BlockType::turret;
     if (name == "core")    return BlockType::core;
