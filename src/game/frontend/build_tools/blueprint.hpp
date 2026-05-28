@@ -8,9 +8,9 @@ class Renderer;
 
 struct Blueprint {
     TileCoord tile;
-    BlockPresetID presetID;
-    BlockRot rotation;
-    uint8_t progress;
+    BlockPresetID presetID = BlockPresetID(0);
+    BlockRot rotation = BlockRot::up;
+    uint8_t progress = 0;
 
     bool operator==(const TileCoord& otherTile) const noexcept {
         return tile == otherTile;
@@ -53,6 +53,17 @@ public:
             }
         }
         return closest;
+    }
+
+    Blueprint getBlock(const TileCoord tile) {
+        auto it = findByTile(tile);
+        if (it != blueprints.end())
+            return *it;
+        return Blueprint(/*null object*/);
+    }
+
+    bool isAir(const TileCoord tile) {
+        return getBlock(tile).presetID == BlockPresetID(0); // air
     }
 
     void draw(Renderer& renderer, const Engine& engine) const;

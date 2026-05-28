@@ -12,7 +12,7 @@ public:
     virtual void update(Engine& engine) final;
     virtual void drawDraft(Engine& engine, Renderer& renderer) final;
 private:
-    void usePipette(const BlockMap& blocks, const TileCoord tile);
+    void usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile);
     void demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprints, const TileCoord start, const TileCoord end) const;
     void buildDraft(GameSession& session, const TileData tileData) const;
     //

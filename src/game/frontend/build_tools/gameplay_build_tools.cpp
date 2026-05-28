@@ -36,7 +36,7 @@ void GBuildTools::update(Engine& engine) {
     if (input.jactive(Rotate_building))
         rotation = static_cast<BlockRot>((rotation + 1) % 4);
     if (input.jactive(Pipette))
-        usePipette(blocks, targetTile);
+        usePipette(blocks, blueprints, targetTile);
     // Build:
     if (optTileData && input.jactive(Build))
         optBuildStart = targetTile;
@@ -56,17 +56,24 @@ void GBuildTools::update(Engine& engine) {
     }
 }
 
-void GBuildTools::usePipette(const BlockMap& blocks, const TileCoord tile) {
-    if (blocks.isAir(tile)) {
+void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) {
+    if (blocks.isAir(tile) && blueprints.isAir(tile)) {
         optTileData.reset();
         optBuildStart.reset();
         draft.clear();
+        return;
     }
-    else if (blocks.contains(tile)) {
+
+    if (!blocks.isAir(tile)) {
         const auto& block = blocks.at(tile).block;
         optTileData = TileData(TileComponent::block, block->presetID.asUint());
         if (block->getRotation() != BlockRot::none)
             rotation = block->getRotation();
+    } else if (!blueprints.isAir(tile)) {
+        const auto& block = blueprints.getBlock(tile);
+        optTileData = TileData(TileComponent::block, block.presetID.asUint());
+        if (block.rotation != BlockRot::none)
+            rotation = block.rotation;
     }
 }
 
