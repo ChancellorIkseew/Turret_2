@@ -22,10 +22,25 @@ static PixelCoord randomMapBorderCoord(std::mt19937& gen, const TileCoord mapSiz
 void BuiltInScripts::execute(const TimeCount& timeCount) {
     if (timeCount.isWaveJustChanged())
         spawnWave(timeCount.getWaveCount());
-    // target mobs motion to core
-    const PixelCoord core = t1::tileCenter(world.getBlocks().getMeta().getCore());
-    for (auto& motionData : world.getMobs().getSoa().motionData) {
-        motionData.target = core;
+    targetEnemies();
+}
+
+void BuiltInScripts::targetEnemies() {
+    const auto optCoreTile = world.getBlocks().getMeta().getCore();
+    auto& soa = world.getMobs().getSoa();
+    const TeamID enemyTeam = 1; // refactor get team
+    if (!optCoreTile) {
+        for (size_t i = 0; i < soa.mobCount; ++i) {
+            if (soa.teamID[i] == enemyTeam)
+                soa.motionData[i].target = soa.position[i];
+        }
+    }
+    else {
+        const PixelCoord coreCenter = t1::tileCenter(optCoreTile.value());
+        for (size_t i = 0; i < soa.mobCount; ++i) {
+            if (soa.teamID[i] == enemyTeam)
+                soa.motionData[i].target = coreCenter;
+        }
     }
 }
 

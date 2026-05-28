@@ -11,7 +11,7 @@
 class BlocksMeta {
     TurretManager turrets;
     std::vector<size_t> markedForRemove;
-    TileCoord core = {50, 50}; // temp
+    std::optional<TileCoord> core;
 public:
     BlocksMeta() : turrets(64) {}
     //
@@ -36,7 +36,8 @@ public:
         markedForRemove.clear();
     }
 
-    TileCoord getCore() const { return core; }
+    std::optional<TileCoord> getCore() const noexcept { return core; }
+    void setCorePosition(const std::optional<TileCoord> tile) { core = tile; }
 };
 
 constexpr TeamID INVALID_TEAM_ID = IDManager<TeamID>::INVALID_ID;
@@ -96,11 +97,15 @@ public:
             TurretPresetID preset = static_cast<TurretBlock*>(block.get())->turretPreset;
             meta.getTurrets().addTurret(preset, t1::tileCenter(tile), 0.0f, teamID, ShootingData(), 0);
         }
+        if (block->getType() == BlockType::core)
+            meta.setCorePosition(tile);
         at(tile).place(teamID, block);
     }
     void demolish(TileCoord tile) {
         if (at(tile).type == BlockType::turret)
             meta.markForRemove(tile);
+        if (at(tile).type == BlockType::core)
+            meta.setCorePosition(std::nullopt);
         at(tile).demolish();
     }
 

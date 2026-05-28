@@ -1,0 +1,11 @@
+#visual
+texture=core
+origin=0.0|0.0
+size=32|32
+frame_ticks=0
+frame_height=32
+frame_order=0
+#logic
+archetype=core
+rotatable=false
+health=800
