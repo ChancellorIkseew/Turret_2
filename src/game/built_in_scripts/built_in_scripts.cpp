@@ -23,6 +23,7 @@ void BuiltInScripts::execute(const TimeCount& timeCount) {
     if (timeCount.isWaveJustChanged())
         spawnWave(timeCount.getWaveCount());
     targetEnemies();
+    respawnShuttle();
 }
 
 void BuiltInScripts::targetEnemies() {
@@ -42,6 +43,20 @@ void BuiltInScripts::targetEnemies() {
                 soa.motionData[i].target = coreCenter;
         }
     }
+}
+
+void BuiltInScripts::respawnShuttle() {
+    const auto optCoreTile = world.getBlocks().getMeta().getCore();
+    if (!optCoreTile)
+        return; // players core does not exist
+    auto& soa = world.getMobs().getSoa();
+    MobPresetID shuttle = assets.getPresets().getMobID("shuttle");
+    const TeamID playerTeam = 0; // refactor get team
+    for (size_t i = 0; i < soa.mobCount; ++i) {
+        if (soa.teamID[i] == playerTeam && soa.preset[i] == shuttle)
+            return; // shuttle is allive
+    }
+    spawnMob(shuttle, t1::tileCenter(optCoreTile.value()), playerTeam);
 }
 
 void BuiltInScripts::spawnWave(const uint32_t waveNumber) {

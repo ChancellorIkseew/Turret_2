@@ -16,6 +16,7 @@ public:
     void execute(const TimeCount& timeCount);
     void spawnWave(const uint32_t wavenumber);
     void targetEnemies();
+    void respawnShuttle();
 
     void spawnMob(const MobPresetID presetID, const PixelCoord position, const TeamID teamID);
     void placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, BlockRot rotation);
