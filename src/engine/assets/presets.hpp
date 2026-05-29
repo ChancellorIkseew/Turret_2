@@ -24,7 +24,7 @@ class Presets {
     std::unordered_map<std::string, TurretPresetID> turretIDByName;
 
     BlockPresetID  nextBlockID  = BlockPresetID(2); // air, auxilary
-    ItemPresetID   nextItemID   = ItemPresetID(0);
+    ItemPresetID   nextItemID   = ItemPresetID(1); // air(error)
     MobPresetID    nextMobID    = MobPresetID(0);
     OrePresetID    nextOreID    = OrePresetID(1); // air
     ShellPresetID  nextShellID  = ShellPresetID(0);

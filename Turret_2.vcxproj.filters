@@ -683,5 +683,8 @@
     <ClCompile Include="src\game\frontend\build_tools\blueprint.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\blocks\logic_detail\intersection.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

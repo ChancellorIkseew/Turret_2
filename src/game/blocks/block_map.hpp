@@ -117,18 +117,22 @@ inline void updateBlocks(BlockMap& map, const WorldMap& terrain, const Presets& 
     for (int x = 0; x < size.x; ++x) {
         for (int y = 0; y < size.y; ++y) {
             BlockTile& blockTile = map.at(x, y);
+            const TileCoord tile = { x, y };
             switch (blockTile.type) {
             case BlockType::belt:
-                static_cast<BeltBlock*>(blockTile.block.get())->update({ x, y }, map);
+                static_cast<BeltBlock*>(blockTile.block.get())->update(tile, map);
                 break;
             case BlockType::drill:
-                static_cast<DrillBlock*>(blockTile.block.get())->throwItem({ x, y }, map, terrain, presets);
+                static_cast<DrillBlock*>(blockTile.block.get())->throwItem(tile, map, terrain, presets);
                 break;
             case BlockType::factory:
                 static_cast<FactoryBlock*>(blockTile.block.get());
                 break;
+            case BlockType::intersection:
+                static_cast<IntersectionBlock*>(blockTile.block.get())->provide(tile, map);
+                break;
             case BlockType::router:
-                static_cast<RouterBlock*>(blockTile.block.get())->provide({ x,y }, map);
+                static_cast<RouterBlock*>(blockTile.block.get())->provide(tile, map);
                 break;
             case BlockType::turret:
                 static_cast<TurretBlock*>(blockTile.block.get());

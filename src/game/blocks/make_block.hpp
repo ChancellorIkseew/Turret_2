@@ -20,6 +20,9 @@ inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset pres
     case BlockType::factory:
         block = std::make_unique<FactoryBlock>();
         break;
+    case BlockType::intersection:
+        block = std::make_unique<IntersectionBlock>();
+        break;
     case BlockType::router:
         block = std::make_unique<RouterBlock>();
         break;

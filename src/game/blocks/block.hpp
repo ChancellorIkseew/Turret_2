@@ -108,6 +108,21 @@ struct TurretBlock : Block {
     virtual BlockType getType() const noexcept final { return BlockType::turret; }
 };
 
+struct IntersectionBlock : Block {
+    struct RotatedItem {
+        ItemPresetID item = ItemPresetID(0);
+        BlockRot rotation = BlockRot::none;
+    };
+    RotatedItem vertical, horizontal;
+    //
+    virtual ~IntersectionBlock() final = default;
+    virtual BlockType getType() const noexcept final { return BlockType::intersection; }
+    //
+    virtual bool canAccept(ItemPresetID item, BlockRot srcRot);
+    virtual void accept(ItemPresetID item, BlockRot srcRot);
+    void provide(TileCoord tile, const BlockMap& map);
+};
+
 struct RouterBlock : Block {
     ItemStack inventory;
     //
