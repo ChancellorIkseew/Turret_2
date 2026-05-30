@@ -23,7 +23,8 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
     }
     //
     if (tileData.component == TileComponent::block) {
-        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(BlockPresetID(tileData.id));
+        const Presets& presets = engine.getAssets().getPresets();
+        const BlockPreset& preset = presets.getBlock(BlockPresetID(tileData.id));
         const PixelCoord size = preset.visual.size;
         const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
 
@@ -36,6 +37,11 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
             const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
             const PixelCoord origin = size / 2.f;
             renderer.draw(preset.visual.texture, position + origin, size, origin, angleRad);
+            if (preset.archetype == BlockType::turret) {
+                const TurretPreset& turretPreset = presets.getTurret(preset.turret);
+                const PixelCoord size = turretPreset.visual.size;
+                renderer.draw(turretPreset.visual.texture, position + origin, size, turretPreset.visual.origin, angleRad + t1::PI_F);
+            }
         }
         renderer.resetColorModifier();
         return;
