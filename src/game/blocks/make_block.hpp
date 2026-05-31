@@ -27,7 +27,7 @@ inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset pres
         block = std::make_unique<RouterBlock>();
         break;
     case BlockType::turret:
-        block = std::make_unique<TurretBlock>(preset.turret);
+        block = std::make_unique<TurretBlock>(preset.turret, rotation);
         break;
     default:
         bmLogger.error() << "Could not handle block type";

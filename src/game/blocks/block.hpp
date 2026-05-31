@@ -102,8 +102,10 @@ struct FactoryBlock : Block {
 
 struct TurretBlock : Block {
     TurretPresetID turretPreset;
+    BlockRot defaultRotation;
     //
-    TurretBlock(TurretPresetID turretPreset) : turretPreset(turretPreset) {}
+    TurretBlock(TurretPresetID turretPreset, BlockRot rotation) :
+        turretPreset(turretPreset), defaultRotation(rotation) {}
     virtual ~TurretBlock() final = default;
     virtual BlockType getType() const noexcept final { return BlockType::turret; }
 };

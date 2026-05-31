@@ -94,8 +94,10 @@ public:
     //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
         if (block->getType() == BlockType::turret) {
-            TurretPresetID preset = static_cast<TurretBlock*>(block.get())->turretPreset;
-            meta.getTurrets().addTurret(preset, t1::tileCenter(tile), 0.0f, teamID, ShootingData(), 0);
+            TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
+            TurretPresetID preset = turretBlock->turretPreset;
+            const AngleRad angleRad = static_cast<float>(turretBlock->defaultRotation) * t1::PI_F / 2.f - t1::PI_F;
+            meta.getTurrets().addTurret(preset, t1::tileCenter(tile), angleRad, teamID, ShootingData(), 0);
         }
         if (block->getType() == BlockType::core)
             meta.setCorePosition(tile);
