@@ -38,6 +38,19 @@ public:
         renderer.setTranslation(PixelCoord(0, 0));
         renderer.setScale(1.f);
     }
+private:
+    void build(GameSession& session, const TileCoord tile, const TileData tileData) const {
+        WorldMap& map = session.getWorld().getMap();
+        switch (tileData.component) {
+        case TileComponent::floor:   map.placeFloor(tile, tileData.id);                break;
+        case TileComponent::overlay: map.placeOverlay(tile, OrePresetID(tileData.id)); break;
+        case TileComponent::block: {
+                const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
+                session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID, rotation);
+            }
+            break;
+        }
+    }
 
     void demolish(WorldMap& map, BlockMap& blocks, const TileCoord tile) {
         if (blocks.isFilled(tile))
