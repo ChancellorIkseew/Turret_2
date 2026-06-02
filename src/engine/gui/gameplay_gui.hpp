@@ -27,9 +27,8 @@ public:
             engine.getSession().setPaused(!engine.getSession().isPaused(), engine);
     }
 
-    void draw(Renderer& renderer, const Atlas& atlas) final {
+    void drawDiegeticElements(Renderer& renderer) {
         if (!ownsMouse())
             buildTools->drawDraft(engine, renderer);
-        GUI::draw(renderer, atlas);
     }
 };

@@ -30,13 +30,8 @@ public:
     }
 
     virtual void drawDraft(Engine& engine, Renderer& renderer) final {
-        const Camera& camera = engine.getSession().getCamera();
-        renderer.setTranslation(camera.getTranslation());
-        renderer.setScale(camera.getMapScale());
         if (optTileData)
             drawOneBlock(engine, renderer, targetTile, optTileData.value());
-        renderer.setTranslation(PixelCoord(0, 0));
-        renderer.setScale(1.f);
     }
 private:
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const {

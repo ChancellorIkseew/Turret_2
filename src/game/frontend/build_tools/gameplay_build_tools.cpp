@@ -104,9 +104,6 @@ static void drawDemolitonRect(const Renderer& renderer, const TileCoord start, c
 }
 
 void GBuildTools::drawDraft(Engine& engine, Renderer& renderer) {
-    const Camera& camera = engine.getSession().getCamera();
-    renderer.setTranslation(camera.getTranslation());
-    renderer.setScale(camera.getMapScale());
     if (optDemolishStart)
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
     if (optTileData) {
@@ -118,6 +115,4 @@ void GBuildTools::drawDraft(Engine& engine, Renderer& renderer) {
             }
         }
     }
-    renderer.setTranslation(PixelCoord(0, 0));
-    renderer.setScale(1.f);
 }
