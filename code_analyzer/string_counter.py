@@ -1,8 +1,17 @@
 import os
 import sys
 
+EXCLUDED_FILENAMES = {
+    "glad.h",
+    "glad.c",
+    "khrplatform.h",
+}
+
 def count_in_file(file_path) -> int:
     base_name = os.path.basename(file_path)
+    if base_name in EXCLUDED_FILENAMES:
+        print(f"ignored: {file_path}")
+        return 0
     extension = os.path.splitext(base_name)[1].lower()
 
     try:
