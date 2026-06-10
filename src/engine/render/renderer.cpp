@@ -61,6 +61,7 @@ void Renderer::setShaderProgram(const ShaderProgram& shaderProgram) {
 }
 
 void Renderer::setView(float scale, const PixelCoord translation, const PixelCoord windowSize) {
+    flush();
     GLfloat view[16] = {
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
@@ -118,6 +119,8 @@ void Renderer::draw(const TextureRect& textureRect,
     const PixelCoord position, const PixelCoord size,
     const PixelCoord origin, const double angleRad, const uint32_t color)
 {
+    draw(*atlasTexture, textureRect, position, size, origin, angleRad, color);
+    /*
     if (atlasTextureID != currentTextureID || batchGeometry->isFull()) {
         flush();
         currentTextureID = atlasTextureID;
@@ -126,6 +129,7 @@ void Renderer::draw(const TextureRect& textureRect,
     }
 
     batchGeometry->addQuad(textureRect, position, size, origin, angleRad, color);
+    */
 }
 
 static Texture2D convert(SDL_Surface* rawSurface) {
