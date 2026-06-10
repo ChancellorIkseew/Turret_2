@@ -86,6 +86,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
     Events::reset(); // for editor // needs update
     auto& mainWindow = engine.getMainWindow();
+    auto& renderer = mainWindow.getRenderer();
     //
     mainWindow.pollEvents();
     gui->callback();
@@ -99,18 +100,15 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     scriptsHandler.execute();
     //
     camera.update(mainWindow.getSize());
-    mainWindow.setRenderScale(camera.getMapScale());
-    mainWindow.setRenderTranslation(camera.getTranslation());
-    worldDrawer.draw(camera, mainWindow.getRenderer(), *world, presets, engine.getAssets(), timeCount.getTickCount());
-    world->getBlueprints().draw(mainWindow.getRenderer(), engine); // temporary
-    gui->drawDiegeticElements(mainWindow.getRenderer());           // temporary update will be related with blueprints
+    renderer.setView(camera.getMapScale(), camera.getTranslation(), mainWindow.getSize());
+    worldDrawer.draw(camera, renderer, *world, presets, engine.getAssets(), timeCount.getTickCount());
+    world->getBlueprints().draw(renderer, engine); // temporary
+    gui->drawDiegeticElements(renderer);           // temporary update will be related with blueprints
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
-    mainWindow.setRenderScale(1.0f);
-    mainWindow.setRenderTranslation(PixelCoord(0.0f, 0.0f));
+    renderer.setView(1.f, PixelCoord(0.f, 0.f), mainWindow.getSize());
     gui->draw(mainWindow.getRenderer(), engine.getAssets().getAtlas());
     mainWindow.render();
-    mainWindow.clear();
 }
 
 void GameSession::setPaused(const bool flag, Engine& engine) {

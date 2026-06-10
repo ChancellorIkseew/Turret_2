@@ -8,7 +8,6 @@
 
 struct SDLContext {
     SDL_Window* sdlWindow = nullptr;
-    SDL_Renderer* sdlRenderer = nullptr;
     SDLContext(const std::string& title);
     ~SDLContext(); // Not virtual because of no polymorphism.
 };
@@ -43,18 +42,8 @@ public:
     //
     void takeScreenshot(const std::filesystem::path& path) const;
     void pollEvents();
-    void setRenderTranslation(const PixelCoord translation) {
-        renderer.setTranslation(translation);
-    }
-    void setRenderScale(const float scale) {
-        renderer.setScale(scale);
-    }
-    void clear() {
-        SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
-        SDL_RenderClear(sdlRenderer);
-    }
     void render() {
-        SDL_RenderPresent(sdlRenderer);
+        renderer.present(sdlWindow);
         makeDelay();
     }
 private:

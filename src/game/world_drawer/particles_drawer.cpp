@@ -7,13 +7,13 @@
 
 constexpr float PARTICLE_HALF_SIZE = 1.0f;
 
-void ParticlesDrawer::updateTexture(const Assets& assets) {
+void ParticlesDrawer::updateTexture(const Assets& assets) {/*
     const SDL_FRect& pixelRect = assets.getAtlas().at("particle_base").rect;
     const PixelCoord atlasSize = assets.getAtlas().getSize();
     u0 = pixelRect.x / atlasSize.x;
     v0 = pixelRect.y / atlasSize.y;
     u1 = (pixelRect.x + pixelRect.w) / atlasSize.x;
-    v1 = (pixelRect.y + pixelRect.h) / atlasSize.y;
+    v1 = (pixelRect.y + pixelRect.h) / atlasSize.y;*/
 }
 
 void ParticlesDrawer::draw(const Camera& camera, const Renderer& renderer, const ParticleSoA& soa) {
@@ -78,6 +78,6 @@ void ParticlesDrawer::draw(const Camera& camera, const Renderer& renderer, const
 
     if (indexCache.empty())
         return;
-    renderer.drawBatchedColored(vertexPositions.data(), vertexUVs.data(), indexCache.data(), vertexColors.data(),
-        currentVertexOffset, static_cast<int>(indexCache.size()));
+    //renderer.drawBatchedColored(vertexPositions.data(), vertexUVs.data(), indexCache.data(), vertexColors.data(),
+        //currentVertexOffset, static_cast<int>(indexCache.size()));
 }

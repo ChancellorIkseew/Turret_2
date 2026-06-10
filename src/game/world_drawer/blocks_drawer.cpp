@@ -10,7 +10,7 @@ constexpr PixelCoord BLENDING_AREA = PixelCoord(3.0f, 3.0f);
 
 void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer) {
     const TileCoord start = camera.getBuildingsStartTile();
-    const TileCoord end = camera.getEndTile();
+    const TileCoord end = camera.getEndTile();/*
     const Texture shadowTexture = assets.getAtlas().at("block_shadow");
     cashedTiles.clear();
     itemPositions.clear();
@@ -38,5 +38,5 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
         Texture texture = assets.getPresets().getItem(itemPresetID).texture;
         renderer.drawFast(texture, itemPositions[i], ITEM_SIZE);
         ++i;
-    }
+    }*/
 }

@@ -18,31 +18,21 @@ static inline void loadIcon(SDL_Window* window) {
 SDLContext::SDLContext(const std::string& title) {
     if (!SDL_Init(SDL_INIT_VIDEO))
         throw std::runtime_error("Could not init SDL");
-
-    sdlWindow = SDL_CreateWindow(title.c_str(), 720, 480, SDL_WINDOW_RESIZABLE);
+    sdlWindow = SDL_CreateWindow(title.c_str(), 720, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
     if (!sdlWindow) {
         const std::string error = SDL_GetError();
         SDL_Quit();
         throw std::runtime_error("SDL_CreateWindow Error: " + error);
     }
-
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, nullptr);
-    if (!sdlRenderer) {
-        const std::string error = SDL_GetError();
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        throw std::runtime_error("SDL_CreateRenderer Error: " + error);
-    }
 }
 
 SDLContext::~SDLContext() {
-    SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
 }
 
 MainWindow::MainWindow(const std::string& title) :
-    SDLContext(title), renderer(sdlRenderer) {
+    SDLContext(title), renderer(sdlWindow) {
     loadIcon(sdlWindow);
 }
 
@@ -76,6 +66,7 @@ void MainWindow::pollEvents() {
 }
 
 void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
+    /*
     SDL_Surface* windowSurface = SDL_RenderReadPixels(sdlRenderer, nullptr);
     try {
         if (!io::folders::createOrCheckFolder(path.parent_path()))
@@ -90,4 +81,5 @@ void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
         logger.error() << "Failed to take screensot. " << exception.what();
     }
     SDL_DestroySurface(windowSurface);
+    */
 }

@@ -80,10 +80,16 @@
     <ClInclude Include="src\engine\io\parser\tin_parser.hpp" />
     <ClInclude Include="src\engine\io\parser\validator.hpp" />
     <ClInclude Include="src\engine\render\atlas.hpp" />
+    <ClInclude Include="src\engine\render\framebuffer.hpp" />
+    <ClInclude Include="src\engine\render\glad\glad.h" />
+    <ClInclude Include="src\engine\render\glad\khrplatform.h" />
     <ClInclude Include="src\engine\render\packer\packer.hpp" />
     <ClInclude Include="src\engine\render\renderer.hpp" />
+    <ClInclude Include="src\engine\render\shader_program.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
     <ClInclude Include="src\engine\render\texture.hpp" />
+    <ClInclude Include="src\engine\render\texture_rect.hpp" />
+    <ClInclude Include="src\engine\render\vertex_buffer.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
     <ClInclude Include="src\engine\settings\settings.hpp" />
     <ClInclude Include="src\engine\time_count.hpp" />
@@ -181,7 +187,9 @@
     <ClCompile Include="src\engine\io\parser\tin_parser.cpp" />
     <ClCompile Include="src\engine\io\parser\validator.cpp" />
     <ClCompile Include="src\engine\render\atlas.cpp" />
+    <ClCompile Include="src\engine\render\glad\glad.c" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
+    <ClCompile Include="src\engine\render\renderer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
     <ClCompile Include="src\engine\scripting\scripting.cpp" />
     <ClCompile Include="src\engine\settings\settings.cpp" />

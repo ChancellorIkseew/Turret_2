@@ -5,7 +5,7 @@
 #include "engine/render/renderer.hpp"
 
 static void drawBlock(const Presets& presets, const Renderer& renderer, const TileCoord tile, const BlockPresetID presetID, const BlockRot rotation) {
-    const BlockPreset& preset = presets.getBlock(presetID);
+    /*const BlockPreset& preset = presets.getBlock(presetID);
     const PixelCoord size = preset.visual.size;
     const PixelCoord position = t1::pixel(tile);
 
@@ -20,10 +20,10 @@ static void drawBlock(const Presets& presets, const Renderer& renderer, const Ti
             const PixelCoord blockCenter = position + origin;
             renderer.draw(turret.visual.texture, blockCenter, turret.visual.size, turret.visual.origin, angleRad + t1::PI_F);
         }
-    }
+    }*/
 }
 
-void Blueprints::draw(Renderer& renderer, const Engine& engine) const {
+void Blueprints::draw(Renderer& renderer, const Engine& engine) const {/*
     const float timeMs = static_cast<float>(engine.getMainWindow().getTime());
     const float modifier = std::sin(timeMs / 500.f) * 64.f;
     const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
@@ -40,5 +40,5 @@ void Blueprints::draw(Renderer& renderer, const Engine& engine) const {
         }
         drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation);
     }
-    renderer.resetColorModifier();
+    renderer.resetColorModifier();*/
 }

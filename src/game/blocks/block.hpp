@@ -1,6 +1,6 @@
 #pragma once
 #include "engine/assets/preset_id.hpp"
-#include "engine/render/texture.hpp"
+#include "engine/render/texture_rect.hpp"
 #include "game/common/physics_base.hpp"
 
 class BlocksDrawer;
@@ -39,12 +39,12 @@ enum BlockRot : int8_t {
 struct Block {
     Health health = 0;
     BlockPresetID presetID = BlockPresetID(0);
-    Texture texture = NULL_TEXTURE;
+    TextureRect textureRect = NULL_TEXTURE_RECT;
     //
     virtual ~Block() = default;
     virtual BlockType getType() const noexcept = 0;
     virtual BlockRot getRotation() const noexcept { return BlockRot::none; }
-    virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile);
+    virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
     virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return false; }
     virtual void accept(ItemPresetID item, BlockRot srcRot) {}
 };
@@ -86,7 +86,7 @@ struct BeltBlock : Block {
     virtual BlockType getType() const noexcept final { return BlockType::belt; }
     virtual BlockRot getRotation() const noexcept final { return rotation; }
     //
-    virtual void draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile) final;
+    virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
     virtual bool canAccept(ItemPresetID item, BlockRot srcRot) final;
     virtual void accept(ItemPresetID item, BlockRot srcRot) final;
     void update(TileCoord tile, const BlockMap& map);

@@ -53,7 +53,7 @@ void MapDrawer::cacheOverlay(const WorldMap& map) {
 void MapDrawer::renderLayer(
     const Renderer& renderer,
     const std::map<uint8_t, std::vector<PixelCoord>>& cachedLayer,
-    const std::map<uint8_t, Texture>& textures,
+    const std::map<uint8_t, TextureRect>& textures,
     const PixelCoord tileSize,
     const PixelCoord translation) {
 
@@ -61,41 +61,6 @@ void MapDrawer::renderLayer(
         if (layer.empty())
             continue;
 
-        positions.clear();
-        uvs.clear();
-        indexCache.clear();
-        
-        const SDL_FRect& uvRect = textures.at(tileType).rect;
-        float u0 = uvRect.x / atlasSize.x;
-        float v0 = uvRect.y / atlasSize.y;
-        float u1 = (uvRect.x + uvRect.w) / atlasSize.x;
-        float v1 = (uvRect.y + uvRect.h) / atlasSize.y;
-        
-        for (const PixelCoord position : layer) {
-            float x = static_cast<float>(position.x - translation.x);
-            float y = static_cast<float>(position.y - translation.y);
-            float w = static_cast<float>(tileSize.x);
-            float h = static_cast<float>(tileSize.y);
-
-            int baseIdx = static_cast<int>(positions.size() / 2);
-
-            positions.insert(positions.end(), {
-                x, y,        // TL
-                x + w, y,    // TR
-                x, y + h,    // BL
-                x + w, y + h // BR
-                });
-
-            uvs.insert(uvs.end(), { u0, v0, u1, v0, u0, v1, u1, v1 });
-
-            indexCache.insert(indexCache.end(), {
-                baseIdx + 0, baseIdx + 1, baseIdx + 2,
-                baseIdx + 2, baseIdx + 1, baseIdx + 3
-                });
-        }
-
-        renderer.drawBatched(positions.data(), uvs.data(), indexCache.data(),
-            static_cast<int>(positions.size() / 2), static_cast<int>(indexCache.size()));
     }
 }
 

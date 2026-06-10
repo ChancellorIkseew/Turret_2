@@ -93,12 +93,12 @@ void turrets::processTurrets(TurretComponents& soa, ShellManager& shells, Partic
     shoot(soa, shells, particles, presets, mobCount, sounds, camera);
 }
 
-void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
+void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = presets.getTurret(soa.preset[i]).visual;
-        renderer.draw(visual.texture, soa.position[i], visual.size, visual.origin, soa.turretAngle[i]);
+        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, soa.turretAngle[i]);
     }
 }

@@ -4,17 +4,17 @@
 #include "engine/render/renderer.hpp"
 #include "game/world_drawer/blocks_drawer.hpp"
 
-void Block::draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile) {
-    renderer.drawFast(texture, t1::pixel(tile), t1::TILE_PC);
+void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
+    renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC, PixelCoord(0.f, 0.f), 0.f);
 }
 
 static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Down, Right, Up, Left
 static constexpr float dirY[] = { 1.0f, 0.0f, -1.0f, 0.0f }; // Y+ - Down, X+ - Right
 
-void BeltBlock::draw(BlocksDrawer& blockDrawer, const Renderer& renderer, TileCoord tile) {
+void BeltBlock::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
     // works perfect (do not touch logic)
     AngleRad angleRad = static_cast<float>(rotation) * t1::PI_F * 0.5f;
-    renderer.draw(texture, t1::tileCenter(tile), t1::TILE_PC, t1::TILE_PC / 2, angleRad);
+    renderer.draw(textureRect, t1::tileCenter(tile), t1::TILE_PC, t1::TILE_PC / 2, angleRad);
 
     // Кэшируем векторы для текущего поворота
     float dx = dirX[rotation];

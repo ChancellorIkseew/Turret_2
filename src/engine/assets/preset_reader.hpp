@@ -26,12 +26,12 @@ public:
         return *res;
     }
 
-    Texture getTexture(const Atlas& atlas, const std::string& key) const {
+    TextureRect getTexture(const Atlas& atlas, const std::string& key) const {
         std::string textureName = get<std::string>(key);
-        Texture texture = atlas.at(textureName);
-        if (texture == NULL_TEXTURE)
+        TextureRect textureRect = atlas.at(textureName);
+        if (textureRect == NULL_TEXTURE_RECT)
             fail("Texture not found in atlas: " + textureName);
-        return texture;
+        return textureRect;
     }
 
     template<class Tag>

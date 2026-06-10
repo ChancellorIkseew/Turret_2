@@ -23,9 +23,9 @@ mainCanvas(mainWindow.getSize(),
     Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
-static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindow) {
+static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow) {
     PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
-    renderer.drawRect(BLACK, position, DEBUD_PANEL_SIZE);
+    //renderer.drawRect(BLACK, position, DEBUD_PANEL_SIZE);
     position += PixelCoord(20.f, 20.f);
     text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
     position.y += 20.f;
@@ -40,11 +40,11 @@ void GUI::draw(Renderer& renderer, const Atlas& atlas) {
         T1_UIRenderer uiRenderer(renderer);
         mainCanvas.draw(uiRenderer);
     }
-    renderer.setScale(1.f); // temporary
+    //renderer.setScale(1.f); // temporary
     if (showFPS)
         drawDebugPanel(renderer, mainWindow);
-    if (showAtlas)
-        renderer.drawFast(atlas.getComonTexture(), PixelCoord(0, 0), atlas.getSize());  
+    //if (showAtlas)
+        //renderer.drawFast(atlas.getComonTexture(), PixelCoord(0, 0), atlas.getSize());  
 }
 
 void GUI::translate(const std::string& lang) {

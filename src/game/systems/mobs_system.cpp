@@ -112,7 +112,7 @@ static void drawHitboxes(const MobSoA& soa, const Presets& presets, const Camera
             continue;
         const float hitboxSize = presets.getMob(soa.preset[i]).hitboxRadius * 2.0f;
         const PixelCoord hitbox(hitboxSize, hitboxSize);
-        renderer.drawRect(HITBOX_COLOR, soa.position[i] - hitbox / 2.0f, hitbox);
+        //renderer.drawRect(HITBOX_COLOR, soa.position[i] - hitbox / 2.0f, hitbox);
     }
 }
 
@@ -125,12 +125,12 @@ static void drawHealthBars(const MobSoA& soa, const Presets& presets, const Came
         const float part = static_cast<float>(current) / static_cast<float>(max);
         const PixelCoord healthSize(BAR_SIZE.x * part, 5.0f);
 
-        renderer.drawRect(HITBOX_COLOR, soa.position[i] - BAR_SIZE / 2.0f, BAR_SIZE);
-        renderer.drawRect(HEALTH_COLOR, soa.position[i] - BAR_SIZE / 2.0f, healthSize);
+        //renderer.drawRect(HITBOX_COLOR, soa.position[i] - BAR_SIZE / 2.0f, BAR_SIZE);
+        //renderer.drawRect(HEALTH_COLOR, soa.position[i] - BAR_SIZE / 2.0f, healthSize);
     }
 }
 
-void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer, const uint64_t tickCount) {
+void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
     if (Settings::gameplay.showHitboxes)
         drawHitboxes(soa, presets, camera, renderer);
     const size_t mobCount = soa.mobCount;
@@ -143,7 +143,8 @@ void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, c
             if (soa.chassisFrame[i] >= presets.getMob(soa.preset[i]).visual.frameCount)
                 soa.chassisFrame[i] = 0;
         }
-        renderer.drawAnimated(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i],
-            visual.frameOrder[soa.chassisFrame[i]], visual.frameHeight);
+        //renderer.drawAnimated(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i],
+            //visual.frameOrder[soa.chassisFrame[i]], visual.frameHeight);
+        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, soa.angle[i]);
     }
 }

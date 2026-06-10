@@ -44,23 +44,25 @@ void Atlas::build(Renderer& renderer) {
     for (auto& [name, rect] : atlas) {
         SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
     }
-    renderer.createCommonTexture(comonSurface);
+    renderer.createAtlasTexture(comonSurface);
+
+
     SDL_DestroySurface(comonSurface);
     clearTemporary(temporarySurfaces);
 }
 
-Texture Atlas::at(const std::string& name) const noexcept {
+TextureRect Atlas::at(const std::string& name) const noexcept {
     if (!atlas.contains(name)) {
         logger.error() << "Texture was not created yet or does not exist: " << name;
-        return NULL_TEXTURE;
+        return NULL_TEXTURE_RECT;
     }
-    SDL_FRect fRect;
+    TextureRect fRect;
     auto& iRect = atlas.at(name);
-    fRect.x = static_cast<float>(iRect.x);
-    fRect.y = static_cast<float>(iRect.y);
-    fRect.w = static_cast<float>(iRect.w);
-    fRect.h = static_cast<float>(iRect.h);
-    return Texture(fRect);
+    fRect.x = static_cast<float>(iRect.x) / size.x;
+    fRect.y = static_cast<float>(iRect.y) / size.y;
+    fRect.w = static_cast<float>(iRect.w) / size.x;
+    fRect.h = static_cast<float>(iRect.h) / size.y;
+    return fRect;
 }
 
 void Atlas::clear() {
@@ -68,6 +70,6 @@ void Atlas::clear() {
     clearTemporary(temporarySurfaces);
 }
 
-Texture Atlas::getComonTexture() const noexcept {
-    return Texture(SDL_FRect(0.0f, 0.0f, static_cast<float>(size.x), static_cast<float>(size.y)));
+TextureRect Atlas::getComonTexture() const noexcept {
+    return TextureRect{ 0.f, 0.f, 1.f, 1.f };
 }

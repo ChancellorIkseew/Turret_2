@@ -1,24 +1,24 @@
 #pragma once
 #include <array>
 #include "engine/coords/pixel_coord.hpp"
-#include "engine/render/texture.hpp"
+#include "engine/render/texture_rect.hpp"
 #include "game/blocks/block.hpp"
 #include "game/common/mob_ai.hpp"
 #include "game/common/physics_base.hpp"
 #include "preset_id.hpp"
 
 struct ItemPreset {
-    Texture texture;
+    TextureRect textureRect;
 };
 
 struct OrePreset {
     ItemPresetID item;
     std::string visibleName;
-    Texture texture;
+    TextureRect textureRect;
 };
 
 struct ShellVisualPreset {
-    Texture texture;
+    TextureRect textureRect;
     PixelCoord origin;
     PixelCoord size;
 };
@@ -32,7 +32,7 @@ struct ShellPreset {
 };
 
 struct TurretVisualPreset {
-    Texture texture;
+    TextureRect textureRect;
     PixelCoord origin;
     PixelCoord size;
     std::string shotSound;
@@ -49,7 +49,7 @@ struct TurretPreset {
 };
 
 struct MobVisualPreset {
-    Texture texture;
+    TextureRect textureRect;
     PixelCoord origin;
     PixelCoord size;
     uint8_t frameTicks;
@@ -72,7 +72,7 @@ struct MobPreset {
 };
 
 struct BlockVisualPreset {
-    Texture texture;
+    TextureRect textureRect;
     PixelCoord origin;
     PixelCoord size;
     uint8_t frameTicks;
