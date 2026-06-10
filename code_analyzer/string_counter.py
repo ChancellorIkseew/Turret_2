@@ -1,5 +1,6 @@
-import os
+from pathlib import Path
 import sys
+
 
 EXCLUDED_FILENAMES = {
     "glad.h",
@@ -7,12 +8,10 @@ EXCLUDED_FILENAMES = {
     "khrplatform.h",
 }
 
-def count_in_file(file_path) -> int:
-    base_name = os.path.basename(file_path)
-    if base_name in EXCLUDED_FILENAMES:
+def count_in_file(file_path: Path) -> int:
+    if file_path.name in EXCLUDED_FILENAMES:
         print(f"ignored: {file_path}")
         return 0
-    extension = os.path.splitext(base_name)[1].lower()
 
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -24,12 +23,11 @@ def count_in_file(file_path) -> int:
         print(f"processing error: {file_path}: {e}")
     return 0
 
-def count_in_directory(directory) -> int:
+def count_in_directory(directory_path: Path) -> int:
     count = 0
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            file_path = os.path.join(root, file)
-            count += count_in_file(file_path)
+    for path in directory_path.rglob('*'):
+        if path.is_file():
+            count += count_in_file(path)
     return count
 
 if __name__ == "__main__":
@@ -37,8 +35,8 @@ if __name__ == "__main__":
         print("usage: python string_counter.py <directory_to_check>")
         sys.exit(1)
     
-    target_dir = sys.argv[1]
-    if not os.path.isdir(target_dir):
+    target_dir = Path(sys.argv[1])
+    if not target_dir.is_dir():
         print(f"error: {target_dir} is not a directory")
         sys.exit(1)
     
