@@ -50,7 +50,7 @@ public:
         glEnableVertexArrayAttrib(vao, 2);
         // 4 компонента GL_UNSIGNED_BYTE (по 1 байту на R, G, B, A). 
         // GL_TRUE нормализует 0..255 в 0.0f..1.0f в шейдере автоматически.
-        glVertexArrayAttribFormat(vao, 2, 4, GL_UNSIGNED_BYTE, GL_TRUE, offsetof(Vertex, color));
+        glVertexArrayAttribFormat(vao, 2, GL_BGRA, GL_UNSIGNED_BYTE, GL_TRUE, offsetof(Vertex, color));
         glVertexArrayAttribBinding(vao, 2, 0);
 
         // ЗАПЕКАЕМ ИНДЕКСЫ ОДИН РАЗ ПРИ СТАРТЕ

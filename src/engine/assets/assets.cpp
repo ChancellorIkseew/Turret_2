@@ -42,4 +42,8 @@ void Assets::load(Renderer& renderer) {
     std::string vertexLighting = io::readFile(path / "vertex_lighting.glsl");
     std::string fragmentLighting = io::readFile(path / "fragment_lighting.glsl");
     lightingShader = std::make_unique<ShaderProgram>(vertexLighting.c_str(), fragmentLighting.c_str(), Pipeline(GL_ONE, GL_ONE, true));
+
+    std::string vertexUI = io::readFile(path / "vertex_ui.glsl");
+    std::string fragmentUI = io::readFile(path / "fragment_ui.glsl");
+    uiShader = std::make_unique<ShaderProgram>(vertexUI.c_str(), fragmentUI.c_str(), Pipeline());
 }
