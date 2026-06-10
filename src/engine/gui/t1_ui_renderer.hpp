@@ -14,15 +14,6 @@ class T1_UIRenderer : public mingui::RenderBridge {
     Renderer& renderer;
     const TextureRect nodeBase;
     const float scale = 1;
-
-    inline constexpr uint32_t colorRGBA(uint32_t hexRGBA) noexcept {
-
-    return std::byteswap(
-         (hexRGBA & 0x00FF00FF) |                  // Зеленый и Альфа остаются на месте
-        ((hexRGBA & 0xFF000000) >> 16) |          // Красный (старший) летит на место Синего
-        ((hexRGBA & 0x0000FF00) << 16));           // Синий (младший) летит на место Красного
-    }
-
 public:
     T1_UIRenderer(Renderer& renderer, TextureRect nodeBase) : renderer(renderer), nodeBase(nodeBase) {}
     ~T1_UIRenderer() final = default;
@@ -32,7 +23,7 @@ public:
         const PixelCoord size(rect.size.x, rect.size.y);
         constexpr PixelCoord ORIGIN(0.f, 0.f);
         constexpr float ANGLE_RAD = 0;
-        renderer.draw(nodeBase, position, size, ORIGIN, ANGLE_RAD, colorRGBA(rect.color));
+        renderer.draw(nodeBase, position, size, ORIGIN, ANGLE_RAD, rect.color);
     }
     void drawText(mingui::Text text) final {
         text::drawString(renderer, text.string, { text.position.x, text.position.y });

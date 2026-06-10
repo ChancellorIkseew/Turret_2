@@ -393,7 +393,7 @@
     <ClInclude Include="src\engine\render\shader_program.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\render\vertex_buffer.hpp">
+    <ClInclude Include="src\engine\render\render_geometry.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\render\texture_rect.hpp">

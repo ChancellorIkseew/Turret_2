@@ -4,9 +4,9 @@
 #include <stdexcept>
 #include "glad/glad.h"
 #include "framebuffer.hpp"
+#include "render_geometry.hpp"
 #include "shader_program.hpp"
 #include "texture.hpp"
-#include "vertex_buffer.hpp"
 
 Renderer::Renderer(SDL_Window* sdlWindow) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);

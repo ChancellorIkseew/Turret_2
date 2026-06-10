@@ -15,13 +15,6 @@
 constexpr uint32_t BLACK = 0x00'00'00'FF;
 constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
 
-inline constexpr uint32_t colorRGBA(uint32_t hexRGBA) noexcept {
-    return std::byteswap(
-        (hexRGBA & 0x00FF00FF) |
-        ((hexRGBA & 0xFF000000) >> 16) |
-        ((hexRGBA & 0x0000FF00) << 16));
-}
-
 GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
 mainCanvas(mainWindow.getSize(),
@@ -32,7 +25,7 @@ input(mainWindow.getInput()) { }
 
 static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, const TextureRect nodeBase) {
     PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
-    renderer.draw(nodeBase, position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, colorRGBA(BLACK));
+    renderer.draw(nodeBase, position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, BLACK);
     position += PixelCoord(20.f, 20.f);
     text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
     position.y += 20.f;

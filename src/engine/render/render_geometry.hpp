@@ -1,4 +1,5 @@
 #pragma once
+#include <bit>
 #include <cmath>
 #include <vector>
 #include "glad/glad.h"
@@ -7,7 +8,7 @@
 struct Vertex {
     float x, y;     // position
     float u, v;     // texcoord
-    uint32_t color; // RGBA
+    uint32_t color; // ARGB
 };
 
 class RenderGeometry {
@@ -97,7 +98,7 @@ public:
     void addQuad(const TextureRect& textureRect,
         const PixelCoord position, const PixelCoord size,
         const PixelCoord origin, const double angleRad,
-        uint32_t color = 0xFFFFFFFF) // <-- Добавили аргумент по умолчанию
+        const uint32_t colorRGBA)
     {
         float localX[4] = { 0.0f - origin.x, size.x - origin.x, size.x - origin.x, 0.0f - origin.x };
         float localY[4] = { 0.0f - origin.y, 0.0f - origin.y, size.y - origin.y, size.y - origin.y };
@@ -129,10 +130,11 @@ public:
         quad[3].u = textureRect.x; quad[3].v = vMax;
 
         // === ЗАПИСЫВАЕМ ЦВЕТ В КАЖДУЮ ВЕРШИНУ ===
-        quad[0].color = color;
-        quad[1].color = color;
-        quad[2].color = color;
-        quad[3].color = color;
+        const uint32_t colorARGB  = std::rotr(colorRGBA, 8);
+        quad[0].color = colorARGB;
+        quad[1].color = colorARGB;
+        quad[2].color = colorARGB;
+        quad[3].color = colorARGB;
 
         vertexAccumulator.insert(vertexAccumulator.end(), quad, quad + 4);
     }
