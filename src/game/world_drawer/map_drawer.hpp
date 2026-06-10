@@ -13,25 +13,14 @@ class WorldMap;
 
 class MapDrawer {
     std::map<uint8_t, std::vector<PixelCoord>> cachedFloor;
-    std::map<uint8_t, std::vector<PixelCoord>> cachedOre;
     TileCoord cashedStart, cashedEnd;
     std::map<uint8_t, TextureRect> floorTextures;
     std::map<uint8_t, TextureRect> oreTextures;
-    std::vector<float> positions;
-    std::vector<float> uvs;
-    std::vector<int> indexCache;
-    PixelCoord atlasSize;
 public:
     MapDrawer(const Assets& assets) { updateTextures(assets); }
     void updateTextures(const Assets& assets);
     void cacheFloor(const WorldMap& map);
-    void cacheOverlay(const WorldMap& map);
-    void draw(const Camera& camera, const Renderer& renderer, const WorldMap& map);
+    void draw(const Camera& camera, Renderer& renderer, const WorldMap& map);
 private:
-    void renderLayer(
-        const Renderer& renderer,
-        const std::map<uint8_t, std::vector<PixelCoord>>& cachedLayer,
-        const std::map<uint8_t, TextureRect>& textures,
-        const PixelCoord tileSize,
-        const PixelCoord translation);
+    void renderFloor(Renderer& renderer);
 };

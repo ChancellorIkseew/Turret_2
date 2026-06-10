@@ -11,6 +11,7 @@
 #include "game/systems/turret_components.hpp"
 #include "game/world/world.hpp"
 #include "game/events/events.hpp"
+#include "engine/assets/shaders.hpp" // temporary
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
@@ -100,6 +101,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     scriptsHandler.execute();
     //
     camera.update(mainWindow.getSize());
+    renderer.setShaderProgram(*baseShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation(), mainWindow.getSize());
     worldDrawer.draw(camera, renderer, *world, presets, engine.getAssets(), timeCount.getTickCount());
     world->getBlueprints().draw(renderer, engine); // temporary
@@ -107,7 +109,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
     renderer.setView(1.f, PixelCoord(0.f, 0.f), mainWindow.getSize());
-    gui->draw(mainWindow.getRenderer(), engine.getAssets().getAtlas());
+    gui->draw(renderer, engine.getAssets().getAtlas());
     mainWindow.render();
 }
 
@@ -117,4 +119,3 @@ void GameSession::setPaused(const bool flag, Engine& engine) {
     if (paused) audio.pauseWorldSounds();
     else        audio.resumeWorldSounds();
 }
-

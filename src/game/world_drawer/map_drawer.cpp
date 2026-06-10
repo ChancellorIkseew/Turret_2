@@ -18,10 +18,8 @@ void MapDrawer::updateTextures(const Assets& assets) {
         floorTextures.emplace(id, assets.getAtlas().at(name));
     }
     for (const auto& [name, id] : assets.getPresets().getOres()) {
-        cachedOre.emplace(id.asUint(), std::vector<PixelCoord>());
         oreTextures.emplace(id.asUint(), assets.getAtlas().at(name));
     }
-    atlasSize = assets.getAtlas().getSize();
 }
 
 void MapDrawer::cacheFloor(const WorldMap& map) {
@@ -37,42 +35,32 @@ void MapDrawer::cacheFloor(const WorldMap& map) {
     }
 }
 
-void MapDrawer::cacheOverlay(const WorldMap& map) {
-    for (auto& [_type, layer] : cachedOre) {
-        layer.clear();
-    }
-    //
-    for (int x = cashedStart.x; x < cashedEnd.x; ++x) {
-        for (int y = cashedStart.y; y < cashedEnd.y; ++y) {
-            if (map.at(x, y).ore != OrePresetID(0))
-                cachedOre.at(map.at(x, y).ore.asUint()).push_back(t1::pixel(x, y));
+void MapDrawer::renderFloor(Renderer& renderer) {
+    for (const auto& [tileType, layer] : cachedFloor) {
+        if (layer.empty())
+            continue;
+        const TextureRect textureRect = floorTextures.at(tileType);
+        for (const PixelCoord position : layer) {
+            renderer.draw(textureRect, position - BLENDING_AREA, FLOOR_SIZE);
         }
     }
 }
 
-void MapDrawer::renderLayer(
-    const Renderer& renderer,
-    const std::map<uint8_t, std::vector<PixelCoord>>& cachedLayer,
-    const std::map<uint8_t, TextureRect>& textures,
-    const PixelCoord tileSize,
-    const PixelCoord translation) {
-
-    for (const auto& [tileType, layer] : cachedLayer) {
-        if (layer.empty())
-            continue;
-
-    }
-}
-
-void MapDrawer::draw(const Camera& camera, const Renderer& renderer, const WorldMap& map) {
+void MapDrawer::draw(const Camera& camera, Renderer& renderer, const WorldMap& map) {
     const TileCoord start = camera.getStartTile();
     const TileCoord end = camera.getEndTile();
     if (cashedStart != start || cashedEnd != end || Events::active(Event::map_changed)) {
         cashedStart = start;
         cashedEnd = end;
         cacheFloor(map);
-        cacheOverlay(map);
     }
-    renderLayer(renderer, cachedFloor, floorTextures, FLOOR_SIZE, camera.getTranslation() + BLENDING_AREA);
-    renderLayer(renderer, cachedOre, oreTextures, TILE_SIZE, camera.getTranslation());
+
+    renderFloor(renderer);
+    for (int x = start.x; x < end.x; ++x) {
+        for (int y = start.y; y < end.y; ++y) {
+            uint8_t ore = map.at(x, y).ore.asUint();
+            if (map.at(x, y).ore != OrePresetID(0))
+                renderer.draw(oreTextures[ore], t1::pixel(x, y), TILE_SIZE);
+        }
+    }
 }
