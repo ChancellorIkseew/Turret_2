@@ -55,9 +55,12 @@ void MainWindow::pollEvents() {
         case SDL_EVENT_QUIT:
             close();
             break;
-        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_RESIZED:{
             resized = true;
-            break;
+            int x = 0, y = 0;
+            SDL_GetWindowSize(sdlWindow, &x, &y);
+            renderer.resize(x, y);
+            break;}
         default:
             input.update(event);
             break;
