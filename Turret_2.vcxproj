@@ -53,6 +53,7 @@
     <ClInclude Include="src\engine\assets\presets.hpp" />
     <ClInclude Include="src\engine\assets\preset_id.hpp" />
     <ClInclude Include="src\engine\assets\preset_reader.hpp" />
+    <ClInclude Include="src\engine\assets\shaders.hpp" />
     <ClInclude Include="src\engine\assets\waves.hpp" />
     <ClInclude Include="src\engine\audio\audio.hpp" />
     <ClInclude Include="src\engine\audio\sound_queue.hpp" />

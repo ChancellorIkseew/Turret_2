@@ -2,6 +2,8 @@
 //
 #include "engine/io/folders.hpp"
 #include "engine/render/text.hpp"
+#include "shaders.hpp"
+#include "engine/io/io.hpp"
 
 static void loadTextures(Atlas& atlas, Renderer& renderer) {
     atlas.clear();
@@ -30,4 +32,14 @@ void Assets::load(Renderer& renderer) {
     indexes.load();
     presets.load(atlas);
     waves.load();
+
+    auto path = io::folders::RES / "shaders";
+
+    std::string vertexBase = io::readFile(path / "vertex.glsl");
+    std::string fragmentBase = io::readFile(path / "fragment_texturing.glsl");
+    baseShader = std::make_unique<ShaderProgram>(vertexBase.c_str(), fragmentBase.c_str(), Pipeline());
+
+    std::string vertexLighting = io::readFile(path / "vertex_lighting.glsl");
+    std::string fragmentLighting = io::readFile(path / "fragment_lighting.glsl");
+    lightingShader = std::make_unique<ShaderProgram>(vertexLighting.c_str(), fragmentLighting.c_str(), Pipeline(GL_ONE, GL_ONE, true));
 }

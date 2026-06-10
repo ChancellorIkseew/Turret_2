@@ -13,6 +13,7 @@ class ShaderProgram {
     Pipeline pipeline;
     unsigned int programID = 0;
 public:
+    ShaderProgram() = default;
     ShaderProgram(const char* vertexSource, const char* fragmentSource, const Pipeline pipeline) :
         pipeline(pipeline) {
         unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
