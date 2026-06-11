@@ -34,11 +34,11 @@ public:
     //
     void draw(const Texture2D& texture2D, const TextureRect& textureRect,
         const PixelCoord position, const PixelCoord size,
-        const PixelCoord origin, const double angleRad, const uint32_t color);
+        const PixelCoord origin, const float angleRad, const uint32_t color);
 
     void draw(const TextureRect& textureRect,
         const PixelCoord position, const PixelCoord size,
-        const PixelCoord origin = {0.f, 0.f}, const double angleRad = 0.0, const uint32_t color = 0xFF'FF'FF'FF);
+        const PixelCoord origin = {0.f, 0.f}, const float angleRad = 0.f, const uint32_t color = 0xFF'FF'FF'FF);
 
     void createAtlasTexture(SDL_Surface* sdlSurface);
 private:

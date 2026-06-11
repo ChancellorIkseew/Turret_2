@@ -97,7 +97,7 @@ public:
     // Метод генерации геометрии для одного спрайта
     void addQuad(const TextureRect& textureRect,
         const PixelCoord position, const PixelCoord size,
-        const PixelCoord origin, const double angleRad,
+        const PixelCoord origin, const float angleRad,
         const uint32_t colorRGBA)
     {
         float localX[4] = { 0.0f - origin.x, size.x - origin.x, size.x - origin.x, 0.0f - origin.x };
@@ -106,8 +106,8 @@ public:
         Vertex quad[4];
 
         if (std::abs(angleRad) > 0.00001) {
-            float cosA = std::cos(static_cast<float>(angleRad));
-            float sinA = std::sin(static_cast<float>(angleRad));
+            float cosA = std::cos(angleRad);
+            float sinA = std::sin(angleRad);
 
             for (int i = 0; i < 4; ++i) {
                 quad[i].x = position.x + (localX[i] * cosA - localY[i] * sinA);

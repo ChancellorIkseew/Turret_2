@@ -103,7 +103,7 @@ void Renderer::flush() {
 
 void Renderer::draw(const Texture2D& texture2D, const TextureRect& textureRect,
     const PixelCoord position, const PixelCoord size,
-    const PixelCoord origin, const double angleRad, const uint32_t color)
+    const PixelCoord origin, const float angleRad, const uint32_t color)
 {
     if (texture2D.getID() != currentTextureID || batchGeometry->isFull()) {
         flush();
@@ -117,7 +117,7 @@ void Renderer::draw(const Texture2D& texture2D, const TextureRect& textureRect,
 
 void Renderer::draw(const TextureRect& textureRect,
     const PixelCoord position, const PixelCoord size,
-    const PixelCoord origin, const double angleRad, const uint32_t color)
+    const PixelCoord origin, const float angleRad, const uint32_t color)
 {
     draw(*atlasTexture, textureRect, position, size, origin, angleRad, color);
     /*
