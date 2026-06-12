@@ -1,6 +1,7 @@
 #include "assets.hpp"
 //
 #include "engine/io/folders.hpp"
+#include "engine/render/glad/glad.h"
 #include "engine/render/text.hpp"
 #include "shaders.hpp"
 #include "engine/io/io.hpp"
@@ -37,13 +38,13 @@ void Assets::load(Renderer& renderer) {
 
     std::string vertexBase = io::readFile(path / "vertex.glsl");
     std::string fragmentBase = io::readFile(path / "fragment_texturing.glsl");
-    baseShader = std::make_unique<ShaderProgram>(vertexBase.c_str(), fragmentBase.c_str(), Pipeline());
+    shaders.baseShader.emplace(vertexBase.c_str(), fragmentBase.c_str(), Pipeline());
 
     std::string vertexLighting = io::readFile(path / "vertex_lighting.glsl");
     std::string fragmentLighting = io::readFile(path / "fragment_lighting.glsl");
-    lightingShader = std::make_unique<ShaderProgram>(vertexLighting.c_str(), fragmentLighting.c_str(), Pipeline(GL_ONE, GL_ONE, true));
+    shaders.lightingShader.emplace(vertexLighting.c_str(), fragmentLighting.c_str(), Pipeline(GL_ONE, GL_ONE, true));
 
     std::string vertexUI = io::readFile(path / "vertex_ui.glsl");
     std::string fragmentUI = io::readFile(path / "fragment_ui.glsl");
-    uiShader = std::make_unique<ShaderProgram>(vertexUI.c_str(), fragmentUI.c_str(), Pipeline());
+    shaders.uiShader.emplace(vertexUI.c_str(), fragmentUI.c_str(), Pipeline());
 }

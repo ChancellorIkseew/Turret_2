@@ -191,6 +191,7 @@
     <ClCompile Include="src\engine\render\glad\glad.c" />
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\renderer.cpp" />
+    <ClCompile Include="src\engine\render\shader_program.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
     <ClCompile Include="src\engine\render\texture_2d.cpp" />
     <ClCompile Include="src\engine\scripting\scripting.cpp" />

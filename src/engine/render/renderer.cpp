@@ -1,6 +1,6 @@
 #include "renderer.hpp"
 //
-#include <SDL3/SDL.h>
+#include <SDL3/SDL_video.h>
 #include <stdexcept>
 #include "glad/glad.h"
 #include "framebuffer.hpp"

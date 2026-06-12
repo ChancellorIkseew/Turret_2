@@ -1,7 +1,10 @@
 #pragma once
-#include <memory>
+#include <optional>
 #include "engine/render/shader_program.hpp"
 
-inline std::unique_ptr<ShaderProgram> baseShader;
-inline std::unique_ptr<ShaderProgram> lightingShader;
-inline std::unique_ptr<ShaderProgram> uiShader;
+class Shaders {
+public:
+    std::optional<ShaderProgram> baseShader;
+    std::optional<ShaderProgram> lightingShader;
+    std::optional<ShaderProgram> uiShader;
+};

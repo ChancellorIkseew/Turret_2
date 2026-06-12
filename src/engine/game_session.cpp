@@ -11,7 +11,6 @@
 #include "game/systems/turret_components.hpp"
 #include "game/world/world.hpp"
 #include "game/events/events.hpp"
-#include "engine/assets/shaders.hpp" // temporary
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
@@ -88,6 +87,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     Events::reset(); // for editor // needs update
     auto& mainWindow = engine.getMainWindow();
     auto& renderer = mainWindow.getRenderer();
+    auto& shaders = engine.getAssets().getShaders();
     //
     mainWindow.pollEvents();
     gui->callback();
@@ -101,14 +101,14 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     scriptsHandler.execute();
     //
     camera.update(mainWindow.getSize());
-    renderer.setShaderProgram(*baseShader);
+    renderer.setShaderProgram(*shaders.baseShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation(), mainWindow.getSize());
     worldDrawer.draw(camera, renderer, *world, presets, engine.getAssets(), timeCount.getTickCount());
     world->getBlueprints().draw(renderer, engine); // temporary
     gui->drawDiegeticElements(renderer);           // temporary update will be related with blueprints
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
-    renderer.setShaderProgram(*uiShader);
+    renderer.setShaderProgram(*shaders.uiShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f), mainWindow.getSize());
     gui->draw(renderer, engine.getAssets().getAtlas());
     mainWindow.render();
