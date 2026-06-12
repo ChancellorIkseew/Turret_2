@@ -14,23 +14,17 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
         const BlockPreset& preset = presets.getBlock(BlockPresetID(tileData.id));
         const PixelCoord size = preset.visual.size;
         const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
+        const uint32_t color = canBuild ? 0xFF'FF'FF'00 + alpha : 0xB4'34'24'C8;
 
-        //if (canBuild) renderer.setColorModifier(255, 255, 255, alpha);
-        //else          renderer.setColorModifier(180, 52, 52, 200);
-
-        if (!preset.rotatable)
-            renderer.draw(preset.visual.textureRect, position , size, PixelCoord(0.f, 0.f), 0.f);
-        else {
-            const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
-            const PixelCoord origin = size / 2.f;
-            renderer.draw(preset.visual.textureRect, position + origin, size, origin, angleRad);
-            if (preset.archetype == BlockType::turret) {
-                const TurretPreset& turretPreset = presets.getTurret(preset.turret);
-                const PixelCoord size = turretPreset.visual.size;
-                renderer.draw(turretPreset.visual.textureRect, position + origin, size, turretPreset.visual.origin, angleRad + t1::PI_F);
-            }
+        const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
+        const PixelCoord origin = size / 2.f;
+        renderer.draw(preset.visual.textureRect, position + origin, size, origin, angleRad, color);
+        if (preset.archetype == BlockType::turret) {
+            const TurretPreset& turretPreset = presets.getTurret(preset.turret);
+            const PixelCoord size = turretPreset.visual.size;
+            renderer.draw(turretPreset.visual.textureRect, position + origin, size,
+                turretPreset.visual.origin, angleRad + t1::PI_F, color);
         }
-        //renderer.resetColorModifier();
         return;
     }
     //
