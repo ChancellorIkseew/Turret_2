@@ -39,7 +39,7 @@ void Renderer::setShaderProgram(const ShaderProgram& shaderProgram) {
         flush();
         targetLightmap = pipeline.useLightmap;
         if (targetLightmap) {
-            lightmapFBO->bind();
+            lightmapFBO->bindForRender();
             glClear(GL_COLOR_BUFFER_BIT);
         }
         else {
@@ -93,8 +93,7 @@ void Renderer::resize(const int x, const int y) {
 void Renderer::flush() {
     if (batchGeometry->isEmpty())
         return;
-    batchGeometry->upload();
-    batchGeometry->bind();
+    batchGeometry->uploadAndBind();
     size_t spriteCount = batchGeometry->getVerticesCount() / 4;
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(spriteCount * 6), GL_UNSIGNED_INT, nullptr);
     batchGeometry->clear();

@@ -17,48 +17,44 @@ class RenderGeometry {
     unsigned int ebo = 0;
 
     std::vector<Vertex> vertexAccumulator;
-    size_t maxVerticesCount = 0;
 
+    static constexpr size_t MAX_SPRITES = 10000;
+    static constexpr size_t MAX_VERTICES = MAX_SPRITES * 4;
+    static constexpr size_t MAX_INDICES = MAX_SPRITES * 6;
 public:
     RenderGeometry() {
-        size_t maxSprites = 10000;
-        maxVerticesCount = maxSprites * 4;
-        size_t maxIndices = maxSprites * 6;
-
-        vertexAccumulator.reserve(maxVerticesCount);
+        constexpr GLuint VERTEX_SLOT_0 = 0;
+        constexpr GLint COMPONENTS_VEC2 = 2;
+        constexpr GLint BUFFER_OFFSET_START = 0;
+        enum Loc : GLuint { position = 0, texcoord = 1, color = 2 };
 
         glCreateVertexArrays(1, &vao);
         glCreateBuffers(1, &vbo);
         glCreateBuffers(1, &ebo);
 
-        glNamedBufferStorage(vbo, maxVerticesCount * sizeof(Vertex), nullptr, GL_DYNAMIC_STORAGE_BIT);
-        glNamedBufferStorage(ebo, maxIndices * sizeof(unsigned int), nullptr, GL_DYNAMIC_STORAGE_BIT);
+        glNamedBufferStorage(vbo, MAX_VERTICES * sizeof(Vertex), nullptr, GL_DYNAMIC_STORAGE_BIT);
+        glNamedBufferStorage(ebo, MAX_INDICES * sizeof(unsigned int), nullptr, GL_DYNAMIC_STORAGE_BIT);
 
-        glVertexArrayVertexBuffer(vao, 0, vbo, 0, sizeof(Vertex));
-        // Связываем EBO с VAO (для индексных вызовов)
+        glVertexArrayVertexBuffer(vao, VERTEX_SLOT_0, vbo, BUFFER_OFFSET_START, sizeof(Vertex));
         glVertexArrayElementBuffer(vao, ebo);
+        
+        glEnableVertexArrayAttrib(vao, Loc::position);
+        glVertexArrayAttribFormat(vao, Loc::position, COMPONENTS_VEC2, GL_FLOAT, GL_FALSE, offsetof(Vertex, x));
+        glVertexArrayAttribBinding(vao, Loc::position, VERTEX_SLOT_0);
+        //
+        glEnableVertexArrayAttrib(vao, Loc::texcoord);
+        glVertexArrayAttribFormat(vao, Loc::texcoord, COMPONENTS_VEC2, GL_FLOAT, GL_FALSE, offsetof(Vertex, u));
+        glVertexArrayAttribBinding(vao, Loc::texcoord, VERTEX_SLOT_0);
+        //
+        glEnableVertexArrayAttrib(vao, Loc::color);
+        glVertexArrayAttribFormat(vao, Loc::color, GL_BGRA, GL_UNSIGNED_BYTE, GL_TRUE, offsetof(Vertex, color));
+        glVertexArrayAttribBinding(vao, Loc::color, VERTEX_SLOT_0);
 
-        // Описываем атрибуты (0 - Позиция, 1 - UV, 2 - Цвет)
-        glEnableVertexArrayAttrib(vao, 0);
-        glVertexArrayAttribFormat(vao, 0, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, x));
-        glVertexArrayAttribBinding(vao, 0, 0);
-
-        glEnableVertexArrayAttrib(vao, 1);
-        glVertexArrayAttribFormat(vao, 1, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, u));
-        glVertexArrayAttribBinding(vao, 1, 0);
-
-        // === НАШЕ ИЗМЕНЕНИЕ: ДОБАВЛЯЕМ АТРИБУТ ЦВЕТА ===
-        glEnableVertexArrayAttrib(vao, 2);
-        // 4 компонента GL_UNSIGNED_BYTE (по 1 байту на R, G, B, A). 
-        // GL_TRUE нормализует 0..255 в 0.0f..1.0f в шейдере автоматически.
-        glVertexArrayAttribFormat(vao, 2, GL_BGRA, GL_UNSIGNED_BYTE, GL_TRUE, offsetof(Vertex, color));
-        glVertexArrayAttribBinding(vao, 2, 0);
-
-        // ЗАПЕКАЕМ ИНДЕКСЫ ОДИН РАЗ ПРИ СТАРТЕ
+        vertexAccumulator.reserve(MAX_VERTICES);
         std::vector<unsigned int> indices;
-        indices.reserve(maxIndices);
+        indices.reserve(MAX_INDICES);
         unsigned int offset = 0;
-        for (size_t i = 0; i < maxSprites; ++i) {
+        for (size_t i = 0; i < MAX_SPRITES; ++i) {
             indices.push_back(offset + 0);
             indices.push_back(offset + 1);
             indices.push_back(offset + 2);
@@ -76,9 +72,8 @@ public:
         glDeleteVertexArrays(1, &vao);
     }
 
-    // Проверка на заполненность буфера
     bool isFull() const noexcept {
-        return vertexAccumulator.size() >= maxVerticesCount;
+        return vertexAccumulator.size() >= MAX_VERTICES;
     }
 
     bool isEmpty() const noexcept {
@@ -89,12 +84,10 @@ public:
         return vertexAccumulator.size();
     }
 
-    // Очистка аккумулятора на CPU
     void clear() noexcept {
         vertexAccumulator.clear();
     }
 
-    // Метод генерации геометрии для одного спрайта
     void addQuad(const TextureRect& textureRect,
         const PixelCoord position, const PixelCoord size,
         const PixelCoord origin, const float angleRad,
@@ -130,7 +123,6 @@ public:
         quad[2].u = uMax;          quad[2].v = vMax;
         quad[3].u = textureRect.x; quad[3].v = vMax;
 
-        // === ЗАПИСЫВАЕМ ЦВЕТ В КАЖДУЮ ВЕРШИНУ ===
         const uint32_t colorARGB  = std::rotr(colorRGBA, 8);
         quad[0].color = colorARGB;
         quad[1].color = colorARGB;
@@ -140,10 +132,9 @@ public:
         vertexAccumulator.insert(vertexAccumulator.end(), quad, quad + 4);
     }
 
-    // Загрузка накопленного в GPU
-    void upload() {
-        glNamedBufferSubData(vbo, 0, vertexAccumulator.size() * sizeof(Vertex), vertexAccumulator.data());
+    void uploadAndBind() {
+        constexpr GLintptr BUFFER_OFFSET_START = 0;
+        glNamedBufferSubData(vbo, BUFFER_OFFSET_START, vertexAccumulator.size() * sizeof(Vertex), vertexAccumulator.data());
+        glBindVertexArray(vao);
     }
-
-    void bind() const { glBindVertexArray(vao); }
 };
