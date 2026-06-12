@@ -45,8 +45,6 @@ void Atlas::build(Renderer& renderer) {
         SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
     }
     renderer.createAtlasTexture(comonSurface);
-
-
     SDL_DestroySurface(comonSurface);
     clearTemporary(temporarySurfaces);
 }
@@ -68,8 +66,4 @@ TextureRect Atlas::at(const std::string& name) const noexcept {
 void Atlas::clear() {
     atlas.clear();
     clearTemporary(temporarySurfaces);
-}
-
-TextureRect Atlas::getComonTexture() const noexcept {
-    return TextureRect{ 0.f, 0.f, 1.f, 1.f };
 }

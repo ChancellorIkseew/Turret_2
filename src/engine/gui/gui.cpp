@@ -44,7 +44,7 @@ void GUI::draw(Renderer& renderer, const Atlas& atlas) {
     if (showFPS)
         drawDebugPanel(renderer, mainWindow, atlas.at("particle_base"));
     if (showAtlas)
-        renderer.draw(atlas.getComonTexture(), PixelCoord(0, 0), atlas.getSize());  
+        renderer.draw(atlas.getComonTextureRect(), PixelCoord(0, 0), atlas.getSize());  
 }
 
 void GUI::translate(const std::string& lang) {
