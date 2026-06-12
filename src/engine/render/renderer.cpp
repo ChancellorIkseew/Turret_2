@@ -6,7 +6,6 @@
 #include "framebuffer.hpp"
 #include "render_geometry.hpp"
 #include "shader_program.hpp"
-#include "texture.hpp"
 
 Renderer::Renderer(SDL_Window* sdlWindow) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -119,17 +118,7 @@ void Renderer::draw(const TextureRect& textureRect,
     const PixelCoord position, const PixelCoord size,
     const PixelCoord origin, const float angleRad, const uint32_t color)
 {
-    draw(*atlasTexture, textureRect, position, size, origin, angleRad, color);
-    /*
-    if (atlasTextureID != currentTextureID || batchGeometry->isFull()) {
-        flush();
-        currentTextureID = atlasTextureID;
-        constexpr unsigned int SLOT = 0;
-        glBindTextureUnit(SLOT, currentTextureID);
-    }
-
-    batchGeometry->addQuad(textureRect, position, size, origin, angleRad, color);
-    */
+    draw(atlasTexture.value(), textureRect, position, size, origin, angleRad, color);
 }
 
 static Texture2D convert(SDL_Surface* rawSurface) {
@@ -152,7 +141,6 @@ void Renderer::createAtlasTexture(SDL_Surface* sdlSurface) {
     if (!converted)
         return;
     using TextureData = const unsigned char*;
-    atlasTexture = std::make_unique<Texture2D>(converted->w, converted->h, static_cast<TextureData>(converted->pixels));
-    atlasTextureID = atlasTexture->getID();
+    atlasTexture.emplace(converted->w, converted->h, static_cast<TextureData>(converted->pixels));
     SDL_DestroySurface(converted);
 }

@@ -88,7 +88,7 @@
     <ClInclude Include="src\engine\render\renderer.hpp" />
     <ClInclude Include="src\engine\render\shader_program.hpp" />
     <ClInclude Include="src\engine\render\text.hpp" />
-    <ClInclude Include="src\engine\render\texture.hpp" />
+    <ClInclude Include="src\engine\render\texture_2d.hpp" />
     <ClInclude Include="src\engine\render\texture_rect.hpp" />
     <ClInclude Include="src\engine\render\render_geometry.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
@@ -192,6 +192,7 @@
     <ClCompile Include="src\engine\render\packer\packer.cpp" />
     <ClCompile Include="src\engine\render\renderer.cpp" />
     <ClCompile Include="src\engine\render\text.cpp" />
+    <ClCompile Include="src\engine\render\texture_2d.cpp" />
     <ClCompile Include="src\engine\scripting\scripting.cpp" />
     <ClCompile Include="src\engine\settings\settings.cpp" />
     <ClCompile Include="src\engine\util\time.cpp" />

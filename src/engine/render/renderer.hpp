@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
+#include <optional>
 #include "engine/coords/pixel_coord.hpp"
+#include "texture_2d.hpp"
 
 struct SDL_Surface;
 struct SDL_Window;
@@ -10,17 +12,15 @@ typedef struct SDL_GLContextState* SDL_GLContext;
 class LightmapFramebuffer;
 class RenderGeometry;
 class ShaderProgram;
-class Texture2D;
 struct TextureRect;
 
 class Renderer {
     SDL_GLContext glContext = nullptr;
     unsigned int currentShaderProgramID = 0xFF'FF'FF'FF;
     unsigned int currentTextureID = 0xFF'FF'FF'FF;
-    unsigned int atlasTextureID = 0xFF'FF'FF'FF;
     std::unique_ptr<RenderGeometry> batchGeometry;
     std::unique_ptr<LightmapFramebuffer> lightmapFBO;
-    std::unique_ptr<Texture2D> atlasTexture;
+    std::optional<Texture2D> atlasTexture;
     bool targetLightmap = false;
 public:
     Renderer(SDL_Window* sdlWindow);

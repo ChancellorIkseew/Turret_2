@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include "config.hpp"
 #include "engine/coords/pixel_coord.hpp"
-#include "texture.hpp"
 #include "texture_rect.hpp"
 
 class Renderer;
