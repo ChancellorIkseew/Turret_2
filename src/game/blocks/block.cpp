@@ -5,7 +5,7 @@
 #include "game/world_drawer/blocks_drawer.hpp"
 
 void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
-    renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC, PixelCoord(0.f, 0.f), 0.f);
+    renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC);
 }
 
 static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Down, Right, Up, Left
