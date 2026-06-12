@@ -106,8 +106,9 @@ public:
         Vertex quad[4];
 
         if (std::abs(angleRad) > 0.00001) {
-            float cosA = std::cos(angleRad);
-            float sinA = std::sin(angleRad);
+            constexpr float PI = 3.1415927f;
+            float cosA = std::cos(PI - angleRad);
+            float sinA = std::sin(PI - angleRad);
 
             for (int i = 0; i < 4; ++i) {
                 quad[i].x = position.x + (localX[i] * cosA - localY[i] * sinA);
