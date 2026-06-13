@@ -78,10 +78,14 @@ void Renderer::setView(float scale, const PixelCoord translation) {
     glProgramUniformMatrix4fv(currentShaderProgramID, 0, 1, GL_FALSE, view);
 }
 
+void Renderer::clear() {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 void Renderer::present(SDL_Window* sdlWindow) {
     flush();
     SDL_GL_SwapWindow(sdlWindow);
-    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Renderer::resize(const int x, const int y) {

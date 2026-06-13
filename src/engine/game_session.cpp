@@ -100,6 +100,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     }
     scriptsHandler.execute();
     //
+    mainWindow.clear();
     camera.update(mainWindow.getSize());
     renderer.setShaderProgram(*shaders.baseShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation());

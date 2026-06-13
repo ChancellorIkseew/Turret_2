@@ -40,6 +40,9 @@ public:
     //
     void takeScreenshot(const std::filesystem::path& path) const;
     void pollEvents();
+    void clear() {
+        renderer.clear();
+    }
     void render() {
         renderer.present(sdlWindow);
         makeDelay();

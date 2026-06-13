@@ -32,6 +32,7 @@ public:
     void setShaderProgram(const ShaderProgram& shaderProgram);
     void resize(const int x, const int y);
     //
+    void clear();
     void present(SDL_Window* sdlWindow);
     //
     void draw(const Texture2D& texture2D, const TextureRect& textureRect,
