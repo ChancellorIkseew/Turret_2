@@ -7,7 +7,7 @@
 #include "render_geometry.hpp"
 #include "shader_program.hpp"
 
-Renderer::Renderer(SDL_Window* sdlWindow) {
+Renderer::Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize) : viewportSize(viewportSize) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -59,7 +59,7 @@ void Renderer::setShaderProgram(const ShaderProgram& shaderProgram) {
     glBlendFunc(pipeline.srcBlend, pipeline.dstBlend);
 }
 
-void Renderer::setView(float scale, const PixelCoord translation, const PixelCoord windowSize) {
+void Renderer::setView(float scale, const PixelCoord translation) {
     flush();
     GLfloat view[16] = {
         1.0f, 0.0f, 0.0f, 0.0f,
@@ -68,12 +68,12 @@ void Renderer::setView(float scale, const PixelCoord translation, const PixelCoo
         0.0f, 0.0f, 0.0f, 1.0f
     };
 
-    view[0] = (2.0f * scale) / windowSize.x;
-    view[5] = (-2.0f * scale) / windowSize.y;
+    view[0] = (2.0f * scale) / viewportSize.x;
+    view[5] = (-2.0f * scale) / viewportSize.y;
     view[10] = -1.0f;
 
-    view[12] = -1.0f + (-2.0f * translation.x / windowSize.x) * scale;
-    view[13] = 1.0f - (-2.0f * translation.y / windowSize.y) * scale;
+    view[12] = -1.0f + (-2.0f * translation.x / viewportSize.x) * scale;
+    view[13] = 1.0f - (-2.0f * translation.y / viewportSize.y) * scale;
 
     glProgramUniformMatrix4fv(currentShaderProgramID, 0, 1, GL_FALSE, view);
 }
@@ -85,6 +85,7 @@ void Renderer::present(SDL_Window* sdlWindow) {
 }
 
 void Renderer::resize(const int x, const int y) {
+    viewportSize = PixelCoord(x, y);
     glViewport(0, 0, x, y);
     if (lightmapFBO)
         lightmapFBO->resize(x, y);
@@ -142,4 +143,19 @@ void Renderer::createAtlasTexture(SDL_Surface* sdlSurface) {
     using TextureData = const unsigned char*;
     atlasTexture.emplace(converted->w, converted->h, static_cast<TextureData>(converted->pixels));
     SDL_DestroySurface(converted);
+}
+
+std::string Renderer::takeScreenshot() const {
+    const int width = int(viewportSize.x);
+    const int height = int(viewportSize.y);
+    const size_t bufferSize = static_cast<size_t>(width * height * 4);
+    std::string pixels;
+    pixels.resize(bufferSize);
+
+    constexpr int SCREEN_BUFFER = 0;
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, SCREEN_BUFFER);
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+
+    return pixels;
 }

@@ -18,7 +18,7 @@ class Engine {
     EngineCommand command = EngineCommand::main_menu;
     std::unique_ptr<GameSession> session;
 public:
-    Engine(const std::string& windowTitle);
+    Engine(const std::string& windowTitle, const PixelCoord windowSize);
     ~Engine();
     void run();
     void loadWorldInGame(const std::string& folder);

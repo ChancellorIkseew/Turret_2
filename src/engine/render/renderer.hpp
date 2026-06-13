@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <optional>
+#include <string>
 #include "engine/coords/pixel_coord.hpp"
 #include "texture_2d.hpp"
 
@@ -21,12 +22,13 @@ class Renderer {
     std::unique_ptr<RenderGeometry> batchGeometry;
     std::unique_ptr<LightmapFramebuffer> lightmapFBO;
     std::optional<Texture2D> atlasTexture;
+    PixelCoord viewportSize;
     bool targetLightmap = false;
 public:
-    Renderer(SDL_Window* sdlWindow);
+    Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize);
     ~Renderer();
     //
-    void setView(float scale, const PixelCoord translation, const PixelCoord windowSize);
+    void setView(float scale, const PixelCoord translation);
     void setShaderProgram(const ShaderProgram& shaderProgram);
     void resize(const int x, const int y);
     //
@@ -41,6 +43,8 @@ public:
         const PixelCoord origin = {0.f, 0.f}, const float angleRad = 0.f, const uint32_t color = 0xFF'FF'FF'FF);
 
     void createAtlasTexture(SDL_Surface* sdlSurface);
+    //
+    std::string takeScreenshot() const;
 private:
     void flush();
     t1_disable_copy_and_move(Renderer)

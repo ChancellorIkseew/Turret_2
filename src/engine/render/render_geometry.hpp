@@ -2,6 +2,7 @@
 #include <bit>
 #include <cmath>
 #include <vector>
+#include "config.hpp"
 #include "glad/glad.h"
 #include "texture_rect.hpp"
 
@@ -137,4 +138,6 @@ public:
         glNamedBufferSubData(vbo, BUFFER_OFFSET_START, vertexAccumulator.size() * sizeof(Vertex), vertexAccumulator.data());
         glBindVertexArray(vao);
     }
+private:
+    t1_disable_copy_and_move(RenderGeometry)
 };

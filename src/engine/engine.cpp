@@ -14,7 +14,7 @@
 #include "game_session.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GameSession" class in hpp.
-Engine::Engine(const std::string& windowTitle) : mainWindow(windowTitle) { }
+Engine::Engine(const std::string& windowTitle, const PixelCoord windowSize) : mainWindow(windowTitle, windowSize) { }
 Engine::~Engine() = default;
 
 static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder,

@@ -41,6 +41,6 @@ public:
     void drawTextsBatched(std::span<const mingui::Text> texts) final { /* not needded */ }
     //
     void setScale(const float scale) final {
-        //renderer.setScale(scale);
+        renderer.setView(scale, PixelCoord(0.f, 0.f));
     }
 };
