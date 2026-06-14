@@ -16,7 +16,7 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
         const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
         const uint32_t color = canBuild ? 0xFF'FF'FF'00 + alpha : 0xB4'34'24'C8;
 
-        const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
+        const float angleRad = preset.rotatable ? static_cast<float>(rotation) * t1::PI_F * 0.5f : 0.f;
         const PixelCoord origin = size / 2.f;
         renderer.draw(preset.visual.textureRect, position + origin, size, origin, angleRad, color);
         if (preset.archetype == BlockType::turret) {

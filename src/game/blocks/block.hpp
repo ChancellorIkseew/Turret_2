@@ -29,9 +29,9 @@ enum class BlockType {
 };
 
 enum BlockRot : int8_t {
-    down  = 0,
+    up    = 0,
     right = 1,
-    up    = 2,
+    down  = 2,
     left  = 3,
     none  = -1
 };

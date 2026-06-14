@@ -8,8 +8,8 @@ void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) 
     renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC);
 }
 
-static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Down, Right, Up, Left
-static constexpr float dirY[] = { 1.0f, 0.0f, -1.0f, 0.0f }; // Y+ - Down, X+ - Right
+static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Up, Right, Down, Left
+static constexpr float dirY[] = { -1.0f, 0.0f, 1.0f, 0.0f }; // Y+ - Down
 
 void BeltBlock::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
     // works perfect (do not touch logic)
