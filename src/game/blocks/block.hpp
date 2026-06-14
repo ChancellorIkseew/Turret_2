@@ -1,5 +1,6 @@
 #pragma once
 #include "engine/assets/preset_id.hpp"
+#include "engine/coords/tile_coord.hpp"
 #include "engine/render/texture_rect.hpp"
 #include "game/common/physics_base.hpp"
 
@@ -29,11 +30,18 @@ enum class BlockType {
 };
 
 enum BlockRot : int8_t {
-    down  = 0,
+    up    = 0,
     right = 1,
-    up    = 2,
+    down  = 2,
     left  = 3,
     none  = -1
+};
+
+static constexpr TileCoord DIR_VECS[] = {
+    { 0, -1 }, // up
+    { 1, 0 },  // right
+    { 0, 1 },  // down
+    { -1, 0 }  // left
 };
 
 struct Block {

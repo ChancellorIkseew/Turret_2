@@ -89,6 +89,6 @@ void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camer
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = presets.getShell(soa.preset[i]).visual;
-        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, soa.angle[i]);
+        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
     }
 }

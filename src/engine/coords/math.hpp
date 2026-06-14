@@ -5,23 +5,13 @@
 #include "tile_coord.hpp"
 
 namespace t1 {
-    constexpr float PI_F = 3.1415927f;
-    constexpr double PI_D = 3.1415926535897931;
-
-    t1_finline_cxpr float radToDegree(const float radian) noexcept {
-        return radian * (180.0f / PI_F);
-    }
-    t1_finline_cxpr double radToDegree(const double radian) noexcept {
-        return radian * (180.0f / PI_D);
-    }
+    constexpr float PI = 3.1415927f;
+    constexpr float TAU = PI / 2.f;
 
     t1_finline_cxpr int pow2i(const int value) noexcept {
         return value * value;
     }
     t1_finline_cxpr float pow2f(const float value) noexcept {
-        return value * value;
-    }
-    t1_finline_cxpr double pow2d(const double value) noexcept {
         return value * value;
     }
 

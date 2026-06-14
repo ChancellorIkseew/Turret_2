@@ -9,13 +9,13 @@ static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoor
     const PixelCoord size = preset.visual.size;
     const PixelCoord position = t1::pixel(tile);
 
-    const float angleRad = static_cast<float>(rotation) * t1::PI_F / 2.f;
+    const float angleRad = preset.rotatable ? static_cast<float>(rotation) * t1::TAU : 0.f;
     const PixelCoord origin = size / 2.f;
     renderer.draw(preset.visual.textureRect, position + origin, size, origin, angleRad, color);
     if (preset.archetype == BlockType::turret) {
         const TurretPreset& turret = presets.getTurret(preset.turret);
         const PixelCoord blockCenter = position + origin;
-        renderer.draw(turret.visual.textureRect, blockCenter, turret.visual.size, turret.visual.origin, angleRad + t1::PI_F, color);
+        renderer.draw(turret.visual.textureRect, blockCenter, turret.visual.size, turret.visual.origin, angleRad, color);
     }
 }
 

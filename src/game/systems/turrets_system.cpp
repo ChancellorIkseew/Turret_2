@@ -13,8 +13,8 @@
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
 
 static t1_finline_cxpr float normalize(const float angle) {
-    if (angle >  t1::PI_F) return angle - 2.0f * t1::PI_F;
-    if (angle < -t1::PI_F) return angle + 2.0f * t1::PI_F;
+    if (angle >  t1::PI) return angle - 2.0f * t1::PI;
+    if (angle < -t1::PI) return angle + 2.0f * t1::PI;
     return angle;
 }
 
@@ -99,6 +99,6 @@ void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const 
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = presets.getTurret(soa.preset[i]).visual;
-        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, soa.turretAngle[i]);
+        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.turretAngle[i]);
     }
 }
