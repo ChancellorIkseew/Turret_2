@@ -25,6 +25,7 @@ Renderer::Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize) : viewp
 
     batchGeometry = std::make_unique<RenderGeometry>();
     lightmapFBO = std::make_unique<LightmapFramebuffer>();
+    setYSincMode(YSincMode::adaptive);
 }
 
 Renderer::~Renderer() {
@@ -93,6 +94,13 @@ void Renderer::resize(const int x, const int y) {
     glViewport(0, 0, x, y);
     if (lightmapFBO)
         lightmapFBO->resize(x, y);
+}
+
+void Renderer::setYSincMode(const YSincMode mode) {
+    SDL_GL_SetSwapInterval(mode);
+    int newMode = 0;
+    SDL_GL_GetSwapInterval(&newMode);
+    ySincMode = YSincMode(newMode);
 }
 
 void Renderer::flush() {
