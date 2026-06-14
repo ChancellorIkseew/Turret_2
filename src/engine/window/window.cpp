@@ -2,6 +2,7 @@
 //
 #include <SDL3/SDL.h>
 #include <stdexcept>
+#include <cstring>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
 
