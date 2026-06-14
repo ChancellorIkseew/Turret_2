@@ -145,6 +145,6 @@ void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, R
         }
         //renderer.drawAnimated(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i],
             //visual.frameOrder[soa.chassisFrame[i]], visual.frameHeight);
-        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, soa.angle[i]);
+        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
     }
 }

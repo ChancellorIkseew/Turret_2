@@ -8,13 +8,6 @@
 
 debug::Logger logger("drill");
 
-static constexpr TileCoord DIR_VECS[] = {
-    {0, 1}, // down
-    {1, 0},  // right
-    {0, -1},  // up
-    {-1, 0}  // left
-};
-
 void DrillBlock::throwItem(TileCoord tile, const BlockMap& map, const WorldMap& terrain, const Presets& presets) {
     if (terrain.at(tile).ore == OrePresetID(0))
         return;

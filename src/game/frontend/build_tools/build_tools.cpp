@@ -16,14 +16,14 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
         const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
         const uint32_t color = canBuild ? 0xFF'FF'FF'00 + alpha : 0xB4'34'24'C8;
 
-        const float angleRad = preset.rotatable ? static_cast<float>(rotation) * t1::PI_F * 0.5f : 0.f;
+        const float angleRad = preset.rotatable ? static_cast<float>(rotation) * t1::TAU : 0.f;
         const PixelCoord origin = size / 2.f;
         renderer.draw(preset.visual.textureRect, position + origin, size, origin, angleRad, color);
         if (preset.archetype == BlockType::turret) {
             const TurretPreset& turretPreset = presets.getTurret(preset.turret);
             const PixelCoord size = turretPreset.visual.size;
             renderer.draw(turretPreset.visual.textureRect, position + origin, size,
-                turretPreset.visual.origin, angleRad + t1::PI_F, color);
+                turretPreset.visual.origin, angleRad, color);
         }
         return;
     }

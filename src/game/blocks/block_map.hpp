@@ -96,7 +96,7 @@ public:
         if (block->getType() == BlockType::turret) {
             TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
             TurretPresetID preset = turretBlock->turretPreset;
-            const AngleRad angleRad = static_cast<float>(turretBlock->defaultRotation) * t1::PI_F / 2.f - t1::PI_F;
+            const AngleRad angleRad = static_cast<float>(turretBlock->defaultRotation) * t1::TAU;
             meta.getTurrets().addTurret(preset, t1::tileCenter(tile), angleRad, teamID, ShootingData(), 0);
         }
         if (block->getType() == BlockType::core)

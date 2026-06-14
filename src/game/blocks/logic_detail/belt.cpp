@@ -6,16 +6,13 @@
 
 static debug::Logger logger("t1_test");
 
-// Down, Right, Up, Left. Y+ - Down, X+ - Right.
-constexpr TileCoord DIR[] = { {0,1}, {1,0}, {0,-1}, {-1,0} };
-
 static constexpr float approach(float current, float target, float step) noexcept {
     if (current < target) return std::min(current + step, target);
     else                  return std::max(current - step, target);
 }
 
 static inline Block* findNext(TileCoord tile, const BlockMap& map, BlockRot rotation) noexcept {
-    const TileCoord target = tile + DIR[rotation];
+    const TileCoord target = tile + DIR_VECS[rotation];
     if (!map.contains(target) || map.at(target).type <= BlockType::wall)
         return nullptr;
     return map.at(target).block.get();

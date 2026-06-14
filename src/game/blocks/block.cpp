@@ -13,14 +13,13 @@ static constexpr float dirY[] = { -1.0f, 0.0f, 1.0f, 0.0f }; // Y+ - Down
 
 void BeltBlock::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
     // works perfect (do not touch logic)
-    AngleRad angleRad = static_cast<float>(rotation) * t1::PI_F * 0.5f;
+    AngleRad angleRad = static_cast<float>(rotation) * t1::TAU;
     renderer.draw(textureRect, t1::tileCenter(tile), t1::TILE_PC, t1::TILE_PC / 2, angleRad);
 
-    //  эшируем векторы дл€ текущего поворота
     float dx = dirX[rotation];
     float dy = dirY[rotation];
 
-    // ѕерпендикул€р (px, py) Ч это просто поворот (dx, dy)
+    // (px, py) - rotation (dx, dy)
     float px = -dy;
     float py = dx;
 
