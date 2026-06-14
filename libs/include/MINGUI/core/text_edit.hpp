@@ -14,7 +14,7 @@ class TextEdit {
     size_t carPos = 0;
 public:
     TextEdit() = default;
-    void update(const int frameDelay);
+    void update(const int frameDelayMs);
     //
     void moveCarriageToCursor(const UIContext& context, const std::u32string& text,
         const Point nodePosition, const float glyphWidth);

@@ -1,9 +1,10 @@
 #pragma once
+#include <cstdint>
 #include <map>
 #include <vector>
 #include "engine/coords/tile_coord.hpp"
 #include "engine/coords/pixel_coord.hpp"
-#include "engine/render/texture.hpp"
+#include "engine/render/texture_rect.hpp"
 
 class Assets;
 class Camera;
@@ -12,25 +13,14 @@ class WorldMap;
 
 class MapDrawer {
     std::map<uint8_t, std::vector<PixelCoord>> cachedFloor;
-    std::map<uint8_t, std::vector<PixelCoord>> cachedOre;
     TileCoord cashedStart, cashedEnd;
-    std::map<uint8_t, Texture> floorTextures;
-    std::map<uint8_t, Texture> oreTextures;
-    std::vector<float> positions;
-    std::vector<float> uvs;
-    std::vector<int> indexCache;
-    PixelCoord atlasSize;
+    std::map<uint8_t, TextureRect> floorTextures;
+    std::map<uint8_t, TextureRect> oreTextures;
 public:
     MapDrawer(const Assets& assets) { updateTextures(assets); }
     void updateTextures(const Assets& assets);
     void cacheFloor(const WorldMap& map);
-    void cacheOverlay(const WorldMap& map);
-    void draw(const Camera& camera, const Renderer& renderer, const WorldMap& map);
+    void draw(const Camera& camera, Renderer& renderer, const WorldMap& map);
 private:
-    void renderLayer(
-        const Renderer& renderer,
-        const std::map<uint8_t, std::vector<PixelCoord>>& cachedLayer,
-        const std::map<uint8_t, Texture>& textures,
-        const PixelCoord tileSize,
-        const PixelCoord translation);
+    void renderFloor(Renderer& renderer);
 };

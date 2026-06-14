@@ -5,13 +5,10 @@
 #include "game/player/camera.hpp"
 #include "game/blocks/block_map.hpp"
 
-constexpr PixelCoord SHADOW_SIZE = PixelCoord(38.0f, 38.0f);
-constexpr PixelCoord BLENDING_AREA = PixelCoord(3.0f, 3.0f);
-
 void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer) {
     const TileCoord start = camera.getBuildingsStartTile();
     const TileCoord end = camera.getEndTile();
-    const Texture shadowTexture = assets.getAtlas().at("block_shadow");
+    const TextureRect shadowTextureRect = assets.getAtlas().at("block_shadow");
     cashedTiles.clear();
     itemPositions.clear();
     itemPresetIDs.clear();
@@ -23,11 +20,12 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
         }
     }
     //
-    renderer.setColorModifier(0, 0, 0, 64);
     for (const auto& tile : cashedTiles) {
-        renderer.drawFast(shadowTexture, t1::pixel(tile) - BLENDING_AREA, SHADOW_SIZE);
+        constexpr PixelCoord SHADOW_SIZE(38.f, 38.f);
+        constexpr PixelCoord BLENDING_AREA(3.f, 3.f);
+        constexpr PixelCoord ORIGIN(0.f, 0.f);
+        renderer.draw(shadowTextureRect, t1::pixel(tile) - BLENDING_AREA, SHADOW_SIZE, ORIGIN, 0.f, 0x00'00'00'40);
     }
-    renderer.resetColorModifier();
     for (const auto& tile : cashedTiles) {
         blocks.at(tile).block->draw(*this, renderer, tile);
     }
@@ -35,8 +33,8 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
     int i = 0;
     for (ItemPresetID itemPresetID : itemPresetIDs) {
         constexpr PixelCoord ITEM_SIZE(16.f, 16.f);
-        Texture texture = assets.getPresets().getItem(itemPresetID).texture;
-        renderer.drawFast(texture, itemPositions[i], ITEM_SIZE);
+        TextureRect textureRect = assets.getPresets().getItem(itemPresetID).textureRect;
+        renderer.draw(textureRect, itemPositions[i], ITEM_SIZE);
         ++i;
     }
 }

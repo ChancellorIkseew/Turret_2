@@ -13,7 +13,7 @@
 #include "t1_ui_renderer.hpp"
 
 constexpr uint32_t BLACK = 0x00'00'00'FF;
-constexpr PixelCoord DEBUD_PANEL_SIZE(200.f, 100.f);
+constexpr PixelCoord DEBUD_PANEL_SIZE(220.f, 100.f);
 
 GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
@@ -23,13 +23,13 @@ mainCanvas(mainWindow.getSize(),
     Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
-static void drawDebugPanel(const Renderer& renderer, const MainWindow& mainWindow) {
+static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, const TextureRect nodeBase) {
     PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
-    renderer.drawRect(BLACK, position, DEBUD_PANEL_SIZE);
+    renderer.draw(nodeBase, position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, BLACK);
     position += PixelCoord(20.f, 20.f);
-    text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(1000U / mainWindow.getRealFrameDelay()), position);
+    text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(1'000'000'000U / mainWindow.getRealFrameDelayNs()), position);
     position.y += 20.f;
-    text::drawString(renderer, U"Frame|tick time: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelay()), position);
+    text::drawString(renderer, U"Frame|tick time NS: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelayMs()), position);
 }
 
 void GUI::draw(Renderer& renderer, const Atlas& atlas) {
@@ -37,14 +37,14 @@ void GUI::draw(Renderer& renderer, const Atlas& atlas) {
         mainCanvas.resize(mainWindow.getSize());
     //
     if (showGUI) {
-        T1_UIRenderer uiRenderer(renderer);
+        T1_UIRenderer uiRenderer(renderer, atlas.at("particle_base"));
         mainCanvas.draw(uiRenderer);
     }
-    renderer.setScale(1.f); // temporary
+    //renderer.setScale(1.f); // temporary
     if (showFPS)
-        drawDebugPanel(renderer, mainWindow);
+        drawDebugPanel(renderer, mainWindow, atlas.at("particle_base"));
     if (showAtlas)
-        renderer.drawFast(atlas.getComonTexture(), PixelCoord(0, 0), atlas.getSize());  
+        renderer.draw(atlas.getComonTextureRect(), PixelCoord(0, 0), atlas.getSize());  
 }
 
 void GUI::translate(const std::string& lang) {
@@ -57,7 +57,7 @@ void GUI::callback() {
     if (!showGUI)
         return;
     T1_UIContext context(input, engine.getAssets().getAudio());
-    mainCanvas.update(context, mainWindow.getRealFrameDelay());
+    mainCanvas.update(context, static_cast<int>(mainWindow.getRealFrameDelayMs()));
     input.enableTextInput(mainCanvas.isTextEditingActive());
 }
 

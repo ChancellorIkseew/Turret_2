@@ -1,6 +1,8 @@
 #include "window.hpp"
 //
+#include <SDL3/SDL.h>
 #include <stdexcept>
+#include <cstring>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
 
@@ -15,40 +17,30 @@ static inline void loadIcon(SDL_Window* window) {
     SDL_DestroySurface(iconSurface);
 }
 
-SDLContext::SDLContext(const std::string& title) {
+SDLContext::SDLContext(const std::string& title, const PixelCoord size) {
     if (!SDL_Init(SDL_INIT_VIDEO))
         throw std::runtime_error("Could not init SDL");
-
-    sdlWindow = SDL_CreateWindow(title.c_str(), 720, 480, SDL_WINDOW_RESIZABLE);
+    sdlWindow = SDL_CreateWindow(title.c_str(), int(size.x), int(size.y), SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
     if (!sdlWindow) {
         const std::string error = SDL_GetError();
         SDL_Quit();
         throw std::runtime_error("SDL_CreateWindow Error: " + error);
     }
-
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, nullptr);
-    if (!sdlRenderer) {
-        const std::string error = SDL_GetError();
-        SDL_DestroyWindow(sdlWindow);
-        SDL_Quit();
-        throw std::runtime_error("SDL_CreateRenderer Error: " + error);
-    }
 }
 
 SDLContext::~SDLContext() {
-    SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
 }
 
-MainWindow::MainWindow(const std::string& title) :
-    SDLContext(title), renderer(sdlRenderer) {
+MainWindow::MainWindow(const std::string& title, const PixelCoord size) :
+    SDLContext(title, size), size(size), renderer(sdlWindow, size) {
     loadIcon(sdlWindow);
 }
 
-void MainWindow::setFPS(const Uint32 FPS) {
+void MainWindow::setFPS(const uint64_t FPS) {
     this->FPS = FPS;
-    requiredDelay = 1000U / FPS;
+    requiredDelayNs = NS_PER_SECOND / FPS;
 }
 
 void MainWindow::setFullscreen(const bool flag) {
@@ -65,9 +57,13 @@ void MainWindow::pollEvents() {
         case SDL_EVENT_QUIT:
             close();
             break;
-        case SDL_EVENT_WINDOW_RESIZED:
+        case SDL_EVENT_WINDOW_RESIZED:{
             resized = true;
-            break;
+            int x = 0, y = 0;
+            SDL_GetWindowSize(sdlWindow, &x, &y);
+            size = PixelCoord(x, y);
+            renderer.resize(x, y);
+            break;}
         default:
             input.update(event);
             break;
@@ -75,19 +71,70 @@ void MainWindow::pollEvents() {
     }
 }
 
+uint64_t MainWindow::getTimeMs() const {
+    return SDL_GetTicks();
+}
+
+void MainWindow::makeDelay() {
+    const uint64_t frameTimeNs = SDL_GetTicksNS() - frameStartNs;
+    if (frameTimeNs < requiredDelayNs)
+        SDL_DelayNS(requiredDelayNs - frameTimeNs);
+    realDelayNs = std::max(frameTimeNs, requiredDelayNs);
+    frameStartNs += realDelayNs;
+}
+
 void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
-    SDL_Surface* windowSurface = SDL_RenderReadPixels(sdlRenderer, nullptr);
     try {
         if (!io::folders::createOrCheckFolder(path.parent_path()))
             throw std::runtime_error("Failed to create or find directory.");
+
+        // Получаем текущие размеры окна
+        int width = 0;
+        int height = 0;
+        SDL_GetWindowSize(sdlWindow, &width, &height); // Ваше поле окна SDL
+
+        // Получаем сырые данные из нового рендерера
+        std::string rawPixels = renderer.takeScreenshot();
+
+        // Создаем SDL_Surface поверх нашего буфера сырых пикселей.
+        // SDL_PIXELFORMAT_RGBA32 идеально ложится на GL_RGBA + GL_UNSIGNED_BYTE
+        SDL_Surface* windowSurface = SDL_CreateSurfaceFrom(
+            width, height,
+            SDL_PIXELFORMAT_RGBA32,
+            rawPixels.data(),
+            width * 4 // шаг строки в байтах (pitch)
+        );
+
         if (!windowSurface)
-            throw std::runtime_error("SDL_RenderReadPixels error: " + std::string(SDL_GetError()));
-        if (!SDL_SavePNG(windowSurface, path.string().c_str()))
-            throw std::runtime_error("IMG_SavePNG error: " + std::string(SDL_GetError()));
+            throw std::runtime_error("SDL_CreateSurfaceFrom error: " + std::string(SDL_GetError()));
+
+        // --- Переворачиваем картинку по вертикали (компенсация специфики OpenGL) ---
+        // Так как данные лежат в rawPixels, переворачиваем строки прямо в Surface
+        int pitch = windowSurface->pitch;
+        std::vector<uint8_t> rowBuffer(pitch);
+        uint8_t* pixelsPtr = static_cast<uint8_t*>(windowSurface->pixels);
+
+        for (int i = 0; i < height / 2; ++i) {
+            uint8_t* topRow = pixelsPtr + i * pitch;
+            uint8_t* bottomRow = pixelsPtr + (height - 1 - i) * pitch;
+
+            // Меняем строчки местами
+            std::memcpy(rowBuffer.data(), topRow, pitch);
+            std::memcpy(topRow, bottomRow, pitch);
+            std::memcpy(bottomRow, rowBuffer.data(), pitch);
+        }
+        // ---------------------------------------------------------------------------
+
+        // Сохраняем готовую правильную поверхность в файл
+        if (!SDL_SavePNG(windowSurface, path.string().c_str())) {
+            SDL_DestroySurface(windowSurface);
+            throw std::runtime_error("SDL_SavePNG error: " + std::string(SDL_GetError()));
+        }
+
+        SDL_DestroySurface(windowSurface);
         logger.info() << "Screenshot saved. Path: " << path;
     }
     catch (const std::runtime_error& exception) {
-        logger.error() << "Failed to take screensot. " << exception.what();
+        logger.error() << "Failed to take screenshot. " << exception.what();
     }
-    SDL_DestroySurface(windowSurface);
 }

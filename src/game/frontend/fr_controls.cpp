@@ -12,7 +12,7 @@ constexpr Point BTN_SIZE(100.0f, 20.0f);
 
 class FrControls : public Container {
     Engine& engine;
-    uint32_t inputReload = 0;
+    uint64_t inputReload = 0;
     std::string bindName;
     Selector* bindings = nullptr;
 public:
@@ -46,7 +46,7 @@ public:
         Container::callback(context);
         
         if (inputReload > 0) {
-            inputReload -= engine.getMainWindow().getRealFrameDelay();
+            inputReload -= engine.getMainWindow().getRealFrameDelayMs();
             return;
         }
         const std::optional<Binding> lastKey = engine.getMainWindow().getInput().getLastKeyPressed();

@@ -38,6 +38,6 @@ inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset pres
 
     block->presetID = presetID;
     block->health = preset.maxHealth;
-    block->texture = preset.visual.texture;
+    block->textureRect = preset.visual.textureRect;
     return block;
 }

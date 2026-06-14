@@ -51,8 +51,8 @@ public:
     }
 
     void addButton(const std::string& name, int id, TileComponent component, GridLayout* grid, const Input& input) {
-        const Texture texture = engine.getAssets().getAtlas().at(name);
-        grid->addNode(new JEISlot(BTN_SIZE, new T1_UITexture(texture), buildTools.get(), input, TileData(component, id)));
+        const TextureRect textureRect = engine.getAssets().getAtlas().at(name);
+        grid->addNode(new JEISlot(BTN_SIZE, new T1_UITexture(textureRect), buildTools.get(), input, TileData(component, id)));
     }
 
     void callback(UIContext& context) override {

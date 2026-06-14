@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include "config.hpp"
 #include "engine/coords/pixel_coord.hpp"
-#include "texture.hpp"
+#include "texture_rect.hpp"
 
 class Renderer;
 
@@ -20,8 +20,8 @@ public:
     void clear();
     void build(Renderer& renderer);
     void addTexture(const std::filesystem::path& path);
-    Texture at(const std::string& name) const noexcept;
-    Texture getComonTexture() const noexcept;
+    TextureRect at(const std::string& name) const noexcept;
+    TextureRect getComonTextureRect() const noexcept { return TextureRect{ 0.f, 0.f, 1.f, 1.f }; }
     PixelCoord getSize() const noexcept { return PixelCoord(size.x, size.y); }
 private:
     t1_disable_copy_and_move(Atlas)

@@ -36,8 +36,8 @@ public:
         if (index != 0) {
             const OrePreset& orePreset = assets.getPresets().getOre(OrePresetID(index));
             trimedName = assets.getPresets().getOre(OrePresetID(index)).visibleName;
-            const Texture texture = assets.getPresets().getItem(orePreset.item).texture;
-            icon->setTexture(new T1_UITexture(texture));
+            const TextureRect textureRect = assets.getPresets().getItem(orePreset.item).textureRect;
+            icon->setTexture(new T1_UITexture(textureRect));
         }
         else {
             const uint8_t floorIndex = map.at(targetTile).floor;

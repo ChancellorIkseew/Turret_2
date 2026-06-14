@@ -1,0 +1,10 @@
+#pragma once
+#include <optional>
+#include "engine/render/shader_program.hpp"
+
+class Shaders {
+public:
+    std::optional<ShaderProgram> baseShader;
+    std::optional<ShaderProgram> lightingShader;
+    std::optional<ShaderProgram> uiShader;
+};

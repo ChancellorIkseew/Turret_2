@@ -9,10 +9,10 @@
 
 void EntitiesDrawer::draw(const Camera& camera, Renderer& renderer,
     BlockMap& blocks, MobSoA& mobs, const ShellSoA& shells, const Presets& presets, const uint64_t tickCount) {
-    renderer.setScaleMode(ScaleMode::pixelart);
+    //renderer.setScaleMode(ScaleMode::pixelart);
     mobs::drawMobs(mobs, presets, camera, renderer, tickCount);
     turrets::drawTurrets(fromBlocks(blocks.getMeta().getTurrets().getSoa()), presets, camera, renderer);
     turrets::drawTurrets(fromMobs(mobs), presets, camera, renderer);
     shells::drawShells(shells, presets, camera, renderer);
-    renderer.setScaleMode(ScaleMode::nearest);
+    //renderer.setScaleMode(ScaleMode::nearest);
 }

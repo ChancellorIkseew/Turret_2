@@ -83,12 +83,12 @@ void shells::cleanupShells(ShellManager& manager, const Presets& presets/*, Expl
     }
 }
 
-void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
+void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t shellCount = soa.shellCount;
     for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         auto& visual = presets.getShell(soa.preset[i]).visual;
-        renderer.draw(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i]);
+        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, soa.angle[i]);
     }
 }
