@@ -7,10 +7,10 @@ MINGUI
 
 constexpr int INPUT_RELOAD = 120;
 
-void TextEdit::update(const int frameDelay) {
+void TextEdit::update(const int frameDelayMs) {
     editingActive = false;
     if (inputTimer > 0)
-        inputTimer -= frameDelay;
+        inputTimer -= frameDelayMs;
 }
 
 void TextEdit::moveCarriageToCursor(const UIContext& context, const std::u32string& text,
