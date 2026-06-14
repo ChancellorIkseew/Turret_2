@@ -14,24 +14,26 @@ struct SDLContext {
 };
 
 class MainWindow : private SDLContext {
+    static constexpr uint64_t NS_PER_SECOND = 1'000'000'000, NS_PER_MS = 1'000'000;
     PixelCoord size;
     Cursor cursor;
     Input input;
     Renderer renderer;
-    uint32_t FPS = 60, requiredDelay = 16, realDelay = 0, frameStart = 0;
+    uint64_t FPS = 60, requiredDelayNs = NS_PER_SECOND / 60, realDelayNs = 0, frameStartNs = 0;
     bool open = true, resized = false, fullscreen = false;
 public:
     MainWindow(const std::string& title, const PixelCoord size);
     //
     void close() { open = false; }
     void setFullscreen(const bool flag);
-    void setFPS(const uint32_t FPS);
+    void setFPS(const uint64_t FPS);
     bool isOpen() const { return open; }
     bool isFullscreen() const { return fullscreen; }
     bool justResized() const { return resized; }
-    uint32_t getFPS() const { return FPS; }
-    uint32_t getRealFrameDelay() const { return realDelay; }
-    uint64_t getTime() const;
+    uint64_t getFPS() const { return FPS; }
+    uint64_t getRealFrameDelayNs() const { return realDelayNs; }
+    uint64_t getRealFrameDelayMs() const { return realDelayNs / NS_PER_MS; }
+    uint64_t getTimeMs() const;
     PixelCoord getSize() const { return size; }
     //
     Cursor& getCursor() { return cursor; }

@@ -4,7 +4,7 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
     const PixelCoord position = t1::pixel(tile);
     uint8_t alpha = 255;
     if (content == JEIContent::only_blocks) { // maybe needs refactoring
-        const float timeMs = static_cast<float>(engine.getMainWindow().getTime());
+        const float timeMs = static_cast<float>(engine.getMainWindow().getTimeMs());
         const float modifier = std::sin(timeMs / 500.f) * 64.f;
         alpha = uint8_t(modifier) + 191; // 255 - 64
     }

@@ -14,7 +14,7 @@ public:
         bool toggleSound = true;
     } audio;
     static struct _Display {
-        uint32_t FPS = 60U;
+        uint64_t FPS = 60U;
         bool fullscreen = false;
     } display;
     static struct _Gameplay {

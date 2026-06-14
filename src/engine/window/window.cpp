@@ -37,9 +37,9 @@ MainWindow::MainWindow(const std::string& title, const PixelCoord size) :
     loadIcon(sdlWindow);
 }
 
-void MainWindow::setFPS(const Uint32 FPS) {
+void MainWindow::setFPS(const uint64_t FPS) {
     this->FPS = FPS;
-    requiredDelay = 1000U / FPS;
+    requiredDelayNs = NS_PER_SECOND / FPS;
 }
 
 void MainWindow::setFullscreen(const bool flag) {
@@ -70,16 +70,16 @@ void MainWindow::pollEvents() {
     }
 }
 
-uint64_t MainWindow::getTime() const {
+uint64_t MainWindow::getTimeMs() const {
     return SDL_GetTicks();
 }
 
 void MainWindow::makeDelay() {
-    const uint32_t frameTime = static_cast<uint32_t>(getTime()) - frameStart;
-    if (frameTime < requiredDelay)
-        SDL_Delay(requiredDelay - frameTime);
-    realDelay = frameTime > requiredDelay ? frameTime : requiredDelay;
-    frameStart += realDelay;
+    const uint64_t frameTimeNs = SDL_GetTicksNS() - frameStartNs;
+    if (frameTimeNs < requiredDelayNs)
+        SDL_DelayNS(requiredDelayNs - frameTimeNs);
+    realDelayNs = std::max(frameTimeNs, requiredDelayNs);
+    frameStartNs += realDelayNs;
 }
 
 void MainWindow::takeScreenshot(const std::filesystem::path& path) const {

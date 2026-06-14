@@ -20,7 +20,7 @@ static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoor
 }
 
 void Blueprints::draw(Renderer& renderer, const Engine& engine) const {
-    const float timeMs = static_cast<float>(engine.getMainWindow().getTime());
+    const float timeMs = static_cast<float>(engine.getMainWindow().getTimeMs());
     const float modifier = std::sin(timeMs / 500.f) * 64.f;
     const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
     const uint32_t color = 0xFF'FF'FF'00 + alpha;
