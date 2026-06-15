@@ -61,7 +61,7 @@ void Renderer::setShaderProgram(const ShaderProgram& shaderProgram) {
 }
 
 void Renderer::setView(float scale, const PixelCoord translation) {
-    flush();
+    batchGeometry->flush();
     GLfloat view[16] = {
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
