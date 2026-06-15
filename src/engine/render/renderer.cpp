@@ -37,7 +37,7 @@ void Renderer::setShaderProgram(const ShaderProgram& shaderProgram) {
     const Pipeline pipeline = shaderProgram.getPipeline();
 
     if (pipeline.useLightmap != targetLightmap) {
-        flush();
+        batchGeometry->flush();
         targetLightmap = pipeline.useLightmap;
         if (targetLightmap) {
             lightmapFBO->bindForRender();
@@ -51,7 +51,7 @@ void Renderer::setShaderProgram(const ShaderProgram& shaderProgram) {
     }
 
     if (shaderProgram.getID() != currentShaderProgramID) {
-        flush();
+        batchGeometry->flush();
         currentShaderProgramID = shaderProgram.getID();
         glUseProgram(currentShaderProgramID);
     }
@@ -85,7 +85,7 @@ void Renderer::clear() {
 }
 
 void Renderer::present(SDL_Window* sdlWindow) {
-    flush();
+    batchGeometry->flush();
     SDL_GL_SwapWindow(sdlWindow);
 }
 
@@ -103,21 +103,12 @@ void Renderer::setYSincMode(const YSincMode mode) {
     ySincMode = YSincMode(newMode);
 }
 
-void Renderer::flush() {
-    if (batchGeometry->isEmpty())
-        return;
-    batchGeometry->uploadAndBind();
-    size_t spriteCount = batchGeometry->getVerticesCount() / 4;
-    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(spriteCount * 6), GL_UNSIGNED_INT, nullptr);
-    batchGeometry->clear();
-}
-
 void Renderer::draw(const Texture2D& texture2D, const TextureRect& textureRect,
     const PixelCoord position, const PixelCoord size,
     const PixelCoord origin, const float angleRad, const uint32_t color)
 {
     if (texture2D.getID() != currentTextureID || batchGeometry->isFull()) {
-        flush();
+        batchGeometry->flush();
         currentTextureID = texture2D.getID();
         constexpr unsigned int SLOT = 0;
         glBindTextureUnit(SLOT, currentTextureID);

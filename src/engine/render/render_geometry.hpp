@@ -77,18 +77,6 @@ public:
         return vertexAccumulator.size() >= MAX_VERTICES;
     }
 
-    bool isEmpty() const noexcept {
-        return vertexAccumulator.empty();
-    }
-
-    size_t getVerticesCount() const noexcept {
-        return vertexAccumulator.size();
-    }
-
-    void clear() noexcept {
-        vertexAccumulator.clear();
-    }
-
     void addQuad(const TextureRect& textureRect,
         const PixelCoord position, const PixelCoord size,
         const PixelCoord origin, const float angleRad,
@@ -132,10 +120,16 @@ public:
         vertexAccumulator.insert(vertexAccumulator.end(), quad, quad + 4);
     }
 
-    void uploadAndBind() {
+    void flush() {
+        if (vertexAccumulator.empty())
+            return;
         constexpr GLintptr BUFFER_OFFSET_START = 0;
         glNamedBufferSubData(vbo, BUFFER_OFFSET_START, vertexAccumulator.size() * sizeof(Vertex), vertexAccumulator.data());
         glBindVertexArray(vao);
+        //
+        const size_t spriteCount = vertexAccumulator.size() / 4;
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(spriteCount * 6), GL_UNSIGNED_INT, nullptr);
+        vertexAccumulator.clear();
     }
 private:
     t1_disable_copy_and_move(RenderGeometry)

@@ -52,6 +52,5 @@ public:
     //
     std::string takeScreenshot() const;
 private:
-    void flush();
     t1_disable_copy_and_move(Renderer)
 };
