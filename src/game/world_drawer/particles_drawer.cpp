@@ -23,7 +23,7 @@ void ParticlesDrawer::draw(const Camera& camera, Renderer& renderer, const Parti
     const PixelCoord scaledOrigin = PARTICLE_ORIGIN * scale;
 
     for (size_t i = 0; i < totalParticleCount; ++i) {
-        PixelCoord screenPos = (soa.position[i] - translation) * scale;
+        const PixelCoord screenPos = (soa.position[i] - translation) * scale;
         renderer.draw(rect, screenPos, scaledSize, scaledOrigin, 0.f, soa.color[i]);
     }
 }

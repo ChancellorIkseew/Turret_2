@@ -92,3 +92,20 @@ void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camer
         renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
     }
 }
+
+void shells::drawShellsLighting(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
+    const size_t shellCount = soa.shellCount;
+    constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
+    const float scale = camera.getMapScale();
+    const PixelCoord translation = camera.getTranslation();
+
+    for (size_t i = 0; i < shellCount; ++i) {
+        if (!camera.contains(t1::tile(soa.position[i])))
+            continue;
+        auto& visual = presets.getShell(soa.preset[i]).visual;
+        const PixelCoord scaledSize = visual.size * scale * 8.f;
+        const PixelCoord scaledOrigin = visual.origin * scale * 8.f;
+        const PixelCoord screenPos = (soa.position[i] - translation) * scale;
+        renderer.draw(rect, screenPos, scaledSize, scaledOrigin, t1::PI - soa.angle[i], 0xFF'A5'00'FF);
+    }
+}
