@@ -26,9 +26,16 @@ Renderer::Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize) : viewp
     batchGeometry = std::make_unique<RenderGeometry>();
     lightmapFBO = std::make_unique<LightmapFramebuffer>();
     setYSincMode(YSincMode::adaptive);
+
+    glCreateBuffers(1, &uboView);
+    glNamedBufferData(uboView, sizeof(float[16]), nullptr, GL_DYNAMIC_DRAW);
+    constexpr unsigned int SLOT = 0;
+    glBindBufferBase(GL_UNIFORM_BUFFER, SLOT, uboView);
 }
 
 Renderer::~Renderer() {
+    if (uboView != 0)
+        glDeleteBuffers(1, &uboView);
     if (glContext)
         SDL_GL_DestroyContext(glContext);
 }
@@ -76,7 +83,7 @@ void Renderer::setView(const float scale, const PixelCoord translation) {
     view[12] = -1.0f + (-2.0f * translation.x / viewportSize.x) * scale;
     view[13] = 1.0f - (-2.0f * translation.y / viewportSize.y) * scale;
 
-    glProgramUniformMatrix4fv(currentShaderProgramID, 0, 1, GL_FALSE, view);
+    glNamedBufferSubData(uboView, 0, sizeof(view), view);
 }
 
 void Renderer::clear() {

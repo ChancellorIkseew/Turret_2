@@ -20,14 +20,13 @@ enum YSincMode : int { immediate = 0, synchronized = 1, adaptive = -1 };
 class Renderer {
     SDL_GLContext glContext = nullptr;
     YSincMode ySincMode;
+    unsigned int uboView = 0;
     unsigned int currentShaderProgramID = 0xFF'FF'FF'FF;
     unsigned int currentTextureID = 0xFF'FF'FF'FF;
     std::unique_ptr<RenderGeometry> batchGeometry;
     std::unique_ptr<LightmapFramebuffer> lightmapFBO;
     std::optional<Texture2D> atlasTexture;
     PixelCoord viewportSize;
-    PixelCoord currentTranslation;
-    float currentScale;
     bool targetLightmap = false;
 public:
     Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize);

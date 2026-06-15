@@ -7,7 +7,9 @@ layout (location = 2) in vec4 inColor;
 layout (location = 0) out vec2 outTexCoord;
 layout (location = 1) out vec4 outColor;
 //
-layout (location = 0) uniform mat4 view; 
+layout(std140, binding = 0) uniform CameraData {
+    mat4 view;
+};
 
 void main() {
     outTexCoord = inTexCoord;
