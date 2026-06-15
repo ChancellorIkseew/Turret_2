@@ -5,8 +5,8 @@
 #include "game/particles/particle_manager.hpp"
 #include "game/player/camera.hpp"
 
-constexpr PixelCoord PARTICLE_SIZE(2.f, 2.f);
-constexpr PixelCoord PARTICLE_ORIGIN(1.f, 1.f);
+constexpr PixelCoord PARTICLE_SIZE(15.f, 15.f);
+constexpr PixelCoord PARTICLE_ORIGIN(7.5f, 7.5f);
 
 void ParticlesDrawer::updateTexture(const Assets& assets) {
     particleBase = assets.getAtlas().at("particle_base");
@@ -16,7 +16,14 @@ void ParticlesDrawer::draw(const Camera& camera, Renderer& renderer, const Parti
     const size_t totalParticleCount = soa.particleCount;
     if (totalParticleCount == 0)
         return;
+    constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
+    const float scale = camera.getMapScale();
+    const PixelCoord translation = camera.getTranslation();
+    const PixelCoord scaledSize = PARTICLE_SIZE * scale;
+    const PixelCoord scaledOrigin = PARTICLE_ORIGIN * scale;
+
     for (size_t i = 0; i < totalParticleCount; ++i) {
-        renderer.draw(particleBase, soa.position[i], PARTICLE_SIZE, PARTICLE_ORIGIN, 0.f, soa.color[i]);
+        PixelCoord screenPos = (soa.position[i] - translation) * scale;
+        renderer.draw(rect, screenPos, scaledSize, scaledOrigin, 0.f, soa.color[i]);
     }
 }

@@ -79,7 +79,7 @@ static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleMa
         if (camera.contains(t1::tile(position))) {
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;
-            particles.addParticle(position, angle, 0.2f, 0xFF'B3'69'A0, 15);
+            particles.addParticle(position, angle, 0.2f, 0xFF'A5'00'FF, 15);
             sounds.pushSound(turret.visual.shotSound, position);
         }  
     }

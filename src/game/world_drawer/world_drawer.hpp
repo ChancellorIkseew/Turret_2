@@ -25,7 +25,7 @@ public:
         mapDrawer.draw(camera, renderer, world.getMap());
         blocksDrawer.draw(world.getBlocks(), assets, camera, renderer);
         entitiesDrawer.draw(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
-        particlesDrawer.draw(camera, renderer, world.getParticles().getSoa());
+        //particlesDrawer.draw(camera, renderer, world.getParticles().getSoa());
         // TODO: weatherDrawer.draw();
     }
 };

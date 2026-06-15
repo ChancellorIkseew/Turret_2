@@ -60,7 +60,7 @@ void Renderer::setShaderProgram(const ShaderProgram& shaderProgram) {
     glBlendFunc(pipeline.srcBlend, pipeline.dstBlend);
 }
 
-void Renderer::setView(float scale, const PixelCoord translation) {
+void Renderer::setView(const float scale, const PixelCoord translation) {
     batchGeometry->flush();
     GLfloat view[16] = {
         1.0f, 0.0f, 0.0f, 0.0f,

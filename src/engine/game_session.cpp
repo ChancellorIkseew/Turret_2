@@ -109,6 +109,11 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     gui->drawDiegeticElements(renderer);           // temporary update will be related with blueprints
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
+    renderer.setShaderProgram(*shaders.lightingShader);
+    renderer.setView(1.f, PixelCoord(0.f, 0.f));
+    ParticlesDrawer particlesDrawer(engine.getAssets());
+    particlesDrawer.draw(camera, renderer, world->getParticles().getSoa(), mainWindow.getSize());
+    //
     renderer.setShaderProgram(*shaders.uiShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
     gui->draw(renderer, engine.getAssets().getAtlas());

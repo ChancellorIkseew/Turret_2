@@ -1,6 +1,4 @@
 #pragma once
-#include <SDL3/SDL_pixels.h>
-#include <vector>
 #include "engine/render/texture_rect.hpp"
 
 struct ParticleSoA;

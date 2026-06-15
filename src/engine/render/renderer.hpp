@@ -26,12 +26,14 @@ class Renderer {
     std::unique_ptr<LightmapFramebuffer> lightmapFBO;
     std::optional<Texture2D> atlasTexture;
     PixelCoord viewportSize;
+    PixelCoord currentTranslation;
+    float currentScale;
     bool targetLightmap = false;
 public:
     Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize);
     ~Renderer();
     //
-    void setView(float scale, const PixelCoord translation);
+    void setView(const float scale, const PixelCoord translation);
     void setShaderProgram(const ShaderProgram& shaderProgram);
     void resize(const int x, const int y);
     void setYSincMode(const YSincMode mode);
