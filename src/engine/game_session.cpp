@@ -112,7 +112,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     renderer.setShaderProgram(*shaders.lightingShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
     ParticlesDrawer particlesDrawer(engine.getAssets());
-    particlesDrawer.draw(camera, renderer, world->getParticles().getSoa(), mainWindow.getSize());
+    particlesDrawer.draw(camera, renderer, world->getParticles().getSoa());
     //
     renderer.setShaderProgram(*shaders.uiShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
