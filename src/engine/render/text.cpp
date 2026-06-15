@@ -1,12 +1,9 @@
 #include "text.hpp"
 //
 #include <cstdint>
-#include <unordered_map>
 #include "atlas.hpp"
 #include "config.hpp"
 #include "engine/coords/math.hpp"
-#include "engine/io/folders.hpp"
-#include "engine/io/parser/tin_parser.hpp"
 #include "renderer.hpp"
 #include "texture_rect.hpp"
 
