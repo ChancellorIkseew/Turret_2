@@ -22,6 +22,7 @@ void Settings::writeSettings() {
     data.emplace("toggle_sound",  audio.toggleSound);
     //
     data.emplace("FPS",        display.FPS);
+    data.emplace("Y-Sinc",     display.ySinc);
     data.emplace("fullscreen", display.fullscreen);
     //
     data.emplace("camera_inertia",      gameplay.cameraInertia);
@@ -51,6 +52,7 @@ void Settings::readSettings() {
     data.get("toggle_sound",  audio.toggleSound, true);
     //
     data.get("FPS",        display.FPS, 60U);
+    data.get("Y-Sinc",     display.ySinc, true);
     data.get("fullscreen", display.fullscreen, false);
     //
     data.get("camera_inertia",      gameplay.cameraInertia, true);
@@ -74,6 +76,7 @@ void Settings::applySettings(Engine& engine) {
     engine.getAssets().getAudio().updateVolume();
     //
     engine.getMainWindow().setFPS(display.FPS);
+    engine.getMainWindow().getRenderer().setYSincMode(display.ySinc ? YSincMode::adaptive : YSincMode::immediate);
     engine.getMainWindow().setFullscreen(display.fullscreen);
     // "camera_inertia" not imlemented
     // "pause_on_world_open": implemented in engine.cpp
