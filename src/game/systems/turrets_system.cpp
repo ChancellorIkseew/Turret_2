@@ -75,7 +75,11 @@ static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleMa
         position.x +=  localMuzzle.x * cos + localMuzzle.y * sin;
         position.y += -localMuzzle.x * sin + localMuzzle.y * cos;
 
-        shells.addShell(presets, turret.shell, position, angle, shell.damage, shell.maxLifeTime, soa.teamID[i]);
+        PixelCoord velocity = PixelCoord(sin, cos) * presets.getShell(turret.shell).speed;
+        if (!soa.velocity.empty())
+            velocity += soa.velocity[i] * 0.8f;
+
+        shells.addShell(turret.shell, position, velocity, angle, shell.damage, shell.maxLifeTime, soa.teamID[i]);
         if (camera.contains(t1::tile(position))) {
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;

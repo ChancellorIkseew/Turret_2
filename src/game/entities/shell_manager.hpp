@@ -2,8 +2,6 @@
 #include <vector>
 #include "engine/assets/preset_defs.hpp"
 
-class Presets;
-
 struct ShellSoA {
     std::vector<PixelCoord> position;
     std::vector<PixelCoord> velocity;
@@ -27,9 +25,9 @@ public:
     void reserve(const size_t capacity);
     void removeShell(const size_t index);
     void addShell(
-        const Presets& presets,
         const ShellPresetID preset,
         const PixelCoord position,
+        const PixelCoord velocity,
         const AngleRad angle,
         const Health restDamage,
         const TickCount restLifeTime,

@@ -1,7 +1,4 @@
 #include "shell_manager.hpp"
-//
-#include <cmath>
-#include "engine/assets/presets.hpp"
 
 void ShellManager::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
@@ -14,14 +11,13 @@ void ShellManager::reserve(const size_t capacity) {
 }
 
 void ShellManager::addShell(
-    const Presets& presets,
     const ShellPresetID preset,
     const PixelCoord position,
+    const PixelCoord velocity,
     const AngleRad angle,
     const Health restDamage,
     const TickCount restLifeTime,
     const TeamID teamID) {
-    const PixelCoord velocity = PixelCoord(sinf(angle), cosf(angle)) * presets.getShell(preset).speed;
 
     soa.position.push_back(position);
     soa.velocity.push_back(velocity);

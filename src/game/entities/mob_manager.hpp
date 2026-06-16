@@ -6,7 +6,6 @@
 
 using MobID = uint16_t;
 using MobIndex = MobID;
-class Presets;
 
 struct MobSoA {
     std::vector<float> hitboxRadius;

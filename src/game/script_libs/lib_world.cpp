@@ -44,9 +44,10 @@ static void spawnShell(const std::string& presetName, int x, int y, AngleRad ang
         return;
     }
     const Presets& presets = script_libs::assets->getPresets();
-    ShellPresetID presetID = presets.getShellID(presetName);
+    const ShellPresetID presetID = presets.getShellID(presetName);
     const ShellPreset& preset = presets.getShell(presetID);
-    script_libs::world->getShells().addShell(presets, presetID, PixelCoord(x, y), angle, preset.damage,
+    const PixelCoord velocity = PixelCoord(sinf(angle), cosf(angle)) * preset.speed;
+    script_libs::world->getShells().addShell(presetID, PixelCoord(x, y), velocity, angle, preset.damage,
         preset.maxLifeTime, teamID);
 }
 
