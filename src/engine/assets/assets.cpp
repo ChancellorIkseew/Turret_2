@@ -44,11 +44,11 @@ void Assets::load(Renderer& renderer) {
     std::string fragmentLighting = io::readFile(path / "fragment_lighting.glsl");
     shaders.lightingShader.emplace(vertexLighting.c_str(), fragmentLighting.c_str(), Pipeline(GL_ONE, GL_ONE, true));
 
-    std::string vertexEmerge = io::readFile(path / "vertex_emerge.glsl");
+    std::string vertexEmerge = io::readFile(path / "vertex.glsl");
     std::string fragmentEmerge = io::readFile(path / "fragment_emerge.glsl");
     shaders.emergeShader.emplace(vertexEmerge.c_str(), fragmentEmerge.c_str(), Pipeline());
 
-    std::string vertexUI = io::readFile(path / "vertex_ui.glsl");
+    std::string vertexUI = io::readFile(path / "vertex.glsl");
     std::string fragmentUI = io::readFile(path / "fragment_ui.glsl");
     shaders.uiShader.emplace(vertexUI.c_str(), fragmentUI.c_str(), Pipeline());
 }
