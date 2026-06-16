@@ -4,6 +4,7 @@
 #include <string>
 #include "engine/coords/pixel_coord.hpp"
 #include "texture_2d.hpp"
+#include "texture_rect.hpp"
 
 struct SDL_Surface;
 struct SDL_Window;
@@ -26,6 +27,7 @@ class Renderer {
     std::unique_ptr<RenderGeometry> batchGeometry;
     std::unique_ptr<LightmapFramebuffer> lightmapFBO;
     std::optional<Texture2D> atlasTexture;
+    TextureRect whiteRect = NULL_TEXTURE_RECT;
     PixelCoord viewportSize;
     bool targetLightmap = false;
 public:
@@ -49,7 +51,11 @@ public:
         const PixelCoord position, const PixelCoord size,
         const PixelCoord origin = {0.f, 0.f}, const float angleRad = 0.f, const uint32_t color = 0xFF'FF'FF'FF);
 
+    void drawRect(const PixelCoord position, const PixelCoord size,
+        const PixelCoord origin, const float angleRad, const uint32_t color);
+
     void createAtlasTexture(SDL_Surface* sdlSurface);
+    void setWhiteRect(const TextureRect rect) { whiteRect = rect; }
     //
     std::string takeScreenshot() const;
 private:

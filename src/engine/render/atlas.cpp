@@ -47,6 +47,7 @@ void Atlas::build(Renderer& renderer) {
     renderer.createAtlasTexture(comonSurface);
     SDL_DestroySurface(comonSurface);
     clearTemporary(temporarySurfaces);
+    renderer.setWhiteRect(Atlas::at("white_rect"));
 }
 
 TextureRect Atlas::at(const std::string& name) const noexcept {

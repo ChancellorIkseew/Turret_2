@@ -23,9 +23,9 @@ mainCanvas(mainWindow.getSize(),
     Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
-static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, const TextureRect nodeBase) {
+static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow) {
     PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
-    renderer.draw(nodeBase, position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, BLACK);
+    renderer.drawRect(position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, BLACK);
     position += PixelCoord(20.f, 20.f);
     text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(1'000'000'000U / mainWindow.getRealFrameDelayNs()), position);
     position.y += 20.f;
@@ -33,18 +33,17 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, con
 }
 
 void GUI::draw(Renderer& renderer, const Atlas& atlas) {
+    if (showFPS)
+        drawDebugPanel(renderer, mainWindow);
+    if (showAtlas)
+        renderer.draw(atlas.getComonTextureRect(), PixelCoord(0, 0), atlas.getSize());
+
     if (mainWindow.justResized())
         mainCanvas.resize(mainWindow.getSize());
-    //
     if (showGUI) {
-        T1_UIRenderer uiRenderer(renderer, atlas.at("particle_base"));
+        T1_UIRenderer uiRenderer(renderer);
         mainCanvas.draw(uiRenderer);
-    }
-    //renderer.setScale(1.f); // temporary
-    if (showFPS)
-        drawDebugPanel(renderer, mainWindow, atlas.at("particle_base"));
-    if (showAtlas)
-        renderer.draw(atlas.getComonTextureRect(), PixelCoord(0, 0), atlas.getSize());  
+    }   
 }
 
 void GUI::translate(const std::string& lang) {

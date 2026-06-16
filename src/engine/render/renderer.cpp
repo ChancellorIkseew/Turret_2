@@ -131,6 +131,12 @@ void Renderer::draw(const TextureRect& textureRect,
     draw(atlasTexture.value(), textureRect, position, size, origin, angleRad, color);
 }
 
+void Renderer::drawRect(const PixelCoord position, const PixelCoord size,
+    const PixelCoord origin, const float angleRad, const uint32_t color)
+{
+    draw(atlasTexture.value(), whiteRect, position, size, origin, angleRad, color);
+}
+
 static Texture2D convert(SDL_Surface* rawSurface) {
     if (!rawSurface)
         throw std::runtime_error(SDL_GetError());

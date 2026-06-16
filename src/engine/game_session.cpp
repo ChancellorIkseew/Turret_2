@@ -11,6 +11,7 @@
 #include "game/systems/turret_components.hpp"
 #include "game/world/world.hpp"
 #include "game/events/events.hpp"
+#include "game/world_drawer/particles_drawer.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
@@ -111,7 +112,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     renderer.setShaderProgram(*shaders.lightingShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
-    ParticlesDrawer particlesDrawer(engine.getAssets());
+    ParticlesDrawer particlesDrawer;
     particlesDrawer.draw(camera, renderer, world->getParticles().getSoa());
     shells::drawShellsLighting(world->getShells().getSoa(), presets, camera, renderer);
     //
