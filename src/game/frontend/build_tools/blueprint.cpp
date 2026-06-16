@@ -20,10 +20,10 @@ static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoor
 }
 
 void Blueprints::draw(Renderer& renderer, const Engine& engine) const {
-    const float timeMs = static_cast<float>(engine.getMainWindow().getTimeMs());
-    const float modifier = std::sin(timeMs / 500.f) * 64.f;
-    const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
-    const uint32_t color = 0xFF'FF'FF'00 + alpha;
+    //const float timeMs = static_cast<float>(engine.getMainWindow().getTimeMs());
+    //const float modifier = std::sin(timeMs / 500.f) * 64.f;
+    //const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
+    //const uint32_t color = 0xFF'FF'FF'00 + alpha;
     for (const auto& blueprint : blueprints) {
         const Presets& presets = engine.getAssets().getPresets();
         const BlockPreset& preset = engine.getAssets().getPresets().getBlock(blueprint.presetID);
@@ -34,6 +34,7 @@ void Blueprints::draw(Renderer& renderer, const Engine& engine) const {
             //renderer.draw(0x00'FF'00'FF, position - OFFSET, size + OFFSET * 2.f);
             //TODO: update after renderer reimplementation
         }
+        uint32_t color = 0xFF'FF'FF'00 + uint32_t(255.f * (float(blueprint.progress) / 100.f));
         drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color);
     }
 }

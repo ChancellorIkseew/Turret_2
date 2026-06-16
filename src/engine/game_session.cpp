@@ -106,8 +106,9 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     renderer.setShaderProgram(*shaders.baseShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation());
     worldDrawer.draw(camera, renderer, *world, presets, engine.getAssets(), timeCount.getTickCount());
-    world->getBlueprints().draw(renderer, engine); // temporary
     gui->drawDiegeticElements(renderer);           // temporary update will be related with blueprints
+    renderer.setShaderProgram(*shaders.emergeShader);
+    world->getBlueprints().draw(renderer, engine); // temporary
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
     renderer.setShaderProgram(*shaders.lightingShader);

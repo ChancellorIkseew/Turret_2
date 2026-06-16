@@ -6,5 +6,6 @@ class Shaders {
 public:
     std::optional<ShaderProgram> baseShader;
     std::optional<ShaderProgram> lightingShader;
+    std::optional<ShaderProgram> emergeShader;
     std::optional<ShaderProgram> uiShader;
 };
