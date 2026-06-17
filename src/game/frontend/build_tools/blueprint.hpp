@@ -66,6 +66,10 @@ public:
         return getBlock(tile).presetID == BlockPresetID(0); // air
     }
 
-    void draw(Renderer& renderer, const Engine& engine) const;
+    void drawGhosts(Renderer& renderer, const Engine& engine) const;
+    void drawInProgress(Renderer& renderer, const Engine& engine) const;
     bool empty() const noexcept { return blueprints.empty(); }
+
+    static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
+        const BlockPresetID presetID, const BlockRot rotation, const uint32_t color);
 };

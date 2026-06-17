@@ -4,7 +4,8 @@
 #include "engine/engine.hpp"
 #include "engine/render/renderer.hpp"
 
-static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile, const BlockPresetID presetID, const BlockRot rotation, const uint32_t color) {
+void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
+    const BlockPresetID presetID, const BlockRot rotation, const uint32_t color) {
     const BlockPreset& preset = presets.getBlock(presetID);
     const PixelCoord size = preset.visual.size;
     const PixelCoord position = t1::pixel(tile);
@@ -19,22 +20,31 @@ static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoor
     }
 }
 
-void Blueprints::draw(Renderer& renderer, const Engine& engine) const {
-    //const float timeMs = static_cast<float>(engine.getMainWindow().getTimeMs());
-    //const float modifier = std::sin(timeMs / 500.f) * 64.f;
-    //const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
-    //const uint32_t color = 0xFF'FF'FF'00 + alpha;
+void Blueprints::drawGhosts(Renderer& renderer, const Engine& engine) const {
+    const float timeMs = static_cast<float>(engine.getMainWindow().getTimeMs());
+    const float modifier = std::sin(timeMs / 500.f) * 64.f;
+    const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
+    const uint32_t color = 0xFF'FF'FF'00 + alpha;
     for (const auto& blueprint : blueprints) {
+        if (blueprint.progress > 0)
+            continue;
         const Presets& presets = engine.getAssets().getPresets();
         const BlockPreset& preset = engine.getAssets().getPresets().getBlock(blueprint.presetID);
         const PixelCoord position = t1::pixel(blueprint.tile);
         const PixelCoord size = preset.visual.size;
-        if (blueprint.progress > 0) {
-            constexpr PixelCoord OFFSET(1.f, 1.f);
-            //renderer.draw(0x00'FF'00'FF, position - OFFSET, size + OFFSET * 2.f);
-            //TODO: update after renderer reimplementation
-        }
-        uint32_t color = 0xFF'FF'FF'00 + uint32_t(255.f * (float(blueprint.progress) / 100.f));
+        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color);
+    }
+}
+
+void Blueprints::drawInProgress(Renderer& renderer, const Engine& engine) const {
+    for (const auto& blueprint : blueprints) {
+        if (blueprint.progress < 1)
+            continue;
+        const Presets& presets = engine.getAssets().getPresets();
+        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(blueprint.presetID);
+        const PixelCoord position = t1::pixel(blueprint.tile);
+        const PixelCoord size = preset.visual.size;
+        const uint32_t color = 0xFF'FF'FF'4F + uint32_t(191.f * (float(blueprint.progress) / 100.f));
         drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color);
     }
 }

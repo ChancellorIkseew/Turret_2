@@ -1,4 +1,6 @@
 #include "build_tools.hpp"
+//
+#include "blueprint.hpp"
 
 void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData) const {
     const PixelCoord position = t1::pixel(tile);
@@ -11,20 +13,9 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
     //
     if (tileData.component == TileComponent::block) {
         const Presets& presets = engine.getAssets().getPresets();
-        const BlockPreset& preset = presets.getBlock(BlockPresetID(tileData.id));
-        const PixelCoord size = preset.visual.size;
         const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
         const uint32_t color = canBuild ? 0xFF'FF'FF'00 + alpha : 0xB4'34'24'C8;
-
-        const float angleRad = preset.rotatable ? static_cast<float>(rotation) * t1::TAU : 0.f;
-        const PixelCoord origin = size / 2.f;
-        renderer.draw(preset.visual.textureRect, position + origin, size, origin, angleRad, color);
-        if (preset.archetype == BlockType::turret) {
-            const TurretPreset& turretPreset = presets.getTurret(preset.turret);
-            const PixelCoord size = turretPreset.visual.size;
-            renderer.draw(turretPreset.visual.textureRect, position + origin, size,
-                turretPreset.visual.origin, angleRad, color);
-        }
+        Blueprints::drawBlock(presets, renderer, tile, BlockPresetID(tileData.id), rotation, color);
         return;
     }
     //

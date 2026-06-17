@@ -14,10 +14,6 @@ float pseudoRandom(vec2 co) {
 void main() {
     float progress = outColor.a;
 
-    if (progress < 0.01) {
-        progress = 0.05; 
-    }
-
     // 1. Получаем точный размер атласа в пикселях (например, vec2(2048.0, 2048.0))
     vec2 atlasSize = vec2(textureSize(textureAtlas, 0));
 
