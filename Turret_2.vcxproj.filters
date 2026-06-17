@@ -572,9 +572,6 @@
     <ClCompile Include="src\game\particles\particles_system.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\world_drawer\particles_drawer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\io\parser\jtin_parser.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>

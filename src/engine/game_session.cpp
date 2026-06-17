@@ -114,8 +114,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     renderer.setShaderProgram(*shaders.lightingShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
-    ParticlesDrawer particlesDrawer;
-    particlesDrawer.draw(camera, renderer, world->getParticles().getSoa());
+    drawParticles(camera, renderer, world->getParticles().getSoa());
     shells::drawShellsLighting(world->getShells().getSoa(), presets, camera, renderer);
     //
     renderer.setShaderProgram(*shaders.uiShader);

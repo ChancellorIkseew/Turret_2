@@ -249,7 +249,6 @@
     <ClCompile Include="src\game\world_drawer\blocks_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\entities_drawer.cpp" />
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp" />
-    <ClCompile Include="src\game\world_drawer\particles_drawer.cpp" />
     <ClCompile Include="src\game\world_saver\gen_preset_saver.cpp" />
     <ClCompile Include="src\game\world_saver\map_saver.cpp" />
     <ClCompile Include="src\game\world_saver\properties_saver.cpp" />
