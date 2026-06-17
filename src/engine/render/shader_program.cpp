@@ -20,7 +20,7 @@ static unsigned int compileShader(unsigned int type, const fs::path path) {
         char infoLog[512];
         glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &success);
         glGetShaderInfoLog(shaderID, 512, nullptr, infoLog);
-        logger.error() << "Shader Compilation Error (" << path.filename() << "):\n" << infoLog;
+        logger.error() << "Shader Compilation Error (" << path << "):\n" << infoLog;
     }
     return shaderID;
 }
@@ -40,7 +40,7 @@ ShaderProgram::ShaderProgram(const fs::path vertexPath, const fs::path fragmentP
     if (!success) {
         char infoLog[512];
         glGetProgramInfoLog(programID, 512, nullptr, infoLog);
-        logger.error() << "Shader Program Linking Error:\n" << infoLog;
+        logger.error() << "Shader Program Linking Error: ("  << vertexPath << " + " << fragmentPath << ")\n" << infoLog;
     }
 
     glDeleteShader(vertexShader);
