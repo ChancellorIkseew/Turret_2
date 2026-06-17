@@ -29,9 +29,6 @@ public:
     void addToOverlay(std::unique_ptr<Container> container);
     //
     void update(UIContextBridge& contextBridge, const int frameDelayMs);
-    ///@brief See RenderBridge.
-    void drawBatched(RenderBridge& renderBridge);
-    ///@brief See RenderBridge.
     void draw(RenderBridge& renderBridge);
     void translate(Localization&& localization);
     //

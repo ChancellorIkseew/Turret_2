@@ -22,10 +22,9 @@ public:
         mainLayerSprites.emplace_back(position, size, textureBridge);
     }
 
-    void drawBatchedAndClear(RenderBridge& renderBridge) noexcept;
-    void drawAndClear(RenderBridge& renderBridge)        noexcept;
-    void drawBatched(RenderBridge& renderBridge)   const noexcept;
-    void draw(RenderBridge& renderBridge)          const noexcept;
+    void drawAndClear(RenderBridge& renderBridge) noexcept;
+private:
+    void draw(RenderBridge& renderBridge) const noexcept;
     void clear() noexcept;
 };
 

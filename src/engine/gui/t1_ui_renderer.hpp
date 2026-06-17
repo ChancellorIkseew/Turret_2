@@ -36,9 +36,6 @@ public:
         renderer.draw(textureRect, position, size, ORIGIN, ANGLE_RAD);
     }
     //
-    void drawRectsBatched(std::span<const mingui::Rect> rects) final { /* not needded */ }
-    void drawTextsBatched(std::span<const mingui::Text> texts) final { /* not needded */ }
-    //
     void setScale(const float scale) final {
         renderer.setView(scale, PixelCoord(0.f, 0.f));
     }

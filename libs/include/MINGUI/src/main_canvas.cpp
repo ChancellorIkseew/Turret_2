@@ -31,16 +31,6 @@ void MainCanvas::update(UIContextBridge& contextBridge, const int frameDelayMs) 
     for (auto& it : overlay)   refreshContainer(*it);
 }
 
-void MainCanvas::drawBatched(RenderBridge& renderBridge) {
-    for (const auto& it : mainLayer) {
-        it->draw(renderQueue);
-    }
-    if (hasOverlay())
-        overlay.back()->draw(renderQueue);
-    renderBridge.setScale(scale);
-    renderQueue.drawBatchedAndClear(renderBridge);
-}
-
 void MainCanvas::draw(RenderBridge& renderBridge) {
     for (const auto& it : mainLayer) {
         it->draw(renderQueue);
