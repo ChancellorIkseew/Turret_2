@@ -13,28 +13,30 @@ Settings::_Gameplay Settings::gameplay;
 Settings::_GUI Settings::gui;
 static debug::Logger logger("settings");
 
+#define key_val(value) #value, value
+
 void Settings::writeSettings() {
     tin::Data data;
-    data.emplace("volume_master", audio.master);
-    data.emplace("volume_world",  audio.world);
-    data.emplace("volume_ui",     audio.ui);
-    data.emplace("volume_music",  audio.music);
-    data.emplace("toggle_sound",  audio.toggleSound);
+    data.emplace(key_val(audio.master));
+    data.emplace(key_val(audio.world));
+    data.emplace(key_val(audio.ui));
+    data.emplace(key_val(audio.music));
+    data.emplace(key_val(audio.toggleSound));
     //
-    data.emplace("FPS",        display.FPS);
-    data.emplace("Y-Sinc",     display.ySinc);
-    data.emplace("fullscreen", display.fullscreen);
+    data.emplace(key_val(display.FPS));
+    data.emplace(key_val(display.ySinc));
+    data.emplace(key_val(display.fullscreen));
     //
-    data.emplace("camera_inertia",      gameplay.cameraInertia);
-    data.emplace("pause_on_world_open", gameplay.pauseOnWorldOpen);
-    data.emplace("show_hitboxes",       gameplay.showHitboxes);
-    data.emplace("show_particles",      gameplay.showParticles);
-    data.emplace("max_particles",       gameplay.maxParticles);
+    data.emplace(key_val(gameplay.cameraInertia));
+    data.emplace(key_val(gameplay.pauseOnWorldOpen));
+    data.emplace(key_val(gameplay.showHitboxes));
+    data.emplace(key_val(gameplay.showParticles));
+    data.emplace(key_val(gameplay.maxParticles));
     //
-    data.emplace("lang",          gui.lang);
-    data.emplace("gui_scale",     gui.scale);
-    data.emplace("custom_cursor", gui.customCursor);
-    data.emplace("show_console",  gui.showConsole);
+    data.emplace(key_val(gui.lang));
+    data.emplace(key_val(gui.scale));
+    data.emplace(key_val(gui.customCursor));
+    data.emplace(key_val(gui.showConsole));
     tin::write("settings.tin", data);
 }
 
@@ -45,26 +47,26 @@ void Settings::readSettings() {
         logger.info() << "Saved file with default settings. File: settings.tin";
         return;
     }
-    data.get("volume_master", audio.master, 50U);
-    data.get("volume_world",  audio.world, 100U);
-    data.get("volume_ui",     audio.ui, 100U);
-    data.get("volume_music",  audio.music, 100U);
-    data.get("toggle_sound",  audio.toggleSound, true);
+    data.get(key_val(audio.master), 50U);
+    data.get(key_val(audio.world), 100U);
+    data.get(key_val(audio.ui), 100U);
+    data.get(key_val(audio.music), 100U);
+    data.get(key_val(audio.toggleSound), true);
     //
-    data.get("FPS",        display.FPS, 60U);
-    data.get("Y-Sinc",     display.ySinc, true);
-    data.get("fullscreen", display.fullscreen, false);
+    data.get(key_val(display.FPS), 60U);
+    data.get(key_val(display.ySinc), true);
+    data.get(key_val(display.fullscreen), false);
     //
-    data.get("camera_inertia",      gameplay.cameraInertia, true);
-    data.get("pause_on_world_open", gameplay.pauseOnWorldOpen, false);
-    data.get("show_hitboxes",       gameplay.showHitboxes, false);
-    data.get("show_particles",      gameplay.showParticles, true);
-    data.get("max_particles",       gameplay.maxParticles, 10000U);
+    data.get(key_val(gameplay.cameraInertia), true);
+    data.get(key_val(gameplay.pauseOnWorldOpen), false);
+    data.get(key_val(gameplay.showHitboxes), false);
+    data.get(key_val(gameplay.showParticles), true);
+    data.get(key_val(gameplay.maxParticles), 10000U);
     //
-    data.get("lang",          gui.lang, std::string("en_US"));
-    data.get("gui_scale",     gui.scale, 1U);
-    data.get("custom_cursor", gui.customCursor, true);
-    data.get("show_console",  gui.showConsole, false);
+    data.get(key_val(gui.lang), std::string("en_US"));
+    data.get(key_val(gui.scale), 1U);
+    data.get(key_val(gui.customCursor), true);
+    data.get(key_val(gui.showConsole), false);
 }
 
 void Settings::applySettings(Engine& engine) {

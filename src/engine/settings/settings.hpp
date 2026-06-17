@@ -7,29 +7,29 @@ class Engine;
 class Settings {
 public:
     static struct _Audio {
-        uint8_t master = 50U;
-        uint8_t world  = 100U;
-        uint8_t ui     = 100U;
-        uint8_t music  = 100U;
-        bool toggleSound = true;
+        uint8_t master;
+        uint8_t world;
+        uint8_t ui;
+        uint8_t music;
+        bool toggleSound;
     } audio;
     static struct _Display {
-        uint64_t FPS = 60U;
-        bool ySinc = true;
-        bool fullscreen = false;
+        uint64_t FPS;
+        bool ySinc;
+        bool fullscreen;
     } display;
     static struct _Gameplay {
-        bool cameraInertia = true;
-        bool pauseOnWorldOpen = false;
-        bool showHitboxes = false;
-        bool showParticles = true;
-        size_t maxParticles = 10000U;
+        bool cameraInertia;
+        bool pauseOnWorldOpen;
+        bool showHitboxes;
+        bool showParticles;
+        size_t maxParticles;
     } gameplay;
     static struct _GUI {
-        std::string lang = "en_US";
-        uint8_t scale = 1U;
-        bool customCursor = true;
-        bool showConsole = false;
+        std::string lang;
+        uint8_t scale;
+        bool customCursor;
+        bool showConsole;
     } gui;
 public:
     static void writeSettings();
