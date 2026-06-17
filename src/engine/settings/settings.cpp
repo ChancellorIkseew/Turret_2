@@ -42,11 +42,6 @@ void Settings::writeSettings() {
 
 void Settings::readSettings() {
     tin::Data data = tin::read("settings.tin");
-    if (data.empty()) {
-        writeSettings();
-        logger.info() << "Saved file with default settings. File: settings.tin";
-        return;
-    }
     data.get(key_val(audio.master), 50U);
     data.get(key_val(audio.world), 100U);
     data.get(key_val(audio.ui), 100U);
@@ -67,6 +62,11 @@ void Settings::readSettings() {
     data.get(key_val(gui.scale), 1U);
     data.get(key_val(gui.customCursor), true);
     data.get(key_val(gui.showConsole), false);
+    //
+    if (data.empty()) {
+        writeSettings();
+        logger.info() << "Saved file with default settings. File: settings.tin";
+    }
 }
 
 void Settings::applySettings(Engine& engine) {
