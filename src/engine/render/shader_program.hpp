@@ -1,4 +1,5 @@
 #pragma once
+#include <filesystem>
 #include "config.hpp"
 
 typedef unsigned int GLenum;
@@ -9,11 +10,13 @@ struct Pipeline {
     bool useLightmap = false;
 };
 
+namespace fs = std::filesystem;
+
 class ShaderProgram {
     Pipeline pipeline;
     unsigned int programID = 0;
 public:
-    ShaderProgram(const char* vertexSource, const char* fragmentSource, const Pipeline pipeline);
+    ShaderProgram(const fs::path vertexPath, const fs::path fragmentPath, const Pipeline pipeline);
     ~ShaderProgram();
     //
     unsigned int getID() const { return programID; }

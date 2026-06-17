@@ -3,8 +3,6 @@
 #include "engine/io/folders.hpp"
 #include "engine/render/glad/glad.h"
 #include "engine/render/text.hpp"
-#include "shaders.hpp"
-#include "engine/io/io.hpp"
 
 static void loadTextures(Atlas& atlas, Renderer& renderer) {
     atlas.clear();
@@ -35,20 +33,8 @@ void Assets::load(Renderer& renderer) {
     waves.load();
 
     auto path = io::folders::RES / "shaders";
-
-    std::string vertexBase = io::readFile(path / "vertex.glsl");
-    std::string fragmentBase = io::readFile(path / "fragment_texturing.glsl");
-    shaders.baseShader.emplace(vertexBase.c_str(), fragmentBase.c_str(), Pipeline());
-
-    std::string vertexLighting = io::readFile(path / "vertex_lighting.glsl");
-    std::string fragmentLighting = io::readFile(path / "fragment_lighting.glsl");
-    shaders.lightingShader.emplace(vertexLighting.c_str(), fragmentLighting.c_str(), Pipeline(GL_ONE, GL_ONE, true));
-
-    std::string vertexEmerge = io::readFile(path / "vertex.glsl");
-    std::string fragmentEmerge = io::readFile(path / "fragment_emerge.glsl");
-    shaders.emergeShader.emplace(vertexEmerge.c_str(), fragmentEmerge.c_str(), Pipeline());
-
-    std::string vertexUI = io::readFile(path / "vertex.glsl");
-    std::string fragmentUI = io::readFile(path / "fragment_ui.glsl");
-    shaders.uiShader.emplace(vertexUI.c_str(), fragmentUI.c_str(), Pipeline());
+    shaders.baseShader.emplace(path / "vertex.glsl", path / "fragment_texturing.glsl", Pipeline());
+    shaders.lightingShader.emplace(path / "vertex_lighting.glsl", path / "fragment_lighting.glsl", Pipeline(GL_ONE, GL_ONE, true));
+    shaders.emergeShader.emplace(path / "vertex.glsl", path / "fragment_emerge.glsl", Pipeline());
+    shaders.uiShader.emplace(path / "vertex.glsl", path / "fragment_ui.glsl", Pipeline());
 }

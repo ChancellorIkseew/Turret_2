@@ -1,30 +1,34 @@
 #include "shader_program.hpp"
 //
 #include "engine/debug/logger.hpp"
+#include "engine/io/io.hpp"
 #include "glad/glad.h"
 
 static debug::Logger logger("shaders");
 
-static unsigned int compileShader(unsigned int type, const char* source) {
-    const unsigned int shader = glCreateShader(type);
-    glShaderSource(shader, 1, &source, nullptr);
-    glCompileShader(shader);
+static unsigned int compileShader(unsigned int type, const fs::path path) {
+    std::string source = io::readFile(path, io::Log::only_error);
+    const char* sourcePtr = source.c_str();
+
+    const unsigned int shaderID = glCreateShader(type);
+    glShaderSource(shaderID, 1, &sourcePtr, nullptr);
+    glCompileShader(shaderID);
 
     int success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
     if (!success) {
         char infoLog[512];
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &success);
-        glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-        logger.error() << "Shader Compilation Error (" << type << "):\n" << infoLog;
+        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &success);
+        glGetShaderInfoLog(shaderID, 512, nullptr, infoLog);
+        logger.error() << "Shader Compilation Error (" << path.filename() << "):\n" << infoLog;
     }
-    return shader;
+    return shaderID;
 }
 
-ShaderProgram::ShaderProgram(const char* vertexSource, const char* fragmentSource, const Pipeline pipeline) :
+ShaderProgram::ShaderProgram(const fs::path vertexPath, const fs::path fragmentPath, const Pipeline pipeline) :
     pipeline(pipeline) {
-    const unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
-    const unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
+    const unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexPath);
+    const unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentPath);
 
     programID = glCreateProgram();
     glAttachShader(programID, vertexShader);
