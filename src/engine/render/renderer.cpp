@@ -137,19 +137,6 @@ void Renderer::drawRect(const PixelCoord position, const PixelCoord size,
     draw(atlasTexture.value(), whiteRect, position, size, origin, angleRad, color);
 }
 
-static Texture2D convert(SDL_Surface* rawSurface) {
-    if (!rawSurface)
-        throw std::runtime_error(SDL_GetError());
-
-    SDL_Surface* optimizedRaw = SDL_ConvertSurface(rawSurface, SDL_PIXELFORMAT_RGBA32);
-    if (!optimizedRaw) {
-        throw std::runtime_error("Failed to convert surface format: " + std::string(SDL_GetError()));
-    }
-
-    return Texture2D(optimizedRaw->w, optimizedRaw->h,
-        static_cast<const unsigned char*>(optimizedRaw->pixels));
-}
-
 void Renderer::createAtlasTexture(SDL_Surface* sdlSurface) {
     if (!sdlSurface)
         return;
