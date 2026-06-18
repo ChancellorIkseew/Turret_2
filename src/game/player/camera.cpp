@@ -2,6 +2,7 @@
 //
 #include <algorithm>
 #include "engine/window/input/input.hpp"
+#include "engine/coords/transforms.hpp"
 
 constexpr float MIN_MAP_SCALE = 0.25f, MAX_MAP_SCALE = 5.0f;
 constexpr float SCALE_FACTOR = 1.2f;
