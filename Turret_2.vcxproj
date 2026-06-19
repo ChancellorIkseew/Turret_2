@@ -132,6 +132,7 @@
     <ClInclude Include="src\game\player\player_controller.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\systems\ai_system.hpp" />
+    <ClInclude Include="src\game\systems\construction_system.hpp" />
     <ClInclude Include="src\game\systems\mobs_system.hpp" />
     <ClInclude Include="src\game\systems\shells_system.hpp" />
     <ClInclude Include="src\game\systems\turrets_system.hpp" />
@@ -240,6 +241,7 @@
     <ClCompile Include="src\game\script_libs\lib_player.cpp" />
     <ClCompile Include="src\game\script_libs\lib_util.cpp" />
     <ClCompile Include="src\game\script_libs\lib_world.cpp" />
+    <ClCompile Include="src\game\systems\construction_system.cpp" />
     <ClCompile Include="src\game\systems\mobs_system.cpp" />
     <ClCompile Include="src\game\systems\moving_ai_system.cpp" />
     <ClCompile Include="src\game\systems\shells_system.cpp" />

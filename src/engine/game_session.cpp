@@ -5,6 +5,7 @@
 #include "engine/scripting/scripting.hpp"
 #include "game/particles/particles_system.hpp"
 #include "game/systems/ai_system.hpp"
+#include "game/systems/construction_system.hpp"
 #include "game/systems/mobs_system.hpp"
 #include "game/systems/shells_system.hpp"
 #include "game/systems/turrets_system.hpp"
@@ -31,31 +32,6 @@ void GameSession::prepare(const Presets& presets) {
         builtInScripts.spawnMob(presets.getMobID("shuttle"), PixelCoord(1600, 1600), playerTeamID);
 }
 
-#include "game/frontend/build_tools/blueprint.hpp"
-#include "game/built_in_scripts/built_in_scripts.hpp"
-
-static inline void buildBP(MobSoA& soa, const Presets& presets, Blueprints& blueprints, BuiltInScripts& scripts, TeamID player) {
-    if (blueprints.empty())
-        return;
-    for (size_t i = 0; i < soa.mobCount; ++i) {
-        const auto& mobPreset = presets.getMob(soa.preset[i]);
-        if (!mobPreset.canBuild)
-            continue;
-        Blueprint* bp = blueprints.getClosest(t1::tile(soa.position[i]));
-        if (!bp)
-            continue;
-        if (t1::areCloserCircle(t1::tileCenter(bp->tile), soa.position[i], 128.f)) {
-            if (bp->progress < 100)
-                bp->progress += mobPreset.buildSpeed;
-            else {
-                scripts.placeBlock(bp->presetID, bp->tile, player, bp->rotation);
-                blueprints.removeIfExists(bp->tile);
-            }
-            continue;
-        }
-    }
-}
-
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto& blocks    = world->getBlocks();
     auto& chunks    = world->getChunks();
@@ -69,7 +45,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     updateBlocks(blocks, world->getMap(), presets);
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
-    buildBP(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts, playerController.getPlayerTeam()->getID());
+    construction::buildBlueprints(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, world->getBlueprints());
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
