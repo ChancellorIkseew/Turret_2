@@ -89,12 +89,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     worldSounds.play(engine.getAssets().getAudio(), camera);
     //
     renderer.setShaderProgram(*shaders.shieldShader);
-    for (const auto pos : world->getMobs().getSoa().position) {
-        TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
-        PixelCoord size(48, 48);
-        PixelCoord origin = size / 2;
-        renderer.draw(rect, pos, size, origin, 0.f, 0xFF'FF'FF'00);
-    }
+    mobs::drawMobShields(world->getMobs().getSoa(), presets, camera, renderer, timeCount.getTickCount());
     //
     renderer.setShaderProgram(*shaders.lightingShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));

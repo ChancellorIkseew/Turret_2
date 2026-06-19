@@ -148,3 +148,16 @@ void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, R
         renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
     }
 }
+
+void mobs::drawMobShields(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
+    const size_t mobCount = soa.mobCount;
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (soa.shieldHealth[i] < 1 || !camera.contains(t1::tile(soa.position[i])))
+            continue;
+        constexpr TextureRect RECT{ 0.f, 0.f, 1.f, 1.f };
+        const auto& preset = presets.getMob(soa.preset[i]);
+        PixelCoord origin(preset.shieldRadius, preset.shieldRadius);
+        PixelCoord size = origin * 2.f;
+        renderer.draw(RECT, soa.position[i], size, origin, 0.f, 0xFF'FF'FF'00);
+    }
+}
