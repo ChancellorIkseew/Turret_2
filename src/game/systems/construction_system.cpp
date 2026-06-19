@@ -16,9 +16,12 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
         Blueprint* bp = blueprints.getClosest(t1::tile(soa.position[i]));
         if (!bp)
             continue;
-        if (t1::areCloserCircle(t1::tileCenter(bp->tile), soa.position[i], 128.f)) {
-            if (bp->progress < 100)
+        const PixelCoord tileCenter = t1::tileCenter(bp->tile);
+        if (t1::areCloserCircle(tileCenter, soa.position[i], 128.f)) {
+            if (bp->progress < 100) {
                 bp->progress += mobPreset.buildSpeed;
+                soa.angle[i] = t1::atan(tileCenter - soa.position[i]);
+            } 
             else {
                 scripts.placeBlock(bp->presetID, bp->tile, soa.teamID[i], bp->rotation);
                 blueprints.removeIfExists(bp->tile);
