@@ -13,6 +13,7 @@ struct MobSoA {
     std::vector<PixelCoord> velocity;
     std::vector<AngleRad> angle;
     std::vector<Health> health;
+    std::vector<Health> shieldHealth;
     std::vector<MobPresetID> preset;
     std::vector<TurretPresetID> turretPreset;
     std::vector<MobID> id;
@@ -55,6 +56,7 @@ public:
         const PixelCoord position,
         const AngleRad angle,
         const Health health,
+        const Health shieldHealth,
         const TeamID teamID,
         const float hitboxRadius,
         const MotionData motionData,

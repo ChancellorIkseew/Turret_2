@@ -61,7 +61,9 @@ struct MobVisualPreset {
 struct MobPreset {
     float maxSpeed;
     float hitboxRadius;
+    float shieldRadius;
     Health maxHealth;
+    Health maxShieldHealth;
     bool flying;
     bool canBuild;
     uint8_t buildSpeed;

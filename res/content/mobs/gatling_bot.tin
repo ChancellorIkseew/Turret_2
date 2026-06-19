@@ -8,7 +8,9 @@ frame_order=0,1,2,2,1,0,3,4,3,3
 #logic
 speed=0.33
 hitbox_radius=9.0
+shield_radius=0.0
 health=50
+shield_health=0
 flying=false
 can_build=false
 build_speed=0

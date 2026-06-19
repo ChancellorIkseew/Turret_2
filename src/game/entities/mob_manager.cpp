@@ -13,6 +13,8 @@ void MobManager::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
     soa.velocity.reserve(capacity);
     soa.angle.reserve(capacity);
+    soa.health.reserve(capacity);
+    soa.shieldHealth.reserve(capacity);
     soa.teamID.reserve(capacity);
     soa.preset.reserve(capacity);
     soa.turretPreset.reserve(capacity);
@@ -31,6 +33,7 @@ MobID MobManager::addMob(
     const TurretPresetID turretPreset,
     const PixelCoord position,
     const AngleRad angle,
+    const Health shieldHealth,
     const Health health,
     const TeamID teamID,
     const float hitboxRadius,
@@ -50,6 +53,7 @@ MobID MobManager::addMob(
     soa.velocity.push_back(PixelCoord(0, 0));
     soa.angle.push_back(angle);
     soa.health.push_back(health);
+    soa.shieldHealth.push_back(health);
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
     soa.turretPreset.push_back(turretPreset);
@@ -79,6 +83,7 @@ void MobManager::removeMob(const size_t targetIndex) {
         soa.velocity[targetIndex] = std::move(soa.velocity[lastIndex]);
         soa.angle[targetIndex] = std::move(soa.angle[lastIndex]);
         soa.health[targetIndex] = std::move(soa.health[lastIndex]);
+        soa.shieldHealth[targetIndex] = std::move(soa.health[lastIndex]);
         soa.teamID[targetIndex] = std::move(soa.teamID[lastIndex]);
         soa.preset[targetIndex] = std::move(soa.preset[lastIndex]);
         soa.turretPreset[targetIndex] = std::move(soa.turretPreset[lastIndex]);
@@ -97,6 +102,7 @@ void MobManager::removeMob(const size_t targetIndex) {
     soa.velocity.pop_back();
     soa.angle.pop_back();
     soa.health.pop_back();
+    soa.shieldHealth.pop_back();
     soa.teamID.pop_back();
     soa.preset.pop_back();
     soa.turretPreset.pop_back();

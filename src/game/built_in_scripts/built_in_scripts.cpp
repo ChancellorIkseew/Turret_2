@@ -82,8 +82,8 @@ void BuiltInScripts::spawnMob(const MobPresetID presetID, const PixelCoord posit
     auto& mobs = world.getMobs();
     MotionData mData(preset.defaultMovingAI, 0, PixelCoord(400, 1000));
     ShootingData sData(preset.defaultShootingAI, false, PixelCoord(0, 0));
-    mobs.addMob(presetID, preset.turret, position, 0.0f, preset.maxHealth, teamID,
-        preset.hitboxRadius, mData, sData, 0, 0.0f);
+    mobs.addMob(presetID, preset.turret, position, 0.0f, preset.maxHealth, preset.maxShieldHealth,
+        teamID, preset.hitboxRadius, mData, sData, 0, 0.0f);
 }
 
 void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, BlockRot rotation) {

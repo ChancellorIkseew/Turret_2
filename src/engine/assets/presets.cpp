@@ -77,7 +77,9 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
     return MobPreset{
         reader.get<float>("speed"),
         reader.get<float>("hitbox_radius"),
+        reader.get<float>("shield_radius"),
         reader.get<Health>("health"),
+        reader.get<Health>("shield_health"),
         reader.get<bool>("flying"),
         reader.get<bool>("can_build"),
         reader.get<uint8_t>("build_speed"),
