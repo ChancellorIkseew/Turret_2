@@ -53,7 +53,7 @@ MobID MobManager::addMob(
     soa.velocity.push_back(PixelCoord(0, 0));
     soa.angle.push_back(angle);
     soa.health.push_back(health);
-    soa.shieldHealth.push_back(health);
+    soa.shieldHealth.push_back(shieldHealth);
     soa.teamID.push_back(teamID);
     soa.preset.push_back(preset);
     soa.turretPreset.push_back(turretPreset);
