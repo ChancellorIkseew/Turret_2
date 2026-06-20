@@ -1,19 +1,13 @@
 #include "mobs_system.hpp"
 //
-#include <algorithm>
 #include "engine/assets/presets.hpp"
 #include "engine/render/renderer.hpp"
 #include "engine/coords/transforms.hpp"
-#include "engine/settings/settings.hpp"
 #include "game/blocks/block_map.hpp"
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mob_manager.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
-
-constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
-constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
-constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
 
 static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other, const Presets& presets) {
     const bool currentFlying = presets.getMob(soa.preset[current]).flying;
@@ -106,17 +100,10 @@ void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerContro
     }
 }
 
-static void drawHitboxes(const MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
-    for (size_t i = 0; i < soa.id.size(); ++i) {
-        if (!camera.contains(t1::tile(soa.position[i])))
-            continue;
-        const float hitboxSize = presets.getMob(soa.preset[i]).hitboxRadius * 2.0f;
-        const PixelCoord hitbox(hitboxSize, hitboxSize);
-        //renderer.drawRect(HITBOX_COLOR, soa.position[i] - hitbox / 2.0f, hitbox);
-    }
-}
-
-static void drawHealthBars(const MobSoA& soa, const Presets& presets, const Camera& camera, const Renderer& renderer) {
+void mobs::drawHealthBars(const MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
+    constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
+    constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
+    constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
     for (size_t i = 0; i < soa.id.size(); ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
@@ -125,14 +112,12 @@ static void drawHealthBars(const MobSoA& soa, const Presets& presets, const Came
         const float part = static_cast<float>(current) / static_cast<float>(max);
         const PixelCoord healthSize(BAR_SIZE.x * part, 5.0f);
 
-        //renderer.drawRect(HITBOX_COLOR, soa.position[i] - BAR_SIZE / 2.0f, BAR_SIZE);
-        //renderer.drawRect(HEALTH_COLOR, soa.position[i] - BAR_SIZE / 2.0f, healthSize);
+        renderer.drawRect(soa.position[i] - BAR_SIZE / 2.0f, BAR_SIZE, {0.f, 0.f}, 0.f, HITBOX_COLOR);
+        renderer.drawRect(soa.position[i] - BAR_SIZE / 2.0f, healthSize, {0.f, 0.f}, 0.f, HEALTH_COLOR);
     }
 }
 
 void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
-    if (Settings::gameplay.showHitboxes)
-        drawHitboxes(soa, presets, camera, renderer);
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
@@ -143,9 +128,11 @@ void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, R
             if (soa.chassisFrame[i] >= presets.getMob(soa.preset[i]).visual.frameCount)
                 soa.chassisFrame[i] = 0;
         }
-        //renderer.drawAnimated(visual.texture, soa.position[i], visual.size, visual.origin, soa.angle[i],
-            //visual.frameOrder[soa.chassisFrame[i]], visual.frameHeight);
-        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
+
+        TextureRect frameTextureRect = visual.textureRect;
+        frameTextureRect.h = visual.frameHeight;
+        frameTextureRect.y += static_cast<float>(visual.frameOrder[soa.chassisFrame[i]]) * visual.frameHeight;
+        renderer.draw(frameTextureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
     }
 }
 

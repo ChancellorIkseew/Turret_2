@@ -34,7 +34,7 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
         reader.get<uint8_t>("frame_ticks"),
-        reader.get<float>("frame_height"),
+        reader.get<float>("frame_height") / atlas.getSize().y,
         static_cast<uint8_t>(frameCount),
         frames
     };
@@ -70,7 +70,7 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
         reader.get<uint8_t>("frame_ticks"),
-        reader.get<float>("frame_height"),
+        reader.get<float>("frame_height") / atlas.getSize().y,
         static_cast<uint8_t>(frameCount),
         frameOrder
     };
