@@ -37,7 +37,10 @@ static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCou
                 continue;
             if (!CircleHitbox(mobs.position[mob], mobs.hitboxRadius[mob]).contains(shellPosition))
                 continue;
-            registerDamage(mobs.health[mob], shells.restDamage[shell]);
+            if (mobs.shieldHealth[mob] > 0)
+                registerDamage(mobs.shieldHealth[mob], shells.restDamage[shell]);
+            else
+               registerDamage(mobs.health[mob], shells.restDamage[shell]);
             if (shells.restDamage[shell] < 1)
                 break;
         }
