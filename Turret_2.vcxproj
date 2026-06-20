@@ -96,7 +96,6 @@
     <ClInclude Include="src\engine\time_count.hpp" />
     <ClInclude Include="src\engine\util\string_util.hpp" />
     <ClInclude Include="src\engine\util\time.hpp" />
-    <ClInclude Include="src\engine\util\sleep.hpp" />
     <ClInclude Include="src\engine\window\cursor.hpp" />
     <ClInclude Include="src\engine\window\input\binding.hpp" />
     <ClInclude Include="src\engine\window\input\controls.hpp" />
