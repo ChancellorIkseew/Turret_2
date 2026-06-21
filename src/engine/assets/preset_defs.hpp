@@ -35,6 +35,7 @@ struct TurretVisualPreset {
     TextureRect textureRect;
     PixelCoord origin;
     PixelCoord size;
+    float shadowOffset;
     std::string shotSound;
 };
 

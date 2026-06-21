@@ -2,6 +2,7 @@
 texture=gatling_turret
 origin=12.5|15.0
 size=25|28
+shadow_offset=1.5
 shot_sound=autocannon_shot
 #logic
 reload=4

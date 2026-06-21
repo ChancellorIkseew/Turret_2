@@ -105,7 +105,7 @@ void shells::drawShellsLighting(const ShellSoA& soa, const Presets& presets, con
     for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        auto& visual = presets.getShell(soa.preset[i]).visual;
+        const auto& visual = presets.getShell(soa.preset[i]).visual;
         const PixelCoord scaledSize = visual.size * scale * 8.f;
         const PixelCoord scaledOrigin = visual.origin * scale * 8.f;
         const PixelCoord screenPos = (soa.position[i] - translation) * scale;

@@ -2,6 +2,7 @@
 texture=cannoner_bot_turret
 origin=21.5|28.0
 size=43|43
+shadow_offset=3
 shot_sound=cannon_shot
 #logic
 reload=10

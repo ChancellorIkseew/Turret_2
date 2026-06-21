@@ -12,4 +12,5 @@ namespace turrets {
     void processTurrets(TurretComponents& soa, ShellManager& shells, ParticleManager& particles,
         const Presets& presets, SoundQueue& sounds, const Camera& camera);
     void drawTurrets(TurretComponents&& soa, const Presets& presets, const Camera& camera, Renderer& renderer);
+    void drawShadows(TurretComponents&& soa, const Presets& presets, const Camera& camera, Renderer& renderer);
 }

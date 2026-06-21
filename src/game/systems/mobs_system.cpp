@@ -122,7 +122,7 @@ void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, R
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        auto& visual = presets.getMob(soa.preset[i]).visual;
+        const auto& visual = presets.getMob(soa.preset[i]).visual;
         if (tickCount % visual.frameTicks == 0 && soa.velocity[i] != PixelCoord(0.0f, 0.0f)) {
             ++soa.chassisFrame[i];
             if (soa.chassisFrame[i] >= presets.getMob(soa.preset[i]).visual.frameCount)

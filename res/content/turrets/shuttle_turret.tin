@@ -2,6 +2,7 @@
 texture=shuttle_turret
 origin=3.5|10.0
 size=7|15
+shadow_offset=1
 shot_sound=autocannon_shot
 #logic
 reload=8

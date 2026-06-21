@@ -103,7 +103,18 @@ void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const 
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
-        auto& visual = presets.getTurret(soa.preset[i]).visual;
+        const auto& visual = presets.getTurret(soa.preset[i]).visual;
         renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.turretAngle[i]);
+    }
+}
+
+void turrets::drawShadows(TurretComponents&& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
+    const size_t mobCount = soa.mobCount;
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (!camera.contains(t1::tile(soa.position[i])))
+            continue;
+        const auto& visual = presets.getTurret(soa.preset[i]).visual;
+        const PixelCoord position = soa.position[i] + PixelCoord(-visual.shadowOffset, visual.shadowOffset);
+        renderer.draw(visual.textureRect, position, visual.size, visual.origin, t1::PI - soa.turretAngle[i], 0x00'00'00'40);
     }
 }

@@ -117,6 +117,7 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
+        reader.get<float>("shadow_offset"),
         reader.get<std::string>("shot_sound")
     };
     return TurretPreset{
