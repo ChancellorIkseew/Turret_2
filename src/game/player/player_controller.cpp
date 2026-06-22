@@ -35,56 +35,48 @@ void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, con
         camera.moveByMouse(input);
     }
     else /*State::control_mob*/ {
-        const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-        if (mobs.isIndexValid(index))
-            camera.setCenter(mobs.getSoa().position[index]);
-        else
-            state = State::control_camera;
+        auto& soa = mobs.getSoa();
+        for (size_t i = 0; i < soa.mobCount; ++i) {
+            if (soa.motionData[i].aiType == MovingAI::player_controlled) {
+                camera.setCenter(soa.position[i]);
+                goto ok;
+            }  
+        }
+        state = State::control_camera;
+        ok:     
     }
     camera.scale(input);
 }
 
 void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobManager& mobs, const Presets& presets) {
+    if (input.jactive(Control_unit))
+        captureMob(input, camera, mobs, presets);
     move(input, camera, mobs, paused);
     shoot(input, camera);
     mine();
-    captureMob(input, camera, mobs, presets);
 }
 
 void PlCtr::captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets) {
-    if (!input.jactive(Control_unit))
-        return;
-    const auto& soa = mobs.getSoa();
+    auto& soa = mobs.getSoa();
+    for (size_t i = 0; i < soa.mobCount; ++i) {
+        auto& movingAI = soa.motionData[i].aiType;
+        auto& shootingAI = soa.shootingData[i].aiType;
+        if (movingAI == MovingAI::player_controlled || shootingAI == ShootingAI::player_controlled) {
+            const auto& preset = presets.getMob(soa.preset[i]);
+            movingAI = preset.defaultMovingAI;
+            shootingAI = preset.defaultShootingAI;
+        }
+    }
+    state = State::control_camera;
+
+    const PixelCoord mousePosition = input.getMouseCoord();
     for (size_t i = 0; i < soa.mobCount; ++i) {
         if (soa.teamID[i] != playerTeam->getID())
             continue;
-        if (t1::areCloserRect(camera.fromMapToScreen(soa.position[i]), input.getMouseCoord(), 20.f))
-            return setTarget(mobs, soa.id[i], presets);     
+        if (t1::areCloserRect(camera.fromMapToScreen(soa.position[i]), mousePosition, 20.f)) {
+            soa.motionData[i].aiType = MovingAI::player_controlled;
+            soa.shootingData[i].aiType = ShootingAI::player_controlled;
+            state = State::control_mob;
+        }
     }
-    resetTarget(mobs, presets);
-}
-
-void PlCtr::setTarget(MobManager& mobs, const MobID mobID, const Presets& presets) {
-    resetTarget(mobs, presets); // Reset current target before set new.
-    if (mobID == IDManager<MobID>::INVALID_ID)
-        return;
-    const size_t index = mobs.getSoaIndexByMobID(mobID);
-    if (!mobs.isIndexValid(index))
-        return;
-    mobs.getSoa().motionData[index].aiType = MovingAI::player_controlled;
-    mobs.getSoa().shootingData[index].aiType = ShootingAI::player_controlled;
-    targetMobID = mobID;
-    state = State::control_mob;
-}
-
-void PlCtr::resetTarget(MobManager& mobs, const Presets& presets) {
-    if (targetMobID == IDManager<MobID>::INVALID_ID)
-        return;
-    const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-    if (!mobs.isIndexValid(index))
-        return;
-    mobs.getSoa().motionData[index].aiType =   presets.getMob(mobs.getSoa().preset[index]).defaultMovingAI;
-    mobs.getSoa().shootingData[index].aiType = presets.getMob(mobs.getSoa().preset[index]).defaultShootingAI;
-    targetMobID = IDManager<MobID>::INVALID_ID;
-    state = State::control_camera;
 }

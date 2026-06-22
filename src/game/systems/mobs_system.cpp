@@ -94,8 +94,6 @@ void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerContro
             continue;
         // if (soa.presets->explosion.damage != 0)
         //     explosions.push(soa.presets->explosion);
-        if (plCtr.getTarget() == soa.id[index])
-            plCtr.resetTarget(manager, presets);
         manager.removeMob(index);
     }
 }
