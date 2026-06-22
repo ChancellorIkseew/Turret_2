@@ -30,7 +30,7 @@ void PlCtr::move(const Input& input, Camera& camera, const MobSoA& mobs, const b
         delta.x += 1.0f;
 
     motionVector = delta;
-    if (state == State::control_camera || isPaused) {
+    if (state != State::control_mob || isPaused) {
         camera.move(delta);
         camera.moveByMouse(input);
     }
@@ -47,15 +47,15 @@ void PlCtr::move(const Input& input, Camera& camera, const MobSoA& mobs, const b
     camera.scale(input);
 }
 
-void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, const Presets& presets) {
+void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, TurretSoA& turrets, const Presets& presets) {
     if (input.jactive(Control_unit))
-        captureMob(input, camera, mobs, presets);
+        captureMob(input, camera, mobs, turrets, presets);
     move(input, camera, mobs, paused);
     shoot(input, camera);
     mine();
 }
 
-void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, const Presets& presets) {
+void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets, const Presets& presets) {
     for (size_t i = 0; i < mobs.mobCount; ++i) {
         auto& movingAI = mobs.motionData[i].aiType;
         auto& shootingAI = mobs.shootingData[i].aiType;
@@ -65,6 +65,15 @@ void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, c
             shootingAI = preset.defaultShootingAI;
         }
     }
+
+    for (size_t i = 0; i < turrets.turretCount; ++i) {
+        auto& shootingAI = turrets.shootingData[i].aiType;
+        if (shootingAI == ShootingAI::player_controlled) {
+            //const auto& preset = presets.getTurret(turrets.preset[i]);
+            shootingAI = ShootingAI::basic;
+        }
+    }
+
     state = State::control_camera;
 
     const PixelCoord mousePosition = input.getMouseCoord();
@@ -75,6 +84,17 @@ void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, c
             mobs.motionData[i].aiType = MovingAI::player_controlled;
             mobs.shootingData[i].aiType = ShootingAI::player_controlled;
             state = State::control_mob;
+            break;
+        }
+    }
+
+    for (size_t i = 0; i < turrets.turretCount; ++i) {
+        //if (turret.teamID[i] != playerTeam->getID())
+            //continue;
+        if (t1::areCloserRect(camera.fromMapToScreen(turrets.position[i]), mousePosition, 20.f)) {
+            turrets.shootingData[i].aiType = ShootingAI::player_controlled;
+            state = State::control_turret;
+            break;
         }
     }
 }
