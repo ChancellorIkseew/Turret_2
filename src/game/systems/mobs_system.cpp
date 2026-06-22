@@ -101,7 +101,7 @@ void mobs::drawHealthBars(const MobSoA& soa, const Presets& presets, const Camer
     constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
     constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
     constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
-    for (size_t i = 0; i < soa.id.size(); ++i) {
+    for (size_t i = 0; i < soa.mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         const Health current = soa.health[i];

@@ -52,7 +52,7 @@ static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size
 }
 
 void ai::updateMovingAI(MobSoA& soa, const Presets& presets, const PlayerController& playerController, Blueprints& blueprints) {
-    const size_t mobCount = soa.id.size();
+    const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         switch (soa.motionData[i].aiType) {
         case MovingAI::player_controlled:
