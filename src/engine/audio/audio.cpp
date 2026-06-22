@@ -32,8 +32,10 @@ Audio::Audio() {
     if (!MIX_Init())
         throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
     mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
-    if (!mixer)
-        throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
+    if (!mixer) {
+        logger.error() << SDL_MIXER_ERROR + SDL_GetError();
+        return;
+    }
     fillPool(worldTrackPool, mixer);
     fillPool(uiTrackPool, mixer);
     fillPool(musicTrackPool, mixer);
