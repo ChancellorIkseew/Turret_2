@@ -86,7 +86,7 @@ static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleMa
             position.y -= shell.visual.origin.y * cos;
             particles.addParticle(position, angle, 0.2f, 0xFF'A5'00'FF, 15);
             sounds.pushSound(turret.visual.shotSound, position);
-        }  
+        }
     }
 }
 
