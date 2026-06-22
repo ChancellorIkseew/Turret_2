@@ -4,10 +4,7 @@
 #include "game/player/player_controller.hpp"
 
 static TeamID getTeamID() {
-    Team* playerTeam = script_libs::playerController->getPlayerTeam();
-    if (!playerTeam)
-        script_libs::logAndThrow("Coud not get player team ID. Player team was nullptr.");
-    return playerTeam->getID();
+    return script_libs::playerController->getPlayerTeamID();
 }
 static TeamID getEnemyTeamID() {
     Team* enemyTeam = script_libs::world->getTeams().getTeamByName(U"enemy");

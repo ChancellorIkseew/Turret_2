@@ -25,7 +25,7 @@ GameSession::~GameSession() = default;
 void GameSession::prepare(const Presets& presets) {
     Team* playerTeam = world->getTeams().addTeam(U"player");
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
-    playerController.setPlayerTeam(playerTeam);
+    playerController.setPlayerTeamID(playerTeam->getID());
     TeamID playerTeamID = playerTeam->getID();
     // temporary for alpha-test
     for (int i = 0; i < 10; ++i)

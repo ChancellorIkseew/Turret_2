@@ -5,6 +5,8 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/common/team.hpp"
+#include "game/entities/mob_manager.hpp"
+#include "game/entities/turret_manager.hpp"
 
 using PlCtr = PlayerController;
 
@@ -78,7 +80,7 @@ void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, T
 
     const PixelCoord mousePosition = input.getMouseCoord();
     for (size_t i = 0; i < mobs.mobCount; ++i) {
-        if (mobs.teamID[i] != playerTeam->getID())
+        if (mobs.teamID[i] != playerTeamID)
             continue;
         if (t1::areCloserRect(camera.fromMapToScreen(mobs.position[i]), mousePosition, 20.f)) {
             mobs.motionData[i].aiType = MovingAI::player_controlled;
