@@ -16,7 +16,7 @@ class PlayerController {
     PixelCoord aimCoord;
     bool shooting = false;
 public:
-    void update(const Input& input, Camera& camera, const bool paused, MobManager& mobs, const Presets& presets);
+    void update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, const Presets& presets);
 
     void setPlayerTeam(Team* team) { playerTeam = team; }
     Team* getPlayerTeam() { return playerTeam; }
@@ -25,8 +25,8 @@ public:
     PixelCoord getAimCoord()     const { return aimCoord; }
     bool shootingActive()        const { return shooting; }
 private:
-    void move(const Input& input, Camera& camera, const MobManager& mobs, const bool isPaused);
+    void move(const Input& input, Camera& camera, const MobSoA& mobs, const bool isPaused);
     void mine();
     void shoot(const Input& input, const Camera& camera);
-    void captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets);
+    void captureMob(const Input& input, const Camera& camera, MobSoA& mobs, const Presets& presets);
 };

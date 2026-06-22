@@ -17,7 +17,7 @@ void PlCtr::mine() {
 
 }
 
-void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, const bool isPaused) {
+void PlCtr::move(const Input& input, Camera& camera, const MobSoA& mobs, const bool isPaused) {
     PixelCoord delta(0.0f, 0.0f);
 
     if (input.active(Move_up))
@@ -35,10 +35,9 @@ void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, con
         camera.moveByMouse(input);
     }
     else /*State::control_mob*/ {
-        auto& soa = mobs.getSoa();
-        for (size_t i = 0; i < soa.mobCount; ++i) {
-            if (soa.motionData[i].aiType == MovingAI::player_controlled) {
-                camera.setCenter(soa.position[i]);
+        for (size_t i = 0; i < mobs.mobCount; ++i) {
+            if (mobs.motionData[i].aiType == MovingAI::player_controlled) {
+                camera.setCenter(mobs.position[i]);
                 goto ok;
             }  
         }
@@ -48,7 +47,7 @@ void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, con
     camera.scale(input);
 }
 
-void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobManager& mobs, const Presets& presets) {
+void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, const Presets& presets) {
     if (input.jactive(Control_unit))
         captureMob(input, camera, mobs, presets);
     move(input, camera, mobs, paused);
@@ -56,13 +55,12 @@ void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobMan
     mine();
 }
 
-void PlCtr::captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets) {
-    auto& soa = mobs.getSoa();
-    for (size_t i = 0; i < soa.mobCount; ++i) {
-        auto& movingAI = soa.motionData[i].aiType;
-        auto& shootingAI = soa.shootingData[i].aiType;
+void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, const Presets& presets) {
+    for (size_t i = 0; i < mobs.mobCount; ++i) {
+        auto& movingAI = mobs.motionData[i].aiType;
+        auto& shootingAI = mobs.shootingData[i].aiType;
         if (movingAI == MovingAI::player_controlled || shootingAI == ShootingAI::player_controlled) {
-            const auto& preset = presets.getMob(soa.preset[i]);
+            const auto& preset = presets.getMob(mobs.preset[i]);
             movingAI = preset.defaultMovingAI;
             shootingAI = preset.defaultShootingAI;
         }
@@ -70,12 +68,12 @@ void PlCtr::captureMob(const Input& input, const Camera& camera, MobManager& mob
     state = State::control_camera;
 
     const PixelCoord mousePosition = input.getMouseCoord();
-    for (size_t i = 0; i < soa.mobCount; ++i) {
-        if (soa.teamID[i] != playerTeam->getID())
+    for (size_t i = 0; i < mobs.mobCount; ++i) {
+        if (mobs.teamID[i] != playerTeam->getID())
             continue;
-        if (t1::areCloserRect(camera.fromMapToScreen(soa.position[i]), mousePosition, 20.f)) {
-            soa.motionData[i].aiType = MovingAI::player_controlled;
-            soa.shootingData[i].aiType = ShootingAI::player_controlled;
+        if (t1::areCloserRect(camera.fromMapToScreen(mobs.position[i]), mousePosition, 20.f)) {
+            mobs.motionData[i].aiType = MovingAI::player_controlled;
+            mobs.shootingData[i].aiType = ShootingAI::player_controlled;
             state = State::control_mob;
         }
     }
