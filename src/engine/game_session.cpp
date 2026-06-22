@@ -54,7 +54,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     particles::updateParticles(particles);
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
-    mobs::cleanupMobs(mobs, presets, playerController);
+    mobs::cleanupMobs(mobs, presets);
     blocks.getMeta().cleanUp();
     timeCount.update();
     builtInScripts.execute(timeCount);

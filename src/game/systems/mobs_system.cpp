@@ -7,7 +7,6 @@
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mob_manager.hpp"
 #include "game/player/camera.hpp"
-#include "game/player/player_controller.hpp"
 
 static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other, const Presets& presets) {
     const bool currentFlying = presets.getMob(soa.preset[current]).flying;
@@ -85,7 +84,7 @@ void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blo
     resolveWorldCollisions(soa, mobCount, blocks, presets);
 }
 
-void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerController& plCtr) {
+void mobs::cleanupMobs(MobManager& manager, const Presets& presets) {
     const auto& soa = manager.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.mobCount; i > 0; --i) {
