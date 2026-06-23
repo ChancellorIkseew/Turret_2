@@ -26,8 +26,9 @@ public:
     PixelCoord getAimCoord()     const { return aimCoord; }
     bool shootingActive()        const { return shooting; }
 private:
-    void move(const Input& input, Camera& camera, const MobSoA& mobs, const bool isPaused);
+    void move(const Input& input, Camera& camera, MobSoA& mobs, const bool isPaused);
     void mine();
     void shoot(const Input& input, const Camera& camera);
     void captureMob(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets, const Presets& presets);
+    void sinc(const MobSoA& mobs, const TurretSoA& turrets);
 };

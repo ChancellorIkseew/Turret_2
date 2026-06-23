@@ -4,11 +4,18 @@
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
-#include "game/common/team.hpp"
 #include "game/entities/mob_manager.hpp"
 #include "game/entities/turret_manager.hpp"
 
 using PlCtr = PlayerController;
+
+static std::optional<size_t> findPlayerControlled(const std::vector<ShootingData>& data) {
+    for (size_t i = 0; i < data.size(); ++i) {
+        if (data[i].aiType == ShootingAI::player_controlled)
+            return i;
+    }
+    return std::nullopt;
+}
 
 void PlCtr::shoot(const Input& input, const Camera& camera) {
     aimCoord = camera.fromScreenToMap(input.getMouseCoord());
@@ -19,7 +26,7 @@ void PlCtr::mine() {
 
 }
 
-void PlCtr::move(const Input& input, Camera& camera, const MobSoA& mobs, const bool isPaused) {
+void PlCtr::move(const Input& input, Camera& camera, MobSoA& mobs, const bool isPaused) {
     PixelCoord delta(0.0f, 0.0f);
 
     if (input.active(Move_up))
@@ -37,14 +44,10 @@ void PlCtr::move(const Input& input, Camera& camera, const MobSoA& mobs, const b
         camera.moveByMouse(input);
     }
     else /*State::control_mob*/ {
-        for (size_t i = 0; i < mobs.mobCount; ++i) {
-            if (mobs.motionData[i].aiType == MovingAI::player_controlled) {
-                camera.setCenter(mobs.position[i]);
-                goto ok;
-            }  
-        }
-        state = State::control_camera;
-        ok:     
+        if (const auto index = findPlayerControlled(mobs.shootingData))
+            camera.setCenter(mobs.position[*index]);
+        else
+            state = State::control_camera;    
     }
     camera.scale(input);
 }
@@ -55,25 +58,17 @@ void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA
     move(input, camera, mobs, paused);
     shoot(input, camera);
     mine();
+    sinc(mobs, turrets);
 }
 
 void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets, const Presets& presets) {
-    for (size_t i = 0; i < mobs.mobCount; ++i) {
-        auto& movingAI = mobs.motionData[i].aiType;
-        auto& shootingAI = mobs.shootingData[i].aiType;
-        if (movingAI == MovingAI::player_controlled || shootingAI == ShootingAI::player_controlled) {
-            const auto& preset = presets.getMob(mobs.preset[i]);
-            movingAI = preset.defaultMovingAI;
-            shootingAI = preset.defaultShootingAI;
-        }
+    if (const auto index = findPlayerControlled(mobs.shootingData)) {
+        const auto& preset = presets.getMob(mobs.preset[*index]);
+        mobs.motionData[*index].aiType = preset.defaultMovingAI;
+        mobs.shootingData[*index].aiType = preset.defaultShootingAI;
     }
-
-    for (size_t i = 0; i < turrets.turretCount; ++i) {
-        auto& shootingAI = turrets.shootingData[i].aiType;
-        if (shootingAI == ShootingAI::player_controlled) {
-            //const auto& preset = presets.getTurret(turrets.preset[i]);
-            shootingAI = ShootingAI::basic;
-        }
+    if (const auto index = findPlayerControlled(turrets.shootingData)) {
+        turrets.shootingData[*index].aiType = ShootingAI::basic;
     }
 
     state = State::control_camera;
@@ -99,4 +94,11 @@ void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, T
             break;
         }
     }
+}
+
+void PlCtr::sinc(const MobSoA& mobs, const TurretSoA& turrets) {
+    if (state == State::control_mob && !findPlayerControlled(mobs.shootingData))
+        state = State::control_camera;
+    if (state == State::control_turret && !findPlayerControlled(turrets.shootingData))
+        state = State::control_camera;
 }
