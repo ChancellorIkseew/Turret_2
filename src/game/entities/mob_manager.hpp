@@ -1,11 +1,6 @@
 #pragma once
-#include <cassert>
 #include <vector>
 #include "engine/assets/preset_defs.hpp"
-#include "game/common/id_manager.hpp"
-
-using MobID = uint16_t;
-using MobIndex = MobID;
 
 struct MobSoA {
     std::vector<float> hitboxRadius;
@@ -16,7 +11,6 @@ struct MobSoA {
     std::vector<Health> shieldHealth;
     std::vector<MobPresetID> preset;
     std::vector<TurretPresetID> turretPreset;
-    std::vector<MobID> id;
     std::vector<TeamID> teamID;
     std::vector<MotionData> motionData;
     std::vector<ShootingData> shootingData;
@@ -29,28 +23,17 @@ struct MobSoA {
 };
 
 class MobManager {
-    std::array<MobIndex, IDManager<MobID>::MAX_ID> soaIndexByMobID;
-    IDManager<MobID> idManager = IDManager<MobID>(512);
     MobSoA soa;
-    void fillIndexes();
 public:
-    MobManager(const size_t capacity) { fillIndexes(); reserve(capacity); }
-    MobManager() { fillIndexes(); }
+    MobManager(const size_t capacity) { reserve(capacity); }
+    MobManager() = default;
     //
     t1_finline const MobSoA& getSoa() const noexcept { return soa; }
     t1_finline MobSoA& getSoa() noexcept { return soa; }
-    t1_finline size_t getSoaIndexByMobID(const MobID mobID) const noexcept {
-        assert(mobID != IDManager<MobID>::INVALID_ID);
-        assert(isIndexValid(soaIndexByMobID[mobID]));
-        return soaIndexByMobID[mobID];
-    }
-    t1_finline bool isIndexValid(const size_t index) const noexcept {
-        return index < soa.mobCount;
-    }
     //
     void reserve(const size_t capacity);
     void removeMob(const size_t targetIndex);
-    MobID addMob(
+    void addMob(
         const MobPresetID preset,
         const TurretPresetID turretPreset,
         const PixelCoord position,

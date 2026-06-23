@@ -40,7 +40,7 @@ private:
         case TileComponent::floor:   map.placeFloor(tile, tileData.id);                break;
         case TileComponent::overlay: map.placeOverlay(tile, OrePresetID(tileData.id)); break;
         case TileComponent::block: {
-                const TeamID teamID = session.getPlayerController().getPlayerTeam()->getID();
+                const TeamID teamID = session.getPlayerController().getPlayerTeamID();
                 session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID, rotation);
             }
             break;

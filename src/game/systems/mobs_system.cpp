@@ -7,7 +7,6 @@
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mob_manager.hpp"
 #include "game/player/camera.hpp"
-#include "game/player/player_controller.hpp"
 
 static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other, const Presets& presets) {
     const bool currentFlying = presets.getMob(soa.preset[current]).flying;
@@ -85,7 +84,7 @@ void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blo
     resolveWorldCollisions(soa, mobCount, blocks, presets);
 }
 
-void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerController& plCtr) {
+void mobs::cleanupMobs(MobManager& manager, const Presets& presets) {
     const auto& soa = manager.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.mobCount; i > 0; --i) {
@@ -94,8 +93,6 @@ void mobs::cleanupMobs(MobManager& manager, const Presets& presets, PlayerContro
             continue;
         // if (soa.presets->explosion.damage != 0)
         //     explosions.push(soa.presets->explosion);
-        if (plCtr.getTarget() == soa.id[index])
-            plCtr.resetTarget(manager, presets);
         manager.removeMob(index);
     }
 }
@@ -104,7 +101,7 @@ void mobs::drawHealthBars(const MobSoA& soa, const Presets& presets, const Camer
     constexpr uint32_t HITBOX_COLOR = 0x5A'6D'75'A0;
     constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
     constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
-    for (size_t i = 0; i < soa.id.size(); ++i) {
+    for (size_t i = 0; i < soa.mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         const Health current = soa.health[i];

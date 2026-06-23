@@ -25,7 +25,7 @@ GameSession::~GameSession() = default;
 void GameSession::prepare(const Presets& presets) {
     Team* playerTeam = world->getTeams().addTeam(U"player");
     Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
-    playerController.setPlayerTeam(playerTeam);
+    playerController.setPlayerTeamID(playerTeam->getID());
     TeamID playerTeamID = playerTeam->getID();
     // temporary for alpha-test
     for (int i = 0; i < 10; ++i)
@@ -54,7 +54,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     particles::updateParticles(particles);
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
-    mobs::cleanupMobs(mobs, presets, playerController);
+    mobs::cleanupMobs(mobs, presets);
     blocks.getMeta().cleanUp();
     timeCount.update();
     builtInScripts.execute(timeCount);
@@ -69,7 +69,8 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     mainWindow.pollEvents();
     gui->callback();
     if (!gui->ownsMouse())
-        playerController.update(mainWindow.getInput(), camera, paused, world->getMobs(), presets);
+        playerController.update(mainWindow.getInput(), camera, paused, world->getMobs().getSoa(),
+            world->getBlocks().getMeta().getTurrets().getSoa(), presets);
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
             updateSimulation(presets, engine);

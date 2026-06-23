@@ -2,11 +2,19 @@
 //
 #include "camera.hpp"
 #include "engine/assets/presets.hpp"
-#include "engine/coords/transforms.hpp"
 #include "engine/window/input/input.hpp"
-#include "game/common/team.hpp"
+#include "game/entities/mob_manager.hpp"
+#include "game/entities/turret_manager.hpp"
 
 using PlCtr = PlayerController;
+
+static std::optional<size_t> findPlayerControlled(const std::vector<ShootingData>& data) {
+    for (size_t i = 0; i < data.size(); ++i) {
+        if (data[i].aiType == ShootingAI::player_controlled)
+            return i;
+    }
+    return std::nullopt;
+}
 
 void PlCtr::shoot(const Input& input, const Camera& camera) {
     aimCoord = camera.fromScreenToMap(input.getMouseCoord());
@@ -17,9 +25,8 @@ void PlCtr::mine() {
 
 }
 
-void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, const bool isPaused) {
+void PlCtr::move(const Input& input) {
     PixelCoord delta(0.0f, 0.0f);
-
     if (input.active(Move_up))
         delta.y -= 1.0f;
     if (input.active(Move_left))
@@ -28,63 +35,59 @@ void PlCtr::move(const Input& input, Camera& camera, const MobManager& mobs, con
         delta.y += 1.0f;
     if (input.active(Move_right))
         delta.x += 1.0f;
-
     motionVector = delta;
-    if (state == State::control_camera || isPaused) {
-        camera.move(delta);
+}
+
+void PlCtr::moveCamera(const MobSoA& mobs, const std::optional<size_t> mob, const bool paused, Camera& camera, const Input& input) const {
+    if (!mob || paused) {
+        camera.move(motionVector);
         camera.moveByMouse(input);
-    }
-    else /*State::control_mob*/ {
-        const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-        if (mobs.isIndexValid(index))
-            camera.setCenter(mobs.getSoa().position[index]);
-        else
-            state = State::control_camera;
-    }
+    }  
+    else
+        camera.setCenter(mobs.position[*mob]);
     camera.scale(input);
 }
 
-void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobManager& mobs, const Presets& presets) {
-    move(input, camera, mobs, paused);
+void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, TurretSoA& turrets, const Presets& presets) {
+    const auto mob = findPlayerControlled(mobs.shootingData);
+    const auto turret = findPlayerControlled(turrets.shootingData);
+    move(input);
     shoot(input, camera);
     mine();
-    captureMob(input, camera, mobs, presets);
+    moveCamera(mobs, mob, paused, camera, input);
+    if (input.jactive(Control_unit))
+        captureMobOrTurret(input, camera, mobs, turrets, mob, turret, presets);
 }
 
-void PlCtr::captureMob(const Input& input, const Camera& camera, MobManager& mobs, const Presets& presets) {
-    if (!input.jactive(Control_unit))
-        return;
-    const auto& soa = mobs.getSoa();
-    for (size_t i = 0; i < soa.mobCount; ++i) {
-        if (soa.teamID[i] != playerTeam->getID())
-            continue;
-        if (t1::areCloserRect(camera.fromMapToScreen(soa.position[i]), input.getMouseCoord(), 20.f))
-            return setTarget(mobs, soa.id[i], presets);     
+void PlCtr::captureMobOrTurret(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets,
+    const std::optional<size_t> mob, const std::optional<size_t> turret, const Presets& presets) const {
+    if (mob) {
+        const auto& preset = presets.getMob(mobs.preset[*mob]);
+        mobs.motionData[*mob].aiType = preset.defaultMovingAI;
+        mobs.shootingData[*mob].aiType = preset.defaultShootingAI;
     }
-    resetTarget(mobs, presets);
-}
+    if (turret) {
+        // TODO: const auto& preset = presets.getTurret(mobs.preset[*turret]); // when it would be implemented
+        turrets.shootingData[*turret].aiType = ShootingAI::basic;
+    }
 
-void PlCtr::setTarget(MobManager& mobs, const MobID mobID, const Presets& presets) {
-    resetTarget(mobs, presets); // Reset current target before set new.
-    if (mobID == IDManager<MobID>::INVALID_ID)
-        return;
-    const size_t index = mobs.getSoaIndexByMobID(mobID);
-    if (!mobs.isIndexValid(index))
-        return;
-    mobs.getSoa().motionData[index].aiType = MovingAI::player_controlled;
-    mobs.getSoa().shootingData[index].aiType = ShootingAI::player_controlled;
-    targetMobID = mobID;
-    state = State::control_mob;
-}
+    const PixelCoord mousePosition = input.getMouseCoord();
+    for (size_t i = 0; i < mobs.mobCount; ++i) {
+        if (mobs.teamID[i] != playerTeamID)
+            continue;
+        if (t1::areCloserRect(camera.fromMapToScreen(mobs.position[i]), mousePosition, 20.f)) {
+            mobs.motionData[i].aiType = MovingAI::player_controlled;
+            mobs.shootingData[i].aiType = ShootingAI::player_controlled;
+            return; // avoid capcture both mob and turret
+        }
+    }
 
-void PlCtr::resetTarget(MobManager& mobs, const Presets& presets) {
-    if (targetMobID == IDManager<MobID>::INVALID_ID)
-        return;
-    const size_t index = mobs.getSoaIndexByMobID(targetMobID);
-    if (!mobs.isIndexValid(index))
-        return;
-    mobs.getSoa().motionData[index].aiType =   presets.getMob(mobs.getSoa().preset[index]).defaultMovingAI;
-    mobs.getSoa().shootingData[index].aiType = presets.getMob(mobs.getSoa().preset[index]).defaultShootingAI;
-    targetMobID = IDManager<MobID>::INVALID_ID;
-    state = State::control_camera;
+    for (size_t i = 0; i < turrets.turretCount; ++i) {
+        if (turrets.teamID[i] != playerTeamID)
+            continue;
+        if (t1::areCloserRect(camera.fromMapToScreen(turrets.position[i]), mousePosition, 20.f)) {
+            turrets.shootingData[i].aiType = ShootingAI::player_controlled;
+            return; // avoid capcture both mob and turret
+        }
+    }
 }

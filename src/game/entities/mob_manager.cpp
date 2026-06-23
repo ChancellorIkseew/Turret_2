@@ -1,15 +1,6 @@
 #include "mob_manager.hpp"
-//
-#include "engine/debug/logger.hpp"
-
-constexpr MobIndex INVALID_MOB_ID = IDManager<MobID>::INVALID_ID;
-constexpr MobIndex INVALID_MOB_INDEX = INVALID_MOB_ID;
-static debug::Logger logger("mob_manager");
-
-void MobManager::fillIndexes() { soaIndexByMobID.fill(INVALID_MOB_INDEX); }
 
 void MobManager::reserve(const size_t capacity) {
-    soa.id.reserve(capacity);
     soa.position.reserve(capacity);
     soa.velocity.reserve(capacity);
     soa.angle.reserve(capacity);
@@ -28,7 +19,7 @@ void MobManager::reserve(const size_t capacity) {
     soa.turretFrame.reserve(capacity);
 }
 
-MobID MobManager::addMob(
+void MobManager::addMob(
     const MobPresetID preset,
     const TurretPresetID turretPreset,
     const PixelCoord position,
@@ -41,14 +32,7 @@ MobID MobManager::addMob(
     const ShootingData shootingData,
     const TickCount restReloadTime,
     const AngleRad turretAngle) {
-    const MobID mobID = idManager.getNext();
 
-    if (mobID == INVALID_MOB_ID) {
-        logger.warning() << "Could not add mob to SoA. No more avaliable free MobID.";
-        return INVALID_MOB_ID;
-    }
-
-    soa.id.push_back(mobID);
     soa.position.push_back(position);
     soa.velocity.push_back(PixelCoord(0, 0));
     soa.angle.push_back(angle);
@@ -65,20 +49,13 @@ MobID MobManager::addMob(
     soa.turretAngle.push_back(turretAngle);
     soa.chassisFrame.push_back(0);
     soa.turretFrame.push_back(0);
-
-    soaIndexByMobID[mobID] = static_cast<MobIndex>(soa.mobCount);
     ++soa.mobCount;
-    return mobID;
 }
 
 void MobManager::removeMob(const size_t targetIndex) {
     const size_t lastIndex = --soa.mobCount;
-    idManager.setFree(soa.id[targetIndex]);
-    soaIndexByMobID[soa.id[lastIndex]] = static_cast<MobIndex>(targetIndex);
-    soaIndexByMobID[soa.id[targetIndex]] = INVALID_MOB_INDEX;
 
     if (targetIndex != lastIndex) {
-        soa.id[targetIndex] = std::move(soa.id[lastIndex]);
         soa.position[targetIndex] = std::move(soa.position[lastIndex]);
         soa.velocity[targetIndex] = std::move(soa.velocity[lastIndex]);
         soa.angle[targetIndex] = std::move(soa.angle[lastIndex]);
@@ -97,7 +74,6 @@ void MobManager::removeMob(const size_t targetIndex) {
         soa.turretFrame[targetIndex] = std::move(soa.turretFrame[lastIndex]);
     }
 
-    soa.id.pop_back();
     soa.position.pop_back();
     soa.velocity.pop_back();
     soa.angle.pop_back();
