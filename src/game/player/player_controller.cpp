@@ -56,10 +56,10 @@ void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA
     mine();
     moveCamera(mobs, mob, paused, camera, input);
     if (input.jactive(Control_unit))
-        captureMob(input, camera, mobs, turrets, mob, turret, presets);
+        captureMobOrTurret(input, camera, mobs, turrets, mob, turret, presets);
 }
 
-void PlCtr::captureMob(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets,
+void PlCtr::captureMobOrTurret(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets,
     const std::optional<size_t> mob, const std::optional<size_t> turret, const Presets& presets) const {
     if (mob) {
         const auto& preset = presets.getMob(mobs.preset[*mob]);
