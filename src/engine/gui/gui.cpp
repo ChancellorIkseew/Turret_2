@@ -29,7 +29,7 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow) {
     position += PixelCoord(20.f, 20.f);
     text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(1'000'000'000U / mainWindow.getRealFrameDelayNs()), position);
     position.y += 20.f;
-    text::drawString(renderer, U"Frame|tick time NS: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelayMs()), position);
+    text::drawString(renderer, U"Frame|tick time MS: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelayMs()), position);
 }
 
 void GUI::draw(Renderer& renderer, const Atlas& atlas) {
