@@ -32,7 +32,7 @@ std::string io::readFile(const fs::path& path, const Log log) {
     fin.seekg(0, std::ios::beg);
     fin.read(buffer.data(), size);
     if (log == Log::error_and_success)
-        logger.info() << "Readen file: " << path;
+        logger.info() << "Read file: " << path;
     return buffer;
 }
 

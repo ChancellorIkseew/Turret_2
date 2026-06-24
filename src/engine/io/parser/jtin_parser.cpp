@@ -41,6 +41,6 @@ jtin::Data jtin::read(const fs::path& path, const Log log) {
     const std::string text = io::readFile(path, static_cast<io::Log>(Log::only_error));
     const Data data = readFromString(text);
     if (log == Log::error_and_success)
-        logger.info() << "Readen file: " << path;
+        logger.info() << "Parsed file: " << path;
     return data;
 }
