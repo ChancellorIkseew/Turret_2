@@ -11,7 +11,7 @@ public:
         mainCanvas.addToOverlay(frontend::initMainMenu(engine));
         mainCanvas.setAllwaysWithOverlay(true);
     }
-    ~MenuGUI() final = default;
+
     void drawDiegeticElements(Renderer& renderer) {
         /*TODO: add built in logo world*/
     }

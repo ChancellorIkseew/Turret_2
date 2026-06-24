@@ -12,7 +12,6 @@ public:
         buildTools = std::make_unique<EditorBuildTools>();
         mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
     }
-    ~EditorGUI() final = default;
 
     void callback() final {
         if (input.jactive(Escape) && !mainCanvas.hasOverlay())

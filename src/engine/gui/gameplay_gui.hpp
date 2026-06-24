@@ -16,7 +16,6 @@ public:
         mainCanvas.addToMainLayer(frontend::initHint(engine));
         mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
     }
-    ~GameplayGUI() final = default;
 
     void callback() final {
         if (input.jactive(Escape) && !mainCanvas.hasOverlay())
