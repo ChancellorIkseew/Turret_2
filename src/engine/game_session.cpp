@@ -3,6 +3,7 @@
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
+#include "engine/settings/settings.hpp"
 #include "game/particles/particles_system.hpp"
 #include "game/systems/ai_system.hpp"
 #include "game/systems/construction_system.hpp"
@@ -99,6 +100,9 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     renderer.setShaderProgram(*shaders.uiShader);
     gui->draw(renderer, engine.getAssets().getAtlas());
     mainWindow.render();
+
+    if (mainWindow.hasLostFocus())   onLostFocus(engine);
+    if (mainWindow.hasGainedFocus()) onGainedFocus(engine);
 }
 
 void GameSession::setPaused(const bool flag, Engine& engine) {
@@ -106,4 +110,22 @@ void GameSession::setPaused(const bool flag, Engine& engine) {
     auto& audio = engine.getAssets().getAudio();
     if (paused) audio.pauseWorldSounds();
     else        audio.resumeWorldSounds();
+}
+
+void GameSession::onLostFocus(Engine& engine) {
+    if (Settings::gameplay.pauseInBackground)
+        setPaused(true, engine);
+    if (Settings::audio.muteInBackground) {
+        engine.getAssets().getAudio().setMasterVolume(0.f);
+        engine.getAssets().getAudio().updateVolume();
+    }
+}
+
+void GameSession::onGainedFocus(Engine& engine) {
+    if (Settings::gameplay.pauseInBackground)
+        setPaused(false, engine);
+    if (Settings::audio.muteInBackground) {
+        engine.getAssets().getAudio().setMasterVolume(static_cast<float>(Settings::audio.master) / 100.f);
+        engine.getAssets().getAudio().updateVolume();
+    }
 }

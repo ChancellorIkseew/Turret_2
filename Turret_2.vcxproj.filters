@@ -719,5 +719,8 @@
     <ClCompile Include="src\game\systems\construction_system.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\frontend\fr_gameplay.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

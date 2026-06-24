@@ -20,6 +20,7 @@ namespace frontend {
     std::unique_ptr<Container> initJEI(Engine& engine, std::shared_ptr<BuildTools> buildTools);
     std::unique_ptr<Container> initHint(Engine& engine);
     std::unique_ptr<Container> initLanguages(Engine& engine);
+    std::unique_ptr<Container> initGameplay(Engine& engine);
     std::unique_ptr<Container> initGraphics(Engine& engine);
     std::unique_ptr<Container> initAudio(Engine& engine);
     std::unique_ptr<Container> initGUI(Engine& engine);

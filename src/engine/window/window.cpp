@@ -51,7 +51,7 @@ void MainWindow::setFullscreen(const bool flag) {
 void MainWindow::pollEvents() {
     input.reset(sdlWindow);
     SDL_Event event;
-    resized = false;
+    resized = lostFocus = gainedFocus = false;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
         case SDL_EVENT_QUIT:
@@ -64,11 +64,19 @@ void MainWindow::pollEvents() {
             size = PixelCoord(x, y);
             renderer.resize(x, y);
             break;}
+        case SDL_EVENT_WINDOW_FOCUS_LOST:
+            lostFocus = true;
+            break;
+        case SDL_EVENT_WINDOW_FOCUS_GAINED:
+            gainedFocus = true;
+            break;
         default:
             input.update(event);
             break;
         }
     }
+    if (lostFocus && gainedFocus)
+        lostFocus = gainedFocus = false;
 }
 
 uint64_t MainWindow::getTimeMs() const {

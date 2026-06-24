@@ -47,5 +47,7 @@ public:
 private:
     void prepare(const Presets& presets);
     void updateSimulation(const Presets& presets, Engine& engine);
+    void onLostFocus(Engine& engine);
+    void onGainedFocus(Engine& engine);
     t1_disable_copy_and_move(GameSession)
 };

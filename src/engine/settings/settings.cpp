@@ -22,12 +22,14 @@ void Settings::writeSettings() {
     data.emplace(key_val(audio.ui));
     data.emplace(key_val(audio.music));
     data.emplace(key_val(audio.toggleSound));
+    data.emplace(key_val(audio.muteInBackground));
     //
     data.emplace(key_val(display.FPS));
     data.emplace(key_val(display.ySinc));
     data.emplace(key_val(display.fullscreen));
     //
     data.emplace(key_val(gameplay.cameraInertia));
+    data.emplace(key_val(gameplay.pauseInBackground));
     data.emplace(key_val(gameplay.pauseOnWorldOpen));
     data.emplace(key_val(gameplay.showHitboxes));
     data.emplace(key_val(gameplay.showParticles));
@@ -41,18 +43,20 @@ void Settings::writeSettings() {
 }
 
 void Settings::readSettings() {
-    tin::Data data = tin::read("settings.tin");
+    const tin::Data data = tin::read("settings.tin");
     data.get(key_val(audio.master), 50U);
     data.get(key_val(audio.world), 100U);
     data.get(key_val(audio.ui), 100U);
     data.get(key_val(audio.music), 100U);
     data.get(key_val(audio.toggleSound), true);
+    data.get(key_val(audio.muteInBackground), true);
     //
     data.get(key_val(display.FPS), 60U);
     data.get(key_val(display.ySinc), true);
     data.get(key_val(display.fullscreen), false);
     //
     data.get(key_val(gameplay.cameraInertia), true);
+    data.get(key_val(gameplay.pauseInBackground), false);
     data.get(key_val(gameplay.pauseOnWorldOpen), false);
     data.get(key_val(gameplay.showHitboxes), false);
     data.get(key_val(gameplay.showParticles), true);
@@ -76,15 +80,16 @@ void Settings::applySettings(Engine& engine) {
     engine.getAssets().getAudio().setUIVolume(static_cast<float>(audio.ui) / 100.f);
     engine.getAssets().getAudio().setMusicVolume(static_cast<float>(audio.music) / 100.f);
     engine.getAssets().getAudio().updateVolume();
+    // "muteInBackground" implemented in game_session.cpp
     //
     engine.getMainWindow().setFPS(display.FPS);
     engine.getMainWindow().getRenderer().setYSincMode(display.ySinc ? YSincMode::adaptive : YSincMode::immediate);
     engine.getMainWindow().setFullscreen(display.fullscreen);
-    // "camera_inertia" not imlemented
-    // "pause_on_world_open": implemented in engine.cpp
-    // "show_hitboxes" implemented in mobs_system.cpp
+    // "cameraInertia" not imlemented
+    // "pauseOnWorldOpen" implemented in engine.cpp
+    // "showHitboxes" implemented in mobs_system.cpp
     // "lang" implemented in gui and main_canvas
-    // "gui_scale" implemented in gui.cpp and fr_gui.cpp
+    // "guiScale" implemented in gui.cpp and fr_gui.cpp
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     debug::Console::setVisible(Settings::gui.showConsole);
 }

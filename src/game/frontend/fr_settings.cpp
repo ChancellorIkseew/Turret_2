@@ -11,6 +11,7 @@ std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     auto settings = std::make_unique<Container>(Align::centre, Orientation::vertical);
 
     auto back     = settings->addNode(new Button(BTN_SIZE, "Back"));
+    auto gameplay = settings->addNode(new Button(BTN_SIZE, "Gameplay"));
     auto controls = settings->addNode(new Button(BTN_SIZE, "Controls"));
     auto graphics = settings->addNode(new Button(BTN_SIZE, "Graphics"));
     auto audio    = settings->addNode(new Button(BTN_SIZE, "Audio"));
@@ -18,6 +19,7 @@ std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     auto language = settings->addNode(new Button(BTN_SIZE, "Language"));
     
     back    ->addCallback([container = settings.get()] { container->close(); });
+    gameplay->addCallback([&] { engine.getGUI().addToOverlay(frontend::initGameplay(engine)); });
     controls->addCallback([&] { engine.getGUI().addToOverlay(frontend::initControls(engine)); });
     graphics->addCallback([&] { engine.getGUI().addToOverlay(frontend::initGraphics(engine)); });
     audio   ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initAudio(engine)); });

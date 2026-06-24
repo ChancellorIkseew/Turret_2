@@ -12,6 +12,7 @@ public:
         uint8_t ui;
         uint8_t music;
         bool toggleSound;
+        bool muteInBackground;
     } audio;
     static struct _Display {
         uint64_t FPS;
@@ -20,6 +21,7 @@ public:
     } display;
     static struct _Gameplay {
         bool cameraInertia;
+        bool pauseInBackground;
         bool pauseOnWorldOpen;
         bool showHitboxes;
         bool showParticles;

@@ -20,7 +20,7 @@ class MainWindow : private SDLContext {
     Input input;
     Renderer renderer;
     uint64_t FPS = 60, requiredDelayNs = NS_PER_SECOND / 60, realDelayNs = 0, frameStartNs = 0;
-    bool open = true, resized = false, fullscreen = false;
+    bool open = true, resized = false, fullscreen = false, lostFocus = false, gainedFocus = false;
 public:
     MainWindow(const std::string& title, const PixelCoord size);
     //
@@ -30,6 +30,8 @@ public:
     bool isOpen() const { return open; }
     bool isFullscreen() const { return fullscreen; }
     bool justResized() const { return resized; }
+    bool hasLostFocus() const { return lostFocus; }
+    bool hasGainedFocus() const { return gainedFocus; }
     uint64_t getFPS() const { return FPS; }
     uint64_t getRealFrameDelayNs() const { return realDelayNs; }
     uint64_t getRealFrameDelayMs() const { return realDelayNs / NS_PER_MS; }

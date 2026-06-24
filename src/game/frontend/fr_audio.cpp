@@ -16,6 +16,7 @@ class FrAudio : public Container {
     Form* ui;
     Form* music;
     Checkbox* toggleSound;
+    Checkbox* muteInBakcgroung;
 public:
     FrAudio(Engine& engine) : Container(Align::centre, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
@@ -25,7 +26,8 @@ public:
         world  = clickable->addNode(new Form(Settings::audio.world,  new Uint8Validator(0U, 100U), FORM_SIZE));
         ui     = clickable->addNode(new Form(Settings::audio.ui,     new Uint8Validator(0U, 100U), FORM_SIZE));
         music  = clickable->addNode(new Form(Settings::audio.music,  new Uint8Validator(0U, 100U), FORM_SIZE));
-        toggleSound = clickable->addNode(new Checkbox(Settings::audio.toggleSound));
+        toggleSound      = clickable->addNode(new Checkbox(Settings::audio.toggleSound));
+        muteInBakcgroung = clickable->addNode(new Checkbox(Settings::audio.muteInBackground));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
         labels->addNode(new Label("master"));
@@ -33,6 +35,7 @@ public:
         labels->addNode(new Label("ui"));
         labels->addNode(new Label("music"));
         labels->addNode(new Label("toggle sound"));
+        labels->addNode(new Label("mute in background"));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
@@ -45,7 +48,8 @@ public:
         Settings::audio.world  = validator::to<T>(world ->getText()).value_or(100U);
         Settings::audio.ui     = validator::to<T>(ui    ->getText()).value_or(100U);
         Settings::audio.music  = validator::to<T>(music ->getText()).value_or(100U);
-        Settings::audio.toggleSound = toggleSound->getValue();
+        Settings::audio.toggleSound      = toggleSound     ->getValue();
+        Settings::audio.muteInBackground = muteInBakcgroung->getValue();
         Settings::applySettings(engine);
         Settings::writeSettings();
     }
