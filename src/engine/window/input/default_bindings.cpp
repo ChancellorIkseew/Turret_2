@@ -16,13 +16,11 @@ std::unordered_map<std::string, Binding> Controls::bindings = {
     {Delete, Binding(SDL_SCANCODE_DELETE, InputType::keyboard, false)},
     {Escape, Binding(SDL_SCANCODE_ESCAPE, InputType::keyboard, false)},
 
-    {Build, Binding(SDL_BUTTON_LEFT, InputType::mouse)},
+    {Build_Shoot, Binding(SDL_BUTTON_LEFT, InputType::mouse)},
     {Rotate_building, Binding(SDL_SCANCODE_R, InputType::keyboard)},
     {Pipette, Binding(SDL_SCANCODE_Q, InputType::keyboard)},
     {Demolish, Binding(SDL_BUTTON_RIGHT, InputType::mouse)},
-
     {Control_unit, Binding(SDL_SCANCODE_V, InputType::keyboard)},
-    {Shoot, Binding(SDL_BUTTON_LEFT, InputType::mouse)},
 
     {Move_up, Binding(SDL_SCANCODE_W, InputType::keyboard)},
     {Move_left, Binding(SDL_SCANCODE_A, InputType::keyboard)},

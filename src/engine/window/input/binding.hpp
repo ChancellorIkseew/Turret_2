@@ -16,11 +16,10 @@ inline constexpr cString Cut("Cut");
 inline constexpr cString Paste("Paste");
 inline constexpr cString Escape("Escape");
 
-inline constexpr cString Build("Build");
+inline constexpr cString Build_Shoot("Build/Shoot");
 inline constexpr cString Demolish("Demolish");
 inline constexpr cString Rotate_building("Rotate_building");
 inline constexpr cString Pipette("Pipette");
-inline constexpr cString Shoot("Shoot");
 inline constexpr cString Control_unit("Control_unit");
 
 inline constexpr cString Move_up("Move_up");

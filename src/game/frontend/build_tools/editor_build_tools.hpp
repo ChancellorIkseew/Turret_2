@@ -18,7 +18,7 @@ public:
             rotation = static_cast<BlockRot>((rotation + 1) % 4);
         if (input.jactive(Pipette))
             usePipette(map, blocks, targetTile);
-        if (optTileData && input.active(Build))
+        if (optTileData && input.active(Build_Shoot))
             build(session, targetTile, optTileData.value());
         // fixes block and ore demolishing in one click, maybe needs refactoring
         const bool currentIsBlock = blocks.isFilled(targetTile);

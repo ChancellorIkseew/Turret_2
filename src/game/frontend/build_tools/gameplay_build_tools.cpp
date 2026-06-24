@@ -38,11 +38,11 @@ void GBuildTools::update(Engine& engine) {
     if (input.jactive(Pipette))
         usePipette(blocks, blueprints, targetTile);
     // Build:
-    if (optTileData && input.jactive(Build))
+    if (optTileData && input.jactive(Build_Shoot))
         optBuildStart = targetTile;
-    if (optTileData && optBuildStart && input.active(Build))
+    if (optTileData && optBuildStart && input.active(Build_Shoot))
         updateDraft(optBuildStart.value(), targetTile);
-    if (optTileData && optBuildStart && input.released(Build)) {
+    if (optTileData && optBuildStart && input.released(Build_Shoot)) {
         buildDraft(session, optTileData.value());
         optBuildStart.reset();
         draft.clear();
