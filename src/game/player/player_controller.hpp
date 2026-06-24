@@ -12,10 +12,11 @@ class PlayerController {
     TeamID playerTeamID = 0;
     PixelCoord motionVector;
     PixelCoord aimCoord;
-    bool shooting = false;
+    bool shooting = false, holdsBlock = false;
 public:
     void update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, TurretSoA& turrets, const Presets& presets);
 
+    void setHoldsBlock(const bool flag) { holdsBlock = flag; }
     void setPlayerTeamID(const TeamID teamID) { playerTeamID = teamID; }
     TeamID getPlayerTeamID() const { return playerTeamID; }
 

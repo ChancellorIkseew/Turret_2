@@ -18,7 +18,7 @@ static std::optional<size_t> findPlayerControlled(const std::vector<ShootingData
 
 void PlCtr::shoot(const Input& input, const Camera& camera) {
     aimCoord = camera.fromScreenToMap(input.getMouseCoord());
-    shooting = input.active(Build_Shoot);
+    shooting = !holdsBlock && input.active(Build_Shoot);
 }
 
 void PlCtr::mine() {

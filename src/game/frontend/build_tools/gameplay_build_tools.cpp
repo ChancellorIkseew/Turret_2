@@ -31,6 +31,7 @@ void GBuildTools::update(Engine& engine) {
     WorldMap& map = session.getWorld().getMap();
     BlockMap& blocks = session.getWorld().getBlocks();
     Blueprints& blueprints = session.getWorld().getBlueprints();
+    session.getPlayerController().setHoldsBlock(optTileData.operator bool());
     targetTile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
     //
     if (input.jactive(Rotate_building))
