@@ -1,13 +1,11 @@
 #include "scripting.hpp"
 //
 #include "ANGEL_SCRIPT/scriptstdstring.h"
-#include <filesystem>
-#include <fstream>
 #include <stdexcept>
 #include "engine/debug/logger.hpp"
+#include "engine/io/io.hpp"
 
 static debug::Logger logger("scripts_handler");
-static const std::filesystem::path main_as("res/scripts/main.as");
 
 ScriptsHandler::ScriptsHandler() {
     engine = asCreateScriptEngine();
@@ -34,21 +32,9 @@ void ScriptsHandler::execute() const {
     context->Execute();
 }
 
-static std::string loadScript() {
-    std::ifstream fin(main_as);
-    if (!fin.is_open()) {
-        logger.error() << "Script file does not exist or is corrupted. File: " << main_as;
-        return "";
-    }
-
-    std::stringstream ss;
-    ss << fin.rdbuf();
-    return ss.str();
-}
-
 void ScriptsHandler::load() {
     auto scriptModule = engine->GetModule("MainModule", asGM_ALWAYS_CREATE);
-    scriptModule->AddScriptSection("MainScript", loadScript().c_str());
+    scriptModule->AddScriptSection("MainScript", io::readFile("res/scripts/main.as").c_str());
     scriptModule->Build();
 
     mainLoop = scriptModule->GetFunctionByDecl("void main()");
