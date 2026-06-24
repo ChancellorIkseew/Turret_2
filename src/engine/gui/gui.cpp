@@ -58,6 +58,8 @@ void GUI::callback() {
     T1_UIContext context(input, engine.getAssets().getAudio());
     mainCanvas.update(context, static_cast<int>(mainWindow.getRealFrameDelayMs()));
     input.enableTextInput(mainCanvas.isTextEditingActive());
+    if (ownsMouse())
+        input.consumeMouseClicks();
 }
 
 void GUI::addToOverlay(std::unique_ptr<mingui::Container> container) {

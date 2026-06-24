@@ -83,3 +83,13 @@ std::optional<Binding> Input::getLastKeyPressed() const {
 const char* Input::getLastSymbolEntered() const {
     return symbolJustEntered;
 }
+
+void Input::consumeMouseClicks() {
+    for (auto& [bindName, binding] : Controls::getBindings()) {
+        if (binding.inputType != InputType::mouse)
+            continue;
+        if (binding.justTriggered)
+            binding.active = false;
+        binding.justTriggered = false;
+    }
+}

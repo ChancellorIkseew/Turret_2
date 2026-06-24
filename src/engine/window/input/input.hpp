@@ -35,6 +35,8 @@ public:
     const char* getLastSymbolEntered() const;
     ///@brief start/stop checking.
     void enableTextInput(const bool flag) { textInputActive = flag; }
+
+    void consumeMouseClicks();
 private:
     friend MainWindow;
     void update(const SDL_Event& event);
