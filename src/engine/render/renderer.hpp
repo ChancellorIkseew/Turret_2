@@ -16,11 +16,11 @@ class RenderGeometry;
 class ShaderProgram;
 struct TextureRect;
 
-enum YSincMode : int { immediate = 0, synchronized = 1, adaptive = -1 };
+enum VSyncMode : int { immediate = 0, synchronized = 1, adaptive = -1 };
 
 class Renderer {
     SDL_GLContext glContext = nullptr;
-    YSincMode ySincMode;
+    VSyncMode vSyncMode;
     unsigned int uboView = 0;
     unsigned int currentShaderProgramID = 0xFF'FF'FF'FF;
     unsigned int currentTextureID = 0xFF'FF'FF'FF;
@@ -37,8 +37,8 @@ public:
     void setView(const float scale, const PixelCoord translation);
     void setShaderProgram(const ShaderProgram& shaderProgram);
     void resize(const int x, const int y);
-    void setYSincMode(const YSincMode mode);
-    YSincMode getYSincMode() const noexcept { return ySincMode; }
+    void setVSyncMode(const VSyncMode mode);
+    VSyncMode getVSyncMode() const noexcept { return vSyncMode; }
     //
     void clear();
     void present(SDL_Window* sdlWindow);

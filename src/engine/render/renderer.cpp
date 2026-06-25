@@ -25,7 +25,7 @@ Renderer::Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize) : viewp
 
     batchGeometry = std::make_unique<RenderGeometry>();
     lightmapFBO = std::make_unique<LightmapFramebuffer>();
-    setYSincMode(YSincMode::adaptive);
+    setVSyncMode(VSyncMode::adaptive);
 
     glCreateBuffers(1, &uboView);
     glNamedBufferData(uboView, sizeof(float[16]), nullptr, GL_DYNAMIC_DRAW);
@@ -103,11 +103,11 @@ void Renderer::resize(const int x, const int y) {
         lightmapFBO->resize(x, y);
 }
 
-void Renderer::setYSincMode(const YSincMode mode) {
+void Renderer::setVSyncMode(const VSyncMode mode) {
     SDL_GL_SetSwapInterval(mode);
     int newMode = 0;
     SDL_GL_GetSwapInterval(&newMode);
-    ySincMode = YSincMode(newMode);
+    vSyncMode = VSyncMode(newMode);
 }
 
 void Renderer::draw(const Texture2D& texture2D, const TextureRect& textureRect,

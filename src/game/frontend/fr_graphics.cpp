@@ -13,7 +13,7 @@ constexpr Point BIG_FORM_SIZE(52.0f, 20.0f);
 
 class FrGraphics : public Container {
     Form* fps;
-    Checkbox* ySinc;
+    Checkbox* vSync;
     Checkbox* fullscreen;
     Checkbox* inertia;
     Checkbox* showParticles;
@@ -24,7 +24,7 @@ public:
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));
         fps           = clickable->addNode(new Form(Settings::display.FPS, new Uint32Validator(15U, 240U), FORM_SIZE));
-        ySinc         = clickable->addNode(new Checkbox(Settings::display.ySinc));
+        vSync         = clickable->addNode(new Checkbox(Settings::display.vSync));
         fullscreen    = clickable->addNode(new Checkbox(Settings::display.fullscreen));
         inertia       = clickable->addNode(new Checkbox(Settings::gameplay.cameraInertia));
         showParticles = clickable->addNode(new Checkbox(Settings::gameplay.showParticles));
@@ -32,7 +32,7 @@ public:
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
         labels->addNode(new Label("FPS|TPS"));
-        labels->addNode(new Label("Y-Sinc"));
+        labels->addNode(new Label("V-Sync"));
         labels->addNode(new Label("fullscreen"));
         labels->addNode(new Label("camera inertia"));
         labels->addNode(new Label("show particles"));
@@ -45,7 +45,7 @@ public:
 
     void applySettings(Engine& engine) {
         Settings::display.FPS = validator::to<decltype(Settings::display.FPS)>(fps->getText()).value_or(60U);
-        Settings::display.ySinc = ySinc->getValue();
+        Settings::display.vSync = vSync->getValue();
         Settings::display.fullscreen = fullscreen->getValue();
         Settings::gameplay.cameraInertia = inertia->getValue();
         Settings::applySettings(engine);

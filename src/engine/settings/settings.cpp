@@ -25,7 +25,7 @@ void Settings::writeSettings() {
     data.emplace(key_val(audio.muteInBackground));
     //
     data.emplace(key_val(display.FPS));
-    data.emplace(key_val(display.ySinc));
+    data.emplace(key_val(display.vSync));
     data.emplace(key_val(display.fullscreen));
     //
     data.emplace(key_val(gameplay.cameraInertia));
@@ -52,7 +52,7 @@ void Settings::readSettings() {
     data.get(key_val(audio.muteInBackground), true);
     //
     data.get(key_val(display.FPS), 60U);
-    data.get(key_val(display.ySinc), true);
+    data.get(key_val(display.vSync), true);
     data.get(key_val(display.fullscreen), false);
     //
     data.get(key_val(gameplay.cameraInertia), true);
@@ -83,7 +83,7 @@ void Settings::applySettings(Engine& engine) {
     // "muteInBackground" implemented in game_session.cpp
     //
     engine.getMainWindow().setFPS(display.FPS);
-    engine.getMainWindow().getRenderer().setYSincMode(display.ySinc ? YSincMode::adaptive : YSincMode::immediate);
+    engine.getMainWindow().getRenderer().setVSyncMode(display.vSync ? VSyncMode::adaptive : VSyncMode::immediate);
     engine.getMainWindow().setFullscreen(display.fullscreen);
     // "cameraInertia" not imlemented
     // "pauseOnWorldOpen" implemented in engine.cpp
