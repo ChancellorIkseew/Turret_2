@@ -113,8 +113,11 @@ void GameSession::setPaused(const bool flag, Engine& engine) {
 }
 
 void GameSession::onLostFocus(Engine& engine) {
-    if (Settings::gameplay.pauseInBackground)
+    if (Settings::gameplay.pauseInBackground && !paused) {
+        backgroundPause = true;
         setPaused(true, engine);
+    }
+        
     if (Settings::audio.muteInBackground) {
         engine.getAssets().getAudio().setMasterVolume(0.f);
         engine.getAssets().getAudio().updateVolume();
@@ -122,8 +125,10 @@ void GameSession::onLostFocus(Engine& engine) {
 }
 
 void GameSession::onGainedFocus(Engine& engine) {
-    if (Settings::gameplay.pauseInBackground)
+    if (Settings::gameplay.pauseInBackground && backgroundPause) {
+        backgroundPause = false;
         setPaused(false, engine);
+    }
     if (Settings::audio.muteInBackground) {
         engine.getAssets().getAudio().setMasterVolume(static_cast<float>(Settings::audio.master) / 100.f);
         engine.getAssets().getAudio().updateVolume();

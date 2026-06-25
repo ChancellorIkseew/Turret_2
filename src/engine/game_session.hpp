@@ -23,7 +23,7 @@ class GameSession {
 
     TimeCount timeCount;
     int tickSpeed = 1;
-    bool paused, open = true;
+    bool paused, open = true, backgroundPause = false;
 public:
     GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused);
     ~GameSession();
