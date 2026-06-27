@@ -9,6 +9,7 @@ public:
 
     virtual void update(Engine& engine) final {
         const Input& input = engine.getMainWindow().getInput();
+        const bool mouseFree = !engine.getGUI().ownsMouse();
         GameSession& session = engine.getSession();
         WorldMap& map = session.getWorld().getMap();
         BlockMap& blocks = session.getWorld().getBlocks();
@@ -16,14 +17,14 @@ public:
         //
         if (input.jactive(Rotate_building))
             rotation = static_cast<BlockRot>((rotation + 1) % 4);
-        if (input.jactive(Pipette))
+        if (input.jactive(Pipette) && mouseFree)
             usePipette(map, blocks, targetTile);
-        if (optTileData && input.active(Build_Shoot))
+        if (optTileData && input.active(Build_Shoot) && mouseFree)
             build(session, targetTile, optTileData.value());
         // fixes block and ore demolishing in one click, maybe needs refactoring
         const bool currentIsBlock = blocks.isFilled(targetTile);
         const bool sameComponent = currentIsBlock == lastDeletedWasBlock;
-        if (input.jactive(Demolish) || input.active(Demolish) && sameComponent) {
+        if ((input.jactive(Demolish) || input.active(Demolish) && sameComponent) && mouseFree) {
             lastDeletedWasBlock = currentIsBlock;
             demolish(map, blocks, targetTile);
         }

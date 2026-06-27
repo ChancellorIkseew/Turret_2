@@ -1,4 +1,6 @@
 #include "gameplay_build_tools.hpp"
+//
+#include "engine/gui/gui.hpp"
 
 using GBuildTools = GameplayBuildTools;
 
@@ -27,6 +29,7 @@ void GBuildTools::updateDraft(const TileCoord start, TileCoord target) {
 
 void GBuildTools::update(Engine& engine) {
     const Input& input = engine.getMainWindow().getInput();
+    const bool mouseFree = !engine.getGUI().ownsMouse();
     GameSession& session = engine.getSession();
     WorldMap& map = session.getWorld().getMap();
     BlockMap& blocks = session.getWorld().getBlocks();
@@ -36,10 +39,10 @@ void GBuildTools::update(Engine& engine) {
     //
     if (input.jactive(Rotate_building))
         rotation = static_cast<BlockRot>((rotation + 1) % 4);
-    if (input.jactive(Pipette))
+    if (input.jactive(Pipette) && mouseFree)
         usePipette(blocks, blueprints, targetTile);
     // Build:
-    if (optTileData && input.jactive(Build_Shoot))
+    if (optTileData && input.jactive(Build_Shoot) && mouseFree)
         optBuildStart = targetTile;
     if (optTileData && optBuildStart && input.active(Build_Shoot))
         updateDraft(optBuildStart.value(), targetTile);
@@ -49,12 +52,17 @@ void GBuildTools::update(Engine& engine) {
         draft.clear();
     }
     // Demolish:
-    if (input.jactive(Demolish))
+    if (input.jactive(Demolish) && mouseFree)
         optDemolishStart = targetTile;
     if (optDemolishStart && input.released(Demolish)) {
         demolish(map, blocks, blueprints, optDemolishStart.value(), targetTile);
         optDemolishStart.reset();
     }
+
+    if (!engine.getGUI().ownsMouse()) {
+
+    }
+
 }
 
 void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) {
