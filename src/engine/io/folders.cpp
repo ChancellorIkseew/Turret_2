@@ -52,7 +52,7 @@ io::folders::Contents io::folders::getContents(const std::filesystem::path& path
             type == ContentsType::file && entry.is_regular_file())
             contents.push_back(entry.path().filename().string());
     }
-    logger.info() << "Readen directory: " << path;
+    logger.info() << "Read directory: " << path;
     return contents;
 }
 
