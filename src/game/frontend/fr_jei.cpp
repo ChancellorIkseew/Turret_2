@@ -54,12 +54,6 @@ public:
         const TextureRect textureRect = engine.getAssets().getAtlas().at(name);
         grid->addNode(new JEISlot(BTN_SIZE, new T1_UITexture(textureRect), buildTools.get(), input, TileData(component, id)));
     }
-
-    void callback(UIContext& context) override {
-        Container::callback(context);
-        if (!engine.getGUI().ownsMouse())
-            buildTools->update(engine);
-    }
 };
 
 std::unique_ptr<Container> frontend::initJEI(Engine& engine, std::shared_ptr<BuildTools> buildTools) {

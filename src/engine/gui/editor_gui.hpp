@@ -14,14 +14,13 @@ public:
     }
 
     void callback() final {
+        buildTools->update(engine);
         if (input.jactive(Escape) && !mainCanvas.hasOverlay())
-            GUI::addToOverlay(frontend::initMenu(engine));
-        else
-            GUI::callback();
+            return GUI::addToOverlay(frontend::initMenu(engine));
+        GUI::callback();
     }
 
     void drawDiegeticElements(Renderer& renderer) {
-        if (!ownsMouse())
-            buildTools->drawDraft(engine, renderer);
+        buildTools->drawDraft(engine, renderer);
     }
 };

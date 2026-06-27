@@ -18,16 +18,15 @@ public:
     }
 
     void callback() final {
-        if (input.jactive(Escape) && !mainCanvas.hasOverlay())
-            GUI::addToOverlay(frontend::initMenu(engine));
-        else
-            GUI::callback();
+        buildTools->update(engine);
         if (input.jactive(Pause))
             engine.getSession().setPaused(!engine.getSession().isPaused(), engine);
+        if (input.jactive(Escape) && !mainCanvas.hasOverlay())
+            return GUI::addToOverlay(frontend::initMenu(engine));
+        GUI::callback();
     }
 
     void drawDiegeticElements(Renderer& renderer) {
-        if (!ownsMouse())
-            buildTools->drawDraft(engine, renderer);
+        buildTools->drawDraft(engine, renderer);
     }
 };
