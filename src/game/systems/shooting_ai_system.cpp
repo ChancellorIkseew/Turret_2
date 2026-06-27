@@ -15,21 +15,30 @@ static inline void updatePlayerControlled(TurretComponents& soa, const Presets& 
     soa.shootingData[index].target = playerController.getAimCoord();
 }
 
+struct Aim {
+    float squareDistance;
+    PixelCoord position;
+    //
+    static constexpr bool closest(const Aim first, const Aim second) {
+        return first.squareDistance < second.squareDistance;
+    }
+};
+
 static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const BlockMap& blocks, const Presets& presets, const size_t index) {
     const float range = presets.getTurret(soa.preset[index]).range;
+    const float sqRange = t1::pow2f(range);
     const PixelCoord position = soa.position[index];
     const TeamID teamID = soa.teamID[index];
     soa.shootingData[index].isShooting = false;
 
     // aim to mob
+    static std::vector<Aim> aims;
     for (size_t i = 0; i < mobs.mobCount; ++i) {
         if (teamID == mobs.teamID[i])
             continue;
-        if (t1::areCloserCircle(position, mobs.position[i], range)) {
-            soa.shootingData[index].isShooting = true;
-            soa.shootingData[index].target = mobs.position[i];
-            return;
-        }
+        const float sqDistance = t1::squareDistance(position, mobs.position[i]);
+        if (sqDistance < sqRange)
+            aims.emplace_back(sqDistance, mobs.position[i]);
     }
 
     //aim to block
@@ -42,18 +51,24 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
     const int endY = std::min(mapSize.y, tilePosition.y + tileRange);
     for (int x = startX; x < endX; ++x) {
         for (int y = startY; y < endY; ++y) {
-            const PixelCoord blockCenter = t1::tileCenter({ x, y });
-            if (!t1::areCloserCircle(position, blockCenter, range))
-                continue;
             const BlockTile& blockTile = blocks.at(x, y);
             if (blockTile.type == BlockType::air)
                 continue;
             if (blockTile.teamID == teamID)
                 continue;
-            soa.shootingData[index].isShooting = true;
-            soa.shootingData[index].target = blockCenter;
-            return;
+            const PixelCoord blockCenter = t1::tileCenter({ x, y });
+            const float sqDistance = t1::squareDistance(position, blockCenter);
+            if (sqDistance < sqRange)
+                aims.emplace_back(sqDistance, blockCenter);
         }
+    }
+
+    if (!aims.empty()) {
+        const auto aim = std::min_element(aims.begin(), aims.end(), Aim::closest);
+        soa.shootingData[index].isShooting = true;
+        soa.shootingData[index].target = aim->position;
+        aims.clear();
+        return;
     }
 }
 

@@ -28,11 +28,14 @@ namespace t1 {
 
     /*no inline*/ int ceilUpPow2(const int value) noexcept;
 
-    t1_finline bool areCloserRect(const PixelCoord first, const PixelCoord second, const float distance) noexcept {
-        return std::abs(first.x - second.x) < distance && std::abs(first.y - second.y) < distance; // abs is not cxpr
+    t1_finline_cxpr float squareDistance(const PixelCoord first, const PixelCoord second) noexcept {
+        return pow2f(first.x - second.x) + pow2f(first.y - second.y);
     }
     t1_finline_cxpr bool areCloserCircle(const PixelCoord first, const PixelCoord second, const float distance) noexcept {
-        return pow2f(distance) > pow2f(first.x - second.x) + pow2f(first.y - second.y);
+        return pow2f(distance) > squareDistance(first, second);
+    }
+    t1_finline bool areCloserRect(const PixelCoord first, const PixelCoord second, const float distance) noexcept {
+        return std::abs(first.x - second.x) < distance && std::abs(first.y - second.y) < distance; // abs is not cxpr
     }
 
     t1_finline_cxpr bool contains(const TileCoord start, const TileCoord end, const TileCoord target) noexcept {
