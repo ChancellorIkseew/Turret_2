@@ -12,6 +12,7 @@ struct TurretSoA {
     std::vector<ShootingData> shootingData;
     std::vector<TickCount> restReloadTime;
     std::vector<uint8_t> currentBarrel;
+    std::vector<float> currentRecoil;
     std::vector<uint8_t> turretFrame;
     size_t turretCount = 0;
 };

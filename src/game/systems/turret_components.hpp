@@ -12,6 +12,7 @@ struct TurretComponents {
     std::span<TickCount> restReloadTime;
     std::span<uint8_t> currentBarrel;
     std::span<AngleRad> turretAngle;
+    std::span<float> currentRecoil;
     size_t mobCount = 0;
 };
 
@@ -25,6 +26,7 @@ inline TurretComponents fromBlocks(TurretSoA& src) {
         src.restReloadTime,
         src.currentBarrel,
         src.angle,
+        src.currentRecoil,
         src.turretCount
     };
 }
@@ -39,6 +41,7 @@ inline TurretComponents fromMobs(MobSoA& src) {
         src.restReloadTime,
         src.currentBarrel,
         src.turretAngle,
+        src.currentRecoil,
         src.mobCount
     };
 }

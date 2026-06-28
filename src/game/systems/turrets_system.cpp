@@ -55,6 +55,13 @@ static inline void reduceRestReload(TurretComponents& soa) {
     }
 }
 
+static inline void fallbackRecoil(TurretComponents& soa) {
+    for (float& recoil : soa.currentRecoil) {
+        constexpr float RECOIL_FALLBACK = 0.1f;
+        recoil = std::max(0.f, recoil - RECOIL_FALLBACK);
+    }
+}
+
 static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleManager& particles,
     const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
     for (size_t i = 0; i < mobCount; ++i) {
@@ -87,6 +94,8 @@ static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleMa
             particles.addParticle(position, angle, 0.2f, 0xFF'A5'00'FF, 15);
             sounds.pushSound(turret.visual.shotSound, position);
         }
+        constexpr float MAX_RECOIL = 2.f;
+        soa.currentRecoil[i] = std::min(MAX_RECOIL, soa.currentRecoil[i] + turret.recoil);
     }
 }
 
@@ -96,6 +105,7 @@ void turrets::processTurrets(TurretComponents& soa, ShellManager& shells, Partic
     reduceRestReload(soa);
     rotateTurrets(soa, presets, mobCount);
     shoot(soa, shells, particles, presets, mobCount, sounds, camera);
+    fallbackRecoil(soa);
 }
 
 void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
@@ -103,8 +113,10 @@ void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const 
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
+        const PixelCoord recoilVector(std::sin(soa.turretAngle[i]), std::cos(soa.turretAngle[i]));
+        const PixelCoord position = soa.position[i] - recoilVector * soa.currentRecoil[i];
         const auto& visual = presets.getTurret(soa.preset[i]).visual;
-        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.turretAngle[i]);
+        renderer.draw(visual.textureRect, position, visual.size, visual.origin, t1::PI - soa.turretAngle[i]);
     }
 }
 
@@ -114,7 +126,9 @@ void turrets::drawShadows(TurretComponents&& soa, const Presets& presets, const 
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         const auto& visual = presets.getTurret(soa.preset[i]).visual;
-        const PixelCoord position = soa.position[i] + PixelCoord(-visual.shadowOffset, visual.shadowOffset);
+        const PixelCoord shadowOffset(-visual.shadowOffset, visual.shadowOffset);
+        const PixelCoord recoilVector(std::sin(soa.turretAngle[i]), std::cos(soa.turretAngle[i]));
+        const PixelCoord position = soa.position[i] - recoilVector * soa.currentRecoil[i] + shadowOffset;
         renderer.draw(visual.textureRect, position, visual.size, visual.origin, t1::PI - soa.turretAngle[i], 0x00'00'00'40);
     }
 }

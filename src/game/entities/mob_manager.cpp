@@ -15,6 +15,7 @@ void MobManager::reserve(const size_t capacity) {
     soa.restReloadTime.reserve(capacity);
     soa.currentBarrel.reserve(capacity);
     soa.turretAngle.reserve(capacity);
+    soa.currentRecoil.reserve(capacity);
     soa.chassisFrame.reserve(capacity);
     soa.turretFrame.reserve(capacity);
 }
@@ -47,6 +48,7 @@ void MobManager::addMob(
     soa.restReloadTime.push_back(restReloadTime);
     soa.currentBarrel.push_back(0);
     soa.turretAngle.push_back(turretAngle);
+    soa.currentRecoil.push_back(0.f);
     soa.chassisFrame.push_back(0);
     soa.turretFrame.push_back(0);
     ++soa.mobCount;
@@ -70,6 +72,7 @@ void MobManager::removeMob(const size_t targetIndex) {
         soa.restReloadTime[targetIndex] = std::move(soa.restReloadTime[lastIndex]);
         soa.currentBarrel[targetIndex] = std::move(soa.currentBarrel[lastIndex]);
         soa.turretAngle[targetIndex] = std::move(soa.turretAngle[lastIndex]);
+        soa.currentRecoil[targetIndex] = std::move(soa.currentRecoil[lastIndex]);
         soa.chassisFrame[targetIndex] = std::move(soa.chassisFrame[lastIndex]);
         soa.turretFrame[targetIndex] = std::move(soa.turretFrame[lastIndex]);
     }
@@ -88,6 +91,7 @@ void MobManager::removeMob(const size_t targetIndex) {
     soa.restReloadTime.pop_back();
     soa.currentBarrel.pop_back();
     soa.turretAngle.pop_back();
+    soa.currentRecoil.pop_back();
     soa.chassisFrame.pop_back();
     soa.turretFrame.pop_back();
 }
