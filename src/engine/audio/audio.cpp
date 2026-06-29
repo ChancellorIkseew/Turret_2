@@ -85,7 +85,7 @@ void Audio::playDiegetic(const std::string& id, const PixelCoord object, const C
     MIX_Track* track = findFreeTrack(worldTrackPool);
     if (!track)
         return;
-    const PixelCoord delta = (object - camera.getCenter()) / t1::TILE;
+    const PixelCoord delta = (object - camera.getRealCenter()) / t1::TILE;
     const float altitude = BASE_CAMERA_ALTITUDE / camera.getMapScale();
     MIX_Point3D point3D(delta.x, -delta.y, -altitude); // Why -y, -z? See MIX_Point3D comments.
     play(audioCache[id], track, &point3D);

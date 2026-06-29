@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "config.hpp"
 #include "engine/coords/math.hpp"
 
@@ -6,7 +7,7 @@ class Input;
 
 class Camera {
     static constexpr float VISUAL_ARTIFACTS_START_SCALE = 0.68f;
-    PixelCoord cameraUpperLeftCorner, cameraCenter;
+    PixelCoord cameraUpperLeftCorner, realCenter, targetCenter;
     PixelCoord movingStartMouseCoord;
     const PixelCoord pixelMapSize;
     const TileCoord tileMapSize;
@@ -14,20 +15,22 @@ class Camera {
     TileCoord buildingsStartTile;
     TileCoord startTile;
     TileCoord endTile;
+    bool inertia;
 public:
-    Camera(const TileCoord mapSize);
+    Camera(const TileCoord mapSize, const bool inertia);
 
-    void update(const PixelCoord windowSize);
+    void update(const PixelCoord windowSize, const uint64_t frameDelayNs);
     void move(const PixelCoord delta);
     void moveByMouse(const Input& input);
     void scale(const Input& input);
-    void setCenter(const PixelCoord position) { cameraCenter = position; }
+    void setTargetCenter(const PixelCoord position) { targetCenter = position; }
+    void toggleInertia(const bool flag) { inertia = flag; }
 
     ///@brief applies correction for building max size
     TileCoord getBuildingsStartTile() const noexcept { return buildingsStartTile; }
     TileCoord getStartTile() const noexcept { return startTile; }
     TileCoord getEndTile() const noexcept { return endTile; }
-    PixelCoord getCenter() const noexcept { return cameraCenter; }
+    PixelCoord getRealCenter() const noexcept { return realCenter; }
     float getMapScale() const noexcept { return mapScale; }
 
     PixelCoord fromMapToScreen(const PixelCoord mapCoord) const noexcept;
@@ -42,7 +45,6 @@ public:
         return t1::floor(cameraUpperLeftCorner * mapScale) / mapScale;
     }
 private:
-    void avoidEscapeFromMap();
     void resize(const PixelCoord windowSize);
     void updateMapRegion(const PixelCoord windowSize);
 };

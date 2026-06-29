@@ -44,7 +44,7 @@ void PlCtr::moveCamera(const MobSoA& mobs, const std::optional<size_t> mob, cons
         camera.moveByMouse(input);
     }  
     else
-        camera.setCenter(mobs.position[*mob]);
+        camera.setTargetCenter(mobs.position[*mob]);
     camera.scale(input);
 }
 

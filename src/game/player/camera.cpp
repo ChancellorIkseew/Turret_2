@@ -9,11 +9,22 @@ constexpr float SCALE_FACTOR = 1.2f;
 constexpr float MOTION_SPEED = 20.0f;
 constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
 
-Camera::Camera(const TileCoord mapSize) : mapScale(MIN_MAP_SCALE),
-    tileMapSize(mapSize), pixelMapSize(t1::pixel(mapSize)) { }
+Camera::Camera(const TileCoord mapSize, const bool inertia) : mapScale(MIN_MAP_SCALE),
+    tileMapSize(mapSize), pixelMapSize(t1::pixel(mapSize)), inertia(inertia) { }
 
-void Camera::update(const PixelCoord windowSize) {
-    avoidEscapeFromMap();
+void Camera::update(const PixelCoord windowSize, const uint64_t frameDelayNs) {
+    targetCenter.x = std::clamp(targetCenter.x, 0.0f, pixelMapSize.x);
+    targetCenter.y = std::clamp(targetCenter.y, 0.0f, pixelMapSize.y);
+
+    if (inertia) {
+        constexpr float SMOOTH_FACTOR = 6.0f;
+        const float deltaTime = static_cast<float>(frameDelayNs) / 1'000'000'000;
+        const float interpolationFactor = 1.0f - std::exp(-SMOOTH_FACTOR * deltaTime);
+        realCenter += (targetCenter - realCenter) * interpolationFactor;
+    }
+    else
+        realCenter = targetCenter;
+    
     resize(windowSize);
     updateMapRegion(windowSize);
 }
@@ -23,18 +34,13 @@ void Camera::moveByMouse(const Input& input) {
         movingStartMouseCoord = fromScreenToMap(input.getMouseCoord());
     else if (input.active(MidMB)) {
         const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(input.getMouseCoord());
-        cameraCenter += delta;
+        targetCenter += delta;
     }
 }
 
 void Camera::move(const PixelCoord delta) {
     if (delta != PixelCoord(0.0f, 0.0f))
-        cameraCenter += (delta * MOTION_SPEED / mapScale);
-}
-
-void Camera::avoidEscapeFromMap() {
-    cameraCenter.x = std::clamp(cameraCenter.x, 0.0f, pixelMapSize.x);
-    cameraCenter.y = std::clamp(cameraCenter.y, 0.0f, pixelMapSize.y);
+        targetCenter += (delta * MOTION_SPEED / mapScale);
 }
 
 void Camera::scale(const Input& input) {
@@ -54,7 +60,7 @@ void Camera::scale(const Input& input) {
 }
 
 void Camera::resize(const PixelCoord windowSize) {
-    cameraUpperLeftCorner = cameraCenter - windowSize / 2.0f / mapScale;
+    cameraUpperLeftCorner = realCenter - windowSize / 2.0f / mapScale;
 }
 
 void Camera::updateMapRegion(const PixelCoord windowSize) {

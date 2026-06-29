@@ -4,6 +4,8 @@
 #include "MINGUI/widgets/checkbox.hpp"
 #include "MINGUI/widgets/form.hpp"
 #include "MINGUI/widgets/label.hpp"
+#include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
 
@@ -48,6 +50,7 @@ public:
         Settings::display.vSync = vSync->getValue();
         Settings::display.fullscreen = fullscreen->getValue();
         Settings::gameplay.cameraInertia = inertia->getValue();
+        engine.getSession().getCamera().toggleInertia(Settings::gameplay.cameraInertia);
         Settings::applySettings(engine);
         Settings::writeSettings();
     }
