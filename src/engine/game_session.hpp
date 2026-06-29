@@ -46,7 +46,7 @@ public:
     BuiltInScripts& getBuiltInScripts() { return builtInScripts; }
 private:
     void prepare(const Presets& presets);
-    void updateSimulation(const Presets& presets, Engine& engine);
+    void updateSimulation(const Presets& presets);
     void onLostFocus(Engine& engine);
     void onGainedFocus(Engine& engine);
     t1_disable_copy_and_move(GameSession)

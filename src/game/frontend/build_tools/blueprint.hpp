@@ -30,7 +30,7 @@ public:
         if (it != blueprints.end()) // replace
             *it = Blueprint(tile, presetID, rotation);
         else if (blueprints.size() < MAX_ELEMENTS) // emplace
-            blueprints.emplace_back(tile, presetID, rotation);
+            blueprints.emplace_back(tile, presetID, rotation, 0);
     }
 
     void removeIfExists(const TileCoord tile) noexcept {

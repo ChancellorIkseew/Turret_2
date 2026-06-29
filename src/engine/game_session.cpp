@@ -33,7 +33,7 @@ void GameSession::prepare(const Presets& presets) {
         builtInScripts.spawnMob(presets.getMobID("shuttle"), PixelCoord(1600, 1600), playerTeamID);
 }
 
-void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
+void GameSession::updateSimulation(const Presets& presets) {
     auto& blocks    = world->getBlocks();
     auto& chunks    = world->getChunks();
     auto& mobs      = world->getMobs();
@@ -46,13 +46,14 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     updateBlocks(blocks, world->getMap(), presets);
     shells::processShells(shells.getSoa(), mobs.getSoa(), chunks, blocks);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
-    construction::buildBlueprints(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, world->getBlueprints());
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
     turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera);
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera);
     particles::updateParticles(particles);
+    // Build when spans are used and can be spoiled.
+    construction::buildBlueprints(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts);
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets);
@@ -73,7 +74,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
         world->getBlocks().getMeta().getTurrets().getSoa(), presets);
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
-            updateSimulation(presets, engine);
+            updateSimulation(presets);
         }
     }
     scriptsHandler.execute();
