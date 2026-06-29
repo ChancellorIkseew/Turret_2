@@ -85,9 +85,9 @@ void Settings::applySettings(Engine& engine) {
     engine.getMainWindow().setFPS(display.FPS);
     engine.getMainWindow().getRenderer().setVSyncMode(display.vSync ? VSyncMode::adaptive : VSyncMode::immediate);
     engine.getMainWindow().setFullscreen(display.fullscreen);
-    // "cameraInertia" not imlemented
+    // "cameraInertia" imlemented in game_session.cpp and fr_graphics.cpp
     // "pauseOnWorldOpen" implemented in engine.cpp
-    // "showHitboxes" implemented in mobs_system.cpp
+    // "showHitboxes" not implemented
     // "lang" implemented in gui and main_canvas
     // "guiScale" implemented in gui.cpp and fr_gui.cpp
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
