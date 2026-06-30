@@ -30,9 +30,9 @@ void Camera::update(const PixelCoord windowSize, const uint64_t frameDelayNs) {
 }
 
 void Camera::moveByMouse(const Input& input) {
-    if (input.jactive(MidMB))
+    if (input.jactive(Drag_camera))
         movingStartMouseCoord = input.getMouseCoord();
-    else if (input.active(MidMB)) {
+    else if (input.active(Drag_camera)) {
         const PixelCoord mouseScreenCoord = input.getMouseCoord();
         targetCenter += (movingStartMouseCoord - mouseScreenCoord) / mapScale;
         movingStartMouseCoord = mouseScreenCoord;
