@@ -70,9 +70,9 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     mainWindow.pollEvents();
     gui->callback();
-    playerController.update(mainWindow.getInput(), camera, paused, world->getMobs().getSoa(),
+    playerController.update(mainWindow.getInput(), camera, paused || gui->overlapsWorld(), world->getMobs().getSoa(),
         world->getBlocks().getMeta().getTurrets().getSoa(), presets);
-    if (!paused) {
+    if (!paused && !gui->overlapsWorld()) {
         for (int i = 0; i < tickSpeed; ++i) {
             updateSimulation(presets);
         }

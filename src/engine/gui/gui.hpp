@@ -23,6 +23,7 @@ public:
     void translate(const std::string& lang);
     virtual void callback();
     void addToOverlay(std::unique_ptr<mingui::Container> container);
+    bool overlapsWorld() const { return mainCanvas.hasOverlay(); }
     bool ownsMouse() const;
     void setScale(const uint8_t scale) { mainCanvas.setScale(scale); }
 protected:
