@@ -6,10 +6,10 @@
 #include "block.hpp"
 
 #include "engine/coords/transforms.hpp"
-#include "game/entities/turret_manager.hpp"
+#include "game/entities/turrets_pool.hpp"
 
 class BlocksMeta {
-    TurretManager turrets;
+    TurretsPool turrets;
     std::vector<size_t> markedForRemove;
     std::optional<TileCoord> core;
 public:

@@ -1,7 +1,7 @@
 #pragma once
 #include <span>
-#include "game/entities/mob_manager.hpp"
-#include "game/entities/turret_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
+#include "game/entities/turrets_pool.hpp"
 
 struct TurretComponents {
     std::span<PixelCoord> position;

@@ -111,9 +111,9 @@
     <ClInclude Include="src\game\common\team.hpp" />
     <ClInclude Include="src\game\common\teams_pool.hpp" />
     <ClInclude Include="src\game\entities\chunk_grid.hpp" />
-    <ClInclude Include="src\game\entities\mob_manager.hpp" />
-    <ClInclude Include="src\game\entities\shell_manager.hpp" />
-    <ClInclude Include="src\game\entities\turret_manager.hpp" />
+    <ClInclude Include="src\game\entities\mobs_pool.hpp" />
+    <ClInclude Include="src\game\entities\shells_pool.hpp" />
+    <ClInclude Include="src\game\entities\turrets_pool.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
     <ClInclude Include="src\game\frontend\build_tools\blueprint.hpp" />
     <ClInclude Include="src\game\frontend\build_tools\build_tools.hpp" />
@@ -125,7 +125,7 @@
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\generation\squirell_noise.hpp" />
     <ClInclude Include="src\game\generation\spot_generator.hpp" />
-    <ClInclude Include="src\game\particles\particle_manager.hpp" />
+    <ClInclude Include="src\game\particles\particles_pool.hpp" />
     <ClInclude Include="src\game\particles\particles_system.hpp" />
     <ClInclude Include="src\game\player\camera.hpp" />
     <ClInclude Include="src\game\player\player_controller.hpp" />
@@ -210,9 +210,9 @@
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
     <ClCompile Include="src\game\common\mob_ai.cpp" />
     <ClCompile Include="src\game\entities\chunk_grid.cpp" />
-    <ClCompile Include="src\game\entities\mob_manager.cpp" />
-    <ClCompile Include="src\game\entities\shell_manager.cpp" />
-    <ClCompile Include="src\game\entities\turret_manager.cpp" />
+    <ClCompile Include="src\game\entities\mobs_pool.cpp" />
+    <ClCompile Include="src\game\entities\shells_pool.cpp" />
+    <ClCompile Include="src\game\entities\turrets_pool.cpp" />
     <ClCompile Include="src\game\frontend\build_tools\blueprint.cpp" />
     <ClCompile Include="src\game\frontend\build_tools\build_tools.cpp" />
     <ClCompile Include="src\game\frontend\build_tools\gameplay_build_tools.cpp" />
@@ -233,7 +233,7 @@
     <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
     <ClCompile Include="src\game\frontend\fr_world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
-    <ClCompile Include="src\game\particles\particle_manager.cpp" />
+    <ClCompile Include="src\game\particles\particles_pool.cpp" />
     <ClCompile Include="src\game\particles\particles_system.cpp" />
     <ClCompile Include="src\game\player\camera.cpp" />
     <ClCompile Include="src\game\player\player_controller.cpp" />

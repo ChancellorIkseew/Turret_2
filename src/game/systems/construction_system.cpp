@@ -2,7 +2,7 @@
 //
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
-#include "game/entities/mob_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
 #include "game/frontend/build_tools/blueprint.hpp"
 #include "game/built_in_scripts/built_in_scripts.hpp"
 

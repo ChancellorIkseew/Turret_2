@@ -17,11 +17,10 @@ struct TurretSoA {
     size_t turretCount = 0;
 };
 
-class TurretManager {
+class TurretsPool {
     TurretSoA soa;
-    void fillIndexes();
 public:
-    TurretManager(const size_t capacity) { reserve(capacity); }
+    TurretsPool(const size_t capacity) { reserve(capacity); }
     //
     t1_finline const TurretSoA& getSoa() const noexcept { return soa; }
     t1_finline TurretSoA& getSoa() noexcept { return soa; }

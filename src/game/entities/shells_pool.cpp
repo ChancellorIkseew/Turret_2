@@ -1,6 +1,6 @@
-#include "shell_manager.hpp"
+#include "shells_pool.hpp"
 
-void ShellManager::reserve(const size_t capacity) {
+void ShellsPool::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
     soa.velocity.reserve(capacity);
     soa.angle.reserve(capacity);
@@ -10,7 +10,7 @@ void ShellManager::reserve(const size_t capacity) {
     soa.preset.reserve(capacity);
 }
 
-void ShellManager::addShell(
+void ShellsPool::addShell(
     const ShellPresetID preset,
     const PixelCoord position,
     const PixelCoord velocity,
@@ -29,7 +29,7 @@ void ShellManager::addShell(
     ++soa.shellCount;
 }
 
-void ShellManager::removeShell(const size_t index) {
+void ShellsPool::removeShell(const size_t index) {
     const size_t last = --soa.shellCount;
 
     if (index != last) {

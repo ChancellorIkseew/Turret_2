@@ -1,8 +1,8 @@
-#include "particle_manager.hpp"
+#include "particles_pool.hpp"
 //
 #include <cmath>
 
-void ParticleManager::reserve(const size_t capacity) {
+void ParticlesPool::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
     soa.facing.reserve(capacity);
     soa.speed.reserve(capacity);
@@ -10,7 +10,7 @@ void ParticleManager::reserve(const size_t capacity) {
     soa.restLifeTime.reserve(capacity);
 }
 
-void ParticleManager::addParticle(
+void ParticlesPool::addParticle(
     const PixelCoord position,
     const PixelCoord facing,
     const float speed,
@@ -25,7 +25,7 @@ void ParticleManager::addParticle(
     ++soa.particleCount;
 }
 
-void ParticleManager::addParticle(
+void ParticlesPool::addParticle(
     const PixelCoord position,
     const float angle,
     const float speed,
@@ -36,7 +36,7 @@ void ParticleManager::addParticle(
     addParticle(position, facing, speed, color, restLifeTime);
 }
 
-void ParticleManager::removeParticle(const size_t index) {
+void ParticlesPool::removeParticle(const size_t index) {
     const size_t last = --soa.particleCount;
 
     if (index != last) {

@@ -3,8 +3,8 @@
 #include "camera.hpp"
 #include "engine/assets/presets.hpp"
 #include "engine/window/input/input.hpp"
-#include "game/entities/mob_manager.hpp"
-#include "game/entities/turret_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
+#include "game/entities/turrets_pool.hpp"
 
 using PlCtr = PlayerController;
 

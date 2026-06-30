@@ -3,7 +3,7 @@
 #include "engine/assets/presets.hpp"
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
-#include "game/entities/mob_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
 #include "game/frontend/build_tools/blueprint.hpp"
 #include "game/player/player_controller.hpp"
 

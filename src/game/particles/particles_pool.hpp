@@ -12,11 +12,11 @@ struct ParticleSoA {
     size_t particleCount = 0;
 };
 
-class ParticleManager {
+class ParticlesPool {
     ParticleSoA soa;
 public:
-    ParticleManager(const size_t capacity) { reserve(capacity); }
-    ParticleManager() = default;
+    ParticlesPool(const size_t capacity) { reserve(capacity); }
+    ParticlesPool() = default;
     //
     t1_finline const ParticleSoA& getSoa() const noexcept { return soa; }
     t1_finline ParticleSoA& getSoa() noexcept { return soa; }

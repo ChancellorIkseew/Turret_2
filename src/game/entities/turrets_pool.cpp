@@ -1,6 +1,6 @@
-#include "turret_manager.hpp"
+#include "turrets_pool.hpp"
 
-void TurretManager::reserve(const size_t capacity) {
+void TurretsPool::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
     soa.angle.reserve(capacity);
     soa.teamID.reserve(capacity);
@@ -12,7 +12,7 @@ void TurretManager::reserve(const size_t capacity) {
     soa.turretFrame.reserve(capacity);
 }
 
-void TurretManager::addTurret(
+void TurretsPool::addTurret(
     const TurretPresetID preset,
     const PixelCoord position,
     const AngleRad angle,
@@ -32,7 +32,7 @@ void TurretManager::addTurret(
     ++soa.turretCount;
 }
 
-void TurretManager::removeTurret(const size_t targetIndex) {
+void TurretsPool::removeTurret(const size_t targetIndex) {
     const size_t last = --soa.turretCount;
 
     if (targetIndex != last) {

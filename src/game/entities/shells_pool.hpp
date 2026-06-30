@@ -13,11 +13,11 @@ struct ShellSoA {
     size_t shellCount = 0;
 };
 
-class ShellManager {
+class ShellsPool {
     ShellSoA soa;
 public:
-    ShellManager(const size_t capacity) { reserve(capacity); }
-    ShellManager() = default;
+    ShellsPool(const size_t capacity) { reserve(capacity); }
+    ShellsPool() = default;
     //
     t1_finline const ShellSoA& getSoa() const noexcept { return soa; }
     t1_finline ShellSoA& getSoa() noexcept { return soa; }

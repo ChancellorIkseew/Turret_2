@@ -5,7 +5,7 @@
 #include "engine/coords/transforms.hpp"
 #include "game/blocks/block_map.hpp"
 #include "game/entities/chunk_grid.hpp"
-#include "game/entities/mob_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
 #include "game/player/camera.hpp"
 
 static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other, const Presets& presets) {
@@ -84,8 +84,8 @@ void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blo
     resolveWorldCollisions(soa, mobCount, blocks, presets);
 }
 
-void mobs::cleanupMobs(MobManager& manager, const Presets& presets) {
-    const auto& soa = manager.getSoa();
+void mobs::cleanupMobs(MobsPool& mobsPool, const Presets& presets) {
+    const auto& soa = mobsPool.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.mobCount; i > 0; --i) {
         size_t index = i - 1;
@@ -93,7 +93,7 @@ void mobs::cleanupMobs(MobManager& manager, const Presets& presets) {
             continue;
         // if (soa.presets->explosion.damage != 0)
         //     explosions.push(soa.presets->explosion);
-        manager.removeMob(index);
+        mobsPool.removeMob(index);
     }
 }
 

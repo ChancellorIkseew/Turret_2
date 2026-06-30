@@ -1,6 +1,6 @@
 #include "particles_system.hpp"
 //
-#include "particle_manager.hpp"
+#include "particles_pool.hpp"
 
 constexpr uint32_t COLOR_FADING = 0x00'00'00'08;
 
@@ -22,17 +22,17 @@ static inline void move(ParticleSoA& soa) {
     }
 }
 
-static inline void cleanup(ParticleManager& manager) {
-    const auto& soa = manager.getSoa();
+static inline void cleanup(ParticlesPool& particlesPool) {
+    const auto& soa = particlesPool.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.particleCount; i > 0; --i) {
         size_t index = i - 1;
         if (soa.restLifeTime[index] <= 0)
-            manager.removeParticle(index);
+            particlesPool.removeParticle(index);
     }
 }
 
-void particles::updateParticles(ParticleManager& particles) {
+void particles::updateParticles(ParticlesPool& particles) {
     auto& soa = particles.getSoa();
     reduceLifeTime(soa);
     reduceColor(soa);

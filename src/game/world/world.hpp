@@ -2,9 +2,9 @@
 #include "game/blocks/block_map.hpp"
 #include "game/common/teams_pool.hpp"
 #include "game/entities/chunk_grid.hpp"
-#include "game/entities/mob_manager.hpp"
-#include "game/entities/shell_manager.hpp"
-#include "game/particles/particle_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
+#include "game/entities/shells_pool.hpp"
+#include "game/particles/particles_pool.hpp"
 #include "world_map.hpp"
 #include "game/frontend/build_tools/blueprint.hpp"
 
@@ -14,9 +14,9 @@ class World {
     //
     WorldMap map;
     TeamsPool teams;
-    MobManager mobs;
-    ShellManager shells;
-    ParticleManager particles;
+    MobsPool mobs;
+    ShellsPool shells;
+    ParticlesPool particles;
     Blueprints blueprints;
 public:
     World(WorldMap& map) :
@@ -29,15 +29,15 @@ public:
     const BlockMap& getBlocks() const noexcept { return blocks; }
     const TeamsPool& getTeams() const noexcept { return teams; }
     const ChunkGrid& getChunks() const noexcept { return chunkGrid; }
-    const MobManager& getMobs() const noexcept { return mobs; }
-    const ShellManager& getShells() const noexcept { return shells; }
-    const ParticleManager& getParticles() const noexcept { return particles; }
+    const MobsPool& getMobs() const noexcept { return mobs; }
+    const ShellsPool& getShells() const noexcept { return shells; }
+    const ParticlesPool& getParticles() const noexcept { return particles; }
     WorldMap& getMap() noexcept { return map; }
     BlockMap& getBlocks() noexcept { return blocks; }
     TeamsPool& getTeams() noexcept { return teams; }
     ChunkGrid& getChunks() noexcept { return chunkGrid; }
-    MobManager& getMobs() noexcept { return mobs; }
-    ShellManager& getShells() noexcept { return shells; }
-    ParticleManager& getParticles() noexcept { return particles; }
+    MobsPool& getMobs() noexcept { return mobs; }
+    ShellsPool& getShells() noexcept { return shells; }
+    ParticlesPool& getParticles() noexcept { return particles; }
     Blueprints& getBlueprints() noexcept { return blueprints; }
 };

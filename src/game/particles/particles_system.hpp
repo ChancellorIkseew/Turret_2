@@ -1,7 +1,7 @@
 #pragma once
 
-class ParticleManager;
+class ParticlesPool;
 
 namespace particles {
-    void updateParticles(ParticleManager& particles);
+    void updateParticles(ParticlesPool& particles);
 }

@@ -5,10 +5,10 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"
-#include "game/particles/particle_manager.hpp"
+#include "game/particles/particles_pool.hpp"
 #include "game/player/camera.hpp"
-#include "game/entities/mob_manager.hpp"
-#include "game/entities/shell_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
+#include "game/entities/shells_pool.hpp"
 #include "turret_components.hpp"
 
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
@@ -62,7 +62,7 @@ static inline void fallbackRecoil(TurretComponents& soa) {
     }
 }
 
-static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleManager& particles,
+static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPool& particles,
     const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.restReloadTime[i] > 0 || !soa.shootingData[i].isShooting)
@@ -99,7 +99,7 @@ static inline void shoot(TurretComponents& soa, ShellManager& shells, ParticleMa
     }
 }
 
-void turrets::processTurrets(TurretComponents& soa, ShellManager& shells, ParticleManager& particles,
+void turrets::processTurrets(TurretComponents& soa, ShellsPool& shells, ParticlesPool& particles,
     const Presets& presets, SoundQueue& sounds, const Camera& camera) {
     const size_t mobCount = soa.mobCount;
     reduceRestReload(soa);

@@ -23,11 +23,11 @@ struct MobSoA {
     size_t mobCount = 0;
 };
 
-class MobManager {
+class MobsPool {
     MobSoA soa;
 public:
-    MobManager(const size_t capacity) { reserve(capacity); }
-    MobManager() = default;
+    MobsPool(const size_t capacity) { reserve(capacity); }
+    MobsPool() = default;
     //
     t1_finline const MobSoA& getSoa() const noexcept { return soa; }
     t1_finline MobSoA& getSoa() noexcept { return soa; }

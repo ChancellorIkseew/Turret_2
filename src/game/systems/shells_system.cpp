@@ -6,8 +6,8 @@
 #include "game/blocks/block_map.hpp"
 #include "game/player/camera.hpp"
 #include "game/entities/chunk_grid.hpp"
-#include "game/entities/mob_manager.hpp"
-#include "game/entities/shell_manager.hpp"
+#include "game/entities/mobs_pool.hpp"
+#include "game/entities/shells_pool.hpp"
 
 static inline void reduceShellsLifeTime(ShellSoA& soa) {
     for (auto& time : soa.restLifeTime) {
@@ -73,8 +73,8 @@ void shells::processShells(ShellSoA& shells, MobSoA& mobs, const ChunkGrid& chun
     hitBlocks(shells, blocks, shellCount);
 }
 
-void shells::cleanupShells(ShellManager& manager, const Presets& presets/*, Explosions& explosions*/) {
-    const auto& soa = manager.getSoa();
+void shells::cleanupShells(ShellsPool& shellsPool, const Presets& presets/*, Explosions& explosions*/) {
+    const auto& soa = shellsPool.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.shellCount; i > 0; --i) {
         size_t index = i - 1;
@@ -82,7 +82,7 @@ void shells::cleanupShells(ShellManager& manager, const Presets& presets/*, Expl
             continue;
         //if (soa.presets->explosion.damage != 0)
         //     explosions.push(soa.presets->explosion);
-        manager.removeShell(index);
+        shellsPool.removeShell(index);
     }
 }
 

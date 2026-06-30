@@ -1,6 +1,6 @@
-#include "mob_manager.hpp"
+#include "mobs_pool.hpp"
 
-void MobManager::reserve(const size_t capacity) {
+void MobsPool::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
     soa.velocity.reserve(capacity);
     soa.angle.reserve(capacity);
@@ -20,7 +20,7 @@ void MobManager::reserve(const size_t capacity) {
     soa.turretFrame.reserve(capacity);
 }
 
-void MobManager::addMob(
+void MobsPool::addMob(
     const MobPresetID preset,
     const TurretPresetID turretPreset,
     const PixelCoord position,
@@ -54,7 +54,7 @@ void MobManager::addMob(
     ++soa.mobCount;
 }
 
-void MobManager::removeMob(const size_t targetIndex) {
+void MobsPool::removeMob(const size_t targetIndex) {
     const size_t lastIndex = --soa.mobCount;
 
     if (targetIndex != lastIndex) {

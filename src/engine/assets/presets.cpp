@@ -1,8 +1,6 @@
 #include "presets.hpp"
 //
 #include "engine/io/folders.hpp"
-#include "game/entities/mob_manager.hpp"
-#include "game/entities/shell_manager.hpp"
 #include "preset_reader.hpp"
 
 template<class Tag>

@@ -1,7 +1,7 @@
 #include "chunk_grid.hpp"
 //
 #include <span>
-#include "mob_manager.hpp"
+#include "mobs_pool.hpp"
 
 static inline void updatePopulatedChunks(std::vector<Chunk>& populatedChunks,
     const std::span<const uint32_t> chunkOffsets, const std::span<const uint32_t> mobIndices) {

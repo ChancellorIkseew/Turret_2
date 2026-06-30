@@ -183,7 +183,7 @@
     <ClInclude Include="src\engine\assets\preset_defs.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\particles\particle_manager.hpp">
+    <ClInclude Include="src\game\particles\particles_pool.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\world\world.hpp">
@@ -336,10 +336,10 @@
     <ClInclude Include="src\game\entities\chunk_grid.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\entities\mob_manager.hpp">
+    <ClInclude Include="src\game\entities\mobs_pool.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\entities\shell_manager.hpp">
+    <ClInclude Include="src\game\entities\shells_pool.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\common\team.hpp">
@@ -351,7 +351,7 @@
     <ClInclude Include="src\game\blocks\make_block.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\entities\turret_manager.hpp">
+    <ClInclude Include="src\game\entities\turrets_pool.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\debug\logger.hpp">
@@ -566,7 +566,7 @@
     <ClCompile Include="src\engine\game_session.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\particles\particle_manager.cpp">
+    <ClCompile Include="src\game\particles\particles_pool.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\particles\particles_system.cpp">
@@ -662,13 +662,13 @@
     <ClCompile Include="src\game\entities\chunk_grid.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\entities\mob_manager.cpp">
+    <ClCompile Include="src\game\entities\mobs_pool.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\entities\shell_manager.cpp">
+    <ClCompile Include="src\game\entities\shells_pool.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\entities\turret_manager.cpp">
+    <ClCompile Include="src\game\entities\turrets_pool.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\blocks\logic_detail\belt.cpp">
