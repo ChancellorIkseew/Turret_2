@@ -31,10 +31,12 @@ void Camera::update(const PixelCoord windowSize, const uint64_t frameDelayNs) {
 
 void Camera::moveByMouse(const Input& input) {
     if (input.jactive(MidMB))
-        movingStartMouseCoord = fromScreenToMap(input.getMouseCoord());
+        movingStartMouseCoord = input.getMouseCoord();
     else if (input.active(MidMB)) {
-        const PixelCoord delta = movingStartMouseCoord - fromScreenToMap(input.getMouseCoord());
-        targetCenter += delta;
+        const PixelCoord mouseScreenCoord = input.getMouseCoord();
+        const PixelCoord screenDelta = movingStartMouseCoord - mouseScreenCoord;
+        targetCenter += screenDelta / mapScale;
+        movingStartMouseCoord = mouseScreenCoord;
     }
 }
 
