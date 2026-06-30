@@ -66,17 +66,19 @@ void MainWindow::pollEvents() {
             break;}
         case SDL_EVENT_WINDOW_FOCUS_LOST:
             lostFocus = true;
+            focused = false;
             break;
         case SDL_EVENT_WINDOW_FOCUS_GAINED:
             gainedFocus = true;
+            focused = true;
             break;
         default:
             input.update(event);
             break;
         }
     }
-    if (lostFocus && gainedFocus)
-        lostFocus = gainedFocus = false;
+    lostFocus = lostFocus && !focused;
+    gainedFocus = gainedFocus && focused;
 }
 
 uint64_t MainWindow::getTimeMs() const {

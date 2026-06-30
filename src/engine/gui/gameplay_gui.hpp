@@ -20,7 +20,7 @@ public:
     void callback() final {
         buildTools->update(engine);
         if (input.jactive(Pause) && !mainCanvas.hasOverlay())
-            engine.getSession().setPaused(!engine.getSession().isPaused(), engine);
+            engine.getSession().setPaused(!engine.getSession().isPausedManually(), engine);
         if (input.jactive(Escape) && !mainCanvas.hasOverlay())
             return GUI::addToOverlay(frontend::initMenu(engine));
         GUI::callback();

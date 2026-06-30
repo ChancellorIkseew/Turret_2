@@ -18,7 +18,7 @@
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
     camera(world->getMap().getSize(), Settings::gameplay.cameraInertia), world(std::move(world)), gui(std::move(gui)),
-    worldDrawer(assets), paused(paused), timeCount(0, 10800), builtInScripts(assets, *this->world) {
+    worldDrawer(assets), pausedManually(paused), timeCount(0, 10800), builtInScripts(assets, *this->world) {
     prepare(assets.getPresets());
 }
 GameSession::~GameSession() = default;
@@ -70,9 +70,10 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     mainWindow.pollEvents();
     gui->callback();
-    playerController.update(mainWindow.getInput(), camera, paused || gui->overlapsWorld(), world->getMobs().getSoa(),
+    const bool paused = pausedManually || gui->overlapsWorld() || (Settings::gameplay.pauseInBackground && !mainWindow.isFocused());
+    playerController.update(mainWindow.getInput(), camera, paused, world->getMobs().getSoa(),
         world->getBlocks().getMeta().getTurrets().getSoa(), presets);
-    if (!paused && !gui->overlapsWorld()) {
+    if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
             updateSimulation(presets);
         }
@@ -107,18 +108,13 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
 }
 
 void GameSession::setPaused(const bool flag, Engine& engine) {
-    paused = flag;
+    pausedManually = flag;
     auto& audio = engine.getAssets().getAudio();
-    if (paused) audio.pauseWorldSounds();
-    else        audio.resumeWorldSounds();
+    if (pausedManually) audio.pauseWorldSounds();
+    else                audio.resumeWorldSounds();
 }
 
-void GameSession::onLostFocus(Engine& engine) {
-    if (Settings::gameplay.pauseInBackground && !paused) {
-        backgroundPause = true;
-        setPaused(true, engine);
-    }
-        
+void GameSession::onLostFocus(Engine& engine) { 
     if (Settings::audio.muteInBackground) {
         engine.getAssets().getAudio().setMasterVolume(0.f);
         engine.getAssets().getAudio().updateVolume();
@@ -126,10 +122,6 @@ void GameSession::onLostFocus(Engine& engine) {
 }
 
 void GameSession::onGainedFocus(Engine& engine) {
-    if (Settings::gameplay.pauseInBackground && backgroundPause) {
-        backgroundPause = false;
-        setPaused(false, engine);
-    }
     if (Settings::audio.muteInBackground) {
         engine.getAssets().getAudio().setMasterVolume(static_cast<float>(Settings::audio.master) / 100.f);
         engine.getAssets().getAudio().updateVolume();

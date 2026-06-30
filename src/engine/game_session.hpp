@@ -23,7 +23,7 @@ class GameSession {
 
     TimeCount timeCount;
     int tickSpeed = 1;
-    bool paused, open = true, backgroundPause = false;
+    bool pausedManually, open = true;
 public:
     GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused);
     ~GameSession();
@@ -39,7 +39,7 @@ public:
     void setPaused(const bool flag, Engine& engine);
     void setTickSpeed(const int ticksInFrame) { tickSpeed = ticksInFrame; }
     bool isOpen() const { return open; }
-    bool isPaused() const { return paused; }
+    bool isPausedManually() const { return pausedManually; }
     int getTickSpeed() const { return tickSpeed; }
     const TimeCount& getTimeCount() { return timeCount; }
     void startNewWave() { timeCount.startWave(); }

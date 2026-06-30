@@ -58,7 +58,7 @@ public:
     }
 
     void updatePlayback() {
-        const bool paused = engine.getSession().isPaused();
+        const bool paused = engine.getSession().isPausedManually();
         const auto tickSpeed = paused ? 0 : engine.getSession().getTickSpeed();
         playback->resetTarget();
         switch (tickSpeed) {
