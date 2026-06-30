@@ -1,0 +1,14 @@
+#visual
+texture=laser_turret
+origin=9.5|14.0
+size=19|25
+shadow_offset=1.5
+shot_sound=autocannon_shot
+#logic
+reload=0
+range=310
+recoil=0
+rotation_speed=0.08
+shooting_ai=basic
+shell=autocannon_shell
+barrels=0|16
