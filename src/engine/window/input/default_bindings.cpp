@@ -21,6 +21,7 @@ std::unordered_map<std::string, Binding> Controls::bindings = {
     {Pipette, Binding(SDL_SCANCODE_Q, InputType::keyboard)},
     {Demolish, Binding(SDL_BUTTON_RIGHT, InputType::mouse)},
     {Control_unit, Binding(SDL_SCANCODE_V, InputType::keyboard)},
+    {Drag_camera, Binding(SDL_BUTTON_MIDDLE, InputType::mouse)},
 
     {Move_up, Binding(SDL_SCANCODE_W, InputType::keyboard)},
     {Move_left, Binding(SDL_SCANCODE_A, InputType::keyboard)},

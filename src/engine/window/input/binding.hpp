@@ -21,6 +21,7 @@ inline constexpr cString Demolish("Demolish");
 inline constexpr cString Rotate_building("Rotate_building");
 inline constexpr cString Pipette("Pipette");
 inline constexpr cString Control_unit("Control_unit");
+inline constexpr cString Drag_camera("Drag_camera");
 
 inline constexpr cString Move_up("Move_up");
 inline constexpr cString Move_left("Move_left");

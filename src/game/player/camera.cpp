@@ -34,8 +34,7 @@ void Camera::moveByMouse(const Input& input) {
         movingStartMouseCoord = input.getMouseCoord();
     else if (input.active(MidMB)) {
         const PixelCoord mouseScreenCoord = input.getMouseCoord();
-        const PixelCoord screenDelta = movingStartMouseCoord - mouseScreenCoord;
-        targetCenter += screenDelta / mapScale;
+        targetCenter += (movingStartMouseCoord - mouseScreenCoord) / mapScale;
         movingStartMouseCoord = mouseScreenCoord;
     }
 }
