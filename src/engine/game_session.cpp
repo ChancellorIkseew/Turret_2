@@ -32,6 +32,7 @@ void GameSession::prepare(const Presets& presets) {
     // temporary for alpha-test
     const TileCoord corePosition = world->getMap().getSize() / 2;
     builtInScripts.placeBlock(presets.getBlockID("core"), corePosition, playerTeamID, BlockRot::up);
+    camera.teleport(t1::tileCenter(corePosition));
 }
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {

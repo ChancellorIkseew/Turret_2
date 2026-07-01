@@ -24,6 +24,7 @@ public:
     void moveByMouse(const Input& input);
     void scale(const Input& input);
     void setTargetCenter(const PixelCoord position) { targetCenter = position; }
+    void teleport(const PixelCoord position) { realCenter = targetCenter = position; }
     void toggleInertia(const bool flag) { inertia = flag; }
 
     ///@brief applies correction for building max size
