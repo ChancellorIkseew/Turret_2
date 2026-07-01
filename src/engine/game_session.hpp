@@ -44,7 +44,7 @@ public:
     bool isPausedManually() const { return pausedManually; }
     GameMode getGameMode() const { return gameMode; }
     int getTickSpeed() const { return tickSpeed; }
-    const TimeCount& getTimeCount() { return timeCount; }
+    const TimeCount& getTimeCount() const { return timeCount; }
     void startNewWave() { timeCount.startWave(); }
     BuiltInScripts& getBuiltInScripts() { return builtInScripts; }
 private:

@@ -48,11 +48,11 @@ public:
 
     void callback(UIContext& context) final {
         Container::callback(context);
+        constexpr uint64_t DEFAULT_FPS_TPS = 60;
         const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
-        const auto fps = engine.getMainWindow().getFPS();
         const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
         currentWave->setText(std::to_string(waveCount));
-        timeToWave->setText(util::time::timerFormat(ticksToWave / fps));
+        timeToWave->setText(util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS));
         updatePlayback();
         markDirty();
     }
