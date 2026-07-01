@@ -15,7 +15,7 @@ public:
         bool muteInBackground;
     } audio;
     static struct _Display {
-        uint64_t FPS;
+        uint64_t fps;
         bool vSync;
         bool fullscreen;
     } display;

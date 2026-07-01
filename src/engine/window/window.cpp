@@ -38,9 +38,9 @@ MainWindow::MainWindow(const std::string& title, const PixelCoord size) :
     loadIcon(sdlWindow);
 }
 
-void MainWindow::setFPS(const uint64_t FPS) {
-    this->FPS = FPS;
-    requiredDelayNs = NS_PER_SECOND / FPS;
+void MainWindow::setFPS(const uint64_t fps) {
+    this->fps = fps;
+    requiredDelayNs = NS_PER_SECOND / fps;
 }
 
 void MainWindow::setFullscreen(const bool flag) {
