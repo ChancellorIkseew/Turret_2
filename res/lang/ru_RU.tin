@@ -24,6 +24,7 @@ Start game=Начать игру
 Width=Ширина
 camera inertia=инерция камеры
 custom cursor=изменённый курсор
+enemies remaining :=противников осталось :
 fullscreen=полный экран
 GUI scale=масштаб интерфейса
 start wave=запустить волну

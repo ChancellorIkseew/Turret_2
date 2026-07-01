@@ -12,10 +12,22 @@
 constexpr Point BTN_SIZE(120.0f, 20.0f);
 constexpr Point ICON_SIZE(20, 20);
 
+static int countEnemies(GameSession& session) {
+    const auto& teamIDs = session.getWorld().getMobs().getSoa().teamID;
+    const TeamID playerTeamID = session.getPlayerController().getPlayerTeamID();
+    int enemiesCount = 0;
+    for (const TeamID teamID : teamIDs) {
+        if (teamID != playerTeamID)
+            ++enemiesCount;
+    }
+    return enemiesCount;
+}
+
 class FrTimer : public Container {
     Engine& engine;
     Label* currentWave;
     Label* timeToWave;
+    Label* enemiesCount;
     Selector* playback;
     IconButton* pause;
     IconButton* x1;
@@ -44,15 +56,20 @@ public:
         auto waveIn = addNode(new Layout(Orientation::horizontal));
         waveIn->addNode(new Label("starts in :"));
         timeToWave = waveIn->addNode(new Label("", false));
-    }
 
+        auto enemiesRemaining = addNode(new Layout(Orientation::horizontal));
+        enemiesRemaining->addNode(new Label("enemies remaining :"));
+        enemiesCount = enemiesRemaining->addNode(new Label("", false));
+    }
+private:
     void callback(UIContext& context) final {
         Container::callback(context);
         constexpr uint64_t DEFAULT_FPS_TPS = 60;
         const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
         const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
-        currentWave->setText(std::to_string(waveCount));
+        currentWave->setText(std::format("{}",waveCount));
         timeToWave->setText(util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS));
+        enemiesCount->setText(std::format("{}", countEnemies(engine.getSession())));
         updatePlayback();
         markDirty();
     }
