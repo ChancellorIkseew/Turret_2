@@ -45,7 +45,9 @@ std::unique_ptr<GameSession> Engine::createSession() {
         return nullptr;
     }
     const bool paused = command == EngineCommand::main_menu ? false : Settings::gameplay.pauseOnWorldOpen;
-    return std::make_unique<GameSession>(std::move(world), createGUI(command, *this), assets, paused);
+    const bool survival = command == EngineCommand::gameplay_new_world || command == EngineCommand::gameplay_load_world;
+    const GameMode gameMode = survival ? GameMode::survival : GameMode::sandbox;
+    return std::make_unique<GameSession>(std::move(world), createGUI(command, *this), assets, paused, gameMode);
 }
 
 void Engine::run() {

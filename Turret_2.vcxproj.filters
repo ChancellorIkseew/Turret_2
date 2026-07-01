@@ -722,5 +722,8 @@
     <ClCompile Include="src\game\frontend\fr_gameplay.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\frontend\fr_game_over.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

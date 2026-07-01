@@ -16,9 +16,10 @@
 #include "game/world_drawer/particles_drawer.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
-GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused) :
+GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets,
+    const bool paused, const GameMode gameMode) :
     camera(world->getMap().getSize(), Settings::gameplay.cameraInertia), world(std::move(world)), gui(std::move(gui)),
-    worldDrawer(assets), pausedManually(paused), timeCount(0, 10800), builtInScripts(assets, *this->world) {
+    worldDrawer(assets), pausedManually(paused), timeCount(0, 10800), builtInScripts(assets, *this->world), gameMode(gameMode) {
     prepare(assets.getPresets());
 }
 GameSession::~GameSession() = default;
@@ -29,11 +30,11 @@ void GameSession::prepare(const Presets& presets) {
     playerController.setPlayerTeamID(playerTeam->getID());
     TeamID playerTeamID = playerTeam->getID();
     // temporary for alpha-test
-    for (int i = 0; i < 10; ++i)
-        builtInScripts.spawnMob(presets.getMobID("shuttle"), PixelCoord(1600, 1600), playerTeamID);
+    const TileCoord corePosition = world->getMap().getSize() / 2;
+    builtInScripts.placeBlock(presets.getBlockID("core"), corePosition, playerTeamID, BlockRot::up);
 }
 
-void GameSession::updateSimulation(const Presets& presets) {
+void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto& blocks    = world->getBlocks();
     auto& chunks    = world->getChunks();
     auto& mobs      = world->getMobs();
@@ -59,7 +60,7 @@ void GameSession::updateSimulation(const Presets& presets) {
     mobs::cleanupMobs(mobs, presets);
     blocks.getMeta().cleanUp();
     timeCount.update();
-    builtInScripts.execute(timeCount);
+    builtInScripts.execute(engine, timeCount);
 }
 
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
@@ -76,7 +77,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
             world->getBlocks().getMeta().getTurrets().getSoa(), presets);
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
-            updateSimulation(presets);
+            updateSimulation(presets, engine);
         }
     }
     scriptsHandler.execute();

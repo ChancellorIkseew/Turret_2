@@ -4,6 +4,7 @@
 #include "game/common/physics_base.hpp"
 
 class Assets;
+class Engine;
 class TimeCount;
 class World;
 
@@ -13,7 +14,7 @@ class BuiltInScripts {
 public:
     BuiltInScripts(const Assets& assets, World& world) : assets(assets), world(world) { }
 
-    void execute(const TimeCount& timeCount);
+    void execute(Engine& engine, const TimeCount& timeCount);
     void spawnWave(const uint32_t wavenumber);
     void targetEnemies();
     void respawnShuttle();

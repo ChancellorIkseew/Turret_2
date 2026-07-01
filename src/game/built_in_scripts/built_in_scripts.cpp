@@ -2,8 +2,11 @@
 //
 #include <random>
 #include "engine/assets/assets.hpp"
+#include "engine/engine.hpp"
 #include "engine/game_session.hpp"
+#include "engine/gui/gui.hpp"
 #include "game/blocks/make_block.hpp"
+#include "game/frontend/frontend.hpp"
 
 static PixelCoord randomMapBorderCoord(std::mt19937& gen, const TileCoord mapSize) {
     using IntRand = std::uniform_int_distribution<int>;
@@ -19,11 +22,15 @@ static PixelCoord randomMapBorderCoord(std::mt19937& gen, const TileCoord mapSiz
     }
 }
 
-void BuiltInScripts::execute(const TimeCount& timeCount) {
+void BuiltInScripts::execute(Engine& engine, const TimeCount& timeCount) {
     if (timeCount.isWaveJustChanged())
         spawnWave(timeCount.getWaveCount());
     targetEnemies();
     respawnShuttle();
+    if (engine.getSession().getGameMode() == GameMode::survival) {
+        if (!world.getBlocks().getMeta().getCore())
+            engine.getGUI().addToOverlay(frontend::initGameOver(engine));
+    }
 }
 
 void BuiltInScripts::targetEnemies() {

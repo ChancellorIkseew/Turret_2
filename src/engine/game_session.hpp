@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "engine/audio/sound_queue.hpp"
+#include "engine/engine_command.hpp"
 #include "game/built_in_scripts/built_in_scripts.hpp"
 #include "game/player/camera.hpp"
 #include "game/player/player_controller.hpp"
@@ -24,8 +25,9 @@ class GameSession {
     TimeCount timeCount;
     int tickSpeed = 1;
     bool pausedManually, open = true;
+    GameMode gameMode;
 public:
-    GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused);
+    GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets, const bool paused, const GameMode gameMode);
     ~GameSession();
 
     void update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler);
@@ -40,13 +42,14 @@ public:
     void setTickSpeed(const int ticksInFrame) { tickSpeed = ticksInFrame; }
     bool isOpen() const { return open; }
     bool isPausedManually() const { return pausedManually; }
+    GameMode getGameMode() const { return gameMode; }
     int getTickSpeed() const { return tickSpeed; }
     const TimeCount& getTimeCount() { return timeCount; }
     void startNewWave() { timeCount.startWave(); }
     BuiltInScripts& getBuiltInScripts() { return builtInScripts; }
 private:
     void prepare(const Presets& presets);
-    void updateSimulation(const Presets& presets);
+    void updateSimulation(const Presets& presets, Engine& engine);
     void onLostFocus(Engine& engine);
     void onGainedFocus(Engine& engine);
     t1_disable_copy_and_move(GameSession)
