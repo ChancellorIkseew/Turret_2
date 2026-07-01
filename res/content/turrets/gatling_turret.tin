@@ -6,7 +6,7 @@ shadow_offset=1.5
 shot_sound=autocannon_shot
 #logic
 reload=4
-range=310
+range=270
 recoil=0.5
 rotation_speed=0.03
 shooting_ai=basic
