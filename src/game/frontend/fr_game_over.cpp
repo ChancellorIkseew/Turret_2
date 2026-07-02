@@ -12,7 +12,7 @@ constexpr uint64_t DEFAULT_FPS_TPS = 60;
 static std::unique_ptr<Layout> initStatistics(GameSession& session) {
     const TimeCount& timeCount = session.getTimeCount();
     const uint64_t secondsPlayed = timeCount.getTickCount() / DEFAULT_FPS_TPS;
-    const uint32_t wavesDefeated = std::min(0U, timeCount.getWaveCount() - 1U);
+    const int wavesDefeated = std::max(0, static_cast<int>(timeCount.getWaveCount()) - 1);
     //
     auto main = std::make_unique<Layout>(Orientation::horizontal);
     auto keys = main->addNode(new Layout(Orientation::vertical));
