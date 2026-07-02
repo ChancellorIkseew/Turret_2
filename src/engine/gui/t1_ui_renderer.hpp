@@ -7,7 +7,6 @@ struct T1_UITexture : mingui::TextureBridge {
     TextureRect textureRect;
 public:
     T1_UITexture(const TextureRect textureRect) : textureRect(textureRect) {}
-    ~T1_UITexture() final = default;
 };
 
 class T1_UIRenderer : public mingui::RenderBridge {
@@ -15,7 +14,6 @@ class T1_UIRenderer : public mingui::RenderBridge {
     const float scale = 1;
 public:
     T1_UIRenderer(Renderer& renderer) : renderer(renderer) {}
-    ~T1_UIRenderer() final = default;
     //
     void drawRect(mingui::Rect rect) final {
         const PixelCoord position(rect.position.x, rect.position.y);
@@ -25,15 +23,13 @@ public:
         renderer.drawRect(position, size, ORIGIN, ANGLE_RAD, rect.color);
     }
     void drawText(mingui::Text text) final {
-        text::drawString(renderer, text.string, { text.position.x, text.position.y });
+        text::drawString(renderer, text.string, PixelCoord(text.position.x, text.position.y), text.color);
     }
     void drawSprite(mingui::Sprite sprite) final {
         const TextureRect textureRect = static_cast<T1_UITexture*>(sprite.textureBridge)->textureRect;
         const PixelCoord position(sprite.position.x, sprite.position.y);
         const PixelCoord size(sprite.size.x, sprite.size.y);
-        constexpr PixelCoord ORIGIN(0.f, 0.f);
-        constexpr float ANGLE_RAD = 0;
-        renderer.draw(textureRect, position, size, ORIGIN, ANGLE_RAD);
+        renderer.draw(textureRect, position, size);
     }
     //
     void setScale(const float scale) final {

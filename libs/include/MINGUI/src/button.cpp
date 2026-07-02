@@ -4,6 +4,7 @@ MINGUI
 
 void Button::draw(RenderQueue& queue) {
     Clickable::draw(queue);
+    label.setPalette(getPalette()); // temporary. Needs better fix
     label.draw(queue);
 }
 
