@@ -17,8 +17,8 @@ Active assistance is not required at this time. Expect changes regarding this pa
 #### Windows (MSVC, Visual Studio)
 *Requires Visual Studio 2026.
 
-1) The ".sln" and other auxiliary Visual Studio files are already present in this repository. They have relative paths configured for all libraries.
-The libraries themselves are already compiled and located in the "libs" folder according to the specified paths. To open the project, simply run "Turret_2.sln".
+1) The ".slnx" and other auxiliary Visual Studio files are already present in this repository. They have relative paths configured for all libraries.
+The libraries themselves are already compiled and located in the "libs" folder according to the specified paths. To open the project, simply run "Turret_2.slnx".
 2) Start the project build (green triangle labeled "Local Windows Debugger"). A "build" folder will appear, containing "Release_win_x64"/"Debug_win_x64" depending on the build settings. At this point, Visual Studio will issue an error message regarding missing dll files.
 3) Copy the "res" folder and ".dll" files from "libs/MSVC_dll" into the "Release_win_x64"/"Debug_win_x64" folder.
 4) The project is built. You can run the "Turret_2.exe" executable file. It should work.
