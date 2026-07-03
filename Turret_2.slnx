@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Turret_2.vcxproj" Id="3e87feed-28a9-437d-9c68-f8e1246f4b64" />
+</Solution>
