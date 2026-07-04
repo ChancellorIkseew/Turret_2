@@ -85,6 +85,12 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     mainWindow.clear();
     camera.update(mainWindow.getSize(), mainWindow.getRealFrameDelayNs());
+    //
+    renderer.setShaderProgram(*shaders.lightingShader);
+    renderer.setView(1.f, PixelCoord(0.f, 0.f));
+    drawParticles(camera, renderer, world->getParticles().getSoa());
+    shells::drawShellsLighting(world->getShells().getSoa(), presets, camera, renderer);
+    //
     renderer.setShaderProgram(*shaders.baseShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation());
     worldDrawer.draw(camera, renderer, *world, presets, engine.getAssets(), timeCount.getTickCount());
@@ -96,11 +102,6 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     renderer.setShaderProgram(*shaders.shieldShader);
     mobs::drawMobShields(world->getMobs().getSoa(), presets, camera, renderer, timeCount.getTickCount());
-    //
-    renderer.setShaderProgram(*shaders.lightingShader);
-    renderer.setView(1.f, PixelCoord(0.f, 0.f));
-    drawParticles(camera, renderer, world->getParticles().getSoa());
-    shells::drawShellsLighting(world->getShells().getSoa(), presets, camera, renderer);
     //
     renderer.setShaderProgram(*shaders.uiShader);
     gui->draw(renderer, engine.getAssets().getAtlas());
