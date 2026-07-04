@@ -1,6 +1,6 @@
 #include "particles_system.hpp"
 //
-#include "particles_pool.hpp"
+#include "game/entities/particles_pool.hpp"
 
 constexpr uint32_t COLOR_FADING = 0x00'00'00'08;
 

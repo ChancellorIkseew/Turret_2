@@ -3,10 +3,10 @@
 #include "game/common/teams_pool.hpp"
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mobs_pool.hpp"
+#include "game/entities/particles_pool.hpp"
 #include "game/entities/shells_pool.hpp"
-#include "game/particles/particles_pool.hpp"
-#include "world_map.hpp"
 #include "game/frontend/build_tools/blueprint.hpp"
+#include "world_map.hpp"
 
 class World {
     BlockMap blocks;

@@ -112,6 +112,7 @@
     <ClInclude Include="src\game\common\teams_pool.hpp" />
     <ClInclude Include="src\game\entities\chunk_grid.hpp" />
     <ClInclude Include="src\game\entities\mobs_pool.hpp" />
+    <ClInclude Include="src\game\entities\particles_pool.hpp" />
     <ClInclude Include="src\game\entities\shells_pool.hpp" />
     <ClInclude Include="src\game\entities\turrets_pool.hpp" />
     <ClInclude Include="src\game\events\events.hpp" />
@@ -125,14 +126,13 @@
     <ClInclude Include="src\game\generation\perlin_noise.hpp" />
     <ClInclude Include="src\game\generation\squirell_noise.hpp" />
     <ClInclude Include="src\game\generation\spot_generator.hpp" />
-    <ClInclude Include="src\game\particles\particles_pool.hpp" />
-    <ClInclude Include="src\game\particles\particles_system.hpp" />
     <ClInclude Include="src\game\player\camera.hpp" />
     <ClInclude Include="src\game\player\player_controller.hpp" />
     <ClInclude Include="src\game\script_libs\script_libs.hpp" />
     <ClInclude Include="src\game\systems\ai_system.hpp" />
     <ClInclude Include="src\game\systems\construction_system.hpp" />
     <ClInclude Include="src\game\systems\mobs_system.hpp" />
+    <ClInclude Include="src\game\systems\particles_system.hpp" />
     <ClInclude Include="src\game\systems\shells_system.hpp" />
     <ClInclude Include="src\game\systems\turrets_system.hpp" />
     <ClInclude Include="src\game\systems\turret_components.hpp" />
@@ -211,6 +211,7 @@
     <ClCompile Include="src\game\common\mob_ai.cpp" />
     <ClCompile Include="src\game\entities\chunk_grid.cpp" />
     <ClCompile Include="src\game\entities\mobs_pool.cpp" />
+    <ClCompile Include="src\game\entities\particles_pool.cpp" />
     <ClCompile Include="src\game\entities\shells_pool.cpp" />
     <ClCompile Include="src\game\entities\turrets_pool.cpp" />
     <ClCompile Include="src\game\frontend\build_tools\blueprint.cpp" />
@@ -234,8 +235,6 @@
     <ClCompile Include="src\game\frontend\fr_world_properties.cpp" />
     <ClCompile Include="src\game\frontend\fr_world_saving.cpp" />
     <ClCompile Include="src\game\generation\generation.cpp" />
-    <ClCompile Include="src\game\particles\particles_pool.cpp" />
-    <ClCompile Include="src\game\particles\particles_system.cpp" />
     <ClCompile Include="src\game\player\camera.cpp" />
     <ClCompile Include="src\game\player\player_controller.cpp" />
     <ClCompile Include="src\game\script_libs\lib_input.cpp" />
@@ -245,6 +244,7 @@
     <ClCompile Include="src\game\systems\construction_system.cpp" />
     <ClCompile Include="src\game\systems\mobs_system.cpp" />
     <ClCompile Include="src\game\systems\moving_ai_system.cpp" />
+    <ClCompile Include="src\game\systems\particles_system.cpp" />
     <ClCompile Include="src\game\systems\shells_system.cpp" />
     <ClCompile Include="src\game\systems\shooting_ai_system.cpp" />
     <ClCompile Include="src\game\systems\turrets_system.cpp" />

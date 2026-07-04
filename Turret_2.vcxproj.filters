@@ -183,13 +183,7 @@
     <ClInclude Include="src\engine\assets\preset_defs.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\particles\particles_pool.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\world\world.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\particles\particles_system.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\world_drawer\particles_drawer.hpp">
@@ -402,6 +396,12 @@
     <ClInclude Include="src\game\systems\construction_system.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\systems\particles_system.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\entities\particles_pool.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\render\packer\packer.cpp">
@@ -566,12 +566,6 @@
     <ClCompile Include="src\engine\game_session.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\particles\particles_pool.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\particles\particles_system.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\io\parser\jtin_parser.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -723,6 +717,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\frontend\fr_game_over.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\systems\particles_system.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\entities\particles_pool.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include "engine/render/renderer.hpp"
-#include "game/particles/particles_pool.hpp"
+#include "game/entities/particles_pool.hpp"
 #include "game/player/camera.hpp"
 
 constexpr PixelCoord PARTICLE_SIZE(15.f, 15.f);
