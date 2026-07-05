@@ -133,7 +133,7 @@ void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, R
     }
 }
 
-void mobs::drawMobShields(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
+void mobs::drawMobShields(const MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.shieldHealth[i] < 1 || !camera.contains(t1::tile(soa.position[i])))
@@ -143,5 +143,20 @@ void mobs::drawMobShields(MobSoA& soa, const Presets& presets, const Camera& cam
         PixelCoord origin(preset.shieldRadius, preset.shieldRadius);
         PixelCoord size = origin * 2.f;
         renderer.draw(RECT, soa.position[i], size, origin, 0.f, 0xFF'FF'FF'00);
+    }
+}
+
+void mobs::drawEnemyMarkers(const TeamID playerTeamID, const MobSoA& soa, const Camera& camera, Renderer& renderer) {
+    const size_t mobCount = soa.mobCount;
+    const PixelCoord cameraCenter = camera.getRealCenter();
+    const PixelCoord windowCenter = camera.fromMapToScreen(cameraCenter);
+
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (soa.teamID[i] == playerTeamID)
+            continue;
+        constexpr PixelCoord MARKER_SIZE(5.f, 20.f);
+        constexpr PixelCoord MARKER_ORIGIN(2.5f, -100.f);
+        float angle = t1::atan(cameraCenter - soa.position[i]);
+        renderer.drawRect(windowCenter, MARKER_SIZE, MARKER_ORIGIN, t1::PI - angle, 0x84'34'34'FF);
     }
 }

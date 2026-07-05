@@ -103,6 +103,8 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     mobs::drawMobShields(world->getMobs().getSoa(), presets, camera, renderer, timeCount.getTickCount());
     //
     renderer.setShaderProgram(*shaders.uiShader);
+    renderer.setView(1.f, PixelCoord(0.f, 0.f));
+    mobs::drawEnemyMarkers(playerController.getPlayerTeamID(), world->getMobs().getSoa(), camera, renderer);
     gui->draw(renderer, engine.getAssets().getAtlas());
     mainWindow.render();
 
