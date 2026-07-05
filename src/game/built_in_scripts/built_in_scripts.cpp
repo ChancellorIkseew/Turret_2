@@ -23,8 +23,10 @@ static PixelCoord randomMapBorderCoord(std::mt19937& gen, const TileCoord mapSiz
 }
 
 void BuiltInScripts::execute(Engine& engine, const TimeCount& timeCount) {
-    if (timeCount.isWaveJustChanged())
+    if (timeCount.isWaveJustChanged()) {
+        engine.getAssets().getAudio().playUI("wave_start");
         spawnWave(timeCount.getWaveCount());
+    } 
     targetEnemies();
     respawnShuttle();
     if (engine.getSession().getGameMode() == GameMode::survival) {
