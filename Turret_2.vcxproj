@@ -94,6 +94,7 @@
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
     <ClInclude Include="src\engine\settings\settings.hpp" />
     <ClInclude Include="src\engine\time_count.hpp" />
+    <ClInclude Include="src\engine\util\fast_rand.hpp" />
     <ClInclude Include="src\engine\util\string_util.hpp" />
     <ClInclude Include="src\engine\util\time.hpp" />
     <ClInclude Include="src\engine\window\cursor.hpp" />

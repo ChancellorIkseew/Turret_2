@@ -4,6 +4,7 @@
 #include "engine/assets/presets.hpp"
 #include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"
+#include "engine/util/fast_rand.hpp"
 #include "game/player/camera.hpp"
 #include "game/world/world.hpp"
 
@@ -69,21 +70,26 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
     for (size_t i = 0; i < shellsCount; ++i) {
         if (soa.restLifeTime[i] > 0 && soa.restDamage[i] > 0)
             continue;
-        if (camera.contains(t1::tile(soa.position[i]))) {
-            const ShellPreset& preset = presets.getShell(soa.preset[i]);
-            if (preset.visual.size.y > 6.f) {
-                sounds.pushSound("shell_explosion", soa.position[i]);
-            }
-            constexpr float SPEED = 0.8f;
-            const float radius = preset.explosion.radius;
-            const PixelCoord size(radius, radius);
-            const TickCount lifeTime = static_cast<TickCount>(radius / SPEED);
-            for (int j = 0; j < 8; ++j) {
-                const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
-                particlesPool.addParticle(soa.position[i], size, angle, SPEED, 0xFF'A5'00'FF, 0, lifeTime, PType::light);
-                constexpr PixelCoord SHARD_SIZE(1.0f, 3.f);
-                particlesPool.addParticle(soa.position[i], SHARD_SIZE, angle, SPEED, 0xFF'A5'00'FF, 0 , lifeTime * 2, PType::shard);
-            }
+        if (!camera.contains(t1::tile(soa.position[i])))
+            continue;
+        const ShellPreset& preset = presets.getShell(soa.preset[i]);
+        if (preset.visual.size.y > 6.f) {
+            sounds.pushSound("shell_explosion", soa.position[i]);
+        }
+        constexpr float SPEED = 0.8f;
+        const float radius = preset.explosion.radius;
+        const PixelCoord size(radius, radius);
+        const TickCount lifeTime = static_cast<TickCount>(radius / SPEED);
+        for (int j = 0; j < 8; ++j) {
+            const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
+            particlesPool.addParticle(soa.position[i], size, angle, SPEED, 0xFF'A5'00'FF, 0, lifeTime, PType::light);
+        }
+
+        const int shardsCount = preset.explosion.shardsCount;
+        const PixelCoord shardSize(1.0f, preset.visual.size.y);
+        for (int j = 0; j < shardsCount; ++j) {
+            const float angle = util::randAngleRad(static_cast<uint32_t>(j * i));
+            particlesPool.addParticle(soa.position[i], shardSize, angle, SPEED, 0xFF'A5'00'FF, 0, lifeTime * 2, PType::shard);
         }
     }
 }
