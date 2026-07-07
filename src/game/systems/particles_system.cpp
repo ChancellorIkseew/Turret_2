@@ -1,8 +1,7 @@
 #include "particles_system.hpp"
 //
+#include <ranges>
 #include "game/entities/particles_pool.hpp"
-
-constexpr uint32_t COLOR_FADING = 0x00'00'00'08;
 
 static inline void reduceLifeTime(ParticleSoA& soa) {
     for (auto& time : soa.restLifeTime) {
@@ -11,8 +10,8 @@ static inline void reduceLifeTime(ParticleSoA& soa) {
 }
 
 static inline void reduceColor(ParticleSoA& soa) {
-    for (auto& color : soa.color) {
-        color -= COLOR_FADING;
+    for (auto&& [color, colorFading] : std::views::zip(soa.color, soa.colorFading)) {
+        color -= colorFading;
     }
 }
 

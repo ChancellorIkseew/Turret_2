@@ -12,6 +12,7 @@ struct ParticleSoA {
     std::vector<AngleRad> angle;
     std::vector<float> speed;
     std::vector<uint32_t> color;
+    std::vector<uint32_t> colorFading;
     std::vector<TickCount> restLifeTime;
     std::vector<PType> type;
     size_t particleCount = 0;
@@ -34,6 +35,7 @@ public:
         const float angle,
         const float speed,
         const uint32_t color,
+        const uint32_t colorFading,
         const TickCount restLifeTime,
         const PType type);
 };
