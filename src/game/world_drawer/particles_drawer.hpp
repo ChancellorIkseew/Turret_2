@@ -14,6 +14,6 @@ void drawParticles(const Camera& camera, Renderer& renderer, const ParticleSoA& 
 
     for (size_t i = 0; i < particleCount; ++i) {
         if (camera.contains(t1::tile(soa.position[i])))
-            renderer.draw(rect, soa.position[i], PARTICLE_SIZE, PARTICLE_ORIGIN, 0.f, soa.color[i]);
+            renderer.draw(rect, soa.position[i], PARTICLE_SIZE, PARTICLE_ORIGIN, soa.angle[i], soa.color[i]);
     }
 }

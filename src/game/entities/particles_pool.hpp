@@ -3,12 +3,17 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "game/common/physics_base.hpp"
 
+enum class PType : uint8_t { light, smoke, shard };
+
 struct ParticleSoA {
     std::vector<PixelCoord> position;
     std::vector<PixelCoord> facing;
-    std::vector<AngleRad> speed;
+    std::vector<PixelCoord> size;
+    std::vector<AngleRad> angle;
+    std::vector<float> speed;
     std::vector<uint32_t> color;
     std::vector<TickCount> restLifeTime;
+    std::vector<PType> type;
     size_t particleCount = 0;
 };
 
@@ -25,14 +30,10 @@ public:
     void removeParticle(const size_t index);
     void addParticle(
         const PixelCoord position,
-        const PixelCoord facing,
-        const float speed,
-        const uint32_t color,
-        const TickCount restLifeTime);
-    void addParticle(
-        const PixelCoord position,
+        const PixelCoord size,
         const float angle,
         const float speed,
         const uint32_t color,
-        const TickCount restLifeTime);
+        const TickCount restLifeTime,
+        const PType type);
 };

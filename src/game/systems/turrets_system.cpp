@@ -91,7 +91,8 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
         if (camera.contains(t1::tile(position))) {
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;
-            particles.addParticle(position, angle, 0.2f, 0xFF'A5'00'FF, 15);
+            constexpr PixelCoord SIZE(15.f, 15.f);
+            particles.addParticle(position, SIZE, angle, 0.2f, 0xFF'A5'00'FF, 15, PType::light);
             sounds.pushSound(turret.visual.shotSound, position);
         }
         constexpr float MAX_RECOIL = 2.f;
