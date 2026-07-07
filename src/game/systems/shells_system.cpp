@@ -136,11 +136,12 @@ void shells::drawShellsLighting(const ShellSoA& soa, const Presets& presets, con
     constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
     const float scale = camera.getMapScale();
     const PixelCoord translation = camera.getTranslation();
+    constexpr PixelCoord OFFSET(8.f, 16.f);
 
     for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(t1::tile(soa.position[i])))
             continue;
         const auto& visual = presets.getShell(soa.preset[i]).visual;
-        renderer.draw(rect, soa.position[i], visual.size * 8.f, visual.origin * 8.f, t1::PI - soa.angle[i], 0xFF'A5'00'FF);
+        renderer.draw(rect, soa.position[i], visual.size + OFFSET, visual.origin + OFFSET / 2.f, t1::PI - soa.angle[i], 0xFF'A5'00'FF);
     }
 }
