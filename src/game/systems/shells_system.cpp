@@ -81,6 +81,8 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
             for (int j = 0; j < 8; ++j) {
                 const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
                 particlesPool.addParticle(soa.position[i], size, angle, SPEED, 0xFF'A5'00'FF, lifeTime, PType::light);
+                constexpr PixelCoord SHARD_SIZE(1.0f, 3.f);
+                particlesPool.addParticle(soa.position[i], SHARD_SIZE, angle, SPEED, 0xFF'A5'00'FF, lifeTime * 2, PType::shard);
             }
         }
     }

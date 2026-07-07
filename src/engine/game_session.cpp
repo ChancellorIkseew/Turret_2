@@ -88,11 +88,12 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     renderer.setShaderProgram(*shaders.lightingShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation());
-    drawParticles(camera, renderer, world->getParticles().getSoa());
+    drawLightParticles(camera, renderer, world->getParticles().getSoa());
     shells::drawShellsLighting(world->getShells().getSoa(), presets, camera, renderer);
     //
     renderer.setShaderProgram(*shaders.baseShader);
     worldDrawer.draw(camera, renderer, *world, presets, engine.getAssets(), timeCount.getTickCount());
+    drawShardParticles(camera, renderer, world->getParticles().getSoa());
     gui->drawDiegeticElements(renderer);           // temporary update will be related with blueprints
     world->getBlueprints().drawGhosts(renderer, engine);
     renderer.setShaderProgram(*shaders.emergeShader);
