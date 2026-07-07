@@ -2,12 +2,10 @@
 //
 #include <cmath>
 #include "engine/assets/presets.hpp"
+#include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"
-#include "game/blocks/block_map.hpp"
 #include "game/player/camera.hpp"
-#include "game/entities/chunk_grid.hpp"
-#include "game/entities/mobs_pool.hpp"
-#include "game/entities/shells_pool.hpp"
+#include "game/world/world.hpp"
 
 static inline void reduceShellsLifeTime(ShellSoA& soa) {
     for (auto& time : soa.restLifeTime) {
@@ -65,23 +63,41 @@ static inline void hitBlocks(ShellSoA& shells, BlockMap& blocks, const size_t sh
     }
 }
 
-void shells::processShells(ShellSoA& shells, MobSoA& mobs, const ChunkGrid& chunks, BlockMap& blocks) {
+static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool, const Presets& presets,
+    SoundQueue& sounds, const Camera& camera, const size_t shellsCount) {
+    const auto& soa = shellsPool.getSoa();
+    for (size_t i = 0; i < shellsCount; ++i) {
+        if (soa.restLifeTime[i] > 0 && soa.restDamage[i] > 0)
+            continue;
+        if (camera.contains(t1::tile(soa.position[i])) && presets.getShell(soa.preset[i]).visual.size.y > 6.f) {
+            sounds.pushSound("shell_explosion", soa.position[i]);
+        }
+    }
+}
+
+void shells::processShells(World& world, const Presets& presets, SoundQueue& sounds, const Camera& camera) {
+    ShellsPool& shellsPool = world.getShells();
+    ShellSoA& shells = shellsPool.getSoa();
+    BlockMap& blocks = world.getBlocks();
+    const ChunkGrid& chunks = world.getChunks();
+    MobSoA& mobs = world.getMobs().getSoa();
+    ParticlesPool& particlesPool = world.getParticles();
+
     const size_t shellCount = shells.shellCount;
     reduceShellsLifeTime(shells);
     moveShells(shells, shellCount);
     hitMobs(shells, mobs, shellCount, chunks);
     hitBlocks(shells, blocks, shellCount);
+    finalizeShells(shellsPool, particlesPool, presets, sounds, camera, shellCount);
 }
 
-void shells::cleanupShells(ShellsPool& shellsPool, const Presets& presets/*, Explosions& explosions*/) {
+void shells::cleanupShells(ShellsPool& shellsPool, const Presets& presets) {
     const auto& soa = shellsPool.getSoa();
     // Reverse itaretion to avoid bugs with "swap and pop".
     for (size_t i = soa.shellCount; i > 0; --i) {
         size_t index = i - 1;
         if (soa.restLifeTime[index] > 0 && soa.restDamage[index] > 0)
             continue;
-        //if (soa.presets->explosion.damage != 0)
-        //     explosions.push(soa.presets->explosion);
         shellsPool.removeShell(index);
     }
 }
