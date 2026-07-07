@@ -146,13 +146,22 @@ void mobs::drawMobShields(const MobSoA& soa, const Presets& presets, const Camer
     }
 }
 
+static std::optional<size_t> findPlayerControlled(const std::vector<ShootingData>& data) {
+    for (size_t i = 0; i < data.size(); ++i) {
+        if (data[i].aiType == ShootingAI::player_controlled)
+            return i;
+    }
+    return std::nullopt;
+}
+
 void mobs::drawEnemyMarkers(const TeamID playerTeamID, const MobSoA& soa, const Camera& camera, Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
-    const PixelCoord cameraCenter = camera.getRealCenter();
+    const auto optPlayerMob = findPlayerControlled(soa.shootingData);
+    const PixelCoord cameraCenter = optPlayerMob ? soa.position[optPlayerMob.value()] : camera.getRealCenter();
     const PixelCoord windowCenter = camera.fromMapToScreen(cameraCenter);
 
     for (size_t i = 0; i < mobCount; ++i) {
-        if (soa.teamID[i] == playerTeamID)
+        if (soa.teamID[i] == playerTeamID || t1::areCloserCircle(soa.position[i], cameraCenter, 100.f))
             continue;
         constexpr PixelCoord MARKER_SIZE(5.f, 20.f);
         constexpr PixelCoord MARKER_ORIGIN(2.5f, -100.f);

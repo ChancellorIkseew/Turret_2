@@ -7,5 +7,5 @@ speed=4.0
 damage=1
 life_time=70
 explosion_damage=0
-explosion_radius=0
-explosion_fading=0.0
+explosion_radius=5.0
+shards_count=5

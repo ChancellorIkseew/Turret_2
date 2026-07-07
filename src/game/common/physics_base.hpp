@@ -11,8 +11,8 @@ using TickCount = uint16_t;
 
 struct Explosion {
     Health damage;
-    int radius;
-    float fading;
+    float radius;
+    int8_t shardsCount;
 };
 
 class RectHitbox {

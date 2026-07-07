@@ -70,13 +70,17 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         if (soa.restLifeTime[i] > 0 && soa.restDamage[i] > 0)
             continue;
         if (camera.contains(t1::tile(soa.position[i]))) {
-            if (presets.getShell(soa.preset[i]).visual.size.y > 6.f) {
+            const ShellPreset& preset = presets.getShell(soa.preset[i]);
+            if (preset.visual.size.y > 6.f) {
                 sounds.pushSound("shell_explosion", soa.position[i]);
             }
+            constexpr float SPEED = 0.8f;
+            const float radius = preset.explosion.radius;
+            const PixelCoord size(radius, radius);
+            const TickCount lifeTime = static_cast<TickCount>(radius / SPEED);
             for (int j = 0; j < 8; ++j) {
-                constexpr PixelCoord SIZE(15.f, 15.f);
                 const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
-                particlesPool.addParticle(soa.position[i], SIZE, angle, 0.8f, 0xFF'A5'00'FF, 15, PType::light);
+                particlesPool.addParticle(soa.position[i], size, angle, SPEED, 0xFF'A5'00'FF, lifeTime, PType::light);
             }
         }
     }

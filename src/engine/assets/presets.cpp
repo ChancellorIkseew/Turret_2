@@ -96,8 +96,8 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
     };
     Explosion explosion{
         reader.get<Health>("explosion_damage"),
-        reader.get<int>("explosion_radius"),
-        reader.get<float>("explosion_fading")
+        reader.get<float>("explosion_radius"),
+        reader.get<int8_t>("shards_count")
     };
     return ShellPreset{
         reader.get<float>("speed"),
