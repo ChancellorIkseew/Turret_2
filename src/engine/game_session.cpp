@@ -4,16 +4,9 @@
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "engine/settings/settings.hpp"
-#include "game/systems/ai_system.hpp"
-#include "game/systems/construction_system.hpp"
 #include "game/systems/mobs_system.hpp"
-#include "game/systems/particles_system.hpp"
-#include "game/systems/shells_system.hpp"
-#include "game/systems/turrets_system.hpp"
-#include "game/systems/turret_components.hpp"
-#include "game/world/world.hpp"
+#include "game/systems/world_system.hpp"
 #include "game/events/events.hpp"
-#include "game/world_drawer/particles_drawer.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets,
@@ -36,31 +29,8 @@ void GameSession::prepare(const Presets& presets) {
 }
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
-    auto& blocks    = world->getBlocks();
-    auto& chunks    = world->getChunks();
-    auto& mobs      = world->getMobs();
-    auto& shells    = world->getShells();
-    auto& particles = world->getParticles();
-    auto mobTurrets   = fromMobs(mobs.getSoa());
-    auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
     const uint64_t timeMs = engine.getMainWindow().getTimeMs();
-    //
-    chunks.update(mobs.getSoa());
-    updateBlocks(blocks, world->getMap(), presets);
-    shells::processShells(*world, presets, worldSounds, camera);
-    mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
-    ai::updateMovingAI(mobs.getSoa(), presets, playerController, world->getBlueprints());
-    ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
-    ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
-    turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera, timeMs);
-    turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
-    particles::updateParticles(particles);
-    // Build when spans are used and can be spoiled.
-    construction::buildBlueprints(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts);
-    // Clean up only after all processing.
-    shells::cleanupShells(shells, presets);
-    mobs::cleanupMobs(mobs, presets);
-    blocks.getMeta().cleanUp();
+    world::update(*world, camera, presets, timeMs, playerController, worldSounds, builtInScripts);
     timeCount.update();
     builtInScripts.execute(engine, timeCount);
 }
@@ -86,31 +56,13 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     mainWindow.clear();
     camera.update(mainWindow.getSize(), mainWindow.getRealFrameDelayNs());
-    //
-    renderer.setShaderProgram(*shaders.lightingShader);
-    renderer.setView(camera.getMapScale(), camera.getTranslation());
-    drawLightParticles(camera, renderer, world->getParticles().getSoa());
-    //
-    renderer.setShaderProgram(*shaders.baseShader);
-    worldDrawer.draw(camera, renderer, *world, presets, engine.getAssets(), timeCount.getTickCount());
-    drawShardParticles(camera, renderer, world->getParticles().getSoa());
-    gui->drawDiegeticElements(renderer);           // temporary update will be related with blueprints
-    world->getBlueprints().drawGhosts(renderer, engine);
-    renderer.setShaderProgram(*shaders.emergeShader);
-    world->getBlueprints().drawInProgress(renderer, engine); // temporary
-    worldSounds.play(engine.getAssets().getAudio(), camera);
-    //
-    renderer.setShaderProgram(*shaders.shieldShader);
-    mobs::drawMobShields(world->getMobs().getSoa(), presets, camera, renderer, timeCount.getTickCount());
-    renderer.setShaderProgram(*shaders.additiveLightShader);
-    shells::drawShellsLighting(world->getShells().getSoa(), presets, camera, renderer);
-    //
+    world::draw(*world, renderer, worldDrawer, camera, engine.getAssets(), timeCount.getTickCount(), engine);
     renderer.setShaderProgram(*shaders.uiShader);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
     mobs::drawEnemyMarkers(playerController.getPlayerTeamID(), world->getMobs().getSoa(), camera, renderer);
     gui->draw(renderer, engine.getAssets().getAtlas());
     mainWindow.render();
-
+    //
     if (mainWindow.hasLostFocus())   onLostFocus(engine);
     if (mainWindow.hasGainedFocus()) onGainedFocus(engine);
 }
