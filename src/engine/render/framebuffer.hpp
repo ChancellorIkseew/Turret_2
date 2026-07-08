@@ -10,15 +10,15 @@ class LightmapFramebuffer {
     int currentHeight = 0;
 
 public:
-    LightmapFramebuffer() {
-        init(1280, 720);
+    LightmapFramebuffer(const int width, const int height) {
+        init(width, height);
     }
 
     ~LightmapFramebuffer() {
         cleanup();
     }
 
-    void init(int width, int height) {
+    void init(const int width, const int height) {
         currentWidth = width;
         currentHeight = height;
 
@@ -44,7 +44,7 @@ public:
         }
     }
 
-    void resize(int width, int height) {
+    void resize(const int width, const int height) {
         if (width == currentWidth && height == currentHeight)
             return;
         cleanup();

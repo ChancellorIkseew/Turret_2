@@ -24,7 +24,7 @@ Renderer::Renderer(SDL_Window* sdlWindow, const PixelCoord viewportSize) : viewp
     }
 
     batchGeometry = std::make_unique<RenderGeometry>();
-    lightmapFBO = std::make_unique<LightmapFramebuffer>();
+    lightmapFBO = std::make_unique<LightmapFramebuffer>(static_cast<int>(viewportSize.x), static_cast<int>(viewportSize.y));
     setVSyncMode(VSyncMode::adaptive);
 
     glCreateBuffers(1, &uboView);
