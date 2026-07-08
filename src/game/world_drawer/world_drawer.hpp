@@ -21,8 +21,10 @@ public:
     void draw(const Camera& camera, Renderer& renderer, World& world,
         const Presets& presets, const Assets& assets, const uint64_t tickCount) {
         mapDrawer.draw(camera, renderer, world.getMap());
-        blocksDrawer.draw(world.getBlocks(), assets, camera, renderer);
+        //blocksDrawer.draw(world.getBlocks(), assets, camera, renderer);
         entitiesDrawer.draw(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
         // TODO: weatherDrawer.draw();
     }
+
+    BlocksDrawer& getBlocksDrawer() { return blocksDrawer; }
 };

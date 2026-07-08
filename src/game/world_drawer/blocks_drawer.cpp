@@ -5,10 +5,11 @@
 #include "game/player/camera.hpp"
 #include "game/blocks/block_map.hpp"
 
-void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer) {
+void BlocksDrawer::drawShadows(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer) {
     const TileCoord start = camera.getBuildingsStartTile();
     const TileCoord end = camera.getEndTile();
-    const TextureRect shadowTextureRect = assets.getAtlas().at("block_shadow");
+    const TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
+
     cashedTiles.clear();
     itemPositions.clear();
     itemPresetIDs.clear();
@@ -24,8 +25,11 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
         constexpr PixelCoord SHADOW_SIZE(38.f, 38.f);
         constexpr PixelCoord BLENDING_AREA(3.f, 3.f);
         constexpr PixelCoord ORIGIN(0.f, 0.f);
-        renderer.draw(shadowTextureRect, t1::pixel(tile) - BLENDING_AREA, SHADOW_SIZE, ORIGIN, 0.f, 0x00'00'00'40);
+        renderer.draw(rect, t1::pixel(tile) - BLENDING_AREA, SHADOW_SIZE, ORIGIN, 0.f, 0x00'00'00'FF);
     }
+}
+
+void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer) {
     for (const auto& tile : cashedTiles) {
         blocks.at(tile).block->draw(*this, renderer, tile);
     }

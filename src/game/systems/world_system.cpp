@@ -48,13 +48,18 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //
     const Presets& presets = assets.getPresets();
     const Shaders& shaders = assets.getShaders();
+    auto& blocksDrawer = drawer.getBlocksDrawer();
 
     renderer.setShaderProgram(*shaders.lightingShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation());
     drawLightParticles(camera, renderer, world.getParticles().getSoa());
     //
+    renderer.setShaderProgram(*shaders.squareShadowShader);
+    blocksDrawer.drawShadows(world.getBlocks(), assets, camera, renderer);
+    //
     renderer.setShaderProgram(*shaders.baseShader);
     drawer.draw(camera, renderer, world, assets.getPresets(), assets, tickCount);
+    blocksDrawer.draw(world.getBlocks(), assets, camera, renderer);
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
     engine.getGUI().drawDiegeticElements(renderer);           // temporary update will be related with blueprints
     world.getBlueprints().drawGhosts(renderer, engine);

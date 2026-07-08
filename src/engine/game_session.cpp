@@ -62,6 +62,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     mobs::drawEnemyMarkers(playerController.getPlayerTeamID(), world->getMobs().getSoa(), camera, renderer);
     gui->draw(renderer, engine.getAssets().getAtlas());
     mainWindow.render();
+    worldSounds.play(engine.getAssets().getAudio(), camera);
     //
     if (mainWindow.hasLostFocus())   onLostFocus(engine);
     if (mainWindow.hasGainedFocus()) onGainedFocus(engine);

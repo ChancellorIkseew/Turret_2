@@ -16,6 +16,7 @@ class BlocksDrawer {
     std::vector<PixelCoord> itemPositions;
     std::vector<ItemPresetID> itemPresetIDs;
 public:
+    void drawShadows(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer);
     void draw(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer);
     void addItem(ItemPresetID itemPresetID, PixelCoord position) {
         itemPresetIDs.push_back(itemPresetID);
