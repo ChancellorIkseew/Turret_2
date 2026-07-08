@@ -43,6 +43,7 @@ struct TurretPreset {
     TickCount reload;
     float range;
     float recoil;
+    AngleRad spreadRad;
     AngleRad rotationSpeed;
     uint8_t barrelsCount;
     std::array<PixelCoord, 4> barrels;

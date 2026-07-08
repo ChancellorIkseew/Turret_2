@@ -8,6 +8,7 @@ shot_sound=autocannon_shot
 reload=0
 range=310
 recoil=0
+spread_deg=0
 rotation_speed=0.08
 shooting_ai=basic
 shell=autocannon_shell

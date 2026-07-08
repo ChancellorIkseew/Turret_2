@@ -8,6 +8,7 @@ shot_sound=cannon_shot
 reload=10
 range=460
 recoil=0
+spread_deg=2
 rotation_speed=0.02
 shooting_ai=basic
 shell=cannon_shell

@@ -118,10 +118,12 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<float>("shadow_offset"),
         reader.get<std::string>("shot_sound")
     };
+    constexpr float RAD_TO_DEGREE = t1::PI / 180.f;
     return TurretPreset{
         reader.get<TickCount>("reload"),
         reader.get<float>("range"),
         reader.get<float>("recoil"),
+        reader.get<AngleRad>("spread_deg") * RAD_TO_DEGREE,
         reader.get<AngleRad>("rotation_speed"),
         static_cast<uint8_t>(barrelsCount),
         barrels,

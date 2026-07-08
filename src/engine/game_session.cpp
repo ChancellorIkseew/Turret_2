@@ -43,6 +43,7 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     auto& particles = world->getParticles();
     auto mobTurrets   = fromMobs(mobs.getSoa());
     auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
+    const uint64_t timeMs = engine.getMainWindow().getTimeMs();
     //
     chunks.update(mobs.getSoa());
     updateBlocks(blocks, world->getMap(), presets);
@@ -51,8 +52,8 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, world->getBlueprints());
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
-    turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera);
-    turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera);
+    turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera, timeMs);
+    turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     particles::updateParticles(particles);
     // Build when spans are used and can be spoiled.
     construction::buildBlueprints(mobs.getSoa(), presets, world->getBlueprints(), builtInScripts);

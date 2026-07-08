@@ -5,6 +5,7 @@
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
+#include "engine/util/fast_rand.hpp"
 #include "game/entities/mobs_pool.hpp"
 #include "game/entities/particles_pool.hpp"
 #include "game/entities/shells_pool.hpp"
@@ -63,14 +64,14 @@ static inline void fallbackRecoil(TurretComponents& soa) {
 }
 
 static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPool& particles,
-    const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera) {
+    const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera, const uint64_t timeMs) {
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.restReloadTime[i] > 0 || !soa.shootingData[i].isShooting)
             continue;
         const TurretPreset& turret = presets.getTurret(soa.preset[i]);
         const ShellPreset& shell = presets.getShell(turret.shell);
         soa.restReloadTime[i] = turret.reload;
-        const AngleRad angle = soa.turretAngle[i];
+        const AngleRad angle = soa.turretAngle[i] + util::randMunus1to1(static_cast<uint32_t>(timeMs + i)) * turret.spreadRad;
         const PixelCoord localMuzzle = turret.barrels[soa.currentBarrel[i]];
         PixelCoord position = soa.position[i];
 
@@ -102,11 +103,11 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
 }
 
 void turrets::processTurrets(TurretComponents& soa, ShellsPool& shells, ParticlesPool& particles,
-    const Presets& presets, SoundQueue& sounds, const Camera& camera) {
+    const Presets& presets, SoundQueue& sounds, const Camera& camera, const uint64_t timeMs) {
     const size_t mobCount = soa.mobCount;
     reduceRestReload(soa);
     rotateTurrets(soa, presets, mobCount);
-    shoot(soa, shells, particles, presets, mobCount, sounds, camera);
+    shoot(soa, shells, particles, presets, mobCount, sounds, camera, timeMs);
     fallbackRecoil(soa);
 }
 
