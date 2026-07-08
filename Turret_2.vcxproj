@@ -95,6 +95,7 @@
     <ClInclude Include="src\engine\settings\settings.hpp" />
     <ClInclude Include="src\engine\time_count.hpp" />
     <ClInclude Include="src\engine\util\fast_rand.hpp" />
+    <ClInclude Include="src\engine\util\platform\platform.hpp" />
     <ClInclude Include="src\engine\util\string_util.hpp" />
     <ClInclude Include="src\engine\util\time.hpp" />
     <ClInclude Include="src\engine\window\cursor.hpp" />
@@ -197,6 +198,8 @@
     <ClCompile Include="src\engine\render\texture_2d.cpp" />
     <ClCompile Include="src\engine\scripting\scripting.cpp" />
     <ClCompile Include="src\engine\settings\settings.cpp" />
+    <ClCompile Include="src\engine\util\platform\platform_linux.cpp" />
+    <ClCompile Include="src\engine\util\platform\platform_windows.cpp" />
     <ClCompile Include="src\engine\util\time.cpp" />
     <ClCompile Include="src\engine\window\cursor.cpp" />
     <ClCompile Include="src\engine\window\input\controls.cpp" />

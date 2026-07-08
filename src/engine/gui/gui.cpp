@@ -7,6 +7,7 @@
 #include "engine/render/atlas.hpp"
 #include "engine/render/text.hpp"
 #include "engine/settings/settings.hpp"
+#include "engine/util/platform/platform.hpp"
 #include "engine/util/time.hpp"
 #include "engine/window/window.hpp"
 #include "t1_ui_context.hpp"
@@ -15,7 +16,7 @@
 constexpr uint32_t BLACK = 0x00'00'00'FF;
 constexpr uint32_t WHITE = 0xFF'FF'FF'FF;
 constexpr uint64_t NS_PER_SECOND = 1'000'000'000U;
-constexpr PixelCoord DEBUD_PANEL_SIZE(220.f, 100.f);
+constexpr PixelCoord DEBUD_PANEL_SIZE(220.f, 120.f);
 
 GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
@@ -32,6 +33,18 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow) {
     text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(NS_PER_SECOND / mainWindow.getRealFrameDelayNs()), position, WHITE);
     position.y += 20.f;
     text::drawString(renderer, U"Frame|tick time MS: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelayMs()), position, WHITE);
+    namespace plt = util::platform;
+    static uint64_t updateTimer = 1001;
+    static plt::MemoryUsage memUsage = plt::MemoryUsage(0, 0);
+    updateTimer += mainWindow.getRealFrameDelayMs();
+    if (updateTimer > 1000) {
+        updateTimer = 0;
+        memUsage = plt::getMemoryUsage();
+    }
+    position.y += 20.f;
+    text::drawString(renderer, U"Mem reserved MB: " + mingui::utf8::to_u32string(memUsage.reservedMB), position, WHITE);
+    position.y += 20.f;
+    text::drawString(renderer, U"Mem used MB    : " + mingui::utf8::to_u32string(memUsage.usedMB), position, WHITE);
 }
 
 void GUI::draw(Renderer& renderer, const Atlas& atlas) {
