@@ -12,7 +12,7 @@ public:
         mainCanvas.setAllwaysWithOverlay(true);
     }
 
-    void drawDiegeticElements(Renderer& renderer) {
+    void drawDiegeticElements(Renderer& renderer) final {
         /*TODO: add built in logo world*/
     }
 };

@@ -20,7 +20,7 @@ public:
         GUI::callback();
     }
 
-    void drawDiegeticElements(Renderer& renderer) {
+    void drawDiegeticElements(Renderer& renderer) final {
         buildTools->drawDraft(engine, renderer);
     }
 };
