@@ -52,13 +52,15 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
 
     renderer.setShaderProgram(*shaders.lightingShader);
     renderer.setView(camera.getMapScale(), camera.getTranslation());
-    drawLightParticles(camera, renderer, world.getParticles().getSoa());
+    //drawLightParticles(camera, renderer, world.getParticles().getSoa());
+    //
+    renderer.setShaderProgram(*shaders.baseShader);
+    drawer.draw(camera, renderer, world, assets.getPresets(), assets, tickCount);
     //
     renderer.setShaderProgram(*shaders.squareShadowShader);
     blocksDrawer.drawShadows(world.getBlocks(), assets, camera, renderer);
     //
     renderer.setShaderProgram(*shaders.baseShader);
-    drawer.draw(camera, renderer, world, assets.getPresets(), assets, tickCount);
     blocksDrawer.draw(world.getBlocks(), assets, camera, renderer);
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
     engine.getGUI().drawDiegeticElements(renderer);           // temporary update will be related with blueprints
@@ -70,4 +72,5 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
     renderer.setShaderProgram(*shaders.additiveLightShader);
     shells::drawShellsLighting(world.getShells().getSoa(), presets, camera, renderer);
+    drawLightParticles(camera, renderer, world.getParticles().getSoa());
 }

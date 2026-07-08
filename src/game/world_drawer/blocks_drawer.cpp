@@ -22,8 +22,8 @@ void BlocksDrawer::drawShadows(const BlockMap& blocks, const Assets& assets, con
     }
     //
     for (const auto& tile : cashedTiles) {
-        constexpr PixelCoord SHADOW_SIZE(38.f, 38.f);
-        constexpr PixelCoord BLENDING_AREA(3.f, 3.f);
+        constexpr PixelCoord SHADOW_SIZE(64.f, 64.f);
+        constexpr PixelCoord BLENDING_AREA(16.f, 16.f);
         constexpr PixelCoord ORIGIN(0.f, 0.f);
         renderer.draw(rect, t1::pixel(tile) - BLENDING_AREA, SHADOW_SIZE, ORIGIN, 0.f, 0x00'00'00'FF);
     }

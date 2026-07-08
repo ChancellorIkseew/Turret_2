@@ -7,10 +7,8 @@ layout (location = 0) out vec4 fragColor;
 
 void main() {
     vec2 distance = abs(outLocalPos);
-    float fadeX = smoothstep(1.0, 0.4, distance.x);
-    float fadeY = smoothstep(1.0, 0.4, distance.y);
+    float fadeX = smoothstep(1.0, 0.1, distance.x);
+    float fadeY = smoothstep(1.0, 0.1, distance.y);
     float edgeSmoothing = fadeX * fadeY;
-    //fragColor = vec4(inColor.rgb, inColor.a * edgeSmoothing);
-    //fragColor = vec4(0.1, 0.1, 0.1, 1.0); 
-    vec4(0.0, 0.0, 0.0, 0.5 * edgeSmoothing); // temporary for test
+    fragColor = vec4(0.0, 0.0, 0.0, 0.7 * edgeSmoothing);
 }
