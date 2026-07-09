@@ -1,7 +1,7 @@
 #include "blueprint.hpp"
 //
+#include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
-#include "engine/engine.hpp"
 #include "engine/render/renderer.hpp"
 
 void Blueprints::drawRange(Renderer& renderer, const PixelCoord center, const float range) {
@@ -35,30 +35,21 @@ void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const Til
     }
 }
 
-void Blueprints::drawGhosts(Renderer& renderer, const Engine& engine) const {
-    const float timeMs = static_cast<float>(engine.getMainWindow().getTimeMs());
-    const float modifier = std::sin(timeMs / 500.f) * 64.f;
+void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const {
+    const float modifier = std::sin(static_cast<float>(timeMs) / 500.f) * 64.f;
     const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
     const uint32_t color = 0xFF'FF'FF'00 + alpha;
     for (const auto& blueprint : blueprints) {
         if (blueprint.progress > 0)
             continue;
-        const Presets& presets = engine.getAssets().getPresets();
-        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(blueprint.presetID);
-        const PixelCoord position = t1::pixel(blueprint.tile);
-        const PixelCoord size = preset.visual.size;
         drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color);
     }
 }
 
-void Blueprints::drawInProgress(Renderer& renderer, const Engine& engine) const {
+void Blueprints::drawInProgress(Renderer& renderer, const Presets& presets) const {
     for (const auto& blueprint : blueprints) {
         if (blueprint.progress < 1)
             continue;
-        const Presets& presets = engine.getAssets().getPresets();
-        const BlockPreset& preset = engine.getAssets().getPresets().getBlock(blueprint.presetID);
-        const PixelCoord position = t1::pixel(blueprint.tile);
-        const PixelCoord size = preset.visual.size;
         const uint32_t color = 0xFF'FF'FF'4F + uint32_t(191.f * (float(blueprint.progress) / 100.f));
         drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color);
     }

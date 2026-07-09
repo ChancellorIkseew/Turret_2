@@ -3,7 +3,7 @@
 #include "engine/coords/math.hpp"
 #include "game/blocks/block.hpp"
 
-class Engine;
+class Presets;
 class Renderer;
 
 struct Blueprint {
@@ -66,8 +66,8 @@ public:
         return getBlock(tile).presetID == BlockPresetID(0); // air
     }
 
-    void drawGhosts(Renderer& renderer, const Engine& engine) const;
-    void drawInProgress(Renderer& renderer, const Engine& engine) const;
+    void drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const;
+    void drawInProgress(Renderer& renderer, const Presets& presets) const;
     bool empty() const noexcept { return blueprints.empty(); }
 
     static void drawRange(Renderer& renderer, const PixelCoord center, const float range);

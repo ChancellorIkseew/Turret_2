@@ -66,7 +66,7 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     drawEntities(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
     engine.getGUI().drawDiegeticElements(renderer);         // temporary update will be related with blueprints
-    world.getBlueprints().drawGhosts(renderer, engine);     //
+    world.getBlueprints().drawGhosts(renderer, presets, engine.getMainWindow().getTimeMs());     //
     { // TODO: separate to function
         const TileCoord targetTile = t1::tile(camera.fromScreenToMap(engine.getMainWindow().getInput().getMouseCoord()));
         BlockMap& blocks = world.getBlocks();
@@ -82,7 +82,7 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
         }
     }
     renderer.setShaderProgram(*shaders.emergeShader);       //
-    world.getBlueprints().drawInProgress(renderer, engine); // temporary
+    world.getBlueprints().drawInProgress(renderer, presets); // temporary
     //
     renderer.setShaderProgram(*shaders.shieldShader);
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
