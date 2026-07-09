@@ -82,7 +82,7 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         const TickCount lifeTime = static_cast<TickCount>(radius / SPEED);
         for (int j = 0; j < 8; ++j) {
             const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
-            particlesPool.addParticle(soa.position[i], size, angle, SPEED, 0xFF'A5'00'FF, 0, lifeTime, PType::light);
+            particlesPool.addParticle(soa.position[i], size, angle, SPEED, 0xFF'A5'00'80, 0, lifeTime, PType::light);
         }
 
         const int shardsCount = preset.explosion.shardsCount;
