@@ -11,6 +11,7 @@
 #include "game/systems/turrets_system.hpp"
 #include "game/systems/turret_components.hpp"
 #include "game/world/world.hpp"
+#include "game/world_drawer/entities_drawer.hpp"
 #include "game/world_drawer/particles_drawer.hpp"
 #include "game/world_drawer/world_drawer.hpp"
 
@@ -48,24 +49,25 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //
     const Presets& presets = assets.getPresets();
     const Shaders& shaders = assets.getShaders();
-    auto& blocksDrawer = drawer.getBlocksDrawer();
-
-    renderer.setShaderProgram(*shaders.lightingShader);
-    renderer.setView(camera.getMapScale(), camera.getTranslation());
+    //
+    //renderer.setShaderProgram(*shaders.lightingShader);
+    //renderer.setView(camera.getMapScale(), camera.getTranslation());
     //drawLightParticles(camera, renderer, world.getParticles().getSoa());
     //
+    renderer.setView(camera.getMapScale(), camera.getTranslation());
     renderer.setShaderProgram(*shaders.baseShader);
-    drawer.draw(camera, renderer, world, assets.getPresets(), assets, tickCount);
+    drawer.drawMap(camera, renderer, world.getMap());
     //
     renderer.setShaderProgram(*shaders.squareShadowShader);
-    blocksDrawer.drawShadows(world.getBlocks(), assets, camera, renderer);
+    drawer.drawBlockShadows(world.getBlocks(), camera, renderer);
     //
     renderer.setShaderProgram(*shaders.baseShader);
-    blocksDrawer.draw(world.getBlocks(), assets, camera, renderer);
+    drawer.drawBlocks(world.getBlocks(), renderer, presets);
+    drawEntities(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
-    engine.getGUI().drawDiegeticElements(renderer);           // temporary update will be related with blueprints
-    world.getBlueprints().drawGhosts(renderer, engine);
-    renderer.setShaderProgram(*shaders.emergeShader);
+    engine.getGUI().drawDiegeticElements(renderer);         // temporary update will be related with blueprints
+    world.getBlueprints().drawGhosts(renderer, engine);     //
+    renderer.setShaderProgram(*shaders.emergeShader);       //
     world.getBlueprints().drawInProgress(renderer, engine); // temporary
     //
     renderer.setShaderProgram(*shaders.shieldShader);

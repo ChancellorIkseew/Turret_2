@@ -2,6 +2,7 @@
 //
 #include "game/common/team.hpp"
 #include "game/player/player_controller.hpp"
+#include "game/world/world.hpp"
 
 static TeamID getTeamID() {
     return script_libs::playerController->getPlayerTeamID();

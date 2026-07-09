@@ -7,6 +7,7 @@
 #include "engine/gui/gui.hpp"
 #include "game/blocks/make_block.hpp"
 #include "game/frontend/frontend.hpp"
+#include "game/world/world.hpp"
 
 static PixelCoord randomMapBorderCoord(std::mt19937& gen, const TileCoord mapSize) {
     using IntRand = std::uniform_int_distribution<int>;

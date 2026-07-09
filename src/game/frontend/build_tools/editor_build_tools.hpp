@@ -1,5 +1,7 @@
 #pragma once
 #include "build_tools.hpp"
+//
+#include "game/world/world.hpp"
 
 class EditorBuildTools : public BuildTools {
     TileCoord targetTile;

@@ -7,6 +7,7 @@
 #include "game/systems/mobs_system.hpp"
 #include "game/systems/world_system.hpp"
 #include "game/events/events.hpp"
+#include "game/world/world.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets,

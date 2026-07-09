@@ -1,6 +1,8 @@
 #pragma once
 #include "build_tools.hpp"
 
+class Blueprints;
+
 class GameplayBuildTools : public BuildTools {
     std::optional<TileCoord> optBuildStart;
     std::optional<TileCoord> optDemolishStart;
@@ -14,7 +16,7 @@ public:
 private:
     void usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile);
     void demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprints, const TileCoord start, const TileCoord end) const;
-    void buildDraft(GameSession& session, const TileData tileData) const;
+    void buildDraft(World& world, const TileData tileData) const;
     //
     void updateDraft(const TileCoord start, TileCoord target);
 };

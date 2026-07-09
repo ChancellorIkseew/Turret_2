@@ -1,30 +1,26 @@
 #pragma once
-#include "entities_drawer.hpp"
 #include "blocks_drawer.hpp"
-#include "game/world/world.hpp"
 #include "map_drawer.hpp"
-// TODO: #include "weather_drawer.hpp"
 
-class Atlas;
+class BlockMap;
 class Camera;
 class Presets;
 class Renderer;
+class WorldMap;
 
 class WorldDrawer {
     MapDrawer mapDrawer;
     BlocksDrawer blocksDrawer;
-    EntitiesDrawer entitiesDrawer;
-    // TODO: WeatherDrawer weatherDrawer;
 public:
     WorldDrawer(const Assets& assets) : mapDrawer(assets) { }
-
-    void draw(const Camera& camera, Renderer& renderer, World& world,
-        const Presets& presets, const Assets& assets, const uint64_t tickCount) {
-        mapDrawer.draw(camera, renderer, world.getMap());
-        //blocksDrawer.draw(world.getBlocks(), assets, camera, renderer);
-        entitiesDrawer.draw(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
-        // TODO: weatherDrawer.draw();
+    //
+    void drawMap(const Camera& camera, Renderer& renderer, const WorldMap& map) {
+        mapDrawer.draw(camera, renderer, map);
     }
-
-    BlocksDrawer& getBlocksDrawer() { return blocksDrawer; }
+    void drawBlockShadows(const BlockMap& blocks, const Camera& camera, Renderer& renderer) {
+        blocksDrawer.drawShadows(blocks, camera, renderer);
+    }
+    void drawBlocks(const BlockMap& blocks, Renderer& renderer, const Presets& presets) {
+        blocksDrawer.draw(blocks, presets, renderer);
+    }
 };

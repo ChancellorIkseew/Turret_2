@@ -5,7 +5,7 @@
 #include "game/player/camera.hpp"
 #include "game/blocks/block_map.hpp"
 
-void BlocksDrawer::drawShadows(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer) {
+void BlocksDrawer::drawShadows(const BlockMap& blocks, const Camera& camera, Renderer& renderer) {
     const TileCoord start = camera.getBuildingsStartTile();
     const TileCoord end = camera.getEndTile();
     const TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
@@ -29,7 +29,7 @@ void BlocksDrawer::drawShadows(const BlockMap& blocks, const Assets& assets, con
     }
 }
 
-void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Camera& camera, Renderer& renderer) {
+void BlocksDrawer::draw(const BlockMap& blocks, const Presets& presets, Renderer& renderer) {
     for (const auto& tile : cashedTiles) {
         blocks.at(tile).block->draw(*this, renderer, tile);
     }
@@ -37,7 +37,7 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Assets& assets, const Came
     int i = 0;
     for (ItemPresetID itemPresetID : itemPresetIDs) {
         constexpr PixelCoord ITEM_SIZE(16.f, 16.f);
-        TextureRect textureRect = assets.getPresets().getItem(itemPresetID).textureRect;
+        TextureRect textureRect = presets.getItem(itemPresetID).textureRect;
         renderer.draw(textureRect, itemPositions[i], ITEM_SIZE);
         ++i;
     }

@@ -1,6 +1,8 @@
 #include "build_tools.hpp"
 //
 #include "blueprint.hpp"
+#include "engine/coords/transforms.hpp"
+#include "game/world/world.hpp"
 
 void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData) const {
     const PixelCoord position = t1::pixel(tile);

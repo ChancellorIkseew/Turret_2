@@ -479,9 +479,6 @@
     <ClCompile Include="src\game\world_drawer\map_drawer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\world_drawer\entities_drawer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\script_libs\lib_world.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>

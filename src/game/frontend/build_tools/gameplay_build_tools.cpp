@@ -1,6 +1,9 @@
 #include "gameplay_build_tools.hpp"
 //
+#include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
+#include "game/frontend/build_tools/blueprint.hpp"
+#include "game/world/world.hpp"
 
 using GBuildTools = GameplayBuildTools;
 
@@ -47,7 +50,7 @@ void GBuildTools::update(Engine& engine) {
     if (optTileData && optBuildStart && input.active(Build_Shoot))
         updateDraft(optBuildStart.value(), targetTile);
     if (optTileData && optBuildStart && input.released(Build_Shoot)) {
-        buildDraft(session, optTileData.value());
+        buildDraft(session.getWorld(), optTileData.value());
         optBuildStart.reset();
         draft.clear();
     }
@@ -99,10 +102,10 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
     }
 }
 
-void GBuildTools::buildDraft(GameSession& session, const TileData tileData) const {
+void GBuildTools::buildDraft(World& world, const TileData tileData) const {
     for (const TileCoord tile : draft) {
-        if (session.getWorld().getBlocks().isAir(tile))
-            session.getWorld().getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation);
+        if (world.getBlocks().isAir(tile))
+            world.getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation);
     }
 }
 
