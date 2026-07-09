@@ -4,6 +4,20 @@
 #include "engine/engine.hpp"
 #include "engine/render/renderer.hpp"
 
+static void drawRange(Renderer& renderer, const PixelCoord center, const float range) {
+    constexpr PixelCoord CELL_SIZE(20.f, 3.f);
+    constexpr float MAX_OFFSET = 8.f, CELL = 20.f;
+    //
+    const float perimeter = t1::PI * 2.f * range;
+    const int cellsCount = static_cast<int>(perimeter / (CELL + MAX_OFFSET));
+    const float angleStep = t1::PI * 2.f / static_cast<float>(cellsCount);
+    for (int i = 0; i < cellsCount; ++i) {
+        const float angle = static_cast<float>(i) * angleStep;
+        const PixelCoord origin(CELL_SIZE.x / 2.f, CELL_SIZE.y / 2.f - range);
+        renderer.drawRect(center, CELL_SIZE, origin, angle, 0x84'34'34'C8);
+    }
+}
+
 void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
     const BlockPresetID presetID, const BlockRot rotation, const uint32_t color) {
     const BlockPreset& preset = presets.getBlock(presetID);
@@ -17,6 +31,7 @@ void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const Til
         const TurretPreset& turret = presets.getTurret(preset.turret);
         const PixelCoord blockCenter = position + origin;
         renderer.draw(turret.visual.textureRect, blockCenter, turret.visual.size, turret.visual.origin, angleRad, color);
+        drawRange(renderer, t1::tileCenter(tile), turret.range);
     }
 }
 
