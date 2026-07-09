@@ -4,7 +4,7 @@
 #include "engine/engine.hpp"
 #include "engine/render/renderer.hpp"
 
-static void drawRange(Renderer& renderer, const PixelCoord center, const float range) {
+void Blueprints::drawRange(Renderer& renderer, const PixelCoord center, const float range) {
     constexpr PixelCoord CELL_SIZE(20.f, 3.f);
     constexpr float MAX_OFFSET = 8.f, CELL = 20.f;
     //

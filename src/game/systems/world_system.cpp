@@ -67,6 +67,20 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
     engine.getGUI().drawDiegeticElements(renderer);         // temporary update will be related with blueprints
     world.getBlueprints().drawGhosts(renderer, engine);     //
+    { // TODO: separate to function
+        const TileCoord targetTile = t1::tile(camera.fromScreenToMap(engine.getMainWindow().getInput().getMouseCoord()));
+        BlockMap& blocks = world.getBlocks();
+        if (blocks.contains(targetTile) && blocks.at(targetTile).type == BlockType::turret) {
+            const TurretSoA& turrets = blocks.getMeta().getTurrets().getSoa();
+            for (size_t i = 0; i < turrets.turretCount; ++i) {
+                if (t1::tile(turrets.position[i]) != targetTile)
+                    continue;
+                const float range = presets.getTurret(turrets.preset[i]).range;
+                Blueprints::drawRange(renderer, turrets.position[i], range);
+                break;
+            }
+        }
+    }
     renderer.setShaderProgram(*shaders.emergeShader);       //
     world.getBlueprints().drawInProgress(renderer, engine); // temporary
     //
