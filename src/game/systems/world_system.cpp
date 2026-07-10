@@ -66,14 +66,16 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //
     renderer.setShaderProgram(*shaders.baseShader);
     drawer.drawBlocks(world.getBlocks(), renderer, presets);
-    drawEntities(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
-    drawShardParticles(camera, renderer, world.getParticles().getSoa());
     world.getBlueprints().drawGhosts(renderer, presets, timeMs);
-    engine.getGUI().drawDiegeticElements(renderer);
-    drawInfoOnCursor(renderer, camera, presets, world.getBlocks(), targetTile);
     //
     renderer.setShaderProgram(*shaders.emergeShader);
     world.getBlueprints().drawInProgress(renderer, presets);
+    //
+    renderer.setShaderProgram(*shaders.baseShader);
+    engine.getGUI().drawDiegeticElements(renderer);
+    drawEntities(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
+    drawShardParticles(camera, renderer, world.getParticles().getSoa());
+    drawInfoOnCursor(renderer, camera, presets, world.getBlocks(), targetTile);
     //
     renderer.setShaderProgram(*shaders.shieldShader);
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
