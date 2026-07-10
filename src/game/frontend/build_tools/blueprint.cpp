@@ -19,7 +19,7 @@ void Blueprints::drawRange(Renderer& renderer, const PixelCoord center, const fl
 }
 
 void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
-    const BlockPresetID presetID, const BlockRot rotation, const uint32_t color) {
+    const BlockPresetID presetID, const BlockRot rotation, const uint32_t color, const bool showRange) {
     const BlockPreset& preset = presets.getBlock(presetID);
     const PixelCoord size = preset.visual.size;
     const PixelCoord position = t1::pixel(tile);
@@ -31,7 +31,8 @@ void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const Til
         const TurretPreset& turret = presets.getTurret(preset.turret);
         const PixelCoord blockCenter = position + origin;
         renderer.draw(turret.visual.textureRect, blockCenter, turret.visual.size, turret.visual.origin, angleRad, color);
-        drawRange(renderer, t1::tileCenter(tile), turret.range);
+        if (showRange)
+            drawRange(renderer, t1::tileCenter(tile), turret.range);
     }
 }
 
@@ -42,7 +43,7 @@ void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const ui
     for (const auto& blueprint : blueprints) {
         if (blueprint.progress > 0)
             continue;
-        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color);
+        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
     }
 }
 
@@ -51,6 +52,6 @@ void Blueprints::drawInProgress(Renderer& renderer, const Presets& presets) cons
         if (blueprint.progress < 1)
             continue;
         const uint32_t color = 0xFF'FF'FF'4F + uint32_t(191.f * (float(blueprint.progress) / 100.f));
-        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color);
+        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
     }
 }

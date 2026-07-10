@@ -5,7 +5,7 @@
 #include "game/world/world.hpp"
 
 void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile,
-    const TileData tileData, const uint64_t timeMs) const {
+    const TileData tileData, const uint64_t timeMs, const bool showRange) const {
     const PixelCoord position = t1::pixel(tile);
     uint8_t alpha = 255;
     if (content == JEIContent::only_blocks) { // maybe needs refactoring
@@ -17,7 +17,7 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
         const Presets& presets = engine.getAssets().getPresets();
         const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
         const uint32_t color = canBuild ? 0xFF'FF'FF'00 + alpha : 0xB4'34'24'C8;
-        Blueprints::drawBlock(presets, renderer, tile, BlockPresetID(tileData.id), rotation, color);
+        Blueprints::drawBlock(presets, renderer, tile, BlockPresetID(tileData.id), rotation, color, showRange);
         return;
     }
     //

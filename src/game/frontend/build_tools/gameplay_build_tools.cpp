@@ -116,10 +116,10 @@ void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t t
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
     if (optTileData) {
         if (!optBuildStart)
-            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs);
+            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs, true);   
         else {
             for (const TileCoord tile : draft) {
-                drawOneBlock(engine, renderer, tile, optTileData.value(), timeMs);
+                drawOneBlock(engine, renderer, tile, optTileData.value(), timeMs, false);
             }
         }
     }

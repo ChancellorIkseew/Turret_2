@@ -34,7 +34,7 @@ public:
 
     void drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) final {
         if (optTileData)
-            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs);
+            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs, true);
     }
 private:
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const {
