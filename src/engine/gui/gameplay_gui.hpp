@@ -27,6 +27,6 @@ public:
     }
 
     void drawDiegeticElements(Renderer& renderer) final {
-        buildTools->drawDraft(engine, renderer);
+        buildTools->drawDraft(engine, renderer, engine.getMainWindow().getTimeMs());
     }
 };

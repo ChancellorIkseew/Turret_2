@@ -11,8 +11,8 @@ class GameplayBuildTools : public BuildTools {
 public:
     GameplayBuildTools() : BuildTools(JEIContent::only_blocks) {}
     //
-    virtual void update(Engine& engine) final;
-    virtual void drawDraft(Engine& engine, Renderer& renderer) final;
+    void update(Engine& engine) final;
+    void drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) final;
 private:
     void usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile);
     void demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprints, const TileCoord start, const TileCoord end) const;

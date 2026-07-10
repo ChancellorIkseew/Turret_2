@@ -15,6 +15,8 @@
 #include "game/world_drawer/particles_drawer.hpp"
 #include "game/world_drawer/world_drawer.hpp"
 
+void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile);
+
 void world::update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs,
     const PlayerController& playerController, SoundQueue& worldSounds, BuiltInScripts& scripts) {
     //
@@ -49,12 +51,13 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //
     const Presets& presets = assets.getPresets();
     const Shaders& shaders = assets.getShaders();
-    //
-    //renderer.setShaderProgram(*shaders.lightingShader);
-    //renderer.setView(camera.getMapScale(), camera.getTranslation());
-    //drawLightParticles(camera, renderer, world.getParticles().getSoa());
+    const uint64_t timeMs = engine.getMainWindow().getTimeMs();
+    const TileCoord targetTile = t1::tile(camera.fromScreenToMap(engine.getMainWindow().getInput().getMouseCoord()));
     //
     renderer.setView(camera.getMapScale(), camera.getTranslation());
+    //renderer.setShaderProgram(*shaders.lightingShader);
+    // Draw lifthing here, before other. Now ligthing is not needed.
+    //
     renderer.setShaderProgram(*shaders.baseShader);
     drawer.drawMap(camera, renderer, world.getMap());
     //
@@ -65,28 +68,29 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     drawer.drawBlocks(world.getBlocks(), renderer, presets);
     drawEntities(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
-    engine.getGUI().drawDiegeticElements(renderer);         // temporary update will be related with blueprints
-    world.getBlueprints().drawGhosts(renderer, presets, engine.getMainWindow().getTimeMs());     //
-    { // TODO: separate to function
-        const TileCoord targetTile = t1::tile(camera.fromScreenToMap(engine.getMainWindow().getInput().getMouseCoord()));
-        BlockMap& blocks = world.getBlocks();
-        if (blocks.contains(targetTile) && blocks.at(targetTile).type == BlockType::turret) {
-            const TurretSoA& turrets = blocks.getMeta().getTurrets().getSoa();
-            for (size_t i = 0; i < turrets.turretCount; ++i) {
-                if (t1::tile(turrets.position[i]) != targetTile)
-                    continue;
-                const float range = presets.getTurret(turrets.preset[i]).range;
-                Blueprints::drawRange(renderer, turrets.position[i], range);
-                break;
-            }
-        }
-    }
-    renderer.setShaderProgram(*shaders.emergeShader);       //
-    world.getBlueprints().drawInProgress(renderer, presets); // temporary
+    world.getBlueprints().drawGhosts(renderer, presets, timeMs);
+    engine.getGUI().drawDiegeticElements(renderer);
+    drawInfoOnCursor(renderer, camera, presets, world.getBlocks(), targetTile);
+    //
+    renderer.setShaderProgram(*shaders.emergeShader);
+    world.getBlueprints().drawInProgress(renderer, presets);
     //
     renderer.setShaderProgram(*shaders.shieldShader);
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
     renderer.setShaderProgram(*shaders.additiveLightShader);
     shells::drawShellsLighting(world.getShells().getSoa(), presets, camera, renderer);
     drawLightParticles(camera, renderer, world.getParticles().getSoa());
+}
+
+void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile) {
+    if (!blocks.contains(targetTile) || blocks.at(targetTile).type != BlockType::turret)
+        return;
+    const TurretSoA& turrets = blocks.getMeta().getTurrets().getSoa();
+    for (size_t i = 0; i < turrets.turretCount; ++i) {
+        if (t1::tile(turrets.position[i]) != targetTile)
+            continue;
+        const float range = presets.getTurret(turrets.preset[i]).range;
+        Blueprints::drawRange(renderer, turrets.position[i], range);
+        break;
+    }
 }

@@ -61,11 +61,6 @@ void GBuildTools::update(Engine& engine) {
         demolish(map, blocks, blueprints, optDemolishStart.value(), targetTile);
         optDemolishStart.reset();
     }
-
-    if (!engine.getGUI().ownsMouse()) {
-
-    }
-
 }
 
 void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) {
@@ -116,15 +111,15 @@ static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const T
     renderer.drawRect(t1::pixel(nStart), t1::pixel(size), ORIGIN, 0.f, 0x84'34'34'C8);
 }
 
-void GBuildTools::drawDraft(Engine& engine, Renderer& renderer) {
+void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
     if (optDemolishStart)
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
     if (optTileData) {
         if (!optBuildStart)
-            drawOneBlock(engine, renderer, targetTile, optTileData.value());
+            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs);
         else {
             for (const TileCoord tile : draft) {
-                drawOneBlock(engine, renderer, tile, optTileData.value());
+                drawOneBlock(engine, renderer, tile, optTileData.value(), timeMs);
             }
         }
     }

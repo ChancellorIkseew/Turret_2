@@ -9,7 +9,7 @@ class EditorBuildTools : public BuildTools {
 public:
     EditorBuildTools() : BuildTools(JEIContent::all) {}
 
-    virtual void update(Engine& engine) final {
+    void update(Engine& engine) final {
         const Input& input = engine.getMainWindow().getInput();
         const bool mouseFree = !engine.getGUI().ownsMouse();
         GameSession& session = engine.getSession();
@@ -32,9 +32,9 @@ public:
         }
     }
 
-    virtual void drawDraft(Engine& engine, Renderer& renderer) final {
+    void drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) final {
         if (optTileData)
-            drawOneBlock(engine, renderer, targetTile, optTileData.value());
+            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs);
     }
 private:
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const {

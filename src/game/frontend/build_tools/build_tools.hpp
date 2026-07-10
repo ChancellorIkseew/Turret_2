@@ -28,7 +28,7 @@ public:
     }
     //
     virtual void update(Engine& engine) = 0;
-    virtual void drawDraft(Engine& engine, Renderer& renderer) = 0;
+    virtual void drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) = 0;
 protected:
-    void drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData) const;
+    void drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData, const uint64_t timeMs) const;
 };
