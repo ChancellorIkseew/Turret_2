@@ -81,11 +81,16 @@ static void play(MIX_Audio* audio, MIX_Track* track, const MIX_Point3D* point3D)
     MIX_PlayTrack(track, 0);
 }
 
+static constexpr PixelCoord applyGuardZone(const PixelCoord position) {
+    constexpr PixelCoord GUARD_ZONE = PixelCoord(80.f, 80.f) / t1::TILE;
+    return t1::contains(GUARD_ZONE * -1.f, GUARD_ZONE, position) ? PixelCoord(0.f, 0.f) : position;
+}
+
 void Audio::playDiegetic(const std::string& id, const PixelCoord object, const Camera& camera) {
     MIX_Track* track = findFreeTrack(worldTrackPool);
     if (!track)
         return;
-    const PixelCoord delta = (object - camera.getRealCenter()) / t1::TILE;
+    const PixelCoord delta = applyGuardZone(object - camera.getRealCenter()) / t1::TILE;
     const float altitude = BASE_CAMERA_ALTITUDE / camera.getMapScale();
     MIX_Point3D point3D(delta.x, -delta.y, -altitude); // Why -y, -z? See MIX_Point3D comments.
     play(audioCache[id], track, &point3D);
