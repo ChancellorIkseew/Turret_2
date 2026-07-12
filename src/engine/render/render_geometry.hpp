@@ -82,12 +82,12 @@ public:
         const PixelCoord origin, const float angleRad,
         const uint32_t colorRGBA)
     {
-        float localX[4] = { 0.0f - origin.x, size.x - origin.x, size.x - origin.x, 0.0f - origin.x };
-        float localY[4] = { 0.0f - origin.y, 0.0f - origin.y, size.y - origin.y, size.y - origin.y };
+        float localX[4] = { 0.f - origin.x, size.x - origin.x, size.x - origin.x, 0.f - origin.x };
+        float localY[4] = { 0.f - origin.y, 0.f - origin.y, size.y - origin.y, size.y - origin.y };
 
         Vertex quad[4];
 
-        if (std::abs(angleRad) > 0.00001) {
+        if (std::abs(angleRad) > 0.00001f) {
             float cosA = std::cos(angleRad);
             float sinA = std::sin(angleRad);
 
@@ -111,7 +111,7 @@ public:
         quad[2].u = uMax;          quad[2].v = vMax;
         quad[3].u = textureRect.x; quad[3].v = vMax;
 
-        const uint32_t colorARGB  = std::rotr(colorRGBA, 8);
+        const uint32_t colorARGB = std::rotr(colorRGBA, 8);
         quad[0].color = colorARGB;
         quad[1].color = colorARGB;
         quad[2].color = colorARGB;
