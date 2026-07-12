@@ -68,7 +68,6 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
         soa.shootingData[index].isShooting = true;
         soa.shootingData[index].target = aim->position;
         aims.clear();
-        return;
     }
 }
 
