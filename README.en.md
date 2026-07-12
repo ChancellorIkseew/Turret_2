@@ -4,7 +4,7 @@ A 2D game in the tower-defense genre. Distributed completely free of charge.
 ___
 ## General Information
 Inspirational sources for Turret_2": "Mindustry", "Yorg.io", "Factorio". 
-The game graphics are based on SDL3.
+The game graphics are based on SDL3 and OpenGL 4.6.
 ___
 ## Libraries
 All used libraries are located in the "libs" folder in pre-compiled form. Licenses for all used libraries are attached in "libs/licenses".
@@ -23,12 +23,11 @@ The libraries themselves are already compiled and located in the "libs" folder a
 3) Copy the "res" folder and ".dll" files from "libs/MSVC_dll" into the "Release_win_x64"/"Debug_win_x64" folder.
 4) The project is built. You can run the "Turret_2.exe" executable file. It should work.
 #### Linux (GCC, CMake)
-1) Go to the "cmake_proj" folder.
-2) Hover the mouse cursor over an empty space inside the folder. Right-click.
-3) Select "Open in Terminal" from the menu that appears.
-4) Enter "cmake ." in the terminal. Terminal commands should be entered without quotes. Wait for the command to complete.
-5) Enter "cmake --build ." in the terminal. Wait for the command to complete.
-6) Copy the "res" folder and ".so" files from "libs/GCC_so" into the "cmake_proj/build" folder.
-7) The project is built. You can run the "Turret_2" executable file. It should work.
+1) Hover the mouse cursor over an empty space inside the folder. Right-click.
+2) Select "Open in Terminal" from the menu that appears.
+3) Enter "cmake ." in the terminal. Terminal commands should be entered without quotes. Wait for the command to complete.
+4) Enter "cmake --build ." in the terminal. Wait for the command to complete.
+5) Copy the "res" folder and ".so" files from "libs/GCC_so" into the "cmake_proj/build" folder.
+6) The project is built. You can run the "Turret_2" executable file. It should work.
 #### Possible Errors
 You can leave messages about build errors or game bugs in the "Issues" section.
