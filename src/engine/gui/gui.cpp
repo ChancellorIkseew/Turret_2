@@ -1,6 +1,5 @@
 #include "gui.hpp"
 //
-#include "engine/debug/console.hpp"
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
@@ -13,6 +12,7 @@
 #include "t1_ui_context.hpp"
 #include "t1_ui_renderer.hpp"
 
+namespace plt = util::platform;
 constexpr uint32_t BLACK = 0x00'00'00'FF;
 constexpr uint32_t WHITE = 0xFF'FF'FF'FF;
 constexpr uint64_t NS_PER_SECOND = 1'000'000'000U;
@@ -33,7 +33,6 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow) {
     text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(NS_PER_SECOND / mainWindow.getRealFrameDelayNs()), position, WHITE);
     position.y += 20.f;
     text::drawString(renderer, U"Frame|tick time MS: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelayMs()), position, WHITE);
-    namespace plt = util::platform;
     static uint64_t updateTimer = 1001;
     static plt::MemoryUsage memUsage = plt::MemoryUsage(0, 0);
     updateTimer += mainWindow.getRealFrameDelayMs();
@@ -99,8 +98,8 @@ void GUI::acceptHotkeys() {
         Settings::writeSettings();
     }
     if (input.jactive(Show_console)) {
-        debug::Console::setVisible(!debug::Console::isVisible());
-        Settings::gui.showConsole = debug::Console::isVisible();
+        plt::Console::setVisible(!plt::Console::isVisible());
+        Settings::gui.showConsole = plt::Console::isVisible();
         Settings::writeSettings();
     }
     if (input.jactive(Fullscreen)) {

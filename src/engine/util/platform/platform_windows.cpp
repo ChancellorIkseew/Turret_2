@@ -16,4 +16,11 @@ plt::MemoryUsage plt::getMemoryUsage() {
     return plt::MemoryUsage(0, 0);
 }
 
+void plt::Console::setVisible(const bool flag) {
+    visible = flag;
+    HWND hwnd = GetConsoleWindow();
+    if (hwnd != nullptr)
+        ShowWindow(hwnd, flag ? SW_SHOW : SW_HIDE);
+}
+
 #endif

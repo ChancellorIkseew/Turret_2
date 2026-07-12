@@ -21,4 +21,8 @@ plt::MemoryUsage plt::getMemoryUsage() {
     return plt::MemoryUsage(0, 0);
 }
 
+void plt::Console::setVisible(const bool flag) {
+    //Not needed on Linux.
+}
+
 #endif

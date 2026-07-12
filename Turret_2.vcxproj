@@ -61,7 +61,6 @@
     <ClInclude Include="src\engine\coords\math.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
     <ClInclude Include="src\engine\coords\transforms.hpp" />
-    <ClInclude Include="src\engine\debug\console.hpp" />
     <ClInclude Include="src\engine\debug\logger.hpp" />
     <ClInclude Include="src\engine\engine.hpp" />
     <ClInclude Include="src\engine\engine_command.hpp" />
@@ -176,7 +175,6 @@
     <ClCompile Include="src\engine\assets\waves.cpp" />
     <ClCompile Include="src\engine\audio\audio.cpp" />
     <ClCompile Include="src\engine\coords\math.cpp" />
-    <ClCompile Include="src\engine\debug\console.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\game_session.cpp" />

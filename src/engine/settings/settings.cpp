@@ -1,10 +1,10 @@
 #include "settings.hpp"
 //
-#include "engine/debug/console.hpp"
 #include "engine/debug/logger.hpp"
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/io/parser/tin_parser.hpp"
+#include "engine/util/platform/platform.hpp"
 #include "engine/window/window.hpp"
 
 Settings::_Audio Settings::audio;
@@ -91,5 +91,5 @@ void Settings::applySettings(Engine& engine) {
     // "lang" implemented in gui and main_canvas
     // "guiScale" implemented in gui.cpp and fr_gui.cpp
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
-    debug::Console::setVisible(Settings::gui.showConsole);
+    util::platform::Console::setVisible(Settings::gui.showConsole);
 }
