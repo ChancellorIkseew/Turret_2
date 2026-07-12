@@ -23,10 +23,11 @@ void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const Til
     const BlockPreset& preset = presets.getBlock(presetID);
     const PixelCoord size = preset.visual.size;
     const PixelCoord position = t1::pixel(tile);
-
+    //
     const float angleRad = preset.rotatable ? static_cast<float>(rotation) * t1::TAU : 0.f;
+    const float baseAngleRad = preset.archetype != BlockType::turret ? angleRad : 0.f;
     const PixelCoord origin = size / 2.f;
-    renderer.draw(preset.visual.textureRect, position + origin, size, origin, angleRad, color);
+    renderer.draw(preset.visual.textureRect, position + origin, size, origin, baseAngleRad, color);
     if (preset.archetype == BlockType::turret) {
         const TurretPreset& turret = presets.getTurret(preset.turret);
         const PixelCoord blockCenter = position + origin;
