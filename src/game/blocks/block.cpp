@@ -2,10 +2,24 @@
 //
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
+#include "game/frontend/build_tools/blueprint.hpp"
 #include "game/world_drawer/blocks_drawer.hpp"
 
 void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
     renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC);
+}
+
+void InProgress::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
+    blockDrawer.addInProgress(tile);
+}
+
+void InProgress::drawInProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const {
+    BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
+
+
+    const uint32_t baseColor = action == BP1Action::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
+    const uint32_t color = baseColor + 0x4F + static_cast<uint32_t>(191.f * (float(progress) / 100.f));
+    Blueprints::drawBlock(presets, renderer, tile, presetID, dstRotation, color, false);
 }
 
 static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Up, Right, Down, Left

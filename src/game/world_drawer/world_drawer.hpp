@@ -23,4 +23,7 @@ public:
     void drawBlocks(const BlockMap& blocks, Renderer& renderer, const Presets& presets) {
         blocksDrawer.draw(blocks, presets, renderer);
     }
+    void drawBlocksInProgress(const BlockMap& blocks, Renderer& renderer, const Presets& presets) {
+        blocksDrawer.drawInProgress(blocks, presets, renderer);
+    }
 };

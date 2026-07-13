@@ -19,6 +19,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             continue;
         const PixelCoord tileCenter = t1::tileCenter(bp->tile);
         if (t1::areCloserCircle(tileCenter, soa.position[i], 128.f)) {
+            /*
             if (!bp->progressFull()) {
                 bp->increeseProgress(mobPreset.buildSpeed);
                 if (bp->action == BPAction::demolish && blocks.isFilled(bp->tile))
@@ -30,7 +31,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
                     scripts.placeBlock(bp->presetID, bp->tile, soa.teamID[i], bp->rotation);
                 blueprints.removeIfExists(bp->tile);
             }
-            continue;
+            continue;*/
         }
     }
 }

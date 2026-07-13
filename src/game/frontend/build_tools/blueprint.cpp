@@ -42,18 +42,6 @@ void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const ui
     const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
     const uint32_t color = 0xFF'FF'FF'00 + alpha;
     for (const auto& blueprint : blueprints) {
-        if (blueprint.progress > 0)
-            continue;
-        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
-    }
-}
-
-void Blueprints::drawInProgress(Renderer& renderer, const Presets& presets) const {
-    for (const auto& blueprint : blueprints) {
-        if (blueprint.progress < 1)
-            continue;
-        const uint32_t baseColor = blueprint.action == BPAction::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
-        const uint32_t color = baseColor + 0x4F + static_cast<uint32_t>(191.f * (float(blueprint.progress) / 100.f));
         drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
     }
 }
