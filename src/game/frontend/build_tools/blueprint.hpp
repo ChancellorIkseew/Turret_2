@@ -6,13 +6,23 @@
 class Presets;
 class Renderer;
 
+enum class BPAction : uint8_t { build, demolish };
+
 struct Blueprint {
     TileCoord tile;
     BlockPresetID presetID = BlockPresetID(0);
     BlockRot rotation = BlockRot::up;
-    uint8_t progress = 0;
+    BPAction action = BPAction::build;
+    int8_t progress = 0;
 
-    bool operator==(const TileCoord& otherTile) const noexcept {
+    constexpr bool progressFull() const noexcept {
+        return (action == BPAction::build) ? progress >= 100 : progress <= 0;
+    }
+    constexpr void increeseProgress(const int8_t step) {
+        progress += (action == BPAction::build) ? step : -step;
+    }
+
+    constexpr bool operator==(const TileCoord& otherTile) const noexcept {
         return tile == otherTile;
     }
 };
@@ -25,12 +35,12 @@ class Blueprints {
         return std::find(blueprints.begin(), blueprints.end(), tile);
     }
 public:
-    void addOrReplace(const TileCoord tile, const BlockPresetID presetID, const BlockRot rotation) {
+    void addOrReplace(const TileCoord tile, const BlockPresetID presetID, const BlockRot rotation, const BPAction action) {
         auto it = findByTile(tile);
         if (it != blueprints.end()) // replace
             *it = Blueprint(tile, presetID, rotation);
         else if (blueprints.size() < MAX_ELEMENTS) // emplace
-            blueprints.emplace_back(tile, presetID, rotation, 0);
+            blueprints.emplace_back(tile, presetID, rotation, action, (action == BPAction::build) ? 0 : 100);
     }
 
     void removeIfExists(const TileCoord tile) noexcept {
