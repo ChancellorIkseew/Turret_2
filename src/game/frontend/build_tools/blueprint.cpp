@@ -52,7 +52,7 @@ void Blueprints::drawInProgress(Renderer& renderer, const Presets& presets) cons
     for (const auto& blueprint : blueprints) {
         if (blueprint.progress < 1)
             continue;
-        const uint32_t color = 0xFF'FF'FF'4F + uint32_t(191.f * (float(blueprint.progress) / 100.f));
+        const uint32_t color = 0xFA'DC'86'4F + uint32_t(191.f * (float(blueprint.progress) / 100.f));
         drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
     }
 }

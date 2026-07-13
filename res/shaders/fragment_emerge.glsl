@@ -2,40 +2,31 @@
 //
 layout (location = 0) in vec2 outTexCoords;
 layout (location = 1) in vec4 outColor;
+layout (location = 2) in vec2 outLocalTex;
+flat layout (location = 3) in vec2 outBlockSize;
 //
 layout (location = 0) out vec4 finalScreenColor;
 //
 layout(binding = 0) uniform sampler2D textureAtlas;
 
-float pseudoRandom(vec2 co) {
-    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
-}
-
 void main() {
     float progress = outColor.a;
-
-    // 1. Получаем точный размер атласа в пикселях (например, vec2(2048.0, 2048.0))
-    vec2 atlasSize = vec2(textureSize(textureAtlas, 0));
-
-    // 2. Находим точные координаты текущего пикселя внутри атласа
-    vec2 pixelCoords = outTexCoords * atlasSize;
-
-    // 3. Задаем размер зерна хаоса в текстурных пикселях.
-    // floor(pixelCoords) — материализация пойдет строго по ОДНОМУ пикселю текстуры.
-    // floor(pixelCoords / 2.0) — материализация пойдет блоками 2х2 текстурных пикселя.
-    vec2 grainSize = floor(pixelCoords); 
+    vec2 localPixel = floor(outLocalTex);
+    vec2 center = (abs(outBlockSize) - vec2(1.0)) * 0.5;
+    float distanceToCenter = abs(localPixel.x - center.x) + abs(localPixel.y - center.y);
+    float maxDistance = (center.x + center.y) * 2.0;
+    float waveValue = distanceToCenter / maxDistance;
     
-    float noise = pseudoRandom(grainSize);
+    bool onBorder = localPixel.x == 0.0 || localPixel.y == 0.0 || 
+        localPixel.x >= abs(outBlockSize.x) - 1.0 || 
+        localPixel.y >= abs(outBlockSize.y) - 1.0;
 
-    if (noise > progress) {
+    float threshold = 1.0 - progress;
+    if (!onBorder && waveValue < threshold)
         discard;
-    }
-
     vec4 texColor = texture(textureAtlas, outTexCoords);
-    
-    if (noise > progress - 0.04) {
-        texColor.rgb += vec3(0.1, 0.5, 1.0); 
-    }
+    if (onBorder || waveValue < threshold + 0.04)
+        texColor = vec4(outColor.rgb, 0.6);
 
-    finalScreenColor = vec4(texColor.rgb, texColor.a);
+    finalScreenColor = texColor;
 }

@@ -10,6 +10,7 @@ struct Vertex {
     float x, y;     // position
     float u, v;     // texcoord
     uint32_t color; // ARGB
+    float tx, ty;   // local coords in texture rect
 };
 
 class RenderGeometry {
@@ -27,7 +28,7 @@ public:
         constexpr GLuint VERTEX_SLOT_0 = 0;
         constexpr GLint COMPONENTS_VEC2 = 2;
         constexpr GLint BUFFER_OFFSET_START = 0;
-        enum Loc : GLuint { position = 0, texcoord = 1, color = 2 };
+        enum Loc : GLuint { position = 0, texcoord = 1, color = 2, local_tex = 3 };
 
         glCreateVertexArrays(1, &vao);
         glCreateBuffers(1, &vbo);
@@ -50,6 +51,10 @@ public:
         glEnableVertexArrayAttrib(vao, Loc::color);
         glVertexArrayAttribFormat(vao, Loc::color, GL_BGRA, GL_UNSIGNED_BYTE, GL_TRUE, offsetof(Vertex, color));
         glVertexArrayAttribBinding(vao, Loc::color, VERTEX_SLOT_0);
+        //
+        glEnableVertexArrayAttrib(vao, Loc::local_tex);
+        glVertexArrayAttribFormat(vao, Loc::local_tex, COMPONENTS_VEC2, GL_FLOAT, GL_FALSE, offsetof(Vertex, tx));
+        glVertexArrayAttribBinding(vao, Loc::local_tex, VERTEX_SLOT_0);
 
         vertexAccumulator.reserve(MAX_VERTICES);
         std::vector<unsigned int> indices;
@@ -116,6 +121,11 @@ public:
         quad[1].color = colorARGB;
         quad[2].color = colorARGB;
         quad[3].color = colorARGB;
+
+        quad[0].tx = -size.x; quad[0].ty = -size.y;
+        quad[1].tx =  size.x; quad[1].ty = -size.y;
+        quad[2].tx =  size.x; quad[2].ty =  size.y;
+        quad[3].tx = -size.x; quad[3].ty =  size.y;
 
         vertexAccumulator.insert(vertexAccumulator.end(), quad, quad + 4);
     }
