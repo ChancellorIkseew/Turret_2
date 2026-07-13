@@ -59,14 +59,15 @@ struct Block {
 };
 
 struct InProgress : Block {
-    enum class BP1Action : uint8_t { build, demolish };
-    BP1Action action = BP1Action::build;
+    enum class BPAction : uint8_t { build, demolish };
+    BPAction action = BPAction::build;
     BlockRot rotation = none;
     int8_t progress = 0;
     //
     virtual BlockType getType() const noexcept final { return BlockType::in_progress; }
     virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
     void drawInProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const;
+    bool progressFull() { return action == BPAction::build ? progress >= 100 : progress <= 0; }
 };
 
 struct CoreBlock : Block {

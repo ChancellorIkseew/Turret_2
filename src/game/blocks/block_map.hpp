@@ -91,6 +91,7 @@ public:
     bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }
     bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type != BlockType::air; }
     bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type == BlockType::air; }
+    bool isInProgress(TileCoord tile) const noexcept { return contains(tile) && at(tile).type == BlockType::in_progress; }
     //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
         if (block->getType() == BlockType::turret) {

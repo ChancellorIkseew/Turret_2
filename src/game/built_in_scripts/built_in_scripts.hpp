@@ -21,6 +21,7 @@ public:
 
     void spawnMob(const MobPresetID presetID, const PixelCoord position, const TeamID teamID);
     void placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, BlockRot rotation);
+    void placeBlockInProgress(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, BlockRot rotation);
 private:
     t1_disable_copy_and_move(BuiltInScripts)
 };

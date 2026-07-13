@@ -17,7 +17,7 @@ void InProgress::drawInProgress(Renderer& renderer, const Presets& presets, Tile
     BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
 
 
-    const uint32_t baseColor = action == BP1Action::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
+    const uint32_t baseColor = action == BPAction::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
     const uint32_t color = baseColor + 0x4F + static_cast<uint32_t>(191.f * (float(progress) / 100.f));
     Blueprints::drawBlock(presets, renderer, tile, presetID, dstRotation, color, false);
 }
