@@ -90,19 +90,21 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
     for (int x = nStart.x; x <= nEnd.x; ++x) {
         for (int y = nStart.y; y <= nEnd.y; ++y) {
             const TileCoord tile(x, y);
-            if (blocks.isFilled(tile) && blueprints.isAir(tile)) {
-                const auto& block = blocks.at(tile).block;
-                const BlockRot rotation = block->getRotation() != none ? block->getRotation() : up;
-                blueprints.addOrReplace(tile, block->presetID, rotation);
-            }/*
             const Blueprint bp = blueprints.getBlock(tile);
             if (!blueprints.isAir(tile) && bp.action == BPAction::build) {
-                if (bp.progress > 0)
-                    blueprints.rejectBuild(tile);
-                else
-                    blueprints.removeIfExists(tile);
+                blueprints.removeIfExists(tile);
                 continue;
-            }*/
+            }
+
+            if (blocks.isFilled(tile) && blueprints.isAir(tile)) {
+                const auto& block = blocks.at(tile).block;
+                if (block->getType() == BlockType::in_progress)
+                    static_cast<InProgress*>(block.get())->action = BPAction::demolish;
+                else {
+                    const BlockRot rotation = block->getRotation() != none ? block->getRotation() : up;
+                    blueprints.addOrReplace(tile, block->presetID, rotation, BPAction::demolish);
+                }
+            }
         }
     }
 }
@@ -110,7 +112,7 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
 void GBuildTools::buildDraft(World& world, const TileData tileData) const {
     for (const TileCoord tile : draft) {
         if (world.getBlocks().isAir(tile))
-            world.getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation);
+            world.getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation, BPAction::build);
     }
 }
 

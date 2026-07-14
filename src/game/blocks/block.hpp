@@ -15,6 +15,8 @@ struct ItemStack {
     uint8_t count = 0;
 };
 
+enum class BPAction : uint8_t { build, demolish };
+
 // order of types does mater
 enum class BlockType {
     air,
@@ -59,7 +61,6 @@ struct Block {
 };
 
 struct InProgress : Block {
-    enum class BPAction : uint8_t { build, demolish };
     BPAction action = BPAction::build;
     BlockRot rotation = none;
     int8_t progress = 0;

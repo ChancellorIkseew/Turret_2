@@ -49,9 +49,11 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             const auto aim = std::min_element(aims.begin(), aims.end(), Aim::closest);
             const TileCoord targetTile = t1::tile(aim->position);
             InProgress* block = static_cast<InProgress*>(blocks.at(targetTile).block.get());
-            block->progress += mobPreset.buildSpeed;
-            if (block->progressFull())
+            block->progress += block->action == BPAction::build ? mobPreset.buildSpeed : -mobPreset.buildSpeed;
+            if (block->progressFull() && block->action == BPAction::build)
                 scripts.placeBlock(block->presetID, targetTile, soa.teamID[i], block->rotation);
+            if (block->progressFull() && block->action == BPAction::demolish)
+                blocks.demolish(targetTile);
             soa.angle[i] = t1::atan(aim->position - position);
             aims.clear();
             continue;
@@ -62,7 +64,8 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             continue;
         const PixelCoord tileCenter = t1::tileCenter(bp->tile);
         if (t1::areCloserCircle(tileCenter, position, RANGE)) {
-            scripts.placeBlockInProgress(bp->presetID, bp->tile, soa.teamID[i], bp->rotation);
+            blocks.demolish(bp->tile);
+            scripts.placeBlockInProgress(bp->presetID, bp->tile, soa.teamID[i], bp->rotation, bp->action);
             blueprints.removeIfExists(bp->tile);
             soa.angle[i] = t1::atan(tileCenter - position);
         }
