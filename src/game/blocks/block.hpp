@@ -68,7 +68,9 @@ struct InProgress : Block {
     virtual BlockType getType() const noexcept final { return BlockType::in_progress; }
     virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
     void drawInProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const;
-    bool progressFull() { return action == BPAction::build ? progress >= 100 : progress <= 0; }
+    //
+    void increeseProgress(const uint8_t step) noexcept { progress += (action == BPAction::build) ? step : -step; }
+    bool isProgressFull() const noexcept { return (action == BPAction::build) ? progress >= 100 : progress <= 0; }
 };
 
 struct CoreBlock : Block {

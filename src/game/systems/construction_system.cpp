@@ -49,11 +49,13 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             const auto aim = std::min_element(aims.begin(), aims.end(), Aim::closest);
             const TileCoord targetTile = t1::tile(aim->position);
             InProgress* block = static_cast<InProgress*>(blocks.at(targetTile).block.get());
-            block->progress += block->action == BPAction::build ? mobPreset.buildSpeed : -mobPreset.buildSpeed;
-            if (block->progressFull() && block->action == BPAction::build)
-                scripts.placeBlock(block->presetID, targetTile, soa.teamID[i], block->rotation);
-            if (block->progressFull() && block->action == BPAction::demolish)
-                blocks.demolish(targetTile);
+            block->increeseProgress(mobPreset.buildSpeed);
+            if (block->isProgressFull()) {
+                if(block->action == BPAction::build)
+                    scripts.placeBlock(block->presetID, targetTile, soa.teamID[i], block->rotation);
+                else /*BPAction::demolish*/
+                    blocks.demolish(targetTile);
+            }
             soa.angle[i] = t1::atan(aim->position - position);
             aims.clear();
             continue;
