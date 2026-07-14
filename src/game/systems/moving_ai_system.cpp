@@ -1,5 +1,6 @@
 #include "ai_system.hpp"
 //
+#include <span>
 #include "engine/assets/presets.hpp"
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
@@ -34,26 +35,17 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
     }
 }
 
-struct Aim {
-    float squareDistance;
-    PixelCoord position;
-    //
-    static constexpr bool closest(const Aim first, const Aim second) {
-        return first.squareDistance < second.squareDistance;
-    }
-};
-
 static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size_t index, Blueprints& blueprints, BlockMap& blocks) {
     auto& aiData = soa.motionData[index];
-    const auto& inProgress = blocks.getMeta().getBlocksInProgress();
+    const std::span<const TileCoord> inProgress = blocks.getMeta().getBlocksInProgress();
     const TileCoord mobTile = t1::tile(soa.position[index]);
 
     int minSqrDistance = std::numeric_limits<int>::max();
     std::optional<TileCoord> closest;
     for (TileCoord tile : inProgress) {
-        const int sqrDistance = t1::pow2i(tile.x - mobTile.x) + t1::pow2i(tile.y - mobTile.y);
-        if (sqrDistance < minSqrDistance) {
-            minSqrDistance = sqrDistance;
+        const int sqDistance = t1::squareDistance(tile, mobTile);
+        if (sqDistance < minSqrDistance) {
+            minSqrDistance = sqDistance;
             closest = tile;
         }
     }
@@ -66,7 +58,6 @@ static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size
 
     if (closest.has_value())
         aiData.target = t1::tileCenter(closest.value());
-
     //
     if (t1::areCloserRect(aiData.target, soa.position[index], 64.f))
         soa.velocity[index] = NO_MOTION;
