@@ -32,14 +32,14 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     updateBlocks(blocks, world.getMap(), presets);
     shells::processShells(world, presets, worldSounds, camera);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
-    ai::updateMovingAI(mobs.getSoa(), presets, playerController, world.getBlueprints());
+    ai::updateMovingAI(mobs.getSoa(), presets, playerController, world.getBlueprints(), blocks);
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
     turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     particles::updateParticles(particles);
     // Build when spans are used and can be spoiled.
-    construction::buildBlueprints(mobs.getSoa(), presets, world.getBlueprints(), scripts);
+    construction::buildBlueprints(mobs.getSoa(), presets, world.getBlueprints(), scripts, blocks);
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets);
@@ -69,7 +69,7 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     world.getBlueprints().drawGhosts(renderer, presets, timeMs);
     //
     renderer.setShaderProgram(*shaders.emergeShader);
-    world.getBlueprints().drawInProgress(renderer, presets);
+    drawer.drawBlocksInProgress(world.getBlocks(), renderer, presets);
     //
     renderer.setShaderProgram(*shaders.baseShader);
     engine.getGUI().drawDiegeticElements(renderer);

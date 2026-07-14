@@ -11,6 +11,7 @@ void BlocksDrawer::drawShadows(const BlockMap& blocks, const Camera& camera, Ren
     const TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
 
     cashedTiles.clear();
+    inProgress.clear();
     itemPositions.clear();
     itemPresetIDs.clear();
     //
@@ -40,5 +41,11 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Presets& presets, Renderer
         TextureRect textureRect = presets.getItem(itemPresetID).textureRect;
         renderer.draw(textureRect, itemPositions[i], ITEM_SIZE);
         ++i;
+    }
+}
+
+void BlocksDrawer::drawInProgress(const BlockMap& blocks, const Presets& presets, Renderer& renderer) {
+    for (const auto& tile : inProgress) {
+        static_cast<InProgress*>(blocks.at(tile).block.get())->drawInProgress(renderer, presets, tile);
     }
 }

@@ -11,6 +11,7 @@
 class BlocksMeta {
     TurretsPool turrets;
     std::vector<size_t> markedForRemove;
+    std::vector<TileCoord> blocksInProgress;
     std::optional<TileCoord> core;
 public:
     BlocksMeta() : turrets(64) {}
@@ -38,6 +39,18 @@ public:
 
     std::optional<TileCoord> getCore() const noexcept { return core; }
     void setCorePosition(const std::optional<TileCoord> tile) { core = tile; }
+
+    const auto& getBlocksInProgress() { return blocksInProgress; }
+    void addBlockInProgress(const TileCoord tile) {
+        auto it = std::find(blocksInProgress.begin(), blocksInProgress.end(), tile);
+        if (it == blocksInProgress.end())
+            blocksInProgress.push_back(tile);
+    }
+    void removeBlockInProgress(const TileCoord tile) {
+        auto it = std::find(blocksInProgress.begin(), blocksInProgress.end(), tile);
+        if (it != blocksInProgress.end())
+            blocksInProgress.erase(it);
+    }
 };
 
 constexpr TeamID INVALID_TEAM_ID = IDManager<TeamID>::INVALID_ID;
@@ -91,8 +104,10 @@ public:
     bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }
     bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type != BlockType::air; }
     bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type == BlockType::air; }
+    bool isInProgress(TileCoord tile) const noexcept { return contains(tile) && at(tile).type == BlockType::in_progress; }
     //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
+        demolish(tile);
         if (block->getType() == BlockType::turret) {
             TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
             TurretPresetID preset = turretBlock->turretPreset;
@@ -101,6 +116,8 @@ public:
         }
         if (block->getType() == BlockType::core)
             meta.setCorePosition(tile);
+        if (block->getType() == BlockType::in_progress)
+            meta.addBlockInProgress(tile);
         at(tile).place(teamID, block);
     }
     void demolish(TileCoord tile) {
@@ -108,8 +125,11 @@ public:
             meta.markForRemove(tile);
         if (at(tile).type == BlockType::core)
             meta.setCorePosition(std::nullopt);
+        if (at(tile).type == BlockType::in_progress)
+            meta.removeBlockInProgress(tile);
         at(tile).demolish();
     }
+    void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
 
     t1_disable_copy_and_move(BlockMap)
 };

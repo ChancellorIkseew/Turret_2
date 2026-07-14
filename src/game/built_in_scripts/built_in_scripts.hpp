@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/assets/preset_defs.hpp"
 #include "engine/coords/pixel_coord.hpp"
+#include "game/blocks/block.hpp"
 #include "game/common/physics_base.hpp"
 
 class Assets;
@@ -20,7 +21,9 @@ public:
     void respawnShuttle();
 
     void spawnMob(const MobPresetID presetID, const PixelCoord position, const TeamID teamID);
-    void placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, BlockRot rotation);
+    void placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, const BlockRot rotation);
+    void placeBlockInProgress(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID,
+        const BlockRot rotation, const BPAction action);
 private:
     t1_disable_copy_and_move(BuiltInScripts)
 };

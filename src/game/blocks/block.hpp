@@ -15,9 +15,12 @@ struct ItemStack {
     uint8_t count = 0;
 };
 
+enum class BPAction : uint8_t { build, demolish };
+
 // order of types does mater
 enum class BlockType {
     air,
+    in_progress,
     wall,
     belt,
     bridge,
@@ -55,6 +58,19 @@ struct Block {
     virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
     virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return false; }
     virtual void accept(ItemPresetID item, BlockRot srcRot) {}
+};
+
+struct InProgress : Block {
+    BPAction action = BPAction::build;
+    BlockRot rotation = none;
+    int8_t progress = 0;
+    //
+    virtual BlockType getType() const noexcept final { return BlockType::in_progress; }
+    virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
+    void drawInProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const;
+    //
+    void increeseProgress(const uint8_t step) noexcept { progress += (action == BPAction::build) ? step : -step; }
+    bool isProgressFull() const noexcept { return (action == BPAction::build) ? progress >= 100 : progress <= 0; }
 };
 
 struct CoreBlock : Block {

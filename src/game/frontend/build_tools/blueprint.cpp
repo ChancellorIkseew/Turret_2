@@ -42,17 +42,9 @@ void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const ui
     const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
     const uint32_t color = 0xFF'FF'FF'00 + alpha;
     for (const auto& blueprint : blueprints) {
-        if (blueprint.progress > 0)
-            continue;
-        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
-    }
-}
-
-void Blueprints::drawInProgress(Renderer& renderer, const Presets& presets) const {
-    for (const auto& blueprint : blueprints) {
-        if (blueprint.progress < 1)
-            continue;
-        const uint32_t color = 0xFA'DC'86'4F + uint32_t(191.f * (float(blueprint.progress) / 100.f));
-        drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
+        if (blueprint.action == BPAction::build)
+            drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
+        else
+            renderer.drawRect(t1::pixel(blueprint.tile), {32, 32}, {0, 0}, 0.f, 0x84'34'34'C8); //TODO: demolition frame;
     }
 }

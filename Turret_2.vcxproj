@@ -206,6 +206,7 @@
     <ClCompile Include="src\engine\window\input\input.cpp" />
     <ClCompile Include="src\engine\window\window.cpp" />
     <ClCompile Include="src\game\blocks\block.cpp" />
+    <ClCompile Include="src\game\blocks\block_map.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\belt.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\drill.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\intersection.cpp" />

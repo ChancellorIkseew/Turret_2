@@ -28,6 +28,9 @@ namespace t1 {
 
     /*no inline*/ int ceilUpPow2(const int value) noexcept;
 
+    t1_finline_cxpr int squareDistance(const TileCoord first, const TileCoord second) noexcept {
+        return pow2i(first.x - second.x) + pow2i(first.y - second.y);
+    }
     t1_finline_cxpr float squareDistance(const PixelCoord first, const PixelCoord second) noexcept {
         return pow2f(first.x - second.x) + pow2f(first.y - second.y);
     }

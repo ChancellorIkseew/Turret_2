@@ -1,8 +1,10 @@
 #include "ai_system.hpp"
 //
+#include <span>
 #include "engine/assets/presets.hpp"
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
+#include "game/blocks/block_map.hpp"
 #include "game/entities/mobs_pool.hpp"
 #include "game/frontend/build_tools/blueprint.hpp"
 #include "game/player/player_controller.hpp"
@@ -33,13 +35,29 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
     }
 }
 
-static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size_t index, Blueprints& blueprints) {
+static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size_t index, Blueprints& blueprints, BlockMap& blocks) {
     auto& aiData = soa.motionData[index];
-    Blueprint* targetBlueprint = blueprints.getClosest(t1::tile(soa.position[index]));
+    const std::span<const TileCoord> inProgress = blocks.getMeta().getBlocksInProgress();
+    const TileCoord mobTile = t1::tile(soa.position[index]);
+
+    int minSqrDistance = std::numeric_limits<int>::max();
+    std::optional<TileCoord> closest;
+    for (TileCoord tile : inProgress) {
+        const int sqDistance = t1::squareDistance(tile, mobTile);
+        if (sqDistance < minSqrDistance) {
+            minSqrDistance = sqDistance;
+            closest = tile;
+        }
+    }
+
+    Blueprint* targetBlueprint = blueprints.getClosest(mobTile);
     if (targetBlueprint)
         aiData.target = t1::tileCenter(targetBlueprint->tile);
     else
         aiData.target = soa.position[index];
+
+    if (closest.has_value())
+        aiData.target = t1::tileCenter(closest.value());
     //
     if (t1::areCloserRect(aiData.target, soa.position[index], 64.f))
         soa.velocity[index] = NO_MOTION;
@@ -51,7 +69,7 @@ static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size
     }
 }
 
-void ai::updateMovingAI(MobSoA& soa, const Presets& presets, const PlayerController& playerController, Blueprints& blueprints) {
+void ai::updateMovingAI(MobSoA& soa, const Presets& presets, const PlayerController& playerController, Blueprints& blueprints, BlockMap& blocks) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         switch (soa.motionData[i].aiType) {
@@ -62,7 +80,7 @@ void ai::updateMovingAI(MobSoA& soa, const Presets& presets, const PlayerControl
             updateBasic(soa, presets, i);
             break;
         case MovingAI::builder:
-            updateBuilder(soa, presets, i, blueprints);
+            updateBuilder(soa, presets, i, blueprints, blocks);
             break;
         }
     }

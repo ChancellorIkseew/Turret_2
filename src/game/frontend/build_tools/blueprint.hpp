@@ -10,9 +10,9 @@ struct Blueprint {
     TileCoord tile;
     BlockPresetID presetID = BlockPresetID(0);
     BlockRot rotation = BlockRot::up;
-    uint8_t progress = 0;
+    BPAction action = BPAction::build;
 
-    bool operator==(const TileCoord& otherTile) const noexcept {
+    constexpr bool operator==(const TileCoord& otherTile) const noexcept {
         return tile == otherTile;
     }
 };
@@ -25,12 +25,12 @@ class Blueprints {
         return std::find(blueprints.begin(), blueprints.end(), tile);
     }
 public:
-    void addOrReplace(const TileCoord tile, const BlockPresetID presetID, const BlockRot rotation) {
+    void addOrReplace(const TileCoord tile, const BlockPresetID presetID, const BlockRot rotation, const BPAction action) {
         auto it = findByTile(tile);
         if (it != blueprints.end()) // replace
-            *it = Blueprint(tile, presetID, rotation);
+             *it = Blueprint(tile, presetID, rotation, action);
         else if (blueprints.size() < MAX_ELEMENTS) // emplace
-            blueprints.emplace_back(tile, presetID, rotation, 0);
+            blueprints.emplace_back(tile, presetID, rotation, action);
     }
 
     void removeIfExists(const TileCoord tile) noexcept {
@@ -67,7 +67,6 @@ public:
     }
 
     void drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const;
-    void drawInProgress(Renderer& renderer, const Presets& presets) const;
     bool empty() const noexcept { return blueprints.empty(); }
 
     static void drawRange(Renderer& renderer, const PixelCoord center, const float range);

@@ -16,6 +16,7 @@ public:
 private:
     void usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile);
     void demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprints, const TileCoord start, const TileCoord end) const;
+    void rejectDemolition(BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) const;
     void buildDraft(World& world, const TileData tileData) const;
     //
     void updateDraft(const TileCoord start, TileCoord target);
