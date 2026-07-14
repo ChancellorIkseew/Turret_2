@@ -61,6 +61,8 @@ void GBuildTools::update(Engine& engine) {
         demolish(map, blocks, blueprints, optDemolishStart.value(), targetTile);
         optDemolishStart.reset();
     }
+    if (input.jactive(Build_Shoot) && !optTileData)
+        rejectDemolition(blocks, blueprints, targetTile);
 }
 
 void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) {
@@ -107,6 +109,13 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
             }
         }
     }
+}
+
+void GBuildTools::rejectDemolition(BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) const {
+    if (blueprints.getBlock(tile).action == BPAction::demolish)
+        blueprints.removeIfExists(tile);
+    if (blocks.isInProgress(tile))
+        static_cast<InProgress*>(blocks.at(tile).block.get())->action = BPAction::build;
 }
 
 void GBuildTools::buildDraft(World& world, const TileData tileData) const {
