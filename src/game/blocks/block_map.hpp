@@ -107,7 +107,7 @@ public:
     bool isInProgress(TileCoord tile) const noexcept { return contains(tile) && at(tile).type == BlockType::in_progress; }
     //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
-        meta.removeBlockInProgress(tile);
+        demolish(tile);
         if (block->getType() == BlockType::turret) {
             TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
             TurretPresetID preset = turretBlock->turretPreset;
@@ -125,8 +125,11 @@ public:
             meta.markForRemove(tile);
         if (at(tile).type == BlockType::core)
             meta.setCorePosition(std::nullopt);
+        if (at(tile).type == BlockType::in_progress)
+            meta.removeBlockInProgress(tile);
         at(tile).demolish();
     }
+    void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
 
     t1_disable_copy_and_move(BlockMap)
 };
