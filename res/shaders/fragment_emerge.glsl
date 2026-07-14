@@ -14,7 +14,7 @@ void main() {
     vec2 localPixel = floor(outLocalTex);
     vec2 center = (abs(outBlockSize) - vec2(1.0)) * 0.5;
     float distanceToCenter = abs(localPixel.x - center.x) + abs(localPixel.y - center.y);
-    float maxDistance = (center.x + center.y) * 2.0;
+    float maxDistance = (center.x + center.y);
     float waveValue = distanceToCenter / maxDistance;
     
     bool onBorder = localPixel.x == 0.0 || localPixel.y == 0.0 || 
@@ -25,7 +25,7 @@ void main() {
     if (!onBorder && waveValue < threshold)
         discard;
     vec4 texColor = texture(textureAtlas, outTexCoords);
-    if (onBorder || waveValue < threshold + 0.04)
+    if (onBorder || waveValue < threshold + 0.08)
         texColor = vec4(outColor.rgb, 0.6);
 
     finalScreenColor = texColor;

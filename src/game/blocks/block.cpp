@@ -14,11 +14,12 @@ void InProgress::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord t
 }
 
 void InProgress::drawInProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const {
-    BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
-
-
+    const BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
+    const float ratio = std::clamp(static_cast<float>(progress) / 100.f, 0.f, 1.f);
+    const uint32_t fillAmount = static_cast<uint32_t>(255.f * ratio);
+    //
     const uint32_t baseColor = action == BPAction::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
-    const uint32_t color = baseColor + 0x4F + static_cast<uint32_t>(191.f * (float(progress) / 100.f));
+    const uint32_t color = baseColor | fillAmount;
     Blueprints::drawBlock(presets, renderer, tile, presetID, dstRotation, color, false);
 }
 
