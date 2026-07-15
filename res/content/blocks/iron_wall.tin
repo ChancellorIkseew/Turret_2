@@ -8,4 +8,4 @@ frame_order=0
 #logic
 archetype=wall
 rotatable=false
-health=100
+health=350
