@@ -2,21 +2,21 @@
 #include <memory>
 #include "engine_command.hpp"
 #include "engine/assets/assets.hpp"
-#include "engine/scripting/scripting.hpp"
 #include "engine/window/window.hpp"
 #include "game/generation/generation.hpp"
 
 class GameSession;
 class GUI;
+class ScriptsHandler;
 
 class Engine {
     MainWindow mainWindow;
     Assets assets;
-    ScriptsHandler scriptsHandler;
     WorldProperties worldProperties;
     std::string worldFolder;
     EngineCommand command = EngineCommand::main_menu;
     std::unique_ptr<GameSession> session;
+    std::unique_ptr<ScriptsHandler> scriptsHandler;
 public:
     Engine(const std::string& windowTitle, const PixelCoord windowSize);
     ~Engine();
