@@ -6,7 +6,7 @@
 #include "game/world_drawer/blocks_drawer.hpp"
 
 void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
-    renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC);
+    renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC * static_cast<float>(size));
 }
 
 void InProgress::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {

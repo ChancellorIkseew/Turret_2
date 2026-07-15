@@ -23,6 +23,7 @@ enum class BlockType {
     air,
     in_progress,
     wall,
+    link,
     belt,
     bridge,
     drill,
@@ -51,6 +52,7 @@ static constexpr TileCoord DIR_VECS[] = {
 struct Block {
     Health health = 0;
     BlockPresetID presetID = BlockPresetID(0);
+    int size = 1;
     TextureRect textureRect = NULL_TEXTURE_RECT;
     //
     virtual ~Block() = default;
@@ -59,6 +61,19 @@ struct Block {
     virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
     virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return false; }
     virtual void accept(ItemPresetID item, BlockRot srcRot) {}
+};
+
+struct LinkBlock : Block {
+    TileCoord masterTile;
+    Block* master = nullptr;
+    //
+    LinkBlock(TileCoord masterTile, Block* master) : masterTile(masterTile), master(master) {}
+    t1_derived BlockType getType() const noexcept final { return BlockType::link; }
+    t1_derived BlockRot getRotation() const noexcept { return master->getRotation(); }
+    //
+    t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final {}
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { master->canAccept(item, srcRot); };
+    t1_derived void accept(ItemPresetID item, BlockRot srcRot) final { master->accept(item, srcRot); };
 };
 
 struct InProgress : Block {
