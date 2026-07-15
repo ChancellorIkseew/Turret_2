@@ -82,6 +82,40 @@ public:
         return vertexAccumulator.size() >= MAX_VERTICES;
     }
 
+    void addIrregularQuad(const TextureRect& textureRect,
+        const PixelCoord p0, const PixelCoord p1,
+        const PixelCoord p2, const PixelCoord p3,
+        const uint32_t colorRGBA)
+    {
+        Vertex quad[4];
+
+        quad[0].x = p0.x; quad[0].y = p0.y;
+        quad[1].x = p1.x; quad[1].y = p1.y;
+        quad[2].x = p2.x; quad[2].y = p2.y;
+        quad[3].x = p3.x; quad[3].y = p3.y;
+
+        float uMax = textureRect.x + textureRect.w;
+        float vMax = textureRect.y + textureRect.h;
+
+        quad[0].u = textureRect.x; quad[0].v = textureRect.y;
+        quad[1].u = uMax;          quad[1].v = textureRect.y;
+        quad[2].u = uMax;          quad[2].v = vMax;
+        quad[3].u = textureRect.x; quad[3].v = vMax;
+
+        const uint32_t colorARGB = std::rotr(colorRGBA, 8);
+        quad[0].color = colorARGB;
+        quad[1].color = colorARGB;
+        quad[2].color = colorARGB;
+        quad[3].color = colorARGB;
+
+        quad[0].tx = p0.x; quad[0].ty = p0.y; // World positions,
+        quad[1].tx = p1.x; quad[1].ty = p1.y; // not local coords
+        quad[2].tx = p2.x; quad[2].ty = p2.y; // in texture rect.
+        quad[3].tx = p3.x; quad[3].ty = p3.y;
+
+        vertexAccumulator.insert(vertexAccumulator.end(), quad, quad + 4);
+    }
+
     void addQuad(const TextureRect& textureRect,
         const PixelCoord position, const PixelCoord size,
         const PixelCoord origin, const float angleRad,

@@ -110,17 +110,20 @@ void Renderer::setVSyncMode(const VSyncMode mode) {
     vSyncMode = VSyncMode(newMode);
 }
 
-void Renderer::draw(const Texture2D& texture2D, const TextureRect& textureRect,
-    const PixelCoord position, const PixelCoord size,
-    const PixelCoord origin, const float angleRad, const uint32_t color)
-{
-    if (texture2D.getID() != currentTextureID || batchGeometry->isFull()) {
-        batchGeometry->flush();
+static inline void prepareDraw(const Texture2D& texture2D, unsigned int& currentTextureID, RenderGeometry& batchGeometry) {
+    if (texture2D.getID() != currentTextureID || batchGeometry.isFull()) {
+        batchGeometry.flush();
         currentTextureID = texture2D.getID();
         constexpr unsigned int SLOT = 0;
         glBindTextureUnit(SLOT, currentTextureID);
     }
+}
 
+void Renderer::draw(const Texture2D& texture2D, const TextureRect& textureRect,
+    const PixelCoord position, const PixelCoord size,
+    const PixelCoord origin, const float angleRad, const uint32_t color)
+{
+    prepareDraw(texture2D, currentTextureID, *batchGeometry);
     batchGeometry->addQuad(textureRect, position, size, origin, angleRad, color);
 }
 
@@ -135,6 +138,12 @@ void Renderer::drawRect(const PixelCoord position, const PixelCoord size,
     const PixelCoord origin, const float angleRad, const uint32_t color)
 {
     draw(atlasTexture.value(), whiteRect, position, size, origin, angleRad, color);
+}
+
+void Renderer::drawIrregularQuad(const PixelCoord p0, const PixelCoord p1,
+    const PixelCoord p2, const PixelCoord p3, const uint32_t color) {
+    prepareDraw(atlasTexture.value(), currentTextureID, *batchGeometry);
+    batchGeometry->addIrregularQuad(whiteRect, p0, p1, p2, p3, color);
 }
 
 void Renderer::createAtlasTexture(SDL_Surface* sdlSurface) {

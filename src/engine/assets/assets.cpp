@@ -39,5 +39,6 @@ void Assets::load(Renderer& renderer) {
     shaders.squareShadowShader.emplace(path / "vertex_lighting.glsl", path / "fragment_shadow.glsl", Pipeline(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, false));
     shaders.emergeShader.emplace(path / "vertex.glsl", path / "fragment_emerge.glsl", Pipeline());
     shaders.shieldShader.emplace(path / "vertex.glsl", path / "fragment_shield.glsl", Pipeline());
+    shaders.buildBeamShader.emplace(path / "vertex.glsl", path / "fragment_build_beam.glsl", Pipeline());
     shaders.uiShader.emplace(path / "vertex.glsl", path / "fragment_ui.glsl", Pipeline());
 }

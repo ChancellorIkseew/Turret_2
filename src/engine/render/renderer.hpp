@@ -54,6 +54,9 @@ public:
     void drawRect(const PixelCoord position, const PixelCoord size,
         const PixelCoord origin, const float angleRad, const uint32_t color);
 
+    void drawIrregularQuad(const PixelCoord p0, const PixelCoord p1,
+        const PixelCoord p2, const PixelCoord p3, const uint32_t color);
+
     void createAtlasTexture(SDL_Surface* sdlSurface);
     void setWhiteRect(const TextureRect rect) { whiteRect = rect; }
     //

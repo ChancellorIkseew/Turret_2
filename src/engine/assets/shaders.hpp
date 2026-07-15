@@ -10,5 +10,6 @@ public:
     std::optional<ShaderProgram> squareShadowShader;
     std::optional<ShaderProgram> emergeShader;
     std::optional<ShaderProgram> shieldShader;
+    std::optional<ShaderProgram> buildBeamShader;
     std::optional<ShaderProgram> uiShader;
 };
