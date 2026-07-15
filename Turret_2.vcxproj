@@ -111,6 +111,7 @@
     <ClInclude Include="src\game\common\physics_base.hpp" />
     <ClInclude Include="src\game\common\team.hpp" />
     <ClInclude Include="src\game\common\teams_pool.hpp" />
+    <ClInclude Include="src\game\entities\build_beams.hpp" />
     <ClInclude Include="src\game\entities\chunk_grid.hpp" />
     <ClInclude Include="src\game\entities\mobs_pool.hpp" />
     <ClInclude Include="src\game\entities\particles_pool.hpp" />
@@ -213,6 +214,7 @@
     <ClCompile Include="src\game\blocks\logic_detail\router.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
     <ClCompile Include="src\game\common\mob_ai.cpp" />
+    <ClCompile Include="src\game\entities\build_beams.cpp" />
     <ClCompile Include="src\game\entities\chunk_grid.cpp" />
     <ClCompile Include="src\game\entities\mobs_pool.cpp" />
     <ClCompile Include="src\game\entities\particles_pool.cpp" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "game/blocks/block_map.hpp"
 #include "game/common/teams_pool.hpp"
+#include "game/entities/build_beams.hpp"
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mobs_pool.hpp"
 #include "game/entities/particles_pool.hpp"
@@ -18,6 +19,7 @@ class World {
     ShellsPool shells;
     ParticlesPool particles;
     Blueprints blueprints;
+    BuildBeamsPool buildBeams;
 public:
     World(WorldMap& map) :
         blocks(map.getSize()),
@@ -40,4 +42,5 @@ public:
     ShellsPool& getShells() noexcept { return shells; }
     ParticlesPool& getParticles() noexcept { return particles; }
     Blueprints& getBlueprints() noexcept { return blueprints; }
+    BuildBeamsPool& getBuildBems() noexcept { return buildBeams; }
 };

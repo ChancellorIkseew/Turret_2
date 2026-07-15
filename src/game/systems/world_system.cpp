@@ -28,6 +28,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     auto mobTurrets = fromMobs(mobs.getSoa());
     auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
     //
+    world.getBuildBems().clear();
     chunks.update(mobs.getSoa());
     updateBlocks(blocks, world.getMap(), presets);
     shells::processShells(world, presets, worldSounds, camera);
@@ -39,7 +40,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     particles::updateParticles(particles);
     // Build when spans are used and can be spoiled.
-    construction::buildBlueprints(mobs.getSoa(), presets, world.getBlueprints(), scripts, blocks);
+    construction::buildBlueprints(mobs.getSoa(), presets, world.getBlueprints(), scripts, blocks, world.getBuildBems());
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets);
@@ -82,6 +83,9 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     renderer.setShaderProgram(*shaders.additiveLightShader);
     shells::drawShellsLighting(world.getShells().getSoa(), presets, camera, renderer);
     drawLightParticles(camera, renderer, world.getParticles().getSoa());
+    //
+    renderer.setShaderProgram(*shaders.buildBeamShader);
+    world.getBuildBems().draw(renderer, tickCount);
 }
 
 void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile) {

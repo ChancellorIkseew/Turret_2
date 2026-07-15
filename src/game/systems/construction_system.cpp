@@ -3,6 +3,7 @@
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "game/blocks/block_map.hpp"
+#include "game/entities/build_beams.hpp"
 #include "game/entities/mobs_pool.hpp"
 #include "game/frontend/build_tools/blueprint.hpp"
 #include "game/built_in_scripts/built_in_scripts.hpp"
@@ -16,7 +17,8 @@ struct Aim {
     }
 };
 
-void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints, BuiltInScripts& scripts, BlockMap& blocks) {
+void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints,
+    BuiltInScripts& scripts, BlockMap& blocks, BuildBeamsPool& buildBeams) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
         if (!mobPreset.canBuild)
@@ -49,7 +51,10 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             const auto aim = std::min_element(aims.begin(), aims.end(), Aim::closest);
             const TileCoord targetTile = t1::tile(aim->position);
             soa.angle[i] = t1::atan(aim->position - position);
+            const BPAction action = static_cast<InProgress*>(blocks.at(targetTile).block.get())->action; //temp
+            const uint32_t color = (action == BPAction::build) ? 0xFA'DC'86'00 : 0x84'34'34'00;
             blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets);
+            buildBeams.addBeam(position, targetTile, TileCoord(1, 1), color);
             aims.clear();
             continue;
         }
