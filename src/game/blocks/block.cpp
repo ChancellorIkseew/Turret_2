@@ -13,7 +13,7 @@ void InProgress::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord t
     blockDrawer.addInProgress(tile);
 }
 
-void InProgress::drawInProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const {
+void InProgress::drawProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const {
     const BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
     const float ratio = std::clamp(static_cast<float>(progress) / 100.f, 0.f, 1.f);
     const uint32_t fillAmount = static_cast<uint32_t>(255.f * ratio);

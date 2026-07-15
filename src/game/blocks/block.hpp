@@ -3,6 +3,7 @@
 #include "engine/coords/tile_coord.hpp"
 #include "engine/render/texture_rect.hpp"
 #include "game/common/physics_base.hpp"
+#define t1_derived
 
 class BlocksDrawer;
 class BlockMap;
@@ -65,24 +66,22 @@ struct InProgress : Block {
     BlockRot rotation = none;
     int8_t progress = 0;
     //
-    virtual BlockType getType() const noexcept final { return BlockType::in_progress; }
-    virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
-    void drawInProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const;
+    t1_derived BlockType getType() const noexcept final { return BlockType::in_progress; }
+    t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
+    void drawProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const;
     //
     void increeseProgress(const uint8_t step) noexcept { progress += (action == BPAction::build) ? step : -step; }
     bool isProgressFull() const noexcept { return (action == BPAction::build) ? progress >= 100 : progress <= 0; }
 };
 
 struct CoreBlock : Block {
-    virtual ~CoreBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::core; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::core; }
 };
 
 struct DrillBlock : Block {
     uint8_t itemPerTick;
     TickCount restReloadTime;
-    virtual ~DrillBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::drill; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::drill; }
 public: //
     void mine(TickCount deltaTick) {
 
@@ -106,13 +105,12 @@ struct BeltBlock : Block {
     static constexpr int8_t CAPACITY = 3;
     //
     BeltBlock(BlockRot rotation) : rotation(rotation) {}
-    virtual ~BeltBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::belt; }
-    virtual BlockRot getRotation() const noexcept final { return rotation; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::belt; }
+    t1_derived BlockRot getRotation() const noexcept final { return rotation; }
     //
-    virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
-    virtual bool canAccept(ItemPresetID item, BlockRot srcRot) final;
-    virtual void accept(ItemPresetID item, BlockRot srcRot) final;
+    t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final;
+    t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
     void update(TileCoord tile, const BlockMap& map);
 private:
     void moveItems();
@@ -120,8 +118,7 @@ private:
 };
 
 struct FactoryBlock : Block {
-    virtual ~FactoryBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::factory; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::factory; }
 };
 
 struct TurretBlock : Block {
@@ -130,8 +127,7 @@ struct TurretBlock : Block {
     //
     TurretBlock(TurretPresetID turretPreset, BlockRot rotation) :
         turretPreset(turretPreset), defaultRotation(rotation) {}
-    virtual ~TurretBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::turret; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::turret; }
 };
 
 struct IntersectionBlock : Block {
@@ -141,26 +137,25 @@ struct IntersectionBlock : Block {
     };
     RotatedItem vertical, horizontal;
     //
-    virtual ~IntersectionBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::intersection; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::intersection; }
     //
-    virtual bool canAccept(ItemPresetID item, BlockRot srcRot);
-    virtual void accept(ItemPresetID item, BlockRot srcRot);
-    void provide(TileCoord tile, const BlockMap& map);
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final;
+    t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
+    t1_derived void provide(TileCoord tile, const BlockMap& map);
 };
 
 struct RouterBlock : Block {
     ItemStack inventory;
     //
-    virtual ~RouterBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::router; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::router; }
     //
-    virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return inventory.count == 0; }
-    virtual void accept(ItemPresetID item, BlockRot srcRot) { inventory.item = item; inventory.count = 1; }
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return inventory.count == 0; }
+    t1_derived void accept(ItemPresetID item, BlockRot srcRot) final { inventory.item = item; inventory.count = 1; }
     void provide(TileCoord tile, const BlockMap& map);
 };
 
 struct WallBlock : Block {
-    virtual ~WallBlock() final = default;
-    virtual BlockType getType() const noexcept final { return BlockType::wall; }
+    /*virt*/ BlockType getType() const noexcept final { return BlockType::wall; }
 };
+
+#undef t1_derived

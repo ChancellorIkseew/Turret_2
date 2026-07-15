@@ -46,6 +46,6 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Presets& presets, Renderer
 
 void BlocksDrawer::drawInProgress(const BlockMap& blocks, const Presets& presets, Renderer& renderer) {
     for (const auto& tile : inProgress) {
-        static_cast<InProgress*>(blocks.at(tile).block.get())->drawInProgress(renderer, presets, tile);
+        static_cast<InProgress*>(blocks.at(tile).block.get())->drawProgress(renderer, presets, tile);
     }
 }
