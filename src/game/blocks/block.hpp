@@ -68,7 +68,7 @@ struct LinkBlock : Block {
     Block* master = nullptr;
     //
     LinkBlock(TileCoord masterTile, Block* master) : masterTile(masterTile), master(master) {}
-    t1_derived BlockType getType() const noexcept final { return BlockType::link; }
+    t1_derived BlockType getType() const noexcept final { return master->getType(); }
     t1_derived BlockRot getRotation() const noexcept { return master->getRotation(); }
     //
     t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final {}

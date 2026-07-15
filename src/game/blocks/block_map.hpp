@@ -104,12 +104,13 @@ public:
     bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }
     bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type != BlockType::air; }
     bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type == BlockType::air; }
-    bool isInProgress(TileCoord tile) const noexcept { return contains(tile) && at(tile).type == BlockType::in_progress; }
+    bool isInProgress(TileCoord tile) const noexcept { return isFilled(tile) && at(tile).block->getType() == BlockType::in_progress; }
+    bool canPlace(const TileCoord tile, const int size) const noexcept;
     //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block);
     void demolish(TileCoord tile);
     void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
-
+private:
     t1_disable_copy_and_move(BlockMap)
 };
 

@@ -98,7 +98,7 @@ void BuiltInScripts::spawnMob(const MobPresetID presetID, const PixelCoord posit
 
 void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, const BlockRot rotation) {
     auto& blocks = world.getBlocks();
-    if (!blocks.isAir(tile) && !blocks.isInProgress(tile))
+    if (!blocks.canPlace(tile, 1))
         return;
     const auto& preset = assets.getPresets().getBlock(presetID);
     std::unique_ptr<Block> block = makeBlock(presetID, preset, rotation);
@@ -119,6 +119,6 @@ void BuiltInScripts::placeBlockInProgress(const BlockPresetID presetID, const Ti
     block->textureRect = preset.visual.textureRect;
 
     auto& blocks = world.getBlocks();
-    if (blocks.isAir(tile))
+    if (blocks.canPlace(tile, 1))
         blocks.place(tile, teamID, (block));
 }

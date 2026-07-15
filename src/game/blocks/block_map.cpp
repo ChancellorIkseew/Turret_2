@@ -4,6 +4,18 @@
 #include "engine/assets/presets.hpp"
 #include "make_block.hpp"
 
+bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
+    if (tile.x < 0 || tile.y < 0 || tile.x + size > mapSize.x || tile.y + size > mapSize.y)
+        return false;
+    for (int x = 0; x < size; ++x) {
+        for (int y = 0; y < size; ++y) {
+            if (at(x, y).type != BlockType::air)
+                return false;
+        }
+    }
+    return true; // TODO: refactoring
+}
+
 void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
     demolish(tile);
     if (block->getType() == BlockType::turret) {
@@ -30,7 +42,7 @@ void BlockMap::demolish(TileCoord tile) {
 }
 
 void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets) {
-    assert(dynamic_cast<InProgress*>(at(tile).block.get()) && isInProgress(tile));
+    assert(isInProgress(tile));
     //
     InProgress* blockInProgress = static_cast<InProgress*>(at(tile).block.get());
     blockInProgress->increeseProgress(buildSpeed);
