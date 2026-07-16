@@ -38,15 +38,12 @@ void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& bloc
 
     TileCoord masterTile = tile;
     for (const TileCoord offset : t1::getTileOffsets(block->size)) {
-        if (offset.x == 0 && offset.y == 0)
-            continue;
         const TileCoord target = masterTile + offset;
         at(target).teamID = teamID;
         at(target).type = BlockType::link;
         at(target).block = std::make_unique<LinkBlock>(masterTile, block.get());
     }
-
-    at(tile).place(teamID, block);
+    at(masterTile).place(teamID, block);
 }
 
 void BlockMap::demolish(TileCoord tile) {
@@ -65,6 +62,7 @@ void BlockMap::demolish(TileCoord tile) {
     for (const TileCoord offset : t1::getTileOffsets(size)) {
         at(masterTile + offset).demolish();
     }
+    at(masterTile).demolish();
 }
 
 void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets) {
@@ -80,6 +78,7 @@ void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t bui
     else /*BPAction::build*/ {
         const auto& preset = presets.getBlock(blockInProgress->presetID);
         std::unique_ptr<Block> block = makeBlock(blockInProgress->presetID, preset, blockInProgress->rotation);
+        demolish(masterTile);
         place(masterTile, teamID, block);
     }
 }
@@ -102,8 +101,6 @@ void BlockMap::startDemolition(const TileCoord tile) {
     blockTile.block = std::move(blockInProgress);
 
     for (const TileCoord offset : t1::getTileOffsets(newMaster->size)) {
-        if (offset.x == 0 && offset.y == 0)
-            continue;
         BlockTile& linkTile = at(masterTile + offset);
         assert(linkTile.type == BlockType::link);
         auto* link = static_cast<LinkBlock*>(linkTile.block.get());
