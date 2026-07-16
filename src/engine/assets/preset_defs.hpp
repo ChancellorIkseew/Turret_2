@@ -78,8 +78,6 @@ struct MobPreset {
 
 struct BlockVisualPreset {
     TextureRect textureRect;
-    PixelCoord origin;
-    PixelCoord size;
     uint8_t frameTicks;
     float frameHeight;
     uint8_t frameCount;
@@ -88,6 +86,7 @@ struct BlockVisualPreset {
 
 struct BlockPreset {
     bool rotatable;
+    uint8_t size;
     BlockType archetype;
     Health maxHealth;
     BlockVisualPreset visual;

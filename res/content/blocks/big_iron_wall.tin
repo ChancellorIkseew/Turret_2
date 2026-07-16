@@ -1,11 +1,10 @@
 #visual
 texture=big_iron_wall
-origin=0.0|0.0
-size=64|64
 frame_ticks=0
 frame_height=64
 frame_order=0
 #logic
 archetype=wall
+size=2
 rotatable=false
 health=1400
