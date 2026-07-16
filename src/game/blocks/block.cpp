@@ -9,6 +9,10 @@ void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) 
     renderer.draw(textureRect, t1::pixel(tile), t1::TILE_PC * static_cast<float>(size));
 }
 
+void LinkBlock::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
+    renderer.drawRect(t1::pixel(tile), t1::TILE_PC, { 0.f, 0.f }, 0.f, 0x00'FF'00'40);
+}
+
 void InProgress::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
     blockDrawer.addInProgress(tile);
 }
