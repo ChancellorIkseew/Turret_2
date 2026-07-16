@@ -51,7 +51,7 @@ void BlockMap::demolish(TileCoord tile) {
     if (at(tile).type == BlockType::air)
         return;
 
-    const TileCoord masterTile = getMaster(tile, *this);;
+    const TileCoord masterTile = getMaster(tile, *this);
     if (at(masterTile).type == BlockType::turret)
         meta.markForRemove(masterTile);
     if (at(masterTile).type == BlockType::core)
@@ -84,47 +84,26 @@ void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t bui
     }
 }
 
-void BlockMap::startDemolition(const TileCoord tile) {
-    const TileCoord masterTile = getMaster(tile, *this);
-    BlockTile& blockTile = at(masterTile);
-    //
-    auto blockInProgress = std::make_unique<InProgress>();
-    blockInProgress->action = BPAction::demolish;
-    blockInProgress->rotation = at(masterTile).block->getRotation();
-    blockInProgress->progress = 100;
-    blockInProgress->presetID = at(masterTile).block->presetID;
-    blockInProgress->size = at(masterTile).block->size;
-    blockInProgress->health = 1;
-    blockInProgress->textureRect = at(masterTile).block->textureRect;
-    //
-    Block* newMaster = blockInProgress.get();
-    blockTile.type = BlockType::in_progress;
-    blockTile.block = std::move(blockInProgress);
-
-    for (const TileCoord offset : t1::getTileOffsets(newMaster->size)) {
-        BlockTile& linkTile = at(masterTile + offset);
-        assert(linkTile.type == BlockType::link);
-        auto* link = static_cast<LinkBlock*>(linkTile.block.get());
-        link->master = newMaster;
-    }
-}
-
 void BlockMap::applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets) {
-    if (blueprint.action == BPAction::demolish) {
-        startDemolition(blueprint.tile);
-        return;
-    }
-    // else
     std::unique_ptr<Block> block = std::make_unique<InProgress>();
     InProgress* blockInProgress = static_cast<InProgress*>(block.get());
-    //
-    blockInProgress->action = BPAction::build;
-    blockInProgress->rotation = blueprint.rotation;
-    blockInProgress->progress = 0;
-    block->presetID = blueprint.presetID;
-    block->size = presets.getBlock(blueprint.presetID).size;
+    if (blueprint.action == BPAction::demolish) {
+        blockInProgress->action = BPAction::demolish;
+        blockInProgress->rotation = at(blueprint.tile).block->getRotation();
+        blockInProgress->progress = 100;
+        block->presetID = at(blueprint.tile).block->presetID;
+        block->size = at(blueprint.tile).block->size;
+        block->textureRect = at(blueprint.tile).block->textureRect;
+        demolish(blueprint.tile);
+    }
+    else {
+        blockInProgress->action = BPAction::build;
+        blockInProgress->rotation = blueprint.rotation;
+        blockInProgress->progress = 0;
+        block->presetID = blueprint.presetID;
+        block->size = presets.getBlock(blueprint.presetID).size;
+        block->textureRect = presets.getBlock(blueprint.presetID).visual.textureRect;
+    }
     block->health = 1;
-    block->textureRect = presets.getBlock(blueprint.presetID).visual.textureRect;
-    //
     place(blueprint.tile, teamID, block);
 }
