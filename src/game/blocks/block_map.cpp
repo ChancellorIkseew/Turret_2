@@ -3,17 +3,16 @@
 #include <cassert>
 #include "engine/assets/presets.hpp"
 #include "make_block.hpp"
+#include "offset_table.hpp"
 
 bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
     if (tile.x < 0 || tile.y < 0 || tile.x + size > mapSize.x || tile.y + size > mapSize.y)
         return false;
-    for (int x = 0; x < size; ++x) {
-        for (int y = 0; y < size; ++y) {
-            if (at(x, y).type != BlockType::air)
-                return false;
-        }
+    for (const TileCoord tile : t1::getTileOffsets(size)) {
+        if (at(tile).type != BlockType::air)
+            return false;
     }
-    return true; // TODO: refactoring
+    return true;
 }
 
 void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
