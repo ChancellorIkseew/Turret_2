@@ -8,6 +8,8 @@
 #include "engine/coords/transforms.hpp"
 #include "game/entities/turrets_pool.hpp"
 
+struct Blueprint;
+
 class BlocksMeta {
     TurretsPool turrets;
     std::vector<size_t> markedForRemove;
@@ -111,6 +113,7 @@ public:
     void demolish(TileCoord tile);
     void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
     void startDemolition(const TileCoord tile);
+    void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
 private:
     t1_disable_copy_and_move(BlockMap)
 };

@@ -2,6 +2,7 @@
 //
 #include <cassert>
 #include "engine/assets/presets.hpp"
+#include "game/frontend/build_tools/blueprint.hpp"
 #include "make_block.hpp"
 #include "offset_table.hpp"
 
@@ -106,4 +107,24 @@ void BlockMap::startDemolition(const TileCoord tile) {
         auto* link = static_cast<LinkBlock*>(linkTile.block.get());
         link->master = newMaster;
     }
+}
+
+void BlockMap::applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets) {
+    if (blueprint.action == BPAction::demolish) {
+        startDemolition(blueprint.tile);
+        return;
+    }
+    // else
+    std::unique_ptr<Block> block = std::make_unique<InProgress>();
+    InProgress* blockInProgress = static_cast<InProgress*>(block.get());
+    //
+    blockInProgress->action = BPAction::build;
+    blockInProgress->rotation = blueprint.rotation;
+    blockInProgress->progress = 0;
+    block->presetID = blueprint.presetID;
+    block->size = presets.getBlock(blueprint.presetID).size;
+    block->health = 1;
+    block->textureRect = presets.getBlock(blueprint.presetID).visual.textureRect;
+    //
+    place(blueprint.tile, teamID, block);
 }

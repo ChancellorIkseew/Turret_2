@@ -9,5 +9,5 @@ class BuiltInScripts;
 
 namespace construction {
     void buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints,
-        BuiltInScripts& scripts, BlockMap& blocks, BuildBeamsPool& buildBeams);
+        BlockMap& blocks, BuildBeamsPool& buildBeams);
 }

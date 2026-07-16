@@ -104,22 +104,3 @@ void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord ti
     std::unique_ptr<Block> block = makeBlock(presetID, preset, rotation);
     blocks.place(tile, teamID, block);
 }
-
-void BuiltInScripts::placeBlockInProgress(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID,
-    const BlockRot rotation, const BPAction action) {
-    const auto& preset = assets.getPresets().getBlock(presetID);
-    std::unique_ptr<Block> block = std::make_unique<InProgress>();
-    InProgress* blockInProgress = static_cast<InProgress*>(block.get());
-    //
-    blockInProgress->action = action;
-    blockInProgress->rotation = rotation;
-    blockInProgress->progress = action == BPAction::build ? 0 : 100;
-    block->presetID = presetID;
-    block->size = preset.size;
-    block->health = 1;
-    block->textureRect = preset.visual.textureRect;
-
-    auto& blocks = world.getBlocks();
-    if (blocks.canPlace(tile, preset.size))
-        blocks.place(tile, teamID, (block));
-}

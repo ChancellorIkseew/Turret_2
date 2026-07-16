@@ -18,7 +18,7 @@ struct Aim {
 };
 
 void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints,
-    BuiltInScripts& scripts, BlockMap& blocks, BuildBeamsPool& buildBeams) {
+    BlockMap& blocks, BuildBeamsPool& buildBeams) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
         if (!mobPreset.canBuild)
@@ -65,10 +65,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             continue;
         const PixelCoord tileCenter = t1::tileCenter(bp->tile);
         if (t1::areCloserCircle(tileCenter, position, RANGE)) {
-            if (bp->action == BPAction::build)
-                scripts.placeBlockInProgress(bp->presetID, bp->tile, soa.teamID[i], bp->rotation, bp->action);
-            else
-                blocks.startDemolition(bp->tile);
+            blocks.applyBlueprint(*bp, soa.teamID[i], presets);
             blueprints.removeIfExists(bp->tile);
             soa.angle[i] = t1::atan(tileCenter - position);
         }
