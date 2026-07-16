@@ -14,7 +14,7 @@ struct BuildBeam {
 class BuildBeamsPool {
     std::vector<BuildBeam> beams;
 public:
-    void addBeam(const PixelCoord builder, const TileCoord block, const TileCoord blockSize, const uint32_t color);
+    void addBeam(const PixelCoord builder, const TileCoord block, const int blockSize, const uint32_t color);
     void clear() { beams.clear(); }
     void draw(Renderer& renderer, const uint64_t tickCount) const;
 };

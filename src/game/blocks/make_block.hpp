@@ -37,6 +37,7 @@ inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset pres
     }
 
     block->presetID = presetID;
+    block->size = preset.size;
     block->health = preset.maxHealth;
     block->textureRect = preset.visual.textureRect;
     return block;
