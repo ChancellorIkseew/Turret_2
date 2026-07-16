@@ -72,7 +72,7 @@ struct LinkBlock : Block {
     t1_derived BlockRot getRotation() const noexcept { return master->getRotation(); }
     //
     t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final {}
-    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { master->canAccept(item, srcRot); };
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return master->canAccept(item, srcRot); };
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final { master->accept(item, srcRot); };
 };
 
