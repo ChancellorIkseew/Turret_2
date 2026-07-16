@@ -110,6 +110,7 @@ public:
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block);
     void demolish(TileCoord tile);
     void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
+    void startDemolition(const TileCoord tile);
 private:
     t1_disable_copy_and_move(BlockMap)
 };

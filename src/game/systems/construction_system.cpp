@@ -65,8 +65,10 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             continue;
         const PixelCoord tileCenter = t1::tileCenter(bp->tile);
         if (t1::areCloserCircle(tileCenter, position, RANGE)) {
-            blocks.demolish(bp->tile);
-            scripts.placeBlockInProgress(bp->presetID, bp->tile, soa.teamID[i], bp->rotation, bp->action);
+            if (bp->action == BPAction::build)
+                scripts.placeBlockInProgress(bp->presetID, bp->tile, soa.teamID[i], bp->rotation, bp->action);
+            else
+                blocks.startDemolition(bp->tile);
             blueprints.removeIfExists(bp->tile);
             soa.angle[i] = t1::atan(tileCenter - position);
         }

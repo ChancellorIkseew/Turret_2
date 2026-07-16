@@ -5,18 +5,26 @@
 #include "make_block.hpp"
 #include "offset_table.hpp"
 
+static inline TileCoord getMaster(const TileCoord tile, const BlockMap& map) {
+    if (map.at(tile).type == BlockType::link)
+        return static_cast<LinkBlock*>(map.at(tile).block.get())->masterTile;
+    return tile;
+}
+
 bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
     if (tile.x < 0 || tile.y < 0 || tile.x + size > mapSize.x || tile.y + size > mapSize.y)
         return false;
-    for (const TileCoord tile : t1::getTileOffsets(size)) {
-        if (at(tile).type != BlockType::air)
+    for (const TileCoord offset : t1::getTileOffsets(size)) {
+        if (at(tile + offset).type != BlockType::air)
             return false;
     }
     return true;
 }
 
 void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
-    demolish(tile);
+    if (!canPlace(tile, block->size))
+        return;
+
     if (block->getType() == BlockType::turret) {
         TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
         TurretPresetID preset = turretBlock->turretPreset;
@@ -27,31 +35,78 @@ void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& bloc
         meta.setCorePosition(tile);
     if (block->getType() == BlockType::in_progress)
         meta.addBlockInProgress(tile);
+
+    TileCoord masterTile = tile;
+    for (const TileCoord offset : t1::getTileOffsets(block->size)) {
+        if (offset.x == 0 && offset.y == 0)
+            continue;
+        const TileCoord target = masterTile + offset;
+        at(target).teamID = teamID;
+        at(target).type = BlockType::link;
+        at(target).block = std::make_unique<LinkBlock>(masterTile, block.get());
+    }
+
     at(tile).place(teamID, block);
 }
 
 void BlockMap::demolish(TileCoord tile) {
-    if (at(tile).type == BlockType::turret)
-        meta.markForRemove(tile);
-    if (at(tile).type == BlockType::core)
+    if (at(tile).type == BlockType::air)
+        return;
+
+    const TileCoord masterTile = getMaster(tile, *this);;
+    if (at(masterTile).type == BlockType::turret)
+        meta.markForRemove(masterTile);
+    if (at(masterTile).type == BlockType::core)
         meta.setCorePosition(std::nullopt);
-    if (at(tile).type == BlockType::in_progress)
-        meta.removeBlockInProgress(tile);
-    at(tile).demolish();
+    if (at(masterTile).type == BlockType::in_progress)
+        meta.removeBlockInProgress(masterTile);
+
+    const int size = at(masterTile).block->size;
+    for (const TileCoord offset : t1::getTileOffsets(size)) {
+        at(masterTile + offset).demolish();
+    }
 }
 
 void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets) {
-    assert(isInProgress(tile));
+    const TileCoord masterTile = getMaster(tile, *this);
+    assert(isInProgress(masterTile));
     //
-    InProgress* blockInProgress = static_cast<InProgress*>(at(tile).block.get());
+    InProgress* blockInProgress = static_cast<InProgress*>(at(masterTile).block.get());
     blockInProgress->increeseProgress(buildSpeed);
     if (!blockInProgress->isProgressFull())
         return;
     if (blockInProgress->action == BPAction::demolish)
-        demolish(tile);
+        demolish(masterTile);
     else /*BPAction::build*/ {
         const auto& preset = presets.getBlock(blockInProgress->presetID);
         std::unique_ptr<Block> block = makeBlock(blockInProgress->presetID, preset, blockInProgress->rotation);
-        place(tile, teamID, block);
+        place(masterTile, teamID, block);
+    }
+}
+
+void BlockMap::startDemolition(const TileCoord tile) {
+    const TileCoord masterTile = getMaster(tile, *this);
+    BlockTile& blockTile = at(masterTile);
+    //
+    auto blockInProgress = std::make_unique<InProgress>();
+    blockInProgress->action = BPAction::demolish;
+    blockInProgress->rotation = at(masterTile).block->getRotation();
+    blockInProgress->progress = 100;
+    blockInProgress->presetID = at(masterTile).block->presetID;
+    blockInProgress->size = at(masterTile).block->size;
+    blockInProgress->health = 1;
+    blockInProgress->textureRect = at(masterTile).block->textureRect;
+    //
+    Block* newMaster = blockInProgress.get();
+    blockTile.type = BlockType::in_progress;
+    blockTile.block = std::move(blockInProgress);
+
+    for (const TileCoord offset : t1::getTileOffsets(newMaster->size)) {
+        if (offset.x == 0 && offset.y == 0)
+            continue;
+        BlockTile& linkTile = at(masterTile + offset);
+        assert(linkTile.type == BlockType::link);
+        auto* link = static_cast<LinkBlock*>(linkTile.block.get());
+        link->master = newMaster;
     }
 }
