@@ -158,16 +158,13 @@ void Renderer::createAtlasTexture(SDL_Surface* sdlSurface) {
 }
 
 std::string Renderer::takeScreenshot() const {
-    const int width = int(viewportSize.x);
-    const int height = int(viewportSize.y);
-    const size_t bufferSize = static_cast<size_t>(width * height * 4);
+    const int width  = static_cast<int>(viewportSize.x);
+    const int height = static_cast<int>(viewportSize.y);
     std::string pixels;
-    pixels.resize(bufferSize);
-
+    pixels.resize(static_cast<size_t>(width * height * 4));
     constexpr int SCREEN_BUFFER = 0;
     glBindFramebuffer(GL_READ_FRAMEBUFFER, SCREEN_BUFFER);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
-
     return pixels;
 }
