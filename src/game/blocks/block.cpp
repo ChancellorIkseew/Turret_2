@@ -2,6 +2,7 @@
 //
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
+#include "engine/settings/settings.hpp"
 #include "game/frontend/build_tools/blueprint.hpp"
 #include "game/world_drawer/blocks_drawer.hpp"
 
@@ -10,7 +11,8 @@ void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) 
 }
 
 void LinkBlock::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
-    renderer.drawRect(t1::pixel(tile), t1::TILE_PC, { 0.f, 0.f }, 0.f, 0x00'FF'00'40);
+    if (Settings::gameplay.showDebugInfo)
+        renderer.drawRect(t1::pixel(tile), t1::TILE_PC, { 0.f, 0.f }, 0.f, 0x00'FF'00'40);
 }
 
 void InProgress::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {

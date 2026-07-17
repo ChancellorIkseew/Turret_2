@@ -33,7 +33,7 @@ std::unordered_map<std::string, Binding> Controls::bindings = {
     {Screenshot, Binding(SDL_SCANCODE_F2, InputType::keyboard)},
     {Show_FPS, Binding(SDL_SCANCODE_F3, InputType::keyboard)},
     {Show_atlas, Binding(SDL_SCANCODE_F4, InputType::keyboard)},
-    {Show_hitboxes, Binding(SDL_SCANCODE_F5, InputType::keyboard)},
+    {Show_debug_info, Binding(SDL_SCANCODE_F5, InputType::keyboard)},
     {Show_console, Binding(SDL_SCANCODE_F10, InputType::keyboard)},
     {Fullscreen, Binding(SDL_SCANCODE_F11, InputType::keyboard)}
 };

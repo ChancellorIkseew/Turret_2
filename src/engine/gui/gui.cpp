@@ -93,8 +93,8 @@ void GUI::acceptHotkeys() {
         showFPS = !showFPS;
     if (input.jactive(Show_atlas))
         showAtlas = !showAtlas;
-    if (input.jactive(Show_hitboxes)) {
-        Settings::gameplay.showHitboxes = !Settings::gameplay.showHitboxes;
+    if (input.jactive(Show_debug_info)) {
+        Settings::gameplay.showDebugInfo = !Settings::gameplay.showDebugInfo;
         Settings::writeSettings();
     }
     if (input.jactive(Show_console)) {

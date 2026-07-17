@@ -23,7 +23,7 @@ public:
         bool cameraInertia;
         bool pauseInBackground;
         bool pauseOnWorldOpen;
-        bool showHitboxes;
+        bool showDebugInfo;
         bool showParticles;
         size_t maxParticles;
     } gameplay;

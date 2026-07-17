@@ -31,7 +31,7 @@ void Settings::writeSettings() {
     data.emplace(key_val(gameplay.cameraInertia));
     data.emplace(key_val(gameplay.pauseInBackground));
     data.emplace(key_val(gameplay.pauseOnWorldOpen));
-    data.emplace(key_val(gameplay.showHitboxes));
+    data.emplace(key_val(gameplay.showDebugInfo));
     data.emplace(key_val(gameplay.showParticles));
     data.emplace(key_val(gameplay.maxParticles));
     //
@@ -58,7 +58,7 @@ void Settings::readSettings() {
     data.get(key_val(gameplay.cameraInertia), true);
     data.get(key_val(gameplay.pauseInBackground), false);
     data.get(key_val(gameplay.pauseOnWorldOpen), false);
-    data.get(key_val(gameplay.showHitboxes), false);
+    data.get(key_val(gameplay.showDebugInfo), false);
     data.get(key_val(gameplay.showParticles), true);
     data.get(key_val(gameplay.maxParticles), 10000U);
     //
@@ -87,7 +87,7 @@ void Settings::applySettings(Engine& engine) {
     engine.getMainWindow().setFullscreen(display.fullscreen);
     // "cameraInertia" imlemented in game_session.cpp and fr_graphics.cpp
     // "pauseOnWorldOpen" implemented in engine.cpp
-    // "showHitboxes" not implemented
+    // "showDebugInfo" implemented local in .cpp files
     // "lang" implemented in gui and main_canvas
     // "guiScale" implemented in gui.cpp and fr_gui.cpp
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
