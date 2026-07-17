@@ -114,7 +114,7 @@ public:
     void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
     void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
     //
-    TileCoord getMaster(const TileCoord tile) {
+    TileCoord getMaster(const TileCoord tile) const {
         if (at(tile).type == BlockType::link)
             return static_cast<LinkBlock*>(at(tile).block.get())->masterTile;
         return tile;

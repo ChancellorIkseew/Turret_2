@@ -76,8 +76,8 @@ void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, con
         return;
     }
 
-    if (!blocks.isAir(tile)) {
-        const auto& block = blocks.at(tile).block;
+    if (blocks.isFilled(tile)) {
+        const auto& block = blocks.at(blocks.getMaster(tile)).block;
         optTileData = TileData(TileComponent::block, block->presetID.asUint());
         if (block->getRotation() != BlockRot::none)
             rotation = block->getRotation();
