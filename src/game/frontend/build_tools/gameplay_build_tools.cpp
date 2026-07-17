@@ -16,13 +16,13 @@ static TileCoord calculateStep(const TileCoord start, const TileCoord target) {
     return TileCoord(0, 0);
 }
 
-void GBuildTools::updateDraft(const TileCoord start, TileCoord target) {
+void GBuildTools::updateDraft(const TileCoord start, TileCoord target, const int blockSize) {
     const bool hor = std::abs(target.x - start.x) > std::abs(target.y - start.y);
     if (hor) target.y = start.y;
     else     target.x = start.x;
     //
-    const TileCoord step = calculateStep(start, target);
-    const int len = std::abs(hor ? target.x - start.x : target.y - start.y);
+    const TileCoord step = calculateStep(start, target) * blockSize;
+    const int len = std::abs(hor ? target.x - start.x : target.y - start.y) / blockSize;
     //
     draft.clear();
     for (int i = 0; i <= len; ++i) {
@@ -47,8 +47,10 @@ void GBuildTools::update(Engine& engine) {
     // Build:
     if (optTileData && input.jactive(Build_Shoot) && mouseFree)
         optBuildStart = targetTile;
-    if (optTileData && optBuildStart && input.active(Build_Shoot))
-        updateDraft(optBuildStart.value(), targetTile);
+    if (optTileData && optBuildStart && input.active(Build_Shoot)) {
+        const int blockSize = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id)).size;
+        updateDraft(optBuildStart.value(), targetTile, blockSize);
+    } 
     if (optTileData && optBuildStart && input.released(Build_Shoot)) {
         buildDraft(session.getWorld(), optTileData.value());
         optBuildStart.reset();

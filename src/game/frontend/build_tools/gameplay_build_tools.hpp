@@ -19,5 +19,5 @@ private:
     void rejectDemolition(BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) const;
     void buildDraft(World& world, const TileData tileData) const;
     //
-    void updateDraft(const TileCoord start, TileCoord target);
+    void updateDraft(const TileCoord start, TileCoord target, const int blockSize);
 };

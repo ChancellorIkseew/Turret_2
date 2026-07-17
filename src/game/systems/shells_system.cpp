@@ -39,7 +39,7 @@ static inline void hitMobs(ShellSoA& shells, MobSoA& mobs, const size_t shellCou
             if (mobs.shieldHealth[mob] > 0)
                 registerDamage(mobs.shieldHealth[mob], shells.restDamage[shell]);
             else
-               registerDamage(mobs.health[mob], shells.restDamage[shell]);
+                registerDamage(mobs.health[mob], shells.restDamage[shell]);
             if (shells.restDamage[shell] < 1)
                 break;
         }
@@ -58,9 +58,10 @@ static inline void hitBlocks(ShellSoA& shells, BlockMap& blocks, const size_t sh
             continue;
         if (blockTile.teamID == shells.teamID[shell])
             continue;
-        registerDamage(blockTile.block->health, shells.restDamage[shell]);
-        if (blockTile.block->health < 1)
-            blocks.demolish(tile);
+        const TileCoord masterTile = blocks.getMaster(tile);
+        registerDamage(blocks.at(masterTile).block->health, shells.restDamage[shell]);
+        if (blocks.at(masterTile).block->health < 1)
+            blocks.demolish(masterTile);
     }
 }
 

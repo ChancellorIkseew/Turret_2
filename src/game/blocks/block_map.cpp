@@ -6,12 +6,6 @@
 #include "make_block.hpp"
 #include "offset_table.hpp"
 
-static inline TileCoord getMaster(const TileCoord tile, const BlockMap& map) {
-    if (map.at(tile).type == BlockType::link)
-        return static_cast<LinkBlock*>(map.at(tile).block.get())->masterTile;
-    return tile;
-}
-
 bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
     if (tile.x < 0 || tile.y < 0 || tile.x + size > mapSize.x || tile.y + size > mapSize.y)
         return false;
@@ -51,7 +45,7 @@ void BlockMap::demolish(TileCoord tile) {
     if (at(tile).type == BlockType::air)
         return;
 
-    const TileCoord masterTile = getMaster(tile, *this);
+    const TileCoord masterTile = getMaster(tile);
     if (at(masterTile).type == BlockType::turret)
         meta.markForRemove(masterTile);
     if (at(masterTile).type == BlockType::core)
@@ -67,7 +61,7 @@ void BlockMap::demolish(TileCoord tile) {
 }
 
 void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets) {
-    const TileCoord masterTile = getMaster(tile, *this);
+    const TileCoord masterTile = getMaster(tile);
     assert(isInProgress(masterTile));
     //
     InProgress* blockInProgress = static_cast<InProgress*>(at(masterTile).block.get());

@@ -15,7 +15,8 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
     //
     if (tileData.component == TileComponent::block) {
         const Presets& presets = engine.getAssets().getPresets();
-        const bool canBuild = engine.getSession().getWorld().getBlocks().isAir(tile);
+        const int size = presets.getBlock(BlockPresetID(tileData.id)).size;
+        const bool canBuild = engine.getSession().getWorld().getBlocks().canPlace(tile, size);
         const uint32_t color = canBuild ? 0xFF'FF'FF'00 + alpha : 0xB4'34'24'C8;
         Blueprints::drawBlock(presets, renderer, tile, BlockPresetID(tileData.id), rotation, color, showRange);
         return;

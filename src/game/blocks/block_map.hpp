@@ -113,6 +113,12 @@ public:
     void demolish(TileCoord tile);
     void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
     void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
+    //
+    TileCoord getMaster(const TileCoord tile) {
+        if (at(tile).type == BlockType::link)
+            return static_cast<LinkBlock*>(at(tile).block.get())->masterTile;
+        return tile;
+    }
 private:
     t1_disable_copy_and_move(BlockMap)
 };
