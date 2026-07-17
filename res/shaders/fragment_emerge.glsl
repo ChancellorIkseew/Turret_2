@@ -12,20 +12,19 @@ layout(binding = 0) uniform sampler2D textureAtlas;
 void main() {
     float progress = outColor.a;
     vec2 localPixel = floor(outLocalTex);
-    vec2 center = (abs(outBlockSize) - vec2(1.0)) * 0.5;
+    vec2 center = (outBlockSize - vec2(1.0)) * 0.5;
     float distanceToCenter = abs(localPixel.x - center.x) + abs(localPixel.y - center.y);
-    float maxDistance = (center.x + center.y);
-    float waveValue = distanceToCenter / maxDistance;
+    float maxDistanceForThisBlock = center.x + center.y;
+    float thresholdPixels = maxDistanceForThisBlock * (1.0 - progress);
     
     bool onBorder = localPixel.x == 0.0 || localPixel.y == 0.0 || 
-        localPixel.x >= abs(outBlockSize.x) - 1.0 || 
-        localPixel.y >= abs(outBlockSize.y) - 1.0;
+        localPixel.x >= outBlockSize.x - 1.0 || 
+        localPixel.y >= outBlockSize.y - 1.0;
 
-    float threshold = 1.0 - progress;
-    if (!onBorder && waveValue < threshold)
-        discard;
+    if (!onBorder && distanceToCenter < thresholdPixels)
+        discard;  
     vec4 texColor = texture(textureAtlas, outTexCoords);
-    if (onBorder || waveValue < threshold + 0.08)
+    if (onBorder || distanceToCenter < thresholdPixels + 2.5)
         texColor = vec4(outColor.rgb, 0.6);
 
     finalScreenColor = texColor;

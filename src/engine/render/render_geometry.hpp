@@ -64,9 +64,9 @@ public:
             indices.push_back(offset + 0);
             indices.push_back(offset + 1);
             indices.push_back(offset + 2);
-            indices.push_back(offset + 2);
             indices.push_back(offset + 3);
             indices.push_back(offset + 0);
+            indices.push_back(offset + 2);
             offset += 4;
         }
         glNamedBufferSubData(ebo, 0, indices.size() * sizeof(unsigned int), indices.data());
@@ -156,10 +156,10 @@ public:
         quad[2].color = colorARGB;
         quad[3].color = colorARGB;
 
-        quad[0].tx = -size.x; quad[0].ty = -size.y;
-        quad[1].tx =  size.x; quad[1].ty = -size.y;
-        quad[2].tx =  size.x; quad[2].ty =  size.y;
-        quad[3].tx = -size.x; quad[3].ty =  size.y;
+        quad[0].tx = 0.f;    quad[0].ty = 0.f;
+        quad[1].tx = size.x; quad[1].ty = 0.f;
+        quad[2].tx = size.x; quad[2].ty =  size.y;
+        quad[3].tx = 0.f;    quad[3].ty =  size.y;
 
         vertexAccumulator.insert(vertexAccumulator.end(), quad, quad + 4);
     }

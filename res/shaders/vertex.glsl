@@ -18,6 +18,6 @@ void main() {
     outTexCoord = inTexCoord;
     outColor = inColor;
     outBlockSize = inLocalTex;
-    outLocalTex = (inLocalTex + abs(inLocalTex)) * 0.5; // from [-size; size] to [0; size]
+    outLocalTex = inLocalTex;
     gl_Position = view * vec4(inPosition, 0.0, 1.0);
 }
