@@ -13,7 +13,7 @@ bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
         if (at(tile + offset).type != BlockType::air)
             return false;
     }
-    return true;
+    return at(tile).type == BlockType::air;
 }
 
 void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {

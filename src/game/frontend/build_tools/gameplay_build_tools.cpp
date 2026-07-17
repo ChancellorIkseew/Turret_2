@@ -52,7 +52,8 @@ void GBuildTools::update(Engine& engine) {
         updateDraft(optBuildStart.value(), targetTile, blockSize);
     } 
     if (optTileData && optBuildStart && input.released(Build_Shoot)) {
-        buildDraft(session.getWorld(), optTileData.value());
+        const int blockSize = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id)).size;
+        buildDraft(session.getWorld(), optTileData.value(), blockSize);
         optBuildStart.reset();
         draft.clear();
     }
@@ -101,12 +102,13 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
             }
 
             if (blocks.isFilled(tile) && blueprints.isAir(tile)) {
-                const auto& block = blocks.at(tile).block;
+                const TileCoord masterTile = blocks.getMaster(tile);
+                const auto& block = blocks.at(masterTile).block;
                 if (block->getType() == BlockType::in_progress)
                     static_cast<InProgress*>(block.get())->action = BPAction::demolish;
                 else {
                     const BlockRot rotation = block->getRotation() != none ? block->getRotation() : up;
-                    blueprints.addOrReplace(tile, block->presetID, rotation, BPAction::demolish);
+                    blueprints.addOrReplace(masterTile, block->presetID, rotation, BPAction::demolish);
                 }
             }
         }
@@ -117,12 +119,12 @@ void GBuildTools::rejectDemolition(BlockMap& blocks, Blueprints& blueprints, con
     if (blueprints.getBlock(tile).action == BPAction::demolish)
         blueprints.removeIfExists(tile);
     if (blocks.isInProgress(tile))
-        static_cast<InProgress*>(blocks.at(tile).block.get())->action = BPAction::build;
+        static_cast<InProgress*>(blocks.at(blocks.getMaster(tile)).block.get())->action = BPAction::build;
 }
 
-void GBuildTools::buildDraft(World& world, const TileData tileData) const {
+void GBuildTools::buildDraft(World& world, const TileData tileData, const int blockSize) const {
     for (const TileCoord tile : draft) {
-        if (world.getBlocks().isAir(tile))
+        if (world.getBlocks().canPlace(tile, blockSize))
             world.getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation, BPAction::build);
     }
 }
