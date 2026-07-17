@@ -2,6 +2,7 @@
 //
 #include <SDL3/SDL_video.h>
 #include <stdexcept>
+#include "atlas.hpp"
 #include "glad/glad.h"
 #include "framebuffer.hpp"
 #include "render_geometry.hpp"
@@ -146,15 +147,14 @@ void Renderer::drawIrregularQuad(const PixelCoord p0, const PixelCoord p1,
     batchGeometry->addIrregularQuad(whiteRect, p0, p1, p2, p3, color);
 }
 
-void Renderer::createAtlasTexture(SDL_Surface* sdlSurface) {
-    if (!sdlSurface)
+void Renderer::createAtlasTexture(const Surface& surface) {
+    if (!surface.raw())
         return;
-    SDL_Surface* converted = SDL_ConvertSurface(sdlSurface, SDL_PIXELFORMAT_RGBA32);
-    if (!converted)
+    Surface converted(SDL_ConvertSurface(surface.raw(), SDL_PIXELFORMAT_RGBA32));
+    if (!converted.raw())
         return;
     using TextureData = const unsigned char*;
-    atlasTexture.emplace(converted->w, converted->h, static_cast<TextureData>(converted->pixels));
-    SDL_DestroySurface(converted);
+    atlasTexture.emplace(converted.raw()->w, converted.raw()->h, static_cast<TextureData>(converted.raw()->pixels));
 }
 
 std::string Renderer::takeScreenshot() const {

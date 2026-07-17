@@ -6,7 +6,6 @@
 #include "texture_2d.hpp"
 #include "texture_rect.hpp"
 
-struct SDL_Surface;
 struct SDL_Window;
 struct SDL_GLContextState;
 typedef struct SDL_GLContextState* SDL_GLContext;
@@ -14,6 +13,7 @@ typedef struct SDL_GLContextState* SDL_GLContext;
 class LightmapFramebuffer;
 class RenderGeometry;
 class ShaderProgram;
+class Surface;
 struct TextureRect;
 
 enum VSyncMode : int { immediate = 0, synchronized = 1, adaptive = -1 };
@@ -57,7 +57,7 @@ public:
     void drawIrregularQuad(const PixelCoord p0, const PixelCoord p1,
         const PixelCoord p2, const PixelCoord p3, const uint32_t color);
 
-    void createAtlasTexture(SDL_Surface* sdlSurface);
+    void createAtlasTexture(const Surface& surface);
     void setWhiteRect(const TextureRect rect) { whiteRect = rect; }
     //
     std::string takeScreenshot() const;

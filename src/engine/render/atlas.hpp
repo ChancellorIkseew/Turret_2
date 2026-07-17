@@ -9,10 +9,20 @@
 
 class Renderer;
 
+class Surface {
+    SDL_Surface* surface;
+public:
+    Surface(SDL_Surface* surface) noexcept : surface(surface) {}
+    ~Surface() noexcept { SDL_DestroySurface(surface); }
+    SDL_Surface* raw() const noexcept { return surface; }
+private:
+    t1_disable_copy_and_move(Surface)
+};
+
 class Atlas {
     SDL_Point size = SDL_Point{ 0, 0 };
     std::unordered_map <std::string, SDL_Rect> atlas;
-    std::unordered_map <std::string, SDL_Surface*> temporarySurfaces;
+    std::unordered_map <std::string, Surface> temporarySurfaces;
 public:
     Atlas() = default;
     ~Atlas() { clear(); }

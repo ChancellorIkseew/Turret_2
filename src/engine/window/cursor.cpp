@@ -3,6 +3,7 @@
 #include <SDL3/SDL_mouse.h>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
+#include "engine/render/atlas.hpp"
 
 static debug::Logger logger("cursor");
 
@@ -22,11 +23,10 @@ void Cursor::setType(const CursorType type) {
         return;
     // TODO: other types.
     }
-    SDL_Surface* cursorSurface = SDL_LoadPNG(path.string().c_str());
-    if (!cursorSurface)
+    Surface cursorSurface(SDL_LoadPNG(path.string().c_str()));
+    if (!cursorSurface.raw())
         logger.error() << "Cold not Load image from file " << path;
-    SDL_Cursor* cursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
-    SDL_DestroySurface(cursorSurface);
+    SDL_Cursor* cursor = SDL_CreateColorCursor(cursorSurface.raw(), 0, 0);
     SDL_SetCursor(cursor);
 }
 

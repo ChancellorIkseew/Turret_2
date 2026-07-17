@@ -5,16 +5,16 @@
 #include <cstring>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
+#include "engine/render/atlas.hpp"
 
 static std::filesystem::path ICON_PATH = io::folders::RES / "icon.png";
 static debug::Logger logger("main_window");
 
 static inline void loadIcon(SDL_Window* window) {
-    SDL_Surface* iconSurface = SDL_LoadPNG(ICON_PATH.string().c_str());
-    if (!iconSurface)
+    Surface iconSurface(SDL_LoadPNG(ICON_PATH.string().c_str()));
+    if (!iconSurface.raw())
         logger.error() << "Could not Load image from file " << ICON_PATH;
-    SDL_SetWindowIcon(window, iconSurface);
-    SDL_DestroySurface(iconSurface);
+    SDL_SetWindowIcon(window, iconSurface.raw());
 }
 
 SDLContext::SDLContext(const std::string& title, const PixelCoord size) {
@@ -108,21 +108,21 @@ void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
 
         // Создаем SDL_Surface поверх нашего буфера сырых пикселей.
         // SDL_PIXELFORMAT_RGBA32 идеально ложится на GL_RGBA + GL_UNSIGNED_BYTE
-        SDL_Surface* windowSurface = SDL_CreateSurfaceFrom(
+        Surface windowSurface(SDL_CreateSurfaceFrom(
             width, height,
             SDL_PIXELFORMAT_RGBA32,
             rawPixels.data(),
             width * 4 // шаг строки в байтах (pitch)
-        );
+        ));
 
-        if (!windowSurface)
+        if (!windowSurface.raw())
             throw std::runtime_error("SDL_CreateSurfaceFrom error: " + std::string(SDL_GetError()));
 
         // --- Переворачиваем картинку по вертикали (компенсация специфики OpenGL) ---
         // Так как данные лежат в rawPixels, переворачиваем строки прямо в Surface
-        int pitch = windowSurface->pitch;
+        int pitch = windowSurface.raw()->pitch;
         std::vector<uint8_t> rowBuffer(pitch);
-        uint8_t* pixelsPtr = static_cast<uint8_t*>(windowSurface->pixels);
+        uint8_t* pixelsPtr = static_cast<uint8_t*>(windowSurface.raw()->pixels);
 
         for (int i = 0; i < height / 2; ++i) {
             uint8_t* topRow = pixelsPtr + i * pitch;
@@ -136,12 +136,8 @@ void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
         // ---------------------------------------------------------------------------
 
         // Сохраняем готовую правильную поверхность в файл
-        if (!SDL_SavePNG(windowSurface, path.string().c_str())) {
-            SDL_DestroySurface(windowSurface);
+        if (!SDL_SavePNG(windowSurface.raw(), path.string().c_str()))
             throw std::runtime_error("SDL_SavePNG error: " + std::string(SDL_GetError()));
-        }
-
-        SDL_DestroySurface(windowSurface);
         logger.info() << "Screenshot saved. Path: " << path;
     }
     catch (const std::runtime_error& exception) {

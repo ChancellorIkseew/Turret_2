@@ -11,13 +11,6 @@ namespace fs = std::filesystem;
 constexpr Uint32 TRANSPARENT = 0U;
 static debug::Logger logger("texture_atlas");
 
-static void clearTemporary(std::unordered_map <std::string, SDL_Surface*>& temporarySurfaces) {
-    for (const auto& [_, surface] : temporarySurfaces) {
-        SDL_DestroySurface(surface);
-    }
-    temporarySurfaces.clear();
-}
-
 void Atlas::addTexture(const fs::path& path) {
     if (!io::folders::fileExists(path)) {
         logger.error() << "Image file does not exist: " << path;
@@ -39,14 +32,13 @@ void Atlas::addTexture(const fs::path& path) {
 
 void Atlas::build(Renderer& renderer) {
     size = packer::arrangeRects(atlas);
-    SDL_Surface* comonSurface = SDL_CreateSurface(size.x, size.y, SDL_PIXELFORMAT_RGBA8888);
-    SDL_FillSurfaceRect(comonSurface, nullptr, TRANSPARENT);
+    Surface comonSurface(SDL_CreateSurface(size.x, size.y, SDL_PIXELFORMAT_RGBA8888));
+    SDL_FillSurfaceRect(comonSurface.raw(), nullptr, TRANSPARENT);
     for (auto& [name, rect] : atlas) {
-        SDL_BlitSurface(temporarySurfaces.at(name), nullptr, comonSurface, &rect);
+        SDL_BlitSurface(temporarySurfaces.at(name).raw(), nullptr, comonSurface.raw(), &rect);
     }
-    renderer.createAtlasTexture(comonSurface);
-    SDL_DestroySurface(comonSurface);
-    clearTemporary(temporarySurfaces);
+    renderer.createAtlasTexture(comonSurface.raw());
+    temporarySurfaces.clear();
     renderer.setWhiteRect(Atlas::at("white_rect"));
 }
 
@@ -66,5 +58,5 @@ TextureRect Atlas::at(const std::string& name) const noexcept {
 
 void Atlas::clear() {
     atlas.clear();
-    clearTemporary(temporarySurfaces);
+    temporarySurfaces.clear();
 }
