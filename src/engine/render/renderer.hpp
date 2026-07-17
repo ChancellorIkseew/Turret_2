@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <optional>
-#include <string>
 #include "engine/coords/pixel_coord.hpp"
 #include "texture_2d.hpp"
 #include "texture_rect.hpp"
@@ -60,7 +59,7 @@ public:
     void createAtlasTexture(const Surface& surface);
     void setWhiteRect(const TextureRect rect) { whiteRect = rect; }
     //
-    std::string takeScreenshot() const;
+    Surface takeScreenshot() const;
 private:
     t1_disable_copy_and_move(Renderer)
 };

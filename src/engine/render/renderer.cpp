@@ -157,14 +157,26 @@ void Renderer::createAtlasTexture(const Surface& surface) {
     atlasTexture.emplace(converted.raw()->w, converted.raw()->h, static_cast<TextureData>(converted.raw()->pixels));
 }
 
-std::string Renderer::takeScreenshot() const {
-    const int width  = static_cast<int>(viewportSize.x);
+Surface Renderer::takeScreenshot() const {
+    const int width = static_cast<int>(viewportSize.x);
     const int height = static_cast<int>(viewportSize.y);
-    std::string pixels;
-    pixels.resize(static_cast<size_t>(width * height * 4));
+    Surface surface(SDL_CreateSurface(width, height, SDL_PIXELFORMAT_RGBA32));
+    if (!surface.raw())
+        return surface; /*null object*/
     constexpr int SCREEN_BUFFER = 0;
     glBindFramebuffer(GL_READ_FRAMEBUFFER, SCREEN_BUFFER);
+    GLint oldAlignment;
+    glGetIntegerv(GL_PACK_ALIGNMENT, &oldAlignment);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
-    return pixels;
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, surface.raw()->pixels);
+    glPixelStorei(GL_PACK_ALIGNMENT, oldAlignment);
+    //
+    const int pitch = surface.raw()->pitch;
+    uint8_t* pixels = static_cast<uint8_t*>(surface.raw()->pixels);
+    for (int i = 0; i < height / 2; ++i) {
+        uint8_t* topRow = pixels + i * pitch;
+        uint8_t* bottomRow = pixels + (height - 1 - i) * pitch;
+        std::swap_ranges(topRow, topRow + pitch, bottomRow);
+    }
+    return surface;
 }

@@ -21,13 +21,13 @@ void Atlas::addTexture(const fs::path& path) {
         logger.warning() << "Texture with name \"" << name << "\" already exists.";
         return;
     }
-    SDL_Surface* surface = SDL_LoadPNG(path.string().c_str());
-    if (!surface) {
+    Surface surface(SDL_LoadPNG(path.string().c_str()));
+    if (!surface.raw()) {
         logger.error() << "Texture was not created. File: " << path << " " << SDL_GetError();
         return;
     }
-    atlas.emplace(name, SDL_Rect(0, 0, surface->w, surface->h));
-    temporarySurfaces.emplace(name, surface);
+    atlas.emplace(name, SDL_Rect(0, 0, surface.raw()->w, surface.raw()->h));
+    temporarySurfaces.emplace(name, std::move(surface));
 }
 
 void Atlas::build(Renderer& renderer) {
@@ -37,7 +37,7 @@ void Atlas::build(Renderer& renderer) {
     for (auto& [name, rect] : atlas) {
         SDL_BlitSurface(temporarySurfaces.at(name).raw(), nullptr, comonSurface.raw(), &rect);
     }
-    renderer.createAtlasTexture(comonSurface.raw());
+    renderer.createAtlasTexture(comonSurface);
     temporarySurfaces.clear();
     renderer.setWhiteRect(Atlas::at("white_rect"));
 }

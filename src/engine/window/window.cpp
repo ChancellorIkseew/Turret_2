@@ -2,7 +2,6 @@
 //
 #include <SDL3/SDL.h>
 #include <stdexcept>
-#include <cstring>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/render/atlas.hpp"
@@ -94,53 +93,18 @@ void MainWindow::makeDelay() {
 }
 
 void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
-    try {
-        if (!io::folders::createOrCheckFolder(path.parent_path()))
-            throw std::runtime_error("Failed to create or find directory.");
-
-        // Получаем текущие размеры окна
-        int width = 0;
-        int height = 0;
-        SDL_GetWindowSize(sdlWindow, &width, &height); // Ваше поле окна SDL
-
-        // Получаем сырые данные из нового рендерера
-        std::string rawPixels = renderer.takeScreenshot();
-
-        // Создаем SDL_Surface поверх нашего буфера сырых пикселей.
-        // SDL_PIXELFORMAT_RGBA32 идеально ложится на GL_RGBA + GL_UNSIGNED_BYTE
-        Surface windowSurface(SDL_CreateSurfaceFrom(
-            width, height,
-            SDL_PIXELFORMAT_RGBA32,
-            rawPixels.data(),
-            width * 4 // шаг строки в байтах (pitch)
-        ));
-
-        if (!windowSurface.raw())
-            throw std::runtime_error("SDL_CreateSurfaceFrom error: " + std::string(SDL_GetError()));
-
-        // --- Переворачиваем картинку по вертикали (компенсация специфики OpenGL) ---
-        // Так как данные лежат в rawPixels, переворачиваем строки прямо в Surface
-        int pitch = windowSurface.raw()->pitch;
-        std::vector<uint8_t> rowBuffer(pitch);
-        uint8_t* pixelsPtr = static_cast<uint8_t*>(windowSurface.raw()->pixels);
-
-        for (int i = 0; i < height / 2; ++i) {
-            uint8_t* topRow = pixelsPtr + i * pitch;
-            uint8_t* bottomRow = pixelsPtr + (height - 1 - i) * pitch;
-
-            // Меняем строчки местами
-            std::memcpy(rowBuffer.data(), topRow, pitch);
-            std::memcpy(topRow, bottomRow, pitch);
-            std::memcpy(bottomRow, rowBuffer.data(), pitch);
-        }
-        // ---------------------------------------------------------------------------
-
-        // Сохраняем готовую правильную поверхность в файл
-        if (!SDL_SavePNG(windowSurface.raw(), path.string().c_str()))
-            throw std::runtime_error("SDL_SavePNG error: " + std::string(SDL_GetError()));
-        logger.info() << "Screenshot saved. Path: " << path;
+    if (!io::folders::createOrCheckFolder(path.parent_path())) {
+        logger.error() << "Failed to create or find directory.";
+        return;
     }
-    catch (const std::runtime_error& exception) {
-        logger.error() << "Failed to take screenshot. " << exception.what();
+    Surface windowSurface = renderer.takeScreenshot();
+    if (!windowSurface.raw()) {
+        logger.error() << "Failed to take screenshot.";
+        return;
     }
+    if (!SDL_SavePNG(windowSurface.raw(), path.string().c_str())) {
+        logger.error() << "SDL_SavePNG error: " + std::string(SDL_GetError());
+        return;
+    }
+    logger.info() << "Screenshot saved. Path: " << path;
 }

@@ -10,13 +10,22 @@
 class Renderer;
 
 class Surface {
-    SDL_Surface* surface;
+    SDL_Surface* surface = nullptr;
 public:
-    Surface(SDL_Surface* surface) noexcept : surface(surface) {}
+    explicit Surface(SDL_Surface* surface) noexcept : surface(surface) {}
     ~Surface() noexcept { SDL_DestroySurface(surface); }
+    Surface(Surface&& other) noexcept { surface = other.surface; other.surface = nullptr; }
+    Surface& operator=(Surface&& other) noexcept {
+        if (this != &other) {
+            SDL_DestroySurface(surface);
+            surface = other.surface;
+            other.surface = nullptr;
+        }
+        return *this;
+    }
     SDL_Surface* raw() const noexcept { return surface; }
 private:
-    t1_disable_copy_and_move(Surface)
+    t1_disable_copy(Surface)
 };
 
 class Atlas {
