@@ -4,11 +4,11 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
 
-void BuildBeamsPool::addBeam(const PixelCoord builder, const TileCoord block, const TileCoord blockSize, const uint32_t color) {
+void BuildBeamsPool::addBeam(const PixelCoord builder, const TileCoord block, const int blockSize, const uint32_t color) {
     const float xMin = t1::pixelF(block.x);
     const float yMin = t1::pixelF(block.y);
-    const float xMax = xMin + (static_cast<float>(blockSize.x) * t1::TILE_F);
-    const float yMax = yMin + (static_cast<float>(blockSize.y) * t1::TILE_F);
+    const float xMax = xMin + (static_cast<float>(blockSize) * t1::TILE_F);
+    const float yMax = yMin + (static_cast<float>(blockSize) * t1::TILE_F);
 
     PixelCoord corners[4] = {
         { xMin, yMin }, // down left

@@ -18,7 +18,7 @@ struct Aim {
 };
 
 void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints,
-    BuiltInScripts& scripts, BlockMap& blocks, BuildBeamsPool& buildBeams) {
+    BlockMap& blocks, BuildBeamsPool& buildBeams) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
         if (!mobPreset.canBuild)
@@ -53,8 +53,9 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             soa.angle[i] = t1::atan(aim->position - position);
             const BPAction action = static_cast<InProgress*>(blocks.at(targetTile).block.get())->action; //temp
             const uint32_t color = (action == BPAction::build) ? 0xFA'DC'86'00 : 0x84'34'34'00;
+            const int blockSize = blocks.at(targetTile).block->size;
             blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets);
-            buildBeams.addBeam(position, targetTile, TileCoord(1, 1), color);
+            buildBeams.addBeam(position, targetTile, blockSize, color);
             aims.clear();
             continue;
         }
@@ -64,8 +65,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             continue;
         const PixelCoord tileCenter = t1::tileCenter(bp->tile);
         if (t1::areCloserCircle(tileCenter, position, RANGE)) {
-            blocks.demolish(bp->tile);
-            scripts.placeBlockInProgress(bp->presetID, bp->tile, soa.teamID[i], bp->rotation, bp->action);
+            blocks.applyBlueprint(*bp, soa.teamID[i], presets);
             blueprints.removeIfExists(bp->tile);
             soa.angle[i] = t1::atan(tileCenter - position);
         }

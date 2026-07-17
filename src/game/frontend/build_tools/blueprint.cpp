@@ -21,7 +21,7 @@ void Blueprints::drawRange(Renderer& renderer, const PixelCoord center, const fl
 void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
     const BlockPresetID presetID, const BlockRot rotation, const uint32_t color, const bool showRange) {
     const BlockPreset& preset = presets.getBlock(presetID);
-    const PixelCoord size = preset.visual.size;
+    const PixelCoord size = t1::TILE_PC * static_cast<float>(preset.size);
     const PixelCoord position = t1::pixel(tile);
     //
     const float angleRad = preset.rotatable ? static_cast<float>(rotation) * t1::TAU : 0.f;

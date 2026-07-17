@@ -29,8 +29,6 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
     BlockVisualPreset visual{
         reader.getTexture(atlas, "texture"),
-        reader.get<PixelCoord>("origin"),
-        reader.get<PixelCoord>("size"),
         reader.get<uint8_t>("frame_ticks"),
         reader.get<float>("frame_height") / atlas.getSize().y,
         static_cast<uint8_t>(frameCount),
@@ -38,6 +36,7 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     };
     BlockPreset preset;
     preset.archetype = getBlockType(reader.get<std::string>("archetype"));
+    preset.size = reader.get<uint8_t>("size"),
     preset.rotatable = reader.get<bool>("rotatable");
     preset.maxHealth = reader.get<Health>("health");
     preset.visual = visual;

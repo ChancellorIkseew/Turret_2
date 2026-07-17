@@ -40,7 +40,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     particles::updateParticles(particles);
     // Build when spans are used and can be spoiled.
-    construction::buildBlueprints(mobs.getSoa(), presets, world.getBlueprints(), scripts, blocks, world.getBuildBems());
+    construction::buildBlueprints(mobs.getSoa(), presets, world.getBlueprints(), blocks, world.getBuildBems());
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets);

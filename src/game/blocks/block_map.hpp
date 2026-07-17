@@ -8,6 +8,8 @@
 #include "engine/coords/transforms.hpp"
 #include "game/entities/turrets_pool.hpp"
 
+struct Blueprint;
+
 class BlocksMeta {
     TurretsPool turrets;
     std::vector<size_t> markedForRemove;
@@ -104,33 +106,20 @@ public:
     bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }
     bool isFilled(TileCoord tile) const noexcept { return contains(tile) && at(tile).type != BlockType::air; }
     bool isAir(TileCoord tile)    const noexcept { return contains(tile) && at(tile).type == BlockType::air; }
-    bool isInProgress(TileCoord tile) const noexcept { return contains(tile) && at(tile).type == BlockType::in_progress; }
+    bool isInProgress(TileCoord tile) const noexcept { return isFilled(tile) && at(tile).block->getType() == BlockType::in_progress; }
+    bool canPlace(const TileCoord tile, const int size) const noexcept;
     //
-    void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
-        demolish(tile);
-        if (block->getType() == BlockType::turret) {
-            TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
-            TurretPresetID preset = turretBlock->turretPreset;
-            const AngleRad angleRad = static_cast<float>(turretBlock->defaultRotation) * t1::TAU;
-            meta.getTurrets().addTurret(preset, t1::tileCenter(tile), t1::PI - angleRad, teamID, ShootingData(), 0);
-        }
-        if (block->getType() == BlockType::core)
-            meta.setCorePosition(tile);
-        if (block->getType() == BlockType::in_progress)
-            meta.addBlockInProgress(tile);
-        at(tile).place(teamID, block);
-    }
-    void demolish(TileCoord tile) {
-        if (at(tile).type == BlockType::turret)
-            meta.markForRemove(tile);
-        if (at(tile).type == BlockType::core)
-            meta.setCorePosition(std::nullopt);
-        if (at(tile).type == BlockType::in_progress)
-            meta.removeBlockInProgress(tile);
-        at(tile).demolish();
-    }
+    void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block);
+    void demolish(TileCoord tile);
     void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
-
+    void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
+    //
+    TileCoord getMaster(const TileCoord tile) {
+        if (at(tile).type == BlockType::link)
+            return static_cast<LinkBlock*>(at(tile).block.get())->masterTile;
+        return tile;
+    }
+private:
     t1_disable_copy_and_move(BlockMap)
 };
 
