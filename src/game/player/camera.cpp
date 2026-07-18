@@ -44,7 +44,6 @@ void Camera::move(const PixelCoord delta) {
 }
 
 void Camera::scale(const Input& input) {
-
     switch (input.getMouseWheelScroll()) {
     case MouseWheelScroll::none:
         return;
