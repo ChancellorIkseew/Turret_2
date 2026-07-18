@@ -47,7 +47,9 @@ void BuiltInScripts::targetEnemies() {
         }
     }
     else {
-        const PixelCoord coreCenter = t1::tileCenter(optCoreTile.value());
+        const TileCoord coreTile = optCoreTile.value();
+        const PixelCoord halfCoreSize = t1::HALF_TILE_PC * static_cast<float>(world.getBlocks().at(coreTile).block->size);
+        const PixelCoord coreCenter = t1::pixel(coreTile) + halfCoreSize;
         for (size_t i = 0; i < soa.mobCount; ++i) {
             if (soa.teamID[i] == enemyTeam)
                 soa.motionData[i].target = coreCenter;

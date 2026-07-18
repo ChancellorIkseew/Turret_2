@@ -8,6 +8,8 @@ namespace t1 {
     constexpr float TILE_F = 32.0f;
     constexpr PixelCoord TILE_PC = PixelCoord(TILE_F, TILE_F);
     constexpr int HALF_TILE = 16;
+    constexpr float HALF_TILE_F = 16;
+    constexpr PixelCoord HALF_TILE_PC = PixelCoord(HALF_TILE_F, HALF_TILE_F);
 
     // pixel_to_tile
     t1_finline_cxpr int tile(const float pixelCoord) noexcept {
