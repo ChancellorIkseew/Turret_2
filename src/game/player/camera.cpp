@@ -2,7 +2,6 @@
 //
 #include <algorithm>
 #include "engine/window/input/input.hpp"
-#include "engine/coords/transforms.hpp"
 
 constexpr float MIN_MAP_SCALE = 0.25f, MAX_MAP_SCALE = 5.0f;
 constexpr float SCALE_FACTOR = 1.2f;
@@ -45,6 +44,7 @@ void Camera::move(const PixelCoord delta) {
 }
 
 void Camera::scale(const Input& input) {
+
     switch (input.getMouseWheelScroll()) {
     case MouseWheelScroll::none:
         return;
@@ -83,4 +83,11 @@ PixelCoord Camera::fromMapToScreen(const PixelCoord mapCoord) const noexcept {
 }
 PixelCoord Camera::fromScreenToMap(const PixelCoord screenCoord) const noexcept {
     return cameraUpperLeftCorner + screenCoord / mapScale;
+}
+
+PixelCoord Camera::getTranslation() const noexcept {
+    constexpr float VISUAL_ARTIFACTS_START_SCALE = 0.68f;
+    if (mapScale > VISUAL_ARTIFACTS_START_SCALE)
+        return cameraUpperLeftCorner;
+    return t1::floor(cameraUpperLeftCorner * mapScale) / mapScale;
 }

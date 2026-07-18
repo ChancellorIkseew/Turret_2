@@ -2,7 +2,6 @@
 //
 #include "engine/assets/assets.hpp"
 #include "engine/coords/transforms.hpp"
-#include "engine/render/atlas.hpp"
 #include "engine/render/renderer.hpp"
 #include "game/events/events.hpp"
 #include "game/player/camera.hpp"

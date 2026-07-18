@@ -34,7 +34,7 @@ public:
         return at(tile.x, tile.y);
     }
     //
-    TileCoord   getSize()    const noexcept { return mapSize; }
-    const auto& getFloor()   const noexcept { return floor; }
-    const auto& getOre() const noexcept { return ore; }
+    TileCoord   getSize()  const noexcept { return mapSize; }
+    const auto& getFloor() const noexcept { return floor; }
+    const auto& getOre()   const noexcept { return ore; }
 };

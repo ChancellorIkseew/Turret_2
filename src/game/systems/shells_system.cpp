@@ -71,7 +71,7 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
     for (size_t i = 0; i < shellsCount; ++i) {
         if (soa.restLifeTime[i] > 0 && soa.restDamage[i] > 0)
             continue;
-        if (!camera.contains(t1::tile(soa.position[i])))
+        if (!camera.contains(soa.position[i]))
             continue;
         const ShellPreset& preset = presets.getShell(soa.preset[i]);
         if (preset.visual.size.y > 6.f) {
@@ -125,7 +125,7 @@ void shells::cleanupShells(ShellsPool& shellsPool, const Presets& presets) {
 void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t shellCount = soa.shellCount;
     for (size_t i = 0; i < shellCount; ++i) {
-        if (!camera.contains(t1::tile(soa.position[i])))
+        if (!camera.contains(soa.position[i]))
             continue;
         auto& visual = presets.getShell(soa.preset[i]).visual;
         renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
@@ -135,12 +135,10 @@ void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camer
 void shells::drawShellsLighting(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t shellCount = soa.shellCount;
     constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
-    const float scale = camera.getMapScale();
-    const PixelCoord translation = camera.getTranslation();
     constexpr PixelCoord OFFSET(8.f, 16.f);
 
     for (size_t i = 0; i < shellCount; ++i) {
-        if (!camera.contains(t1::tile(soa.position[i])))
+        if (!camera.contains(soa.position[i]))
             continue;
         const auto& visual = presets.getShell(soa.preset[i]).visual;
         renderer.draw(rect, soa.position[i], visual.size + OFFSET, visual.origin + OFFSET / 2.f, t1::PI - soa.angle[i], 0xFF'A5'00'FF);

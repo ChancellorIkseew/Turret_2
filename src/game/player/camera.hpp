@@ -2,11 +2,11 @@
 #include <cstdint>
 #include "config.hpp"
 #include "engine/coords/math.hpp"
+#include "engine/coords/transforms.hpp"
 
 class Input;
 
 class Camera {
-    static constexpr float VISUAL_ARTIFACTS_START_SCALE = 0.68f;
     PixelCoord cameraUpperLeftCorner, realCenter, targetCenter;
     PixelCoord movingStartMouseCoord;
     const PixelCoord pixelMapSize;
@@ -36,14 +36,13 @@ public:
 
     PixelCoord fromMapToScreen(const PixelCoord mapCoord) const noexcept;
     PixelCoord fromScreenToMap(const PixelCoord screenCoord) const noexcept;
+    PixelCoord getTranslation() const noexcept;
 
     t1_finline bool contains(const TileCoord tile) const noexcept {
         return t1::contains(startTile, endTile, tile);
     }
-    t1_finline PixelCoord getTranslation() const noexcept {
-        if (mapScale > VISUAL_ARTIFACTS_START_SCALE)
-            return cameraUpperLeftCorner;
-        return t1::floor(cameraUpperLeftCorner * mapScale) / mapScale;
+    t1_finline bool contains(const PixelCoord position) const noexcept {
+        return t1::contains(t1::pixel(startTile), t1::pixel(endTile), position);
     }
 private:
     void resize(const PixelCoord windowSize);

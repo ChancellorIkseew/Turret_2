@@ -2,7 +2,6 @@
 //
 #include "engine/assets/presets.hpp"
 #include "engine/render/renderer.hpp"
-#include "engine/coords/transforms.hpp"
 #include "game/blocks/block_map.hpp"
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mobs_pool.hpp"
@@ -102,7 +101,7 @@ void mobs::drawHealthBars(const MobSoA& soa, const Presets& presets, const Camer
     constexpr uint32_t HEALTH_COLOR = 0xA5'23'23'FF;
     constexpr PixelCoord BAR_SIZE(50.0f, 5.0f);
     for (size_t i = 0; i < soa.mobCount; ++i) {
-        if (!camera.contains(t1::tile(soa.position[i])))
+        if (!camera.contains(soa.position[i]))
             continue;
         const Health current = soa.health[i];
         const Health max = presets.getMob(soa.preset[i]).maxHealth;
@@ -117,7 +116,7 @@ void mobs::drawHealthBars(const MobSoA& soa, const Presets& presets, const Camer
 void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
-        if (!camera.contains(t1::tile(soa.position[i])))
+        if (!camera.contains(soa.position[i]))
             continue;
         const auto& visual = presets.getMob(soa.preset[i]).visual;
         if (tickCount % visual.frameTicks == 0 && soa.velocity[i] != PixelCoord(0.0f, 0.0f)) {
@@ -136,7 +135,7 @@ void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, R
 void mobs::drawMobShields(const MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
-        if (soa.shieldHealth[i] < 1 || !camera.contains(t1::tile(soa.position[i])))
+        if (soa.shieldHealth[i] < 1 || !camera.contains(soa.position[i]))
             continue;
         constexpr TextureRect RECT{ 0.f, 0.f, 1.f, 1.f };
         const auto& preset = presets.getMob(soa.preset[i]);

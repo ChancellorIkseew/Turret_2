@@ -2,8 +2,6 @@
 //
 #include "engine/assets/presets.hpp"
 #include "engine/audio/sound_queue.hpp"
-#include "engine/coords/math.hpp"
-#include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
 #include "engine/util/fast_rand.hpp"
 #include "game/entities/mobs_pool.hpp"
@@ -89,7 +87,7 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
             velocity += soa.velocity[i] * 0.8f;
 
         shells.addShell(turret.shell, position, velocity, angle, shell.damage, shell.maxLifeTime, soa.teamID[i]);
-        if (camera.contains(t1::tile(position))) {
+        if (camera.contains(position)) {
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;
             constexpr PixelCoord SIZE(15.f, 15.f);
@@ -114,7 +112,7 @@ void turrets::processTurrets(TurretComponents& soa, ShellsPool& shells, Particle
 void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
-        if (!camera.contains(t1::tile(soa.position[i])))
+        if (!camera.contains(soa.position[i]))
             continue;
         const PixelCoord recoilVector(std::sin(soa.turretAngle[i]), std::cos(soa.turretAngle[i]));
         const PixelCoord position = soa.position[i] - recoilVector * soa.currentRecoil[i];
@@ -126,7 +124,7 @@ void turrets::drawTurrets(TurretComponents&& soa, const Presets& presets, const 
 void turrets::drawShadows(TurretComponents&& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
-        if (!camera.contains(t1::tile(soa.position[i])))
+        if (!camera.contains(soa.position[i]))
             continue;
         const auto& visual = presets.getTurret(soa.preset[i]).visual;
         const PixelCoord shadowOffset(-visual.shadowOffset, visual.shadowOffset);

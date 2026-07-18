@@ -9,7 +9,7 @@ inline void drawLightParticles(const Camera& camera, Renderer& renderer, const P
         return;
     constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
     for (size_t i = 0; i < particleCount; ++i) {
-        if (soa.type[i] == PType::light && camera.contains(t1::tile(soa.position[i])))
+        if (soa.type[i] == PType::light && camera.contains(soa.position[i]))
             renderer.draw(rect, soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
@@ -21,7 +21,7 @@ inline void drawSmokeParticles(const Camera& camera, Renderer& renderer, const P
         return;
     constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
     for (size_t i = 0; i < particleCount; ++i) {
-        if (soa.type[i] == PType::smoke && camera.contains(t1::tile(soa.position[i])))
+        if (soa.type[i] == PType::smoke && camera.contains(soa.position[i]))
             renderer.draw(rect, soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
@@ -31,7 +31,7 @@ inline void drawShardParticles(const Camera& camera, Renderer& renderer, const P
     if (particleCount == 0)
         return;
     for (size_t i = 0; i < particleCount; ++i) {
-        if (soa.type[i] == PType::shard && camera.contains(t1::tile(soa.position[i])))
+        if (soa.type[i] == PType::shard && camera.contains(soa.position[i]))
             renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
