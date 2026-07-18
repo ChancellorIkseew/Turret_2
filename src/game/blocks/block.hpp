@@ -69,7 +69,7 @@ struct LinkBlock : Block {
     //
     LinkBlock(TileCoord masterTile, Block* master) : masterTile(masterTile), master(master) {}
     t1_derived BlockType getType() const noexcept final { return master->getType(); }
-    t1_derived BlockRot getRotation() const noexcept { return master->getRotation(); }
+    t1_derived BlockRot getRotation() const noexcept final { return master->getRotation(); }
     //
     t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
     t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return master->canAccept(item, srcRot); };
@@ -156,7 +156,7 @@ struct IntersectionBlock : Block {
     //
     t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final;
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
-    t1_derived void provide(TileCoord tile, const BlockMap& map);
+    void provide(TileCoord tile, const BlockMap& map);
 };
 
 struct RouterBlock : Block {
