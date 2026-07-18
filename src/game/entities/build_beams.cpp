@@ -5,17 +5,10 @@
 #include "engine/render/renderer.hpp"
 
 void BuildBeamsPool::addBeam(const PixelCoord builder, const TileCoord block, const int blockSize, const uint32_t color) {
-    const float xMin = t1::pixelF(block.x);
-    const float yMin = t1::pixelF(block.y);
-    const float xMax = xMin + (static_cast<float>(blockSize) * t1::TILE_F);
-    const float yMax = yMin + (static_cast<float>(blockSize) * t1::TILE_F);
-
-    PixelCoord corners[4] = {
-        { xMin, yMin }, // down left
-        { xMax, yMin }, // down right
-        { xMax, yMax }, // up right
-        { xMin, yMax }  // up left
-    };
+    const PixelCoord min = t1::pixel(block);
+    const PixelCoord max = min + t1::pixel(blockSize, blockSize);
+    // down left, down right, up right, up left
+    PixelCoord corners[4] = { min, PixelCoord(max.x, min.y), max, PixelCoord(min.x, max.y) };
 
     struct CornerDistance {
         PixelCoord point;
@@ -62,22 +55,22 @@ void BuildBeamsPool::addBeam(const PixelCoord builder, const TileCoord block, co
 
     bool edge1Visible = true;
     if (std::abs(p2.x - p1.x) < 0.001f) {
-        bool f = std::abs(p2.x - xMax) < 0.001f;
-        edge1Visible = f ? (builder.x >= xMax) : (builder.x <= xMin);
+        bool f = std::abs(p2.x - max.x) < 0.001f;
+        edge1Visible = f ? (builder.x >= max.x) : (builder.x <= min.x);
     }
     else {
-        bool f = std::abs(p2.y - yMax) < 0.001f;
-        edge1Visible = f ? (builder.y >= yMax) : (builder.y <= yMin);
+        bool f = std::abs(p2.y - max.y) < 0.001f;
+        edge1Visible = f ? (builder.y >= max.y) : (builder.y <= min.y);
     }
 
     bool edge3Visible = true;
     if (std::abs(p2.x - p3.x) < 0.001f) {
-        bool f = std::abs(p2.x - xMax) < 0.001f;
-        edge3Visible = f ? (builder.x >= xMax) : (builder.x <= xMin);
+        bool f = std::abs(p2.x - max.x) < 0.001f;
+        edge3Visible = f ? (builder.x >= max.x) : (builder.x <= min.x);
     }
     else {
-        bool f = std::abs(p2.y - yMax) < 0.001f;
-        edge3Visible = f ? (builder.y >= yMax) : (builder.y <= yMin);
+        bool f = std::abs(p2.y - max.y) < 0.001f;
+        edge3Visible = f ? (builder.y >= max.y) : (builder.y <= min.y);
     }
 
     if (!edge1Visible)
