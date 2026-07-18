@@ -8,15 +8,6 @@
 #include "game/frontend/build_tools/blueprint.hpp"
 #include "game/built_in_scripts/built_in_scripts.hpp"
 
-struct Aim {
-    float squareDistance;
-    PixelCoord position;
-    //
-    static constexpr bool closest(const Aim first, const Aim second) {
-        return first.squareDistance < second.squareDistance;
-    }
-};
-
 void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints,
     BlockMap& blocks, BuildBeamsPool& buildBeams) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
@@ -48,7 +39,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
         }
 
         if (!aims.empty()) {
-            const auto aim = std::min_element(aims.begin(), aims.end(), Aim::closest);
+            const auto aim = std::ranges::min_element(aims, Aim::closest);
             const TileCoord targetTile = t1::tile(aim->position);
             soa.angle[i] = t1::atan(aim->position - position);
             const BPAction action = static_cast<InProgress*>(blocks.at(targetTile).block.get())->action; //temp

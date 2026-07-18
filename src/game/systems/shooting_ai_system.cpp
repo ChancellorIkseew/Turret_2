@@ -1,6 +1,6 @@
 #include "ai_system.hpp"
 //
-#include <algorithm>
+#include <ranges>
 #include "engine/assets/presets.hpp"
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
@@ -14,15 +14,6 @@ static inline void updatePlayerControlled(TurretComponents& soa, const Presets& 
     soa.shootingData[index].isShooting = playerController.shootingActive();
     soa.shootingData[index].target = playerController.getAimCoord();
 }
-
-struct Aim {
-    float squareDistance;
-    PixelCoord position;
-    //
-    static constexpr bool closest(const Aim first, const Aim second) {
-        return first.squareDistance < second.squareDistance;
-    }
-};
 
 static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const BlockMap& blocks, const Presets& presets, const size_t index) {
     const float range = presets.getTurret(soa.preset[index]).range;
@@ -64,7 +55,7 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
     }
 
     if (!aims.empty()) {
-        const auto aim = std::min_element(aims.begin(), aims.end(), Aim::closest);
+        const auto aim = std::ranges::min_element(aims, Aim::closest);
         soa.shootingData[index].isShooting = true;
         soa.shootingData[index].target = aim->position;
         aims.clear();
