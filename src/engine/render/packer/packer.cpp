@@ -2,8 +2,8 @@
 //
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <STB/stb_rect.h>
+#include <bit>
 #include <vector>
-#include "engine/coords/math.hpp"
 #include "engine/debug/logger.hpp"
 
 constexpr int MAX_PACK_ATTEMPTS = 5;
@@ -15,8 +15,8 @@ static SDL_Point calculateSize(const int square, const int maxWidth, const int m
         h = std::max(square / maxWidth, maxHeight);
     else
         w = std::max(square / maxHeight, maxWidth);
-    w = t1::ceilUpPow2(w);
-    h = t1::ceilUpPow2(h);
+    w = std::bit_ceil(static_cast<uint32_t>(w));
+    h = std::bit_ceil(static_cast<uint32_t>(h));
     logger.info() << "1st packing attempt size: " << w << " " << h;
     return SDL_Point(w, h);
 }

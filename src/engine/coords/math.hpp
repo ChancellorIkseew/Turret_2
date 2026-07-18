@@ -26,8 +26,6 @@ namespace t1 {
         return std::atan2(value.x, value.y);
     }
 
-    /*no inline*/ int ceilUpPow2(const int value) noexcept;
-
     t1_finline_cxpr int squareDistance(const TileCoord first, const TileCoord second) noexcept {
         return pow2i(first.x - second.x) + pow2i(first.y - second.y);
     }

@@ -536,9 +536,6 @@
     <ClCompile Include="src\game\frontend\fr_graphics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\coords\math.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\io\comon_pathes.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
