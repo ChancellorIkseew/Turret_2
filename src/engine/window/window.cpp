@@ -2,6 +2,7 @@
 //
 #include <SDL3/SDL.h>
 #include <stdexcept>
+#include <thread>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/render/atlas.hpp"
@@ -102,9 +103,11 @@ void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
         logger.error() << "Failed to take screenshot.";
         return;
     }
-    if (!SDL_SavePNG(windowSurface.raw(), path.string().c_str())) {
-        logger.error() << "SDL_SavePNG error: " + std::string(SDL_GetError());
-        return;
-    }
-    logger.info() << "Screenshot saved. Path: " << path;
+    std::thread thread([path, windowSurface = std::move(windowSurface)]() mutable {
+        if (SDL_SavePNG(windowSurface.raw(), path.string().c_str()))
+            logger.info() << "Screenshot saved. Path: " << path;
+        else
+            logger.error() << "SDL_SavePNG error: " << SDL_GetError();
+        });
+    thread.detach();
 }
