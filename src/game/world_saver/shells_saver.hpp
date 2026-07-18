@@ -1,7 +1,7 @@
 #pragma once
 #include "engine/io/archive.hpp"
 #include "engine/io/io.hpp"
-#include "game/entities/shell_manager.hpp"
+#include "game/entities/shells_pool.hpp"
 
 void saveShells(const ShellSoA& soa, const std::filesystem::path& path) {
     std::string blob;
