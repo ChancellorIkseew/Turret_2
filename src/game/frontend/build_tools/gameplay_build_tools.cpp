@@ -108,7 +108,7 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
                     static_cast<InProgress*>(block.get())->action = BPAction::demolish;
                 else {
                     const BlockRot rotation = block->getRotation() != none ? block->getRotation() : up;
-                    blueprints.addOrReplace(masterTile, block->size, block->presetID, rotation, BPAction::demolish);
+                    blueprints.tryAdd(masterTile, block->size, block->presetID, rotation, BPAction::demolish);
                 }
             }
         }
@@ -125,7 +125,7 @@ void GBuildTools::rejectDemolition(BlockMap& blocks, Blueprints& blueprints, con
 void GBuildTools::buildDraft(World& world, const TileData tileData, const int blockSize) const {
     for (const TileCoord tile : draft) {
         if (world.getBlocks().canPlace(tile, blockSize))
-            world.getBlueprints().addOrReplace(tile, blockSize, BlockPresetID(tileData.id), rotation, BPAction::build);
+            world.getBlueprints().tryAdd(tile, blockSize, BlockPresetID(tileData.id), rotation, BPAction::build);
     }
 }
 

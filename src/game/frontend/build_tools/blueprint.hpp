@@ -39,12 +39,9 @@ class Blueprints {
         return std::find(blueprints.begin(), blueprints.end(), tile);
     }
 public:
-    void addOrReplace(const TileCoord tile, const uint8_t size, const BlockPresetID presetID,
+    void tryAdd(const TileCoord tile, const uint8_t size, const BlockPresetID presetID,
         const BlockRot rotation, const BPAction action) {
-        auto it = findByTile(tile);
-        if (it != blueprints.end()) // replace
-             *it = Blueprint(tile, size, presetID, rotation, action);
-        else if (blueprints.size() < MAX_ELEMENTS) // emplace
+        if (canPlace(tile, size))
             blueprints.emplace_back(tile, size, presetID, rotation, action);
     }
 
@@ -81,7 +78,7 @@ public:
         return canPlace(tile, 1); // air
     }
 
-    bool canPlace(const TileCoord tile, const int size) {
+    bool canPlace(const TileCoord tile, const int size) const {
         for (const auto& block : blueprints) {
             if (Blueprint::intersects(block, tile, size))
                 return false;

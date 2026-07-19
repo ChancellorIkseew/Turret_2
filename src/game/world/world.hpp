@@ -34,6 +34,7 @@ public:
     const MobsPool& getMobs() const noexcept { return mobs; }
     const ShellsPool& getShells() const noexcept { return shells; }
     const ParticlesPool& getParticles() const noexcept { return particles; }
+    const Blueprints& getBlueprints() const noexcept { return blueprints; }
     WorldMap& getMap() noexcept { return map; }
     BlockMap& getBlocks() noexcept { return blocks; }
     TeamsPool& getTeams() noexcept { return teams; }
