@@ -44,7 +44,36 @@ void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const ui
     for (const auto& blueprint : blueprints) {
         if (blueprint.action == BPAction::build)
             drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
-        else
-            renderer.drawRect(t1::pixel(blueprint.tile), {32, 32}, {0, 0}, 0.f, 0x84'34'34'C8); //TODO: demolition frame;
+        else {
+            const uint8_t size = presets.getBlock(blueprint.presetID).size;
+            renderer.drawRect(t1::pixel(blueprint.tile), t1::TILE_PC * size, { 0, 0 }, 0.f, 0x84'34'34'C8); //TODO: demolition frame;
+        }
+    }
+}
+
+void Blueprints::removeByArea(const TileCoord start, const TileCoord end, const BPAction action) noexcept {
+    for (size_t i = 0; i < blueprints.size(); ) {
+        const auto& bp = blueprints[i];
+        const int bpMaxX = bp.tile.x + bp.size - 1;
+        const int bpMaxY = bp.tile.y + bp.size - 1;
+        const bool intersects = (bp.tile.x <= end.x && bpMaxX >= start.x) &&
+            (bp.tile.y <= end.y && bpMaxY >= start.y);
+        if (!intersects || bp.action != action)
+            ++i;
+        else {
+            std::swap(blueprints[i], blueprints.back());
+            blueprints.pop_back();
+        }
+    }
+}
+
+void Blueprints::drawCancelArea(Renderer& renderer, const TileCoord start, const TileCoord end) {
+    for (const auto& bp : blueprints) {
+        const int bpMaxX = bp.tile.x + bp.size - 1;
+        const int bpMaxY = bp.tile.y + bp.size - 1;
+        const bool intersects = (bp.tile.x <= end.x && bpMaxX >= start.x) &&
+            (bp.tile.y <= end.y && bpMaxY >= start.y);
+        if (intersects)
+            renderer.drawRect(t1::pixel(bp.tile), t1::TILE_PC * bp.size, { 0, 0 }, 0.f, 0x84'34'34'C8);
     }
 }

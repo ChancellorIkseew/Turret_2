@@ -49,8 +49,7 @@ public:
         auto it = findByTile(tile);
         if (it == blueprints.end())
             return;
-        if (it != blueprints.end() - 1)
-            *it = std::move(blueprints.back());
+        std::swap(*it, blueprints.back());
         blueprints.pop_back();
     }
     
@@ -68,13 +67,14 @@ public:
     }
 
     Blueprint getBlock(const TileCoord tile) {
-        auto it = findByTile(tile);
-        if (it != blueprints.end())
-            return *it;
+        for (const auto& block : blueprints) {
+            if (Blueprint::intersects(block, tile, 1))
+                return block;
+        }
         return Blueprint(/*null object*/);
     }
 
-    bool isAir(const TileCoord tile) {
+    bool isAir(const TileCoord tile) const {
         return canPlace(tile, 1); // air
     }
 
@@ -85,6 +85,9 @@ public:
         }
         return true;
     }
+
+    void removeByArea(const TileCoord start, const TileCoord end, const BPAction action) noexcept;
+    void drawCancelArea(Renderer& renderer, const TileCoord start, const TileCoord end);
 
     void drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const;
     bool empty() const noexcept { return blueprints.empty(); }

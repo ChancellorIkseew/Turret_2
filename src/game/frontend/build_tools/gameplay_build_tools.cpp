@@ -82,7 +82,7 @@ void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, con
         if (block->getRotation() != BlockRot::none)
             rotation = block->getRotation();
     } else if (!blueprints.isAir(tile)) {
-        const auto& block = blueprints.getBlock(tile);
+        const Blueprint block = blueprints.getBlock(tile);
         optTileData = TileData(TileComponent::block, block.presetID.asUint());
         if (block.rotation != BlockRot::none)
             rotation = block.rotation;
@@ -92,15 +92,10 @@ void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, con
 void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprints, const TileCoord start, const TileCoord end) const {
     const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
     const TileCoord nEnd = TileCoord(std::max(start.x, end.x), std::max(start.y, end.y));
+    blueprints.removeByArea(nStart, nEnd, BPAction::build);
     for (int x = nStart.x; x <= nEnd.x; ++x) {
         for (int y = nStart.y; y <= nEnd.y; ++y) {
             const TileCoord tile(x, y);
-            const Blueprint bp = blueprints.getBlock(tile);
-            if (!blueprints.isAir(tile) && bp.action == BPAction::build) {
-                blueprints.removeIfExists(tile);
-                continue;
-            }
-
             if (blocks.isFilled(tile) && blueprints.isAir(tile)) {
                 const TileCoord masterTile = blocks.getMaster(tile);
                 const auto& block = blocks.at(masterTile).block;
@@ -116,8 +111,7 @@ void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprin
 }
 
 void GBuildTools::rejectDemolition(BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) const {
-    if (blueprints.getBlock(tile).action == BPAction::demolish)
-        blueprints.removeIfExists(tile);
+    blueprints.removeByArea(tile, tile, BPAction::demolish);
     if (blocks.isInProgress(tile))
         static_cast<InProgress*>(blocks.at(blocks.getMaster(tile)).block.get())->action = BPAction::build;
 }
@@ -137,8 +131,12 @@ static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const T
 }
 
 void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
-    if (optDemolishStart)
+    if (optDemolishStart) {
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
+        const TileCoord nStart = TileCoord(std::min(optDemolishStart.value().x, targetTile.x), std::min(optDemolishStart.value().y, targetTile.y));
+        const TileCoord nEnd = TileCoord(std::max(optDemolishStart.value().x, targetTile.x), std::max(optDemolishStart.value().y, targetTile.y));
+        engine.getSession().getWorld().getBlueprints().drawCancelArea(renderer, nStart, nEnd);
+    }
     if (optTileData) {
         if (!optBuildStart)
             drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs, true);   
