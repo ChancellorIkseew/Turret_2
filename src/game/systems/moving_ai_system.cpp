@@ -50,9 +50,9 @@ static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size
         }
     }
 
-    Blueprint* targetBlueprint = blueprints.getClosest(mobTile);
+    Blueprint* targetBlueprint = blueprints.getClosest(soa.position[index]);
     if (targetBlueprint)
-        aiData.target = t1::tileCenter(targetBlueprint->tile);
+        aiData.target = targetBlueprint->center;
     else
         aiData.target = soa.position[index];
 

@@ -51,14 +51,13 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             continue;
         }
 
-        Blueprint* bp = blueprints.getClosest(tilePosition);
+        Blueprint* bp = blueprints.getClosest(position);
         if (!bp)
             continue;
-        const PixelCoord tileCenter = t1::tileCenter(bp->tile);
-        if (t1::areCloserCircle(tileCenter, position, RANGE)) {
+        if (t1::areCloserCircle(bp->center, position, RANGE)) {
+            soa.angle[i] = t1::atan(bp->center - position);
             blocks.applyBlueprint(*bp, soa.teamID[i], presets);
             blueprints.removeIfExists(bp->tile);
-            soa.angle[i] = t1::atan(tileCenter - position);
         }
     }
 }

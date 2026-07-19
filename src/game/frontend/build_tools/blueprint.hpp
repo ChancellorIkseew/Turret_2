@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "engine/coords/math.hpp"
+#include "engine/coords/transforms.hpp"
 #include "game/blocks/block.hpp"
 
 class Presets;
@@ -8,12 +9,25 @@ class Renderer;
 
 struct Blueprint {
     TileCoord tile;
+    PixelCoord center;
+    uint8_t size = 1;
     BlockPresetID presetID = BlockPresetID(0);
     BlockRot rotation = BlockRot::up;
     BPAction action = BPAction::build;
 
+    Blueprint() = default;
+    Blueprint(const TileCoord tile, const uint8_t size, const BlockPresetID presetID,
+        const BlockRot rotation, const BPAction action) :
+        tile(tile), size(size), presetID(presetID), rotation(rotation), action(action),
+        center(t1::pixel(tile) + t1::pixel(size, size) / 2.f) { }
+
     constexpr bool operator==(const TileCoord& otherTile) const noexcept {
         return tile == otherTile;
+    }
+
+    static constexpr bool intersects(const Blueprint& block, const TileCoord tile, const int size) noexcept {
+        return tile.x < block.tile.x + block.size && tile.x + size > block.tile.x &&
+            tile.y < block.tile.y + block.size && tile.y + size > block.tile.y;
     }
 };
 
@@ -25,12 +39,13 @@ class Blueprints {
         return std::find(blueprints.begin(), blueprints.end(), tile);
     }
 public:
-    void addOrReplace(const TileCoord tile, const BlockPresetID presetID, const BlockRot rotation, const BPAction action) {
+    void addOrReplace(const TileCoord tile, const uint8_t size, const BlockPresetID presetID,
+        const BlockRot rotation, const BPAction action) {
         auto it = findByTile(tile);
         if (it != blueprints.end()) // replace
-             *it = Blueprint(tile, presetID, rotation, action);
+             *it = Blueprint(tile, size, presetID, rotation, action);
         else if (blueprints.size() < MAX_ELEMENTS) // emplace
-            blueprints.emplace_back(tile, presetID, rotation, action);
+            blueprints.emplace_back(tile, size, presetID, rotation, action);
     }
 
     void removeIfExists(const TileCoord tile) noexcept {
@@ -42,11 +57,11 @@ public:
         blueprints.pop_back();
     }
     
-    Blueprint* getClosest(const TileCoord target) noexcept {
-        int minSqrDistance = std::numeric_limits<int>::max();
+    Blueprint* getClosest(const PixelCoord target) noexcept {
+        float minSqrDistance = std::numeric_limits<float>::max();
         Blueprint* closest = nullptr;
         for (auto& bp : blueprints) {
-            const int sqrDistance = t1::pow2i(bp.tile.x - target.x) + t1::pow2i(bp.tile.y - target.y);
+            const float sqrDistance = t1::squareDistance(target, bp.center);
             if (sqrDistance < minSqrDistance) {
                 minSqrDistance = sqrDistance;
                 closest = &bp;
@@ -63,7 +78,15 @@ public:
     }
 
     bool isAir(const TileCoord tile) {
-        return getBlock(tile).presetID == BlockPresetID(0); // air
+        return canPlace(tile, 1); // air
+    }
+
+    bool canPlace(const TileCoord tile, const int size) {
+        for (const auto& block : blueprints) {
+            if (Blueprint::intersects(block, tile, size))
+                return false;
+        }
+        return true;
     }
 
     void drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const;
