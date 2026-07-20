@@ -3,12 +3,12 @@
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "game/blocks/block_map.hpp"
+#include "game/blocks/schematic/schematic.hpp"
 #include "game/entities/build_beams.hpp"
 #include "game/entities/mobs_pool.hpp"
-#include "game/frontend/build_tools/blueprint.hpp"
 #include "game/built_in_scripts/built_in_scripts.hpp"
 
-void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints,
+void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schematic& schematic,
     BlockMap& blocks, BuildBeamsPool& buildBeams) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
@@ -51,13 +51,13 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Blueprin
             continue;
         }
 
-        Blueprint* bp = blueprints.getClosest(position);
+        Blueprint* bp = schematic.getClosest(position);
         if (!bp)
             continue;
         if (t1::areCloserCircle(bp->center, position, RANGE)) {
             soa.angle[i] = t1::atan(bp->center - position);
             blocks.applyBlueprint(*bp, soa.teamID[i], presets);
-            blueprints.removeIfExists(bp->tile);
+            schematic.removeIfExists(bp->tile);
         }
     }
 }

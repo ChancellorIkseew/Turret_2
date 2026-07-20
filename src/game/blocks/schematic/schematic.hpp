@@ -31,7 +31,7 @@ struct Blueprint {
     }
 };
 
-class Blueprints {
+class Schematic {
     static constexpr size_t MAX_ELEMENTS = 512;
     std::vector<Blueprint> blueprints;
     //

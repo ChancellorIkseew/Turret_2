@@ -33,14 +33,14 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     updateBlocks(blocks, world.getMap(), presets);
     shells::processShells(world, presets, worldSounds, camera);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
-    ai::updateMovingAI(mobs.getSoa(), presets, playerController, world.getBlueprints(), blocks);
+    ai::updateMovingAI(mobs.getSoa(), presets, playerController, world.getSchematic(), blocks);
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
     turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     particles::updateParticles(particles);
     // Build when spans are used and can be spoiled.
-    construction::buildBlueprints(mobs.getSoa(), presets, world.getBlueprints(), blocks, world.getBuildBems());
+    construction::buildBlueprints(mobs.getSoa(), presets, world.getSchematic(), blocks, world.getBuildBems());
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets);
@@ -67,7 +67,7 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //
     renderer.setShaderProgram(*shaders.baseShader);
     drawer.drawBlocks(world.getBlocks(), renderer, presets);
-    world.getBlueprints().drawGhosts(renderer, presets, timeMs);
+    world.getSchematic().drawGhosts(renderer, presets, timeMs);
     //
     renderer.setShaderProgram(*shaders.emergeShader);
     drawer.drawBlocksInProgress(world.getBlocks(), renderer, presets);
@@ -96,7 +96,7 @@ void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& p
         if (t1::tile(turrets.position[i]) != targetTile)
             continue;
         const float range = presets.getTurret(turrets.preset[i]).range;
-        Blueprints::drawRange(renderer, turrets.position[i], range);
+        Schematic::drawRange(renderer, turrets.position[i], range);
         break;
     }
 }

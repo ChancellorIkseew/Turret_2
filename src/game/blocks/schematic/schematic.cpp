@@ -1,4 +1,4 @@
-#include "blueprint.hpp"
+#include "schematic.hpp"
 //
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
@@ -24,7 +24,7 @@ static void drawBlockFrame(Renderer& renderer, const TileCoord tile, const int s
     renderer.drawRect(bottomRight, PixelCoord(4, 12), PixelCoord(4, 12), 0.f, color);
 }
 
-void Blueprints::drawRange(Renderer& renderer, const PixelCoord center, const float range) {
+void Schematic::drawRange(Renderer& renderer, const PixelCoord center, const float range) {
     constexpr PixelCoord CELL_SIZE(20.f, 3.f);
     constexpr float MAX_OFFSET = 8.f, CELL = 20.f;
     //
@@ -38,7 +38,7 @@ void Blueprints::drawRange(Renderer& renderer, const PixelCoord center, const fl
     }
 }
 
-void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
+void Schematic::drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
     const BlockPresetID presetID, const BlockRot rotation, const uint32_t color, const bool showRange) {
     const BlockPreset& preset = presets.getBlock(presetID);
     const PixelCoord size = t1::TILE_PC * static_cast<float>(preset.size);
@@ -57,7 +57,7 @@ void Blueprints::drawBlock(const Presets& presets, Renderer& renderer, const Til
     }
 }
 
-void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const {
+void Schematic::drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const {
     const float modifier = std::sin(static_cast<float>(timeMs) / 500.f) * 64.f;
     const uint8_t alpha = uint8_t(modifier) + 191; // 255 - 64
     const uint32_t color = 0xFF'FF'FF'00 + alpha;
@@ -69,7 +69,7 @@ void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const ui
     }
 }
 
-void Blueprints::removeByArea(const TileCoord start, const TileCoord end, const BPAction action) noexcept {
+void Schematic::removeByArea(const TileCoord start, const TileCoord end, const BPAction action) noexcept {
     for (size_t i = 0; i < blueprints.size(); ) {
         const auto& bp = blueprints[i];
         const int bpMaxX = bp.tile.x + bp.size - 1;
@@ -85,7 +85,7 @@ void Blueprints::removeByArea(const TileCoord start, const TileCoord end, const 
     }
 }
 
-void Blueprints::drawCancelArea(Renderer& renderer, const TileCoord start, const TileCoord end) {
+void Schematic::drawCancelArea(Renderer& renderer, const TileCoord start, const TileCoord end) {
     for (const auto& bp : blueprints) {
         const int bpMaxX = bp.tile.x + bp.size - 1;
         const int bpMaxY = bp.tile.y + bp.size - 1;

@@ -3,11 +3,11 @@
 struct MobSoA;
 class Presets;
 class BlockMap;
-class Blueprints;
+class Schematic;
 class BuildBeamsPool;
 class BuiltInScripts;
 
 namespace construction {
-    void buildBlueprints(MobSoA& soa, const Presets& presets, Blueprints& blueprints,
+    void buildBlueprints(MobSoA& soa, const Presets& presets, Schematic& schematic,
         BlockMap& blocks, BuildBeamsPool& buildBeams);
 }

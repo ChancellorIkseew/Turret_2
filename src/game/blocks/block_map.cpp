@@ -2,7 +2,7 @@
 //
 #include <cassert>
 #include "engine/assets/presets.hpp"
-#include "game/frontend/build_tools/blueprint.hpp"
+#include "game/blocks/schematic/schematic.hpp"
 #include "make_block.hpp"
 #include "offset_table.hpp"
 

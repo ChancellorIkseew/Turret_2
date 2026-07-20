@@ -5,8 +5,8 @@
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
 #include "game/blocks/block_map.hpp"
+#include "game/blocks/schematic/schematic.hpp"
 #include "game/entities/mobs_pool.hpp"
-#include "game/frontend/build_tools/blueprint.hpp"
 #include "game/player/player_controller.hpp"
 
 constexpr PixelCoord NO_MOTION(0.0f, 0.0f);
@@ -35,7 +35,7 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
     }
 }
 
-static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size_t index, Blueprints& blueprints, BlockMap& blocks) {
+static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size_t index, Schematic& schematic, BlockMap& blocks) {
     auto& aiData = soa.motionData[index];
     const std::span<const TileCoord> inProgress = blocks.getMeta().getBlocksInProgress();
     const TileCoord mobTile = t1::tile(soa.position[index]);
@@ -50,7 +50,7 @@ static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size
         }
     }
 
-    Blueprint* targetBlueprint = blueprints.getClosest(soa.position[index]);
+    Blueprint* targetBlueprint = schematic.getClosest(soa.position[index]);
     if (targetBlueprint)
         aiData.target = targetBlueprint->center;
     else
@@ -69,7 +69,7 @@ static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size
     }
 }
 
-void ai::updateMovingAI(MobSoA& soa, const Presets& presets, const PlayerController& playerController, Blueprints& blueprints, BlockMap& blocks) {
+void ai::updateMovingAI(MobSoA& soa, const Presets& presets, const PlayerController& playerController, Schematic& schematic, BlockMap& blocks) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         switch (soa.motionData[i].aiType) {
@@ -80,7 +80,7 @@ void ai::updateMovingAI(MobSoA& soa, const Presets& presets, const PlayerControl
             updateBasic(soa, presets, i);
             break;
         case MovingAI::builder:
-            updateBuilder(soa, presets, i, blueprints, blocks);
+            updateBuilder(soa, presets, i, schematic, blocks);
             break;
         }
     }
