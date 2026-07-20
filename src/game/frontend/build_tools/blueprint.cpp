@@ -4,6 +4,26 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
 
+static void drawBlockFrame(Renderer& renderer, const TileCoord tile, const int size, const uint32_t color) {
+    const PixelCoord position = t1::pixel(tile);
+    const float pixelSize = t1::pixelF(size);
+    //
+    renderer.drawRect(position, PixelCoord(12, 4), PixelCoord(0, 0), 0.f, color);
+    renderer.drawRect(position, PixelCoord(4, 12), PixelCoord(0, 0), 0.f, color);
+    //
+    const PixelCoord topRight(position.x + pixelSize, position.y);
+    renderer.drawRect(topRight, PixelCoord(12, 4), PixelCoord(12, 0), 0.f, color);
+    renderer.drawRect(topRight, PixelCoord(4, 12), PixelCoord(4, 0), 0.f, color);
+    //
+    const PixelCoord bottomLeft(position.x, position.y + pixelSize);
+    renderer.drawRect(bottomLeft, PixelCoord(12, 4), PixelCoord(0, 4), 0.f, color);
+    renderer.drawRect(bottomLeft, PixelCoord(4, 12), PixelCoord(0, 12), 0.f, color);
+    //
+    const PixelCoord bottomRight(position.x + pixelSize, position.y + pixelSize);
+    renderer.drawRect(bottomRight, PixelCoord(12, 4), PixelCoord(12, 4), 0.f, color);
+    renderer.drawRect(bottomRight, PixelCoord(4, 12), PixelCoord(4, 12), 0.f, color);
+}
+
 void Blueprints::drawRange(Renderer& renderer, const PixelCoord center, const float range) {
     constexpr PixelCoord CELL_SIZE(20.f, 3.f);
     constexpr float MAX_OFFSET = 8.f, CELL = 20.f;
@@ -44,10 +64,8 @@ void Blueprints::drawGhosts(Renderer& renderer, const Presets& presets, const ui
     for (const auto& blueprint : blueprints) {
         if (blueprint.action == BPAction::build)
             drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
-        else {
-            const uint8_t size = presets.getBlock(blueprint.presetID).size;
-            renderer.drawRect(t1::pixel(blueprint.tile), t1::TILE_PC * size, { 0, 0 }, 0.f, 0x84'34'34'C8); //TODO: demolition frame;
-        }
+        else
+            drawBlockFrame(renderer, blueprint.tile, blueprint.size, 0x84'34'34'C8);
     }
 }
 
@@ -74,6 +92,6 @@ void Blueprints::drawCancelArea(Renderer& renderer, const TileCoord start, const
         const bool intersects = (bp.tile.x <= end.x && bpMaxX >= start.x) &&
             (bp.tile.y <= end.y && bpMaxY >= start.y);
         if (intersects)
-            renderer.drawRect(t1::pixel(bp.tile), t1::TILE_PC * bp.size, { 0, 0 }, 0.f, 0x84'34'34'C8);
+            drawBlockFrame(renderer, bp.tile, bp.size, 0x84'34'34'C8);
     }
 }

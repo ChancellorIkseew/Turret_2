@@ -124,10 +124,13 @@ void GBuildTools::buildDraft(World& world, const TileData tileData, const int bl
 }
 
 static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const TileCoord end) {
-    const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
-    const TileCoord size = TileCoord(std::abs(start.x - end.x) + 1, std::abs(start.y - end.y) + 1);
-    constexpr PixelCoord ORIGIN(0.f, 0.f);
-    renderer.drawRect(t1::pixel(nStart), t1::pixel(size), ORIGIN, 0.f, 0x84'34'34'C8);
+    const PixelCoord nStart = t1::pixel(std::min(start.x, end.x), std::min(start.y, end.y));
+    const PixelCoord size = t1::pixel(std::abs(start.x - end.x) + 1, std::abs(start.y - end.y) + 1);
+    //
+    renderer.drawRect(nStart, PixelCoord(4.f, size.y), PixelCoord(0.f, 0.f), 0.f, 0x84'34'34'FF);
+    renderer.drawRect(nStart, PixelCoord(size.x, 4.f), PixelCoord(0.f, 0.f), 0.f, 0x84'34'34'FF);
+    renderer.drawRect(nStart + size, PixelCoord(4.f, size.y), PixelCoord(4.f, size.y), 0.f, 0x84'34'34'FF);
+    renderer.drawRect(nStart + size, PixelCoord(size.x, 4.f), PixelCoord(size.x, 4.f), 0.f, 0x84'34'34'FF);
 }
 
 void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
