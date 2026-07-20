@@ -1,0 +1,15 @@
+#visual
+texture=cannon_turret
+origin=25|30.0
+size=50|57
+shadow_offset=2
+shot_sound=cannon_shot
+#logic
+reload=10
+range=460
+recoil=1.25
+spread_deg=2
+rotation_speed=0.02
+shooting_ai=basic
+shell=cannon_shell
+barrels=5|32,-5|32

@@ -1,0 +1,11 @@
+#visual
+texture=big_iron_wall
+frame_ticks=0
+frame_height=64
+frame_order=0
+#logic
+archetype=turret
+size=2
+rotatable=true
+health=900
+turret=cannon_turret
