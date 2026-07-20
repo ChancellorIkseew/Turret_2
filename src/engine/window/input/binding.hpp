@@ -20,6 +20,7 @@ inline constexpr cString Build_Shoot("Build/Shoot");
 inline constexpr cString Demolish("Demolish");
 inline constexpr cString Rotate_building("Rotate_building");
 inline constexpr cString Pipette("Pipette");
+inline constexpr cString Clear_schematic("Clear_schematic");
 inline constexpr cString Control_unit("Control_unit");
 inline constexpr cString Drag_camera("Drag_camera");
 

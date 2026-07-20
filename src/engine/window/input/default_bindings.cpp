@@ -20,6 +20,7 @@ std::unordered_map<std::string, Binding> Controls::bindings = {
     {Rotate_building, Binding(SDL_SCANCODE_R, InputType::keyboard)},
     {Pipette, Binding(SDL_SCANCODE_Q, InputType::keyboard)},
     {Demolish, Binding(SDL_BUTTON_RIGHT, InputType::mouse)},
+    {Clear_schematic, Binding(SDL_SCANCODE_X, InputType::keyboard)},
     {Control_unit, Binding(SDL_SCANCODE_V, InputType::keyboard)},
     {Drag_camera, Binding(SDL_BUTTON_MIDDLE, InputType::mouse)},
 

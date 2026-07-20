@@ -65,6 +65,8 @@ void GBuildTools::update(Engine& engine) {
     }
     if (input.jactive(Build_Shoot) && !optTileData)
         rejectDemolition(blocks, schematic, targetTile);
+    if (input.jactive(Clear_schematic))
+        schematic.clear();
 }
 
 void GBuildTools::usePipette(const BlockMap& blocks, Schematic& schematic, const TileCoord tile) {

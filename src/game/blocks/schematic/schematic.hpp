@@ -91,6 +91,7 @@ public:
 
     void drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const;
     bool empty() const noexcept { return blueprints.empty(); }
+    void clear() noexcept { blueprints.clear(); }
 
     static void drawRange(Renderer& renderer, const PixelCoord center, const float range);
     static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
