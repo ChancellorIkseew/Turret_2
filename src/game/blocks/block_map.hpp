@@ -23,7 +23,7 @@ public:
     void markForRemove(TileCoord tile) {
         auto& soa = turrets.getSoa();
         for (size_t i = 0; i < soa.turretCount; ++i) {
-            if (tile == t1::tile(soa.position[i]))
+            if (tile == soa.masterTile[i])
                 return markedForRemove.push_back(i);
         }
     }

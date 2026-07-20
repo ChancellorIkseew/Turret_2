@@ -24,7 +24,8 @@ void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& bloc
         TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
         TurretPresetID preset = turretBlock->turretPreset;
         const AngleRad angleRad = static_cast<float>(turretBlock->defaultRotation) * t1::TAU;
-        meta.getTurrets().addTurret(preset, t1::tileCenter(tile), t1::PI - angleRad, teamID, ShootingData(), 0);
+        const PixelCoord origin = t1::HALF_TILE_PC * static_cast<float>(block->size);
+        meta.getTurrets().addTurret(preset, tile, t1::pixel(tile) + origin, t1::PI - angleRad, teamID, ShootingData(), 0);
     }
     if (block->getType() == BlockType::core)
         meta.setCorePosition(tile);

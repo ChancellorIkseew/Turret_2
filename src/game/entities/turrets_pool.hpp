@@ -5,6 +5,7 @@
 class Presets;
 
 struct TurretSoA {
+    std::vector<TileCoord> masterTile;
     std::vector<PixelCoord> position;
     std::vector<AngleRad> angle;
     std::vector<TurretPresetID> preset;
@@ -29,6 +30,7 @@ public:
     void removeTurret(const size_t targetIndex);
     void addTurret(
         const TurretPresetID preset,
+        const TileCoord masterTile,
         const PixelCoord position,
         const AngleRad angle,
         const TeamID teamID,

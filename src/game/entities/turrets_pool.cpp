@@ -1,6 +1,7 @@
 #include "turrets_pool.hpp"
 
 void TurretsPool::reserve(const size_t capacity) {
+    soa.masterTile.reserve(capacity);
     soa.position.reserve(capacity);
     soa.angle.reserve(capacity);
     soa.teamID.reserve(capacity);
@@ -14,12 +15,14 @@ void TurretsPool::reserve(const size_t capacity) {
 
 void TurretsPool::addTurret(
     const TurretPresetID preset,
+    const TileCoord masterTile,
     const PixelCoord position,
     const AngleRad angle,
     const TeamID teamID,
     const ShootingData shootingData,
     const TickCount restReloadTime) {
 
+    soa.masterTile.push_back(masterTile);
     soa.position.push_back(position);
     soa.angle.push_back(angle);
     soa.teamID.push_back(teamID);
@@ -36,6 +39,7 @@ void TurretsPool::removeTurret(const size_t targetIndex) {
     const size_t last = --soa.turretCount;
 
     if (targetIndex != last) {
+        soa.masterTile[targetIndex] = std::move(soa.masterTile[last]);
         soa.position[targetIndex] = std::move(soa.position[last]);
         soa.angle[targetIndex] = std::move(soa.angle[last]);
         soa.teamID[targetIndex] = std::move(soa.teamID[last]);
@@ -47,6 +51,7 @@ void TurretsPool::removeTurret(const size_t targetIndex) {
         soa.turretFrame[targetIndex] = std::move(soa.turretFrame[last]);
     }
 
+    soa.masterTile.pop_back();
     soa.position.pop_back();
     soa.angle.pop_back();
     soa.teamID.pop_back();

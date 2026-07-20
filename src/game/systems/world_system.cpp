@@ -89,11 +89,12 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
 }
 
 void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile) {
-    if (!blocks.contains(targetTile) || blocks.at(targetTile).type != BlockType::turret)
+    if (!blocks.contains(targetTile) || (blocks.at(targetTile).type != BlockType::turret && blocks.at(targetTile).type != BlockType::link))
         return;
     const TurretSoA& turrets = blocks.getMeta().getTurrets().getSoa();
+    const TileCoord masterTile = blocks.getMaster(targetTile);
     for (size_t i = 0; i < turrets.turretCount; ++i) {
-        if (t1::tile(turrets.position[i]) != targetTile)
+        if (turrets.masterTile[i] != masterTile)
             continue;
         const float range = presets.getTurret(turrets.preset[i]).range;
         Schematic::drawRange(renderer, turrets.position[i], range);
