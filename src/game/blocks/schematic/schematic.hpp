@@ -96,4 +96,5 @@ public:
     static void drawRange(Renderer& renderer, const PixelCoord center, const float range);
     static void drawBlock(const Presets& presets, Renderer& renderer, const TileCoord tile,
         const BlockPresetID presetID, const BlockRot rotation, const uint32_t color, const bool showRange);
+    static void drawBlockFrame(Renderer& renderer, const TileCoord tile, const int size, const uint32_t color);
 };
