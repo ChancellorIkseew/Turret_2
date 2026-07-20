@@ -37,35 +37,25 @@ static inline void updateBasic(MobSoA& soa, const Presets& presets, const size_t
 
 static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size_t index, Schematic& schematic, BlockMap& blocks) {
     auto& aiData = soa.motionData[index];
-    const std::span<const TileCoord> inProgress = blocks.getMeta().getBlocksInProgress();
-    const TileCoord mobTile = t1::tile(soa.position[index]);
+    const PixelCoord mobPosition = soa.position[index];
+    const auto closestProgress = blocks.getClosestInProgress(mobPosition);
 
-    int minSqrDistance = std::numeric_limits<int>::max();
-    std::optional<TileCoord> closest;
-    for (TileCoord tile : inProgress) {
-        const int sqDistance = t1::squareDistance(tile, mobTile);
-        if (sqDistance < minSqrDistance) {
-            minSqrDistance = sqDistance;
-            closest = tile;
-        }
+    if (closestProgress.has_value())
+        aiData.target = closestProgress->center;
+    else {
+        if (Blueprint* targetBlueprint = schematic.getClosest(mobPosition))
+            aiData.target = targetBlueprint->center;
+        else
+            aiData.target = mobPosition;
     }
-
-    Blueprint* targetBlueprint = schematic.getClosest(soa.position[index]);
-    if (targetBlueprint)
-        aiData.target = targetBlueprint->center;
-    else
-        aiData.target = soa.position[index];
-
-    if (closest.has_value())
-        aiData.target = t1::tileCenter(closest.value());
-    //
-    if (t1::areCloserRect(aiData.target, soa.position[index], 64.f))
+    
+    if (t1::areCloserRect(aiData.target, mobPosition, 64.f))
         soa.velocity[index] = NO_MOTION;
     else {
-        AngleRad motionAngle = t1::atan(aiData.target - soa.position[index]);//
-        soa.angle[index] = motionAngle;//
-        soa.velocity[index].x = sinf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;//
-        soa.velocity[index].y = cosf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;//
+        const AngleRad motionAngle = t1::atan(aiData.target - mobPosition);
+        soa.angle[index] = motionAngle;
+        soa.velocity[index].x = sinf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;
+        soa.velocity[index].y = cosf(motionAngle) * presets.getMob(soa.preset[index]).maxSpeed;
     }
 }
 

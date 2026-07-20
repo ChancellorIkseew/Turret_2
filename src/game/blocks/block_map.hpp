@@ -86,6 +86,12 @@ struct BlockTile {
     t1_disable_copy(BlockTile)
 };
 
+struct InProgressAim {
+    float squareDistance;
+    TileCoord masterTile;
+    PixelCoord center;
+};
+
 class BlockMap {
     std::vector<BlockTile> blocks;
     BlocksMeta meta;
@@ -113,6 +119,7 @@ public:
     void demolish(TileCoord tile);
     void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
     void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
+    std::optional<InProgressAim> getClosestInProgress(const PixelCoord mobPosition);
     //
     TileCoord getMaster(const TileCoord tile) const {
         if (at(tile).type == BlockType::link)
