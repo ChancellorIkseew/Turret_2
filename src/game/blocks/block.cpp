@@ -3,7 +3,7 @@
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
 #include "engine/settings/settings.hpp"
-#include "game/frontend/build_tools/blueprint.hpp"
+#include "game/blocks/schematic/schematic.hpp"
 #include "game/world_drawer/blocks_drawer.hpp"
 
 void Block::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) {
@@ -26,7 +26,7 @@ void InProgress::drawProgress(Renderer& renderer, const Presets& presets, TileCo
     //
     const uint32_t baseColor = action == BPAction::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
     const uint32_t color = baseColor | fillAmount;
-    Blueprints::drawBlock(presets, renderer, tile, presetID, dstRotation, color, false);
+    Schematic::drawBlock(presets, renderer, tile, presetID, dstRotation, color, false);
 }
 
 static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Up, Right, Down, Left

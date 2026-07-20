@@ -2,7 +2,7 @@
 //
 #include <cassert>
 #include "engine/assets/presets.hpp"
-#include "game/frontend/build_tools/blueprint.hpp"
+#include "game/blocks/schematic/schematic.hpp"
 #include "make_block.hpp"
 #include "offset_table.hpp"
 
@@ -100,4 +100,30 @@ void BlockMap::applyBlueprint(const Blueprint& blueprint, const TeamID teamID, c
     }
     block->health = 1;
     place(blueprint.tile, teamID, block);
+}
+
+std::optional<InProgressAim> BlockMap::getClosestInProgress(const PixelCoord mobPosition) {
+    const auto& inProgressList = meta.getBlocksInProgress();
+    if (inProgressList.empty())
+        return std::nullopt;
+
+    std::optional<InProgressAim> closest;
+    float minSqDistance = std::numeric_limits<float>::max();
+
+    for (const TileCoord tile : inProgressList) {
+        const BlockTile& blockTile = at(tile);
+        if (!blockTile.block)
+            continue;
+
+        const PixelCoord halfSize = t1::HALF_TILE_PC * static_cast<float>(blockTile.block->size);
+        const PixelCoord blockCenter = t1::pixel(tile) + halfSize;
+        const float sqDistance = t1::squareDistance(mobPosition, blockCenter);
+
+        if (sqDistance < minSqDistance) {
+            minSqDistance = sqDistance;
+            closest = InProgressAim(sqDistance, tile, blockCenter);
+        }
+    }
+
+    return closest;
 }

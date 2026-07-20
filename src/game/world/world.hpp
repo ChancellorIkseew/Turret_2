@@ -1,12 +1,12 @@
 #pragma once
 #include "game/blocks/block_map.hpp"
+#include "game/blocks/schematic/schematic.hpp"
 #include "game/common/teams_pool.hpp"
 #include "game/entities/build_beams.hpp"
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mobs_pool.hpp"
 #include "game/entities/particles_pool.hpp"
 #include "game/entities/shells_pool.hpp"
-#include "game/frontend/build_tools/blueprint.hpp"
 #include "world_map.hpp"
 
 class World {
@@ -18,7 +18,7 @@ class World {
     MobsPool mobs;
     ShellsPool shells;
     ParticlesPool particles;
-    Blueprints blueprints;
+    Schematic blueprints;
     BuildBeamsPool buildBeams;
 public:
     World(WorldMap& map) :
@@ -34,6 +34,7 @@ public:
     const MobsPool& getMobs() const noexcept { return mobs; }
     const ShellsPool& getShells() const noexcept { return shells; }
     const ParticlesPool& getParticles() const noexcept { return particles; }
+    const Schematic& getSchematic() const noexcept { return blueprints; }
     WorldMap& getMap() noexcept { return map; }
     BlockMap& getBlocks() noexcept { return blocks; }
     TeamsPool& getTeams() noexcept { return teams; }
@@ -41,6 +42,6 @@ public:
     MobsPool& getMobs() noexcept { return mobs; }
     ShellsPool& getShells() noexcept { return shells; }
     ParticlesPool& getParticles() noexcept { return particles; }
-    Blueprints& getBlueprints() noexcept { return blueprints; }
+    Schematic& getSchematic() noexcept { return blueprints; }
     BuildBeamsPool& getBuildBems() noexcept { return buildBeams; }
 };

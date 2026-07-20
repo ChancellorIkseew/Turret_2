@@ -2,7 +2,6 @@
 //
 #include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
-#include "game/frontend/build_tools/blueprint.hpp"
 #include "game/world/world.hpp"
 
 using GBuildTools = GameplayBuildTools;
@@ -36,14 +35,14 @@ void GBuildTools::update(Engine& engine) {
     GameSession& session = engine.getSession();
     WorldMap& map = session.getWorld().getMap();
     BlockMap& blocks = session.getWorld().getBlocks();
-    Blueprints& blueprints = session.getWorld().getBlueprints();
+    Schematic& schematic = session.getWorld().getSchematic();
     session.getPlayerController().setHoldsBlock(optTileData.operator bool());
     targetTile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
     //
     if (input.jactive(Rotate_building))
         rotation = static_cast<BlockRot>((rotation + 1) % 4);
     if (input.jactive(Pipette) && mouseFree)
-        usePipette(blocks, blueprints, targetTile);
+        usePipette(blocks, schematic, targetTile);
     // Build:
     if (optTileData && input.jactive(Build_Shoot) && mouseFree)
         optBuildStart = targetTile;
@@ -61,15 +60,15 @@ void GBuildTools::update(Engine& engine) {
     if (input.jactive(Demolish) && mouseFree)
         optDemolishStart = targetTile;
     if (optDemolishStart && input.released(Demolish)) {
-        demolish(map, blocks, blueprints, optDemolishStart.value(), targetTile);
+        demolish(map, blocks, schematic, optDemolishStart.value(), targetTile);
         optDemolishStart.reset();
     }
     if (input.jactive(Build_Shoot) && !optTileData)
-        rejectDemolition(blocks, blueprints, targetTile);
+        rejectDemolition(blocks, schematic, targetTile);
 }
 
-void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) {
-    if (blocks.isAir(tile) && blueprints.isAir(tile)) {
+void GBuildTools::usePipette(const BlockMap& blocks, Schematic& schematic, const TileCoord tile) {
+    if (blocks.isAir(tile) && schematic.isAir(tile)) {
         optTileData.reset();
         optBuildStart.reset();
         draft.clear();
@@ -81,43 +80,37 @@ void GBuildTools::usePipette(const BlockMap& blocks, Blueprints& blueprints, con
         optTileData = TileData(TileComponent::block, block->presetID.asUint());
         if (block->getRotation() != BlockRot::none)
             rotation = block->getRotation();
-    } else if (!blueprints.isAir(tile)) {
-        const auto& block = blueprints.getBlock(tile);
+    } else if (!schematic.isAir(tile)) {
+        const Blueprint block = schematic.getBlock(tile);
         optTileData = TileData(TileComponent::block, block.presetID.asUint());
         if (block.rotation != BlockRot::none)
             rotation = block.rotation;
     }
 }
 
-void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Blueprints& blueprints, const TileCoord start, const TileCoord end) const {
+void GBuildTools::demolish(WorldMap& map, BlockMap& blocks, Schematic& schematic, const TileCoord start, const TileCoord end) const {
     const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
     const TileCoord nEnd = TileCoord(std::max(start.x, end.x), std::max(start.y, end.y));
+    schematic.removeByArea(nStart, nEnd, BPAction::build);
     for (int x = nStart.x; x <= nEnd.x; ++x) {
         for (int y = nStart.y; y <= nEnd.y; ++y) {
             const TileCoord tile(x, y);
-            const Blueprint bp = blueprints.getBlock(tile);
-            if (!blueprints.isAir(tile) && bp.action == BPAction::build) {
-                blueprints.removeIfExists(tile);
-                continue;
-            }
-
-            if (blocks.isFilled(tile) && blueprints.isAir(tile)) {
+            if (blocks.isFilled(tile) && schematic.isAir(tile)) {
                 const TileCoord masterTile = blocks.getMaster(tile);
                 const auto& block = blocks.at(masterTile).block;
                 if (block->getType() == BlockType::in_progress)
                     static_cast<InProgress*>(block.get())->action = BPAction::demolish;
                 else {
                     const BlockRot rotation = block->getRotation() != none ? block->getRotation() : up;
-                    blueprints.addOrReplace(masterTile, block->presetID, rotation, BPAction::demolish);
+                    schematic.tryAdd(masterTile, block->size, block->presetID, rotation, BPAction::demolish);
                 }
             }
         }
     }
 }
 
-void GBuildTools::rejectDemolition(BlockMap& blocks, Blueprints& blueprints, const TileCoord tile) const {
-    if (blueprints.getBlock(tile).action == BPAction::demolish)
-        blueprints.removeIfExists(tile);
+void GBuildTools::rejectDemolition(BlockMap& blocks, Schematic& blueprints, const TileCoord tile) const {
+    blueprints.removeByArea(tile, tile, BPAction::demolish);
     if (blocks.isInProgress(tile))
         static_cast<InProgress*>(blocks.at(blocks.getMaster(tile)).block.get())->action = BPAction::build;
 }
@@ -125,20 +118,27 @@ void GBuildTools::rejectDemolition(BlockMap& blocks, Blueprints& blueprints, con
 void GBuildTools::buildDraft(World& world, const TileData tileData, const int blockSize) const {
     for (const TileCoord tile : draft) {
         if (world.getBlocks().canPlace(tile, blockSize))
-            world.getBlueprints().addOrReplace(tile, BlockPresetID(tileData.id), rotation, BPAction::build);
+            world.getSchematic().tryAdd(tile, blockSize, BlockPresetID(tileData.id), rotation, BPAction::build);
     }
 }
 
 static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const TileCoord end) {
-    const TileCoord nStart = TileCoord(std::min(start.x, end.x), std::min(start.y, end.y));
-    const TileCoord size = TileCoord(std::abs(start.x - end.x) + 1, std::abs(start.y - end.y) + 1);
-    constexpr PixelCoord ORIGIN(0.f, 0.f);
-    renderer.drawRect(t1::pixel(nStart), t1::pixel(size), ORIGIN, 0.f, 0x84'34'34'C8);
+    const PixelCoord nStart = t1::pixel(std::min(start.x, end.x), std::min(start.y, end.y));
+    const PixelCoord size = t1::pixel(std::abs(start.x - end.x) + 1, std::abs(start.y - end.y) + 1);
+    //
+    renderer.drawRect(nStart, PixelCoord(4.f, size.y), PixelCoord(0.f, 0.f), 0.f, 0x84'34'34'FF);
+    renderer.drawRect(nStart, PixelCoord(size.x, 4.f), PixelCoord(0.f, 0.f), 0.f, 0x84'34'34'FF);
+    renderer.drawRect(nStart + size, PixelCoord(4.f, size.y), PixelCoord(4.f, size.y), 0.f, 0x84'34'34'FF);
+    renderer.drawRect(nStart + size, PixelCoord(size.x, 4.f), PixelCoord(size.x, 4.f), 0.f, 0x84'34'34'FF);
 }
 
 void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
-    if (optDemolishStart)
+    if (optDemolishStart) {
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
+        const TileCoord nStart = TileCoord(std::min(optDemolishStart.value().x, targetTile.x), std::min(optDemolishStart.value().y, targetTile.y));
+        const TileCoord nEnd = TileCoord(std::max(optDemolishStart.value().x, targetTile.x), std::max(optDemolishStart.value().y, targetTile.y));
+        engine.getSession().getWorld().getSchematic().drawCancelArea(renderer, nStart, nEnd);
+    }
     if (optTileData) {
         if (!optBuildStart)
             drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs, true);   
