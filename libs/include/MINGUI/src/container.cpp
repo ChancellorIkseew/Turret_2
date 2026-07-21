@@ -6,7 +6,7 @@ void Container::applyAlignment(const Point canvasSize) {
     if (align == Align::none)
         return;
     //
-    if ((align | Align::centre) == align)
+    if ((align | Align::center) == align)
         setPosition((canvasSize - getSize()) / 2.0f);
     //
     if ((align | Align::left) == align)

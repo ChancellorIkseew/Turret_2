@@ -17,7 +17,7 @@ static void changeLang(Engine& engine, const std::string& lang) {
 }
 
 std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
-    auto languages = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    auto languages = std::make_unique<Container>(Align::center, Orientation::vertical);
     auto back = languages->addNode(new Button(BACK_BTN_SIZE, "Back"));
     back->addCallback([container = languages.get()] { container->close(); });
     auto selector = languages->addNode(new Selector(Orientation::vertical));

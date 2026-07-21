@@ -11,7 +11,7 @@ class FrGameplay : public Container {
     Checkbox* pauseInBackground;
     Checkbox* pauseOnWorldOpen;
 public:
-    FrGameplay(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+    FrGameplay(Engine& engine) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));

@@ -7,7 +7,7 @@
 constexpr Point BTN_SIZE(200.0f, 50.0f);
 
 std::unique_ptr<Container> frontend::initMenu(Engine& engine) {
-    auto menu = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    auto menu = std::make_unique<Container>(Align::center, Orientation::vertical);
 
     auto back     = menu->addNode(new Button(BTN_SIZE, "Back"));
     auto save     = menu->addNode(new Button(BTN_SIZE, "Save"));

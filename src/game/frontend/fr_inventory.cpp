@@ -24,7 +24,7 @@ public:
 class FrInventory : public Container {
     Engine& engine;
 public:
-    FrInventory(Engine& engine) : Container(Align::centre | Align::up, Orientation::vertical),
+    FrInventory(Engine& engine) : Container(Align::center | Align::up, Orientation::vertical),
         engine(engine) {
         auto grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
         grid->setPalette(transparentPalette);

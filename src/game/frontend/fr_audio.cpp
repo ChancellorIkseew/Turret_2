@@ -18,7 +18,7 @@ class FrAudio : public Container {
     Checkbox* toggleSound;
     Checkbox* muteInBakcgroung;
 public:
-    FrAudio(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+    FrAudio(Engine& engine) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));

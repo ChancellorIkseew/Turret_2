@@ -10,7 +10,7 @@ class FrWorldSaving : public Container {
     FrSaves* saves = nullptr;
     Form* worldName = nullptr;
 public:
-    FrWorldSaving(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+    FrWorldSaving(Engine& engine) : Container(Align::center, Orientation::vertical) {
         saves = addNode(new FrSaves());
         auto lower = addNode(new Layout(Orientation::horizontal));
 

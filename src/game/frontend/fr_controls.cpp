@@ -16,7 +16,7 @@ class FrControls : public Container {
     std::string bindName;
     Selector* bindings = nullptr;
 public:
-    FrControls(Engine& engine) : Container(Align::centre, Orientation::vertical), engine(engine) {
+    FrControls(Engine& engine) : Container(Align::center, Orientation::vertical), engine(engine) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto bindNames = main->addNode(new Layout(Orientation::vertical));

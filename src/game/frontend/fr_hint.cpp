@@ -16,7 +16,7 @@ class FrHint : public Container {
     Label* position = nullptr;
     Engine& engine;
 public:
-    FrHint(Engine& engine) : Container(Align::down | Align::centre, Orientation::horizontal), engine(engine) {
+    FrHint(Engine& engine) : Container(Align::down | Align::center, Orientation::horizontal), engine(engine) {
         icon = addNode(new Icon(ICON_SIZE, nullptr));
         label = addNode(new Label(""));
         position = addNode(new Label(""));

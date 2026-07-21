@@ -21,7 +21,7 @@ class FrGraphics : public Container {
     Checkbox* showParticles;
     Form* maxParticles;
 public:
-    FrGraphics(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+    FrGraphics(Engine& engine) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));

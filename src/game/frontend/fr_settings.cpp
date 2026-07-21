@@ -8,7 +8,7 @@
 constexpr Point BTN_SIZE(200.0f, 50.0f);
 
 std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
-    auto settings = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    auto settings = std::make_unique<Container>(Align::center, Orientation::vertical);
 
     auto back     = settings->addNode(new Button(BTN_SIZE, "Back"));
     auto gameplay = settings->addNode(new Button(BTN_SIZE, "Gameplay"));

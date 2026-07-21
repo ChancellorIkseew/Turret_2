@@ -8,7 +8,7 @@ constexpr Point BTN_SIZE(120.0f, 30.0f);
 class FrWorldLoading : public Container{
     FrSaves* saves = nullptr;
 public:
-    FrWorldLoading(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+    FrWorldLoading(Engine& engine) : Container(Align::center, Orientation::vertical) {
         saves = addNode(new FrSaves());
         auto lower = addNode(new Layout(Orientation::horizontal));
 

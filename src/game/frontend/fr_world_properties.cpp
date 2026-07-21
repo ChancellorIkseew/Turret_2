@@ -64,7 +64,7 @@ class FrWorldProperties : public Container {
     OProps* oProps = nullptr;
 public:
     ~FrWorldProperties() final = default;
-    FrWorldProperties(Engine& engine) : Container(Align::centre, Orientation::vertical) {
+    FrWorldProperties(Engine& engine) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));

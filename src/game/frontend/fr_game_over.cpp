@@ -28,7 +28,7 @@ static std::unique_ptr<Layout> initStatistics(GameSession& session) {
 }
 
 std::unique_ptr<Container> frontend::initGameOver(Engine& engine) {
-    auto main = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    auto main = std::make_unique<Container>(Align::center, Orientation::vertical);
     main->addNode(new Label("Game over"));
     main->addNode(initStatistics(engine.getSession()).release());
     main->addNode(new Button(BTN_SIZE, "Exit to menu"))->addCallback([&] { engine.openMainMenu(); });

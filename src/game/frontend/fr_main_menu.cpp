@@ -7,7 +7,7 @@
 constexpr Point BTN_SIZE(200.0f, 50.0f);
 
 std::unique_ptr<Container> frontend::initMainMenu(Engine& engine) {
-    auto menu = std::make_unique<Container>(Align::centre, Orientation::vertical);
+    auto menu = std::make_unique<Container>(Align::center, Orientation::vertical);
 
     auto startGame = menu->addNode(new Button(BTN_SIZE, "Start game"));
     auto loadGame  = menu->addNode(new Button(BTN_SIZE, "Load game"));
