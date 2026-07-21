@@ -14,6 +14,7 @@ public:
         buildTools = std::make_unique<GameplayBuildTools>();
         mainCanvas.addToMainLayer(frontend::initTimer(engine));
         mainCanvas.addToMainLayer(frontend::initHint(engine));
+        mainCanvas.addToMainLayer(frontend::initInventory(engine));
         mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
     }
 

@@ -66,6 +66,7 @@ public:
     }
     const auto& getOres()   const { return oreIDByName; }
     const auto& getBlocks() const { return blockIDByName; }
+    const auto& getItems()  const { return itemIDByName; }
 private:
     template<class PresetType>
     void loadPresets(const std::string& folder, const Atlas& atlas);

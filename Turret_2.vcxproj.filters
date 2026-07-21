@@ -746,5 +746,8 @@
     <ClCompile Include="src\game\blocks\schematic\schematic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\frontend\fr_inventory.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

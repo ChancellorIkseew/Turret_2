@@ -228,6 +228,7 @@
     <ClCompile Include="src\game\frontend\fr_game_over.cpp" />
     <ClCompile Include="src\game\frontend\fr_graphics.cpp" />
     <ClCompile Include="src\game\frontend\fr_gui.cpp" />
+    <ClCompile Include="src\game\frontend\fr_inventory.cpp" />
     <ClCompile Include="src\game\frontend\fr_jei.cpp" />
     <ClCompile Include="src\game\frontend\fr_languages.cpp" />
     <ClCompile Include="src\game\frontend\fr_hint.cpp" />
