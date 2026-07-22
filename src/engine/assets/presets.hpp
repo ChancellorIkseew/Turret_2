@@ -23,7 +23,7 @@ class Presets {
     std::unordered_map<std::string, ShellPresetID>  shellIDByName;
     std::unordered_map<std::string, TurretPresetID> turretIDByName;
 
-    BlockPresetID  nextBlockID  = BlockPresetID(2); // air, auxilary
+    BlockPresetID  nextBlockID  = BlockPresetID(1); // air
     ItemPresetID   nextItemID   = ItemPresetID(1); // air(error)
     MobPresetID    nextMobID    = MobPresetID(0);
     OrePresetID    nextOreID    = OrePresetID(1); // air
@@ -33,7 +33,7 @@ public:
     void load(const Atlas& atlas);
 
     bool hasBlockID(const std::string& name) const { return blockIDByName.contains(name); }
-    bool hasitemID(const std::string& name) const { return itemIDByName.contains(name); }
+    bool hasItemID(const std::string& name) const { return itemIDByName.contains(name); }
     bool hasMobID(const std::string& name) const { return mobIDByName.contains(name); }
     bool hasOreID(const std::string& name) const { return oreIDByName.contains(name); }
     bool hasShellID(const std::string& name) const { return shellIDByName.contains(name); }
