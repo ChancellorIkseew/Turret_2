@@ -27,6 +27,12 @@ void GameSession::prepare(const Presets& presets) {
     const TileCoord corePosition = world->getMap().getSize() / 2;
     builtInScripts.placeBlock(presets.getBlockID("core"), corePosition, playerTeamID, BlockRot::up);
     camera.teleport(t1::tileCenter(corePosition));
+    //
+    Inventory& inventory = playerTeam->getInventory();
+    inventory.resources[0] = 999;
+    inventory.resources[1] = 988;
+    inventory.resources[2] = 977;
+    inventory.resources[3] = 966;
 }
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {

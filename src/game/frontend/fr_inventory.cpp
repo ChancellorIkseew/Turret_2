@@ -3,9 +3,10 @@
 #include <MINGUI/core/utf8.hpp>
 #include <MINGUI/widgets/grid_layout.hpp>
 #include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
-
+#include "game/world/world.hpp"
 
 constexpr int ROW_SIZE = 6;
 
@@ -39,10 +40,11 @@ public:
 
 class FrInventory : public Container {
     Engine& engine;
+    GridLayout* grid;
 public:
     FrInventory(Engine& engine) : Container(Align::center | Align::up, Orientation::vertical),
         engine(engine) {
-        auto grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
+        grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
         grid->setPalette(transparentPalette);
 
         for (const auto& [name, id] : engine.getAssets().getPresets().getItems()) {
@@ -51,6 +53,17 @@ public:
         }
     }
 
+    void callback(UIContext& context) {
+        const TeamID playerTeamID = engine.getSession().getPlayerController().getPlayerTeamID();
+        Team* platerTeam = engine.getSession().getWorld().getTeams().getTeamByID(playerTeamID);
+        Inventory& inventory = platerTeam->getInventory();
+        for (const auto& row : grid->getContents()) {
+            for (const auto& it : static_pointer_cast<Layout>(row)->getContents()) {
+                auto slot = static_pointer_cast<FrInvSlot>(it);
+                slot->setItemCount(inventory.resources[slot->getItemID().asUint()]);
+            }
+        }
+    }
 };
 
 std::unique_ptr<Container> frontend::initInventory(Engine& engine) {
