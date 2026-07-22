@@ -1,13 +1,14 @@
 #pragma once
 
 struct MobSoA;
-class Presets;
 class BlockMap;
-class Schematic;
 class BuildBeamsPool;
-class BuiltInScripts;
+class Presets;
+class Schematic;
+class TeamsPool;
+
 
 namespace construction {
     void buildBlueprints(MobSoA& soa, const Presets& presets, Schematic& schematic,
-        BlockMap& blocks, BuildBeamsPool& buildBeams);
+        BlockMap& blocks, BuildBeamsPool& buildBeams, TeamsPool& teams);
 }

@@ -4,12 +4,12 @@
 #include "engine/coords/transforms.hpp"
 #include "game/blocks/block_map.hpp"
 #include "game/blocks/schematic/schematic.hpp"
+#include "game/common/teams_pool.hpp"
 #include "game/entities/build_beams.hpp"
 #include "game/entities/mobs_pool.hpp"
-#include "game/built_in_scripts/built_in_scripts.hpp"
 
 void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schematic& schematic,
-    BlockMap& blocks, BuildBeamsPool& buildBeams) {
+    BlockMap& blocks, BuildBeamsPool& buildBeams, TeamsPool& teams) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
         if (!mobPreset.canBuild)
@@ -27,7 +27,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schemati
             const InProgress* block = static_cast<const InProgress*>(blocks.at(targetTile).block.get());
             const uint32_t color = (block->action == BPAction::build) ? 0xFA'DC'86'00 : 0x84'34'34'00;
 
-            blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets);
+            blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets, teams.getTeamByID(soa.teamID[i])->getInventory());
             buildBeams.addBeam(position, targetTile, block->size, color);
             continue;
         }

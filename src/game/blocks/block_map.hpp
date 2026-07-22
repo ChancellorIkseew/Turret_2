@@ -9,6 +9,7 @@
 #include "game/entities/turrets_pool.hpp"
 
 struct Blueprint;
+struct Inventory;
 
 class BlocksMeta {
     TurretsPool turrets;
@@ -117,7 +118,7 @@ public:
     //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block);
     void demolish(TileCoord tile);
-    void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets);
+    void build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets, Inventory& inventory);
     void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
     std::optional<InProgressAim> getClosestInProgress(const PixelCoord mobPosition);
     //

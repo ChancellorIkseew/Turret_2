@@ -12,4 +12,7 @@ public:
     constexpr void waste(const ItemPresetID item, const uint64_t amount) noexcept {
         resources[item.asUint()] -= amount;
     }
+    constexpr void add(const ItemPresetID item, const uint64_t amount) noexcept {
+        resources[item.asUint()] += amount;
+    }
 };

@@ -3,6 +3,7 @@
 #include <cassert>
 #include "engine/assets/presets.hpp"
 #include "game/blocks/schematic/schematic.hpp"
+#include "game/common/inventory.hpp"
 #include "make_block.hpp"
 #include "offset_table.hpp"
 
@@ -61,12 +62,26 @@ void BlockMap::demolish(TileCoord tile) {
     at(masterTile).demolish();
 }
 
-void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets) {
+void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets, Inventory& inventory) {
     const TileCoord masterTile = getMaster(tile);
     assert(isInProgress(masterTile));
     //
     InProgress* blockInProgress = static_cast<InProgress*>(at(masterTile).block.get());
-    blockInProgress->increeseProgress(buildSpeed);
+    const int8_t progress = blockInProgress->progress;
+    
+    if (blockInProgress->action == BPAction::build) {
+        const uint8_t amount = std::min<int8_t>(100 - progress, buildSpeed);
+        if (inventory.has(ItemPresetID(2), amount)) {
+            blockInProgress->increeseProgress(amount);
+            inventory.waste(ItemPresetID(2), amount);
+        }
+    }
+    else {
+        const uint8_t amount = std::min(progress, buildSpeed);
+        blockInProgress->increeseProgress(amount);
+        inventory.add(ItemPresetID(2), amount);
+    }
+
     if (!blockInProgress->isProgressFull())
         return;
     if (blockInProgress->action == BPAction::demolish)
