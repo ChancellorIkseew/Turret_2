@@ -24,7 +24,8 @@ static BlockType getBlockType(const std::string name) {
     return BlockType::air;
 }
 
-static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName) {
+static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName,
+    const ItemFindMap& itemIDByName, const std::string& name) {
     std::array<uint8_t, 16> frames;
     size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
     BlockVisualPreset visual{
@@ -42,6 +43,15 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     preset.visual = visual;
     if (preset.archetype == BlockType::turret)
         preset.turret = reader.getID(turretIDByName, "turret");
+    
+    tin::Data data = tin::read(io::folders::CONTENT / "recipes" / (name + ".tin"), tin::Log::only_error);
+    int i = 0;
+    for (const auto& [key, value] : data) {
+        uint8_t id = itemIDByName.at(key).asUint();
+        uint16_t amount = validator::to<uint16_t>(value).value();
+        preset.recipe[i] = Ingredient(ItemPresetID(id), amount);
+        ++i;
+    }
     return preset;
 }
 
@@ -152,7 +162,7 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
         try {
             const std::string name = io::folders::trimExtensions(file);
             if constexpr (std::is_same_v<PresetType, BlockPreset>)
-                addPreset(name, createBlockPreset(reader, atlas, turretIDByName), blockStore, blockIDByName, nextBlockID);
+                addPreset(name, createBlockPreset(reader, atlas, turretIDByName, itemIDByName, name), blockStore, blockIDByName, nextBlockID);
             if constexpr (std::is_same_v<PresetType, ItemPreset>)
                 addPreset(name, createItemPreset(reader, atlas), itemStore, itemIDByName, nextItemID);
             if constexpr (std::is_same_v<PresetType, OrePreset>)

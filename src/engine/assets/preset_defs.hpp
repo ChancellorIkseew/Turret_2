@@ -84,6 +84,11 @@ struct BlockVisualPreset {
     std::array<uint8_t, 16> frameOrder;
 };
 
+struct Ingredient {
+    ItemPresetID itemID;
+    uint16_t amount;
+};
+
 struct BlockPreset {
     bool rotatable;
     uint8_t size;
@@ -93,4 +98,5 @@ struct BlockPreset {
     union {
         TurretPresetID turret;
     };
+    std::array<Ingredient, 6> recipe;
 };
