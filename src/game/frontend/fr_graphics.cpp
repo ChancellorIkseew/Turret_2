@@ -18,27 +18,21 @@ class FrGraphics : public Container {
     Checkbox* vSync;
     Checkbox* fullscreen;
     Checkbox* inertia;
-    Checkbox* showParticles;
-    Form* maxParticles;
 public:
     FrGraphics(Engine& engine) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));
-        fps           = clickable->addNode(new Form(Settings::display.fps, new Uint32Validator(15U, 240U), FORM_SIZE));
-        vSync         = clickable->addNode(new Checkbox(Settings::display.vSync));
-        fullscreen    = clickable->addNode(new Checkbox(Settings::display.fullscreen));
-        inertia       = clickable->addNode(new Checkbox(Settings::gameplay.cameraInertia));
-        showParticles = clickable->addNode(new Checkbox(Settings::gameplay.showParticles));
-        maxParticles  = clickable->addNode(new Form(Settings::gameplay.maxParticles, new Uint64Validator(0U, 800'000U), BIG_FORM_SIZE));
+        fps        = clickable->addNode(new Form(Settings::display.fps, new Uint32Validator(15U, 240U), FORM_SIZE));
+        vSync      = clickable->addNode(new Checkbox(Settings::display.vSync));
+        fullscreen = clickable->addNode(new Checkbox(Settings::display.fullscreen));
+        inertia    = clickable->addNode(new Checkbox(Settings::gameplay.cameraInertia));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
         labels->addNode(new Label("FPS|TPS"));
         labels->addNode(new Label("V-Sync"));
         labels->addNode(new Label("fullscreen"));
         labels->addNode(new Label("camera inertia"));
-        labels->addNode(new Label("show particles"));
-        labels->addNode(new Label("max particles"));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });

@@ -24,8 +24,6 @@ public:
         bool pauseInBackground;
         bool pauseOnWorldOpen;
         bool showDebugInfo;
-        bool showParticles;
-        size_t maxParticles;
     } gameplay;
     static struct _GUI {
         std::string lang;

@@ -32,8 +32,6 @@ void Settings::writeSettings() {
     data.emplace(key_val(gameplay.pauseInBackground));
     data.emplace(key_val(gameplay.pauseOnWorldOpen));
     data.emplace(key_val(gameplay.showDebugInfo));
-    data.emplace(key_val(gameplay.showParticles));
-    data.emplace(key_val(gameplay.maxParticles));
     //
     data.emplace(key_val(gui.lang));
     data.emplace(key_val(gui.scale));
@@ -59,8 +57,6 @@ void Settings::readSettings() {
     data.get(key_val(gameplay.pauseInBackground), false);
     data.get(key_val(gameplay.pauseOnWorldOpen), false);
     data.get(key_val(gameplay.showDebugInfo), false);
-    data.get(key_val(gameplay.showParticles), true);
-    data.get(key_val(gameplay.maxParticles), 10000U);
     //
     data.get(key_val(gui.lang), std::string("en_US"));
     data.get(key_val(gui.scale), 1U);
