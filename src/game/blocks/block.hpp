@@ -79,14 +79,16 @@ struct LinkBlock : Block {
 struct InProgress : Block {
     BPAction action = BPAction::build;
     BlockRot rotation = none;
-    int8_t progress = 0;
+    int16_t progress = 0;
     //
     t1_derived BlockType getType() const noexcept final { return BlockType::in_progress; }
     t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
     void drawProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const;
     //
-    void increeseProgress(const uint8_t step) noexcept { progress += (action == BPAction::build) ? step : -step; }
-    bool isProgressFull() const noexcept { return (action == BPAction::build) ? progress >= 100 : progress <= 0; }
+    void increeseProgress(const int16_t step) noexcept { progress += (action == BPAction::build) ? step : -step; }
+    bool isProgressFull(const int16_t buildTime) const noexcept {
+        return (action == BPAction::build) ? (progress >= buildTime) : (progress <= 0);
+    }
 };
 
 struct CoreBlock : Block {

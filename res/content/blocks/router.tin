@@ -6,5 +6,6 @@ frame_order=0
 #logic
 archetype=router
 size=1
+build_time=20
 rotatable=false
 health=30

@@ -92,6 +92,7 @@ struct Ingredient {
 struct BlockPreset {
     bool rotatable;
     uint8_t size;
+    int16_t buildTime;
     BlockType archetype;
     Health maxHealth;
     BlockVisualPreset visual;

@@ -6,6 +6,7 @@ frame_order=0
 #logic
 archetype=turret
 size=1
+build_time=50
 rotatable=true
 health=200
 turret=laser_turret

@@ -62,32 +62,58 @@ void BlockMap::demolish(TileCoord tile) {
     at(masterTile).demolish();
 }
 
-void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t buildSpeed, const Presets& presets, Inventory& inventory) {
+void BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets, Inventory& inventory) {
     const TileCoord masterTile = getMaster(tile);
     assert(isInProgress(masterTile));
-    //
+
     InProgress* blockInProgress = static_cast<InProgress*>(at(masterTile).block.get());
-    const int8_t progress = blockInProgress->progress;
-    
+    const auto& preset = presets.getBlock(blockInProgress->presetID);
+    const int16_t totalTime = std::max<int16_t>(1, preset.buildTime);
+
     if (blockInProgress->action == BPAction::build) {
-        const uint8_t amount = std::min<int8_t>(100 - progress, buildSpeed);
-        if (inventory.has(ItemPresetID(2), amount)) {
-            blockInProgress->increeseProgress(amount);
-            inventory.waste(ItemPresetID(2), amount);
+        const int16_t remaining = totalTime - std::min(blockInProgress->progress, totalTime);
+        const int16_t maxStep = std::min(remaining, buildSpeed);
+
+        bool canAdvance = true;
+        for (const auto& ing : preset.recipe) {
+            if (ing.itemID.asUint() == 0)
+                break;
+
+            const int16_t resourceNeeded = std::max<int16_t>(1, (ing.amount * maxStep) / totalTime);
+            if (!inventory.has(ing.itemID, resourceNeeded)) {
+                canAdvance = false;
+                break;
+            }
+        }
+
+        if (canAdvance) {
+            for (const auto& ing : preset.recipe) {
+                if (ing.itemID.asUint() == 0)
+                    break;
+                const int16_t resourceToWaste = std::max<int16_t>(1, (ing.amount * maxStep) / totalTime);
+                inventory.waste(ing.itemID, resourceToWaste);
+            }
+            blockInProgress->increeseProgress(maxStep);
         }
     }
-    else {
-        const uint8_t amount = std::min(progress, buildSpeed);
-        blockInProgress->increeseProgress(amount);
-        inventory.add(ItemPresetID(2), amount);
+    else /* BPAction::demolish */ {
+        const int16_t maxStep = std::min(blockInProgress->progress, buildSpeed);
+        for (const auto& ing : preset.recipe) {
+            if (ing.itemID.asUint() == 0)
+                break;
+            const int16_t resourceToReturn = std::max<int16_t>(1, (ing.amount * maxStep) / totalTime);
+            inventory.add(ing.itemID, resourceToReturn);
+        }
+
+        blockInProgress->increeseProgress(maxStep);
     }
 
-    if (!blockInProgress->isProgressFull())
+    if (!blockInProgress->isProgressFull(totalTime))
         return;
-    if (blockInProgress->action == BPAction::demolish)
+    if (blockInProgress->action == BPAction::demolish) {
         demolish(masterTile);
-    else /*BPAction::build*/ {
-        const auto& preset = presets.getBlock(blockInProgress->presetID);
+    }
+    else {
         std::unique_ptr<Block> block = makeBlock(blockInProgress->presetID, preset, blockInProgress->rotation);
         demolish(masterTile);
         place(masterTile, teamID, block);
@@ -97,10 +123,11 @@ void BlockMap::build(const TileCoord tile, const TeamID teamID, const int8_t bui
 void BlockMap::applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets) {
     std::unique_ptr<Block> block = std::make_unique<InProgress>();
     InProgress* blockInProgress = static_cast<InProgress*>(block.get());
+    const BlockPreset& preset = presets.getBlock(blueprint.presetID);
     if (blueprint.action == BPAction::demolish) {
         blockInProgress->action = BPAction::demolish;
         blockInProgress->rotation = at(blueprint.tile).block->getRotation();
-        blockInProgress->progress = 100;
+        blockInProgress->progress = preset.buildTime;
         block->presetID = at(blueprint.tile).block->presetID;
         block->size = at(blueprint.tile).block->size;
         block->textureRect = at(blueprint.tile).block->textureRect;
@@ -111,8 +138,8 @@ void BlockMap::applyBlueprint(const Blueprint& blueprint, const TeamID teamID, c
         blockInProgress->rotation = blueprint.rotation;
         blockInProgress->progress = 0;
         block->presetID = blueprint.presetID;
-        block->size = presets.getBlock(blueprint.presetID).size;
-        block->textureRect = presets.getBlock(blueprint.presetID).visual.textureRect;
+        block->size = preset.size;
+        block->textureRect = preset.visual.textureRect;
     }
     block->health = 1;
     place(blueprint.tile, teamID, block);

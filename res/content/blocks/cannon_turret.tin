@@ -6,6 +6,7 @@ frame_order=0
 #logic
 archetype=turret
 size=2
+build_time=180
 rotatable=true
 health=900
 turret=cannon_turret

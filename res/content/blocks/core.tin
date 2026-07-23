@@ -6,5 +6,6 @@ frame_order=0
 #logic
 archetype=core
 size=3
+build_time=900
 rotatable=false
 health=800

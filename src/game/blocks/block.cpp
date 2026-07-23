@@ -1,5 +1,6 @@
 #include "block.hpp"
 //
+#include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
 #include "engine/settings/settings.hpp"
@@ -20,9 +21,10 @@ void InProgress::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord t
 }
 
 void InProgress::drawProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const {
-    const BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
-    const float ratio = std::clamp(static_cast<float>(progress) / 100.f, 0.f, 1.f);
+    const int16_t buildTime = presets.getBlock(presetID).buildTime;
+    const float ratio = std::clamp(static_cast<float>(progress) / static_cast<float>(buildTime), 0.f, 1.f);
     const uint32_t fillAmount = static_cast<uint32_t>(255.f * ratio);
+    const BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
     //
     const uint32_t baseColor = action == BPAction::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
     const uint32_t color = baseColor | fillAmount;

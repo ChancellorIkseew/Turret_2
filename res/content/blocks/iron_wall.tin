@@ -6,5 +6,6 @@ frame_order=0
 #logic
 archetype=wall
 size=1
+build_time=25
 rotatable=false
 health=350
