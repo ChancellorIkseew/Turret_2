@@ -128,10 +128,10 @@ static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const T
     const PixelCoord nStart = t1::pixel(std::min(start.x, end.x), std::min(start.y, end.y));
     const PixelCoord size = t1::pixel(std::abs(start.x - end.x) + 1, std::abs(start.y - end.y) + 1);
     //
-    renderer.drawRect(nStart, PixelCoord(4.f, size.y), PixelCoord(0.f, 0.f), 0.f, 0x84'34'34'FF);
-    renderer.drawRect(nStart, PixelCoord(size.x, 4.f), PixelCoord(0.f, 0.f), 0.f, 0x84'34'34'FF);
-    renderer.drawRect(nStart + size, PixelCoord(4.f, size.y), PixelCoord(4.f, size.y), 0.f, 0x84'34'34'FF);
-    renderer.drawRect(nStart + size, PixelCoord(size.x, 4.f), PixelCoord(size.x, 4.f), 0.f, 0x84'34'34'FF);
+    renderer.drawRect(nStart, PixelCoord(4.f, size.y), PixelCoord(0.f, 0.f), 0.f, cl::RED);
+    renderer.drawRect(nStart, PixelCoord(size.x, 4.f), PixelCoord(0.f, 0.f), 0.f, cl::RED);
+    renderer.drawRect(nStart + size, PixelCoord(4.f, size.y), PixelCoord(4.f, size.y), 0.f, cl::RED);
+    renderer.drawRect(nStart + size, PixelCoord(size.x, 4.f), PixelCoord(size.x, 4.f), 0.f, cl::RED);
 }
 
 void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
@@ -147,7 +147,7 @@ void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t t
                     continue;
                 const TileCoord masterTile = blocks.getMaster(TileCoord(x, y));
                 const int size = blocks.at(masterTile).block->size;
-                Schematic::drawBlockFrame(renderer, masterTile, size, 0x84'34'34'FF);
+                Schematic::drawBlockFrame(renderer, masterTile, size, cl::RED);
             }
         }
     }

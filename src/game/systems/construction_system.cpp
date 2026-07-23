@@ -25,7 +25,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schemati
             soa.angle[i] = t1::atan(closestInProgress->center - position);
 
             const InProgress* block = static_cast<const InProgress*>(blocks.at(targetTile).block.get());
-            const uint32_t color = (block->action == BPAction::build) ? 0xFA'DC'86'00 : 0x84'34'34'00;
+            const uint32_t color = (block->action == BPAction::build) ? cl::BEIGE : cl::RED;
 
             blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets, teams.getTeamByID(soa.teamID[i])->getInventory());
             buildBeams.addBeam(position, targetTile, block->size, color);

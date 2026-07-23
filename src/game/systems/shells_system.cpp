@@ -83,14 +83,15 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         const TickCount lifeTime = static_cast<TickCount>(radius / SPEED);
         for (int j = 0; j < 8; ++j) {
             const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
-            particlesPool.addParticle(soa.position[i], size, angle, SPEED, 0xFF'A5'00'80, 0, lifeTime, PType::light);
+            const uint32_t ALPHA = 0xFF'FF'FF'80;
+            particlesPool.addParticle(soa.position[i], size, angle, SPEED, cl::ORANGE & ALPHA, 0, lifeTime, PType::light);
         }
 
         const int shardsCount = preset.explosion.shardsCount;
         const PixelCoord shardSize(1.0f, preset.visual.size.y);
         for (int j = 0; j < shardsCount; ++j) {
             const float angle = util::randAngleRad(static_cast<uint32_t>(j * i));
-            particlesPool.addParticle(soa.position[i], shardSize, angle, SPEED, 0xFF'A5'00'FF, 0, lifeTime * 2, PType::shard);
+            particlesPool.addParticle(soa.position[i], shardSize, angle, SPEED, cl::ORANGE, 0, lifeTime * 2, PType::shard);
         }
     }
 }
@@ -141,6 +142,6 @@ void shells::drawShellsLighting(const ShellSoA& soa, const Presets& presets, con
         if (!camera.contains(soa.position[i]))
             continue;
         const auto& visual = presets.getShell(soa.preset[i]).visual;
-        renderer.draw(rect, soa.position[i], visual.size + OFFSET, visual.origin + OFFSET / 2.f, t1::PI - soa.angle[i], 0xFF'A5'00'FF);
+        renderer.draw(rect, soa.position[i], visual.size + OFFSET, visual.origin + OFFSET / 2.f, t1::PI - soa.angle[i], cl::ORANGE);
     }
 }

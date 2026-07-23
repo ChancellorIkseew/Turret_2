@@ -9,6 +9,15 @@ using Health = int64_t;
 using AngleRad = float;
 using TickCount = uint16_t;
 
+namespace cl {
+    constexpr uint32_t TR     = 0xFF'FF'FF'00;
+    constexpr uint32_t RED    = 0x84'34'34'FF;
+    constexpr uint32_t BEIGE  = 0xFA'DC'86'FF;
+    constexpr uint32_t ORANGE = 0xFF'A5'00'FF;
+    constexpr uint32_t RED_TR = RED & TR;
+    constexpr uint32_t BEIGE_TR = BEIGE & TR;
+}
+
 struct Aim {
     float squareDistance;
     PixelCoord position;

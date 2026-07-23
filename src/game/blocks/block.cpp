@@ -26,7 +26,7 @@ void InProgress::drawProgress(Renderer& renderer, const Presets& presets, TileCo
     const uint32_t fillAmount = static_cast<uint32_t>(255.f * ratio);
     const BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
     //
-    const uint32_t baseColor = action == BPAction::build ? 0xFA'DC'86'00 : 0x84'34'34'00;
+    const uint32_t baseColor = action == BPAction::build ? cl::BEIGE_TR : cl::RED_TR;
     const uint32_t color = baseColor | fillAmount;
     Schematic::drawBlock(presets, renderer, tile, presetID, dstRotation, color, false);
 }

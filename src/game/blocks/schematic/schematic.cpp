@@ -65,7 +65,7 @@ void Schematic::drawGhosts(Renderer& renderer, const Presets& presets, const uin
         if (blueprint.action == BPAction::build)
             drawBlock(presets, renderer, blueprint.tile, blueprint.presetID, blueprint.rotation, color, false);
         else
-            drawBlockFrame(renderer, blueprint.tile, blueprint.size, 0x84'34'34'FF);
+            drawBlockFrame(renderer, blueprint.tile, blueprint.size, cl::RED);
     }
 }
 
@@ -92,6 +92,6 @@ void Schematic::drawCancelArea(Renderer& renderer, const TileCoord start, const 
         const bool intersects = (bp.tile.x <= end.x && bpMaxX >= start.x) &&
             (bp.tile.y <= end.y && bpMaxY >= start.y);
         if (intersects)
-            drawBlockFrame(renderer, bp.tile, bp.size, 0x84'34'34'FF);
+            drawBlockFrame(renderer, bp.tile, bp.size, cl::RED);
     }
 }

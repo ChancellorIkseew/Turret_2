@@ -78,12 +78,12 @@ void BuildBeamsPool::addBeam(const PixelCoord builder, const TileCoord block, co
     if (!edge3Visible && edge1Visible)
         p3 = builder;
 
-    beams.emplace_back(builder, p1, p2, p3, color);
+    beams.emplace_back(builder, p1, p2, p3, color & 0xFF'FF'FF'00);
 }
 
 void BuildBeamsPool::draw(Renderer& renderer, const uint64_t tickCount) const {
     for (const auto& beam : beams) {
-        const uint32_t color = (beam.color & 0xFF'FF'FF'00) | (tickCount % 256);
+        const uint32_t color = beam.color | (tickCount % 256);
         renderer.drawIrregularQuad(beam.p0, beam.p1, beam.p2, beam.p3, color);
     }
 }
