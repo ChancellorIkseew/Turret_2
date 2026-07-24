@@ -13,7 +13,7 @@ protected:
     MainWindow& mainWindow;
     mingui::MainCanvas mainCanvas;
     Input& input;
-    bool showGUI = true, showFPS = false, showAtlas = false;
+    bool showGUI = true, showAtlas = false;
 public:
     GUI(Engine& engine);
     virtual ~GUI() = default;

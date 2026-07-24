@@ -26,8 +26,8 @@ mainCanvas(mainWindow.getSize(),
     Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
-static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow) {
-    PixelCoord position = PixelCoord(mainWindow.getSize().x - DEBUD_PANEL_SIZE.x, 0.f);
+static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, const float guiScale) {
+    PixelCoord position = PixelCoord(mainWindow.getSize().x / guiScale - DEBUD_PANEL_SIZE.x , 0.f);
     renderer.drawRect(position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, BLACK);
     position += PixelCoord(20.f, 20.f);
     text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(NS_PER_SECOND / mainWindow.getRealFrameDelayNs()), position, WHITE);
@@ -47,17 +47,17 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow) {
 }
 
 void GUI::draw(Renderer& renderer, const Atlas& atlas) {
-    if (showFPS)
-        drawDebugPanel(renderer, mainWindow);
-    if (showAtlas)
-        renderer.draw(atlas.getComonTextureRect(), PixelCoord(0, 0), atlas.getSize());
-
     if (mainWindow.justResized())
         mainCanvas.resize(mainWindow.getSize());
+
+    if (showAtlas)
+        renderer.draw(atlas.getComonTextureRect(), PixelCoord(0, 0), atlas.getSize());
     if (showGUI) {
         T1_UIRenderer uiRenderer(renderer);
         mainCanvas.draw(uiRenderer);
-    }   
+        if (Settings::gui.showFPS)
+            drawDebugPanel(renderer, mainWindow, Settings::gui.scale);
+    }
 }
 
 void GUI::translate(const std::string& lang) {
@@ -89,8 +89,10 @@ void GUI::acceptHotkeys() {
         const std::string timeMs = std::to_string(util::time::getLocalTimeMilliseconds());
         mainWindow.takeScreenshot(io::folders::SCREENSHOTS / ("img" + timeMs + ".png"));
     }
-    if (input.jactive(Show_FPS))
-        showFPS = !showFPS;
+    if (input.jactive(Show_FPS)) {
+        Settings::gui.showFPS = !Settings::gui.showFPS;
+        Settings::writeSettings();
+    }
     if (input.jactive(Show_atlas))
         showAtlas = !showAtlas;
     if (input.jactive(Show_debug_info)) {

@@ -37,6 +37,7 @@ void Settings::writeSettings() {
     data.emplace(key_val(gui.scale));
     data.emplace(key_val(gui.customCursor));
     data.emplace(key_val(gui.showConsole));
+    data.emplace(key_val(gui.showFPS));
     tin::write("settings.tin", data);
 }
 
@@ -62,6 +63,7 @@ void Settings::readSettings() {
     data.get(key_val(gui.scale), 1U);
     data.get(key_val(gui.customCursor), true);
     data.get(key_val(gui.showConsole), false);
+    data.get(key_val(gui.showFPS), false);
     //
     if (data.empty()) {
         writeSettings();

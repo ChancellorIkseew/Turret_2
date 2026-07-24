@@ -30,6 +30,7 @@ public:
         uint8_t scale;
         bool customCursor;
         bool showConsole;
+        bool showFPS;
     } gui;
 public:
     static void writeSettings();
