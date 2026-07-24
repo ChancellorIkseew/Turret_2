@@ -7,18 +7,18 @@ struct BlockPreset;
 
 struct Inventory {
     static constexpr size_t MAX_ITEM_TYPES = 32;
-    std::array<uint64_t, MAX_ITEM_TYPES> resources{};
+    std::array<int64_t, MAX_ITEM_TYPES> resources{};
 public:
-    constexpr uint64_t count(const ItemPresetID item) const noexcept {
+    constexpr int64_t count(const ItemPresetID item) const noexcept {
         return resources[item.asUint()];
     }
-    constexpr bool has(const ItemPresetID item, const uint64_t amount) const noexcept {
+    constexpr bool has(const ItemPresetID item, const int64_t amount) const noexcept {
         return count(item) >= amount;
     }
-    constexpr void waste(const ItemPresetID item, const uint64_t amount) noexcept {
+    constexpr void waste(const ItemPresetID item, const int64_t amount) noexcept {
         resources[item.asUint()] -= amount;
     }
-    constexpr void add(const ItemPresetID item, const uint64_t amount) noexcept {
+    constexpr void add(const ItemPresetID item, const int64_t amount) noexcept {
         resources[item.asUint()] += amount;
     }
     //
