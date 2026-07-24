@@ -30,7 +30,7 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, con
     PixelCoord position = PixelCoord(mainWindow.getSize().x / guiScale - DEBUD_PANEL_SIZE.x , 0.f);
     renderer.drawRect(position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, BLACK);
     position += PixelCoord(20.f, 20.f);
-    text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(NS_PER_SECOND / std::max(mainWindow.getRealFrameDelayNs(), 1ULL)), position, WHITE);
+    text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(NS_PER_SECOND / std::max<uint64_t>(mainWindow.getRealFrameDelayNs(), 1)), position, WHITE);
     position.y += 20.f;
     text::drawString(renderer, U"Frame|tick time MS: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelayMs()), position, WHITE);
     static uint64_t updateTimer = 1001;
