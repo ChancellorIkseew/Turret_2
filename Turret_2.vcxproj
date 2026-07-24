@@ -210,10 +210,12 @@
     <ClCompile Include="src\game\blocks\block.cpp" />
     <ClCompile Include="src\game\blocks\block_map.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\belt.cpp" />
+    <ClCompile Include="src\game\blocks\logic_detail\core.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\drill.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\intersection.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\router.cpp" />
     <ClCompile Include="src\game\blocks\schematic\schematic.cpp" />
+    <ClCompile Include="src\game\blocks\update_blocks.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
     <ClCompile Include="src\game\common\inventory.cpp" />
     <ClCompile Include="src\game\common\mob_ai.cpp" />

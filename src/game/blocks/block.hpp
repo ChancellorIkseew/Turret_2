@@ -9,6 +9,7 @@ class BlocksDrawer;
 class BlockMap;
 class Presets;
 class Renderer;
+class Team;
 class WorldMap;
 
 struct ItemStack {
@@ -92,7 +93,13 @@ struct InProgress : Block {
 };
 
 struct CoreBlock : Block {
+    Team* team = nullptr;
+    //
     t1_derived BlockType getType() const noexcept final { return BlockType::core; }
+    //
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return true; };
+    t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
+    void syncTeam(Team* blockTeam) { team = blockTeam; }
 };
 
 struct DrillBlock : Block {

@@ -30,7 +30,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     //
     world.getBuildBems().clear();
     chunks.update(mobs.getSoa());
-    updateBlocks(blocks, world.getMap(), presets);
+    blocks.updateBlocks(world.getMap(), presets, world.getTeams());
     shells::processShells(world, presets, worldSounds, camera);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, world.getSchematic(), blocks);
