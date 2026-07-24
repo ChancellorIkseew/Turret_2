@@ -70,7 +70,7 @@ void GBuildTools::update(Engine& engine) {
 }
 
 void GBuildTools::usePipette(const BlockMap& blocks, Schematic& schematic, const TileCoord tile) {
-    if (blocks.isAir(tile) && schematic.isAir(tile)) {
+    if (!blocks.isFilled(tile) && schematic.isAir(tile)) {
         optTileData.reset();
         optBuildStart.reset();
         draft.clear();
@@ -82,7 +82,8 @@ void GBuildTools::usePipette(const BlockMap& blocks, Schematic& schematic, const
         optTileData = TileData(TileComponent::block, block->presetID.asUint());
         if (block->getRotation() != BlockRot::none)
             rotation = block->getRotation();
-    } else if (!schematic.isAir(tile)) {
+    }
+    else if (!schematic.isAir(tile)) {
         const Blueprint block = schematic.getBlock(tile);
         optTileData = TileData(TileComponent::block, block.presetID.asUint());
         if (block.rotation != BlockRot::none)
