@@ -6,7 +6,7 @@
 constexpr float MIN_MAP_SCALE = 0.25f, MAX_MAP_SCALE = 5.0f;
 constexpr float SCALE_FACTOR = 1.2f;
 constexpr float MOTION_SPEED = 20.0f;
-constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(6, 6);
+constexpr TileCoord MAX_MAP_STRUCTURE_SIZE(3, 3);
 
 Camera::Camera(const TileCoord mapSize, const bool inertia) : mapScale(MIN_MAP_SCALE),
     tileMapSize(mapSize), pixelMapSize(t1::pixel(mapSize)), inertia(inertia) { }
@@ -64,8 +64,8 @@ void Camera::resize(const PixelCoord windowSize) {
 }
 
 void Camera::updateMapRegion(const PixelCoord windowSize) {
-    endTile = t1::tile(fromScreenToMap(windowSize)) + TileCoord(1, 1);
-    startTile = t1::tile(fromScreenToMap(PixelCoord(0.0f, 0.0f))) - TileCoord(1, 1);
+    endTile = t1::tile(fromScreenToMap(windowSize) + t1::TILE_PC * 1.5f);
+    startTile = t1::tile(fromScreenToMap(PixelCoord(0.0f, 0.0f)) - t1::TILE_PC);
     buildingsStartTile = startTile - MAX_MAP_STRUCTURE_SIZE;
     // Correction is needed to correct big_buildings drawing.
 
