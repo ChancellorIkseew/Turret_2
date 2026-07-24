@@ -215,6 +215,7 @@
     <ClCompile Include="src\game\blocks\logic_detail\router.cpp" />
     <ClCompile Include="src\game\blocks\schematic\schematic.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
+    <ClCompile Include="src\game\common\inventory.cpp" />
     <ClCompile Include="src\game\common\mob_ai.cpp" />
     <ClCompile Include="src\game\entities\build_beams.cpp" />
     <ClCompile Include="src\game\entities\chunk_grid.cpp" />

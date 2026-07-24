@@ -72,47 +72,21 @@ void BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t bu
 
     if (blockInProgress->action == BPAction::build) {
         const int16_t remaining = totalTime - std::min(blockInProgress->progress, totalTime);
-        const int16_t maxStep = std::min(remaining, buildSpeed);
-
-        bool canAdvance = true;
-        for (const auto& ing : preset.recipe) {
-            if (ing.itemID.asUint() == 0)
-                break;
-
-            const int16_t resourceNeeded = std::max<int16_t>(1, (ing.amount * maxStep) / totalTime);
-            if (!inventory.has(ing.itemID, resourceNeeded)) {
-                canAdvance = false;
-                break;
-            }
-        }
-
-        if (canAdvance) {
-            for (const auto& ing : preset.recipe) {
-                if (ing.itemID.asUint() == 0)
-                    break;
-                const int16_t resourceToWaste = std::max<int16_t>(1, (ing.amount * maxStep) / totalTime);
-                inventory.waste(ing.itemID, resourceToWaste);
-            }
-            blockInProgress->increeseProgress(maxStep);
-        }
+        const int16_t resourceMaxStep = inventory.getMaxBuildStep(preset);
+        const int16_t step = std::min({ remaining, buildSpeed, resourceMaxStep });
+        inventory.consumeByBuild(preset, blockInProgress->progress, step);
+        blockInProgress->increeseProgress(step);
     }
     else /* BPAction::demolish */ {
-        const int16_t maxStep = std::min(blockInProgress->progress, buildSpeed);
-        for (const auto& ing : preset.recipe) {
-            if (ing.itemID.asUint() == 0)
-                break;
-            const int16_t resourceToReturn = std::max<int16_t>(1, (ing.amount * maxStep) / totalTime);
-            inventory.add(ing.itemID, resourceToReturn);
-        }
-
-        blockInProgress->increeseProgress(maxStep);
+        const int16_t step = std::min(blockInProgress->progress, buildSpeed);
+        inventory.refundByDemolish(preset, blockInProgress->progress, step);
+        blockInProgress->increeseProgress(step);
     }
 
     if (!blockInProgress->isProgressFull(totalTime))
         return;
-    if (blockInProgress->action == BPAction::demolish) {
+    if (blockInProgress->action == BPAction::demolish)
         demolish(masterTile);
-    }
     else {
         std::unique_ptr<Block> block = makeBlock(blockInProgress->presetID, preset, blockInProgress->rotation);
         demolish(masterTile);
