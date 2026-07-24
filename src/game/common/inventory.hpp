@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <cstddef>
 #include "engine/assets/preset_id.hpp"
 
 struct BlockPreset;
