@@ -53,7 +53,7 @@ void Schematic::drawBlock(const Presets& presets, Renderer& renderer, const Tile
         const PixelCoord blockCenter = position + origin;
         renderer.draw(turret.visual.textureRect, blockCenter, turret.visual.size, turret.visual.origin, angleRad, color);
         if (showRange)
-            drawRange(renderer, t1::tileCenter(tile), turret.range);
+            drawRange(renderer, t1::pixel(tile) + t1::HALF_TILE_PC * static_cast<float>(preset.size), turret.range);   
     }
 }
 
