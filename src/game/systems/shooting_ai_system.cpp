@@ -11,7 +11,7 @@
 
 static inline void updatePlayerControlled(TurretComponents& soa, const Presets& presets,
     const size_t index, const PlayerController& playerController) {
-    soa.shootingData[index].isShooting = playerController.shootingActive();
+    soa.shootingData[index].isShooting = playerController.isShooting();
     soa.shootingData[index].target = playerController.getAimCoord();
 }
 

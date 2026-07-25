@@ -17,8 +17,8 @@ static std::optional<size_t> findPlayerControlled(const std::vector<ShootingData
 }
 
 void PlCtr::shoot(const Input& input, const Camera& camera) {
-    aimCoord = camera.fromScreenToMap(input.getMouseCoord());
-    shooting = !holdsBlock && input.active(Build_Shoot);
+    m_aimCoord = camera.fromScreenToMap(input.getMouseCoord());
+    m_shooting = !m_holdsBlock && input.active(Build_Shoot);
 }
 
 void PlCtr::mine() {
@@ -35,12 +35,12 @@ void PlCtr::move(const Input& input) {
         delta.y += 1.0f;
     if (input.active(Move_right))
         delta.x += 1.0f;
-    motionVector = delta;
+    m_motionVector = delta;
 }
 
 void PlCtr::moveCamera(const MobSoA& mobs, const std::optional<size_t> mob, const bool paused, Camera& camera, const Input& input) const {
     if (!mob || paused) {
-        camera.move(motionVector);
+        camera.move(m_motionVector);
         camera.moveByMouse(input);
     }  
     else
@@ -73,7 +73,7 @@ void PlCtr::captureMobOrTurret(const Input& input, const Camera& camera, MobSoA&
 
     const PixelCoord mousePosition = input.getMouseCoord();
     for (size_t i = 0; i < mobs.mobCount; ++i) {
-        if (mobs.teamID[i] != playerTeamID)
+        if (mobs.teamID[i] != m_playerTeamID)
             continue;
         if (t1::areCloserRect(camera.fromMapToScreen(mobs.position[i]), mousePosition, 20.f)) {
             mobs.motionData[i].aiType = MovingAI::player_controlled;
@@ -83,7 +83,7 @@ void PlCtr::captureMobOrTurret(const Input& input, const Camera& camera, MobSoA&
     }
 
     for (size_t i = 0; i < turrets.turretCount; ++i) {
-        if (turrets.teamID[i] != playerTeamID)
+        if (turrets.teamID[i] != m_playerTeamID)
             continue;
         if (t1::areCloserRect(camera.fromMapToScreen(turrets.position[i]), mousePosition, 20.f)) {
             turrets.shootingData[i].aiType = ShootingAI::player_controlled;

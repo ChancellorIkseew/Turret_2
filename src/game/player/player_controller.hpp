@@ -9,20 +9,21 @@ struct MobSoA;
 struct TurretSoA;
 
 class PlayerController {
-    TeamID playerTeamID = 0;
-    PixelCoord motionVector;
-    PixelCoord aimCoord;
-    bool shooting = false, holdsBlock = false;
+    TeamID m_playerTeamID = 0;
+    PixelCoord m_motionVector;
+    PixelCoord m_aimCoord;
+    bool m_shooting = false, m_holdsBlock = false;
 public:
     void update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, TurretSoA& turrets, const Presets& presets);
-
-    void setHoldsBlock(const bool flag) { holdsBlock = flag; }
-    void setPlayerTeamID(const TeamID teamID) { playerTeamID = teamID; }
-    TeamID getPlayerTeamID() const { return playerTeamID; }
-
-    PixelCoord getMotionVector() const { return motionVector; }
-    PixelCoord getAimCoord()     const { return aimCoord; }
-    bool shootingActive()        const { return shooting; }
+    
+    void setHoldsBlock(const bool flag) { m_holdsBlock = flag; }
+    void setPlayerTeamID(const TeamID teamID) { m_playerTeamID = teamID; }
+    
+    bool       holdsBlock()      const noexcept { return m_holdsBlock; }
+    TeamID     getPlayerTeamID() const noexcept { return m_playerTeamID; }
+    PixelCoord getMotionVector() const noexcept { return m_motionVector; }
+    PixelCoord getAimCoord()     const noexcept { return m_aimCoord; }
+    bool       isShooting()      const noexcept { return m_shooting; }
 private:
     void move(const Input& input);
     void mine();
