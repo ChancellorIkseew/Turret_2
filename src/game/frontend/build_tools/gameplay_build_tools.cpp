@@ -137,7 +137,8 @@ static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const T
 
 void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
     const Schematic& schematic = engine.getSession().getWorld().getSchematic();
-    if (!optTileData && !optDemolishStart && !schematic.isAir(targetTile)) {
+    const Input& input = engine.getMainWindow().getInput();
+    if (!optTileData && !optDemolishStart && !schematic.isAir(targetTile) && !input.active(Demolish)) {
         const Blueprint blueprint = schematic.getBlock(targetTile);
         Schematic::drawBlockFrame(renderer, blueprint.tile, blueprint.size, cl::BEIGE);
     }
