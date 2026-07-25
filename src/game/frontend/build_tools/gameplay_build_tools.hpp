@@ -14,7 +14,7 @@ public:
     void update(Engine& engine) final;
     void drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) final;
 private:
-    void usePipette(const BlockMap& blocks, Schematic& schematic, const TileCoord tile);
+    void usePipette(const BlockMap& blocks, const Schematic& schematic, const TileCoord tile);
     void demolish(WorldMap& map, BlockMap& blocks, Schematic& schematic, const TileCoord start, const TileCoord end) const;
     void rejectDemolition(BlockMap& blocks, Schematic& schematic, const TileCoord tile) const;
     void buildDraft(World& world, const TileData tileData, const int blockSize) const;

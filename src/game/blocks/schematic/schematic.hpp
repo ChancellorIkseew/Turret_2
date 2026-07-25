@@ -66,7 +66,7 @@ public:
         return closest;
     }
 
-    Blueprint getBlock(const TileCoord tile) {
+    Blueprint getBlock(const TileCoord tile) const {
         for (const auto& block : blueprints) {
             if (Blueprint::intersects(block, tile, 1))
                 return block;

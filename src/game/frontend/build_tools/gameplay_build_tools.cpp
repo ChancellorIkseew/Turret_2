@@ -69,7 +69,7 @@ void GBuildTools::update(Engine& engine) {
         schematic.clear();
 }
 
-void GBuildTools::usePipette(const BlockMap& blocks, Schematic& schematic, const TileCoord tile) {
+void GBuildTools::usePipette(const BlockMap& blocks, const Schematic& schematic, const TileCoord tile) {
     if (!blocks.isFilled(tile) && schematic.isAir(tile)) {
         optTileData.reset();
         optBuildStart.reset();
@@ -136,6 +136,11 @@ static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const T
 }
 
 void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
+    const Schematic& schematic = engine.getSession().getWorld().getSchematic();
+    if (!optTileData && !optDemolishStart && !schematic.isAir(targetTile)) {
+        const Blueprint blueprint = schematic.getBlock(targetTile);
+        Schematic::drawBlockFrame(renderer, blueprint.tile, blueprint.size, cl::BEIGE);
+    }
     if (optDemolishStart) {
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
         const TileCoord nStart = TileCoord(std::min(optDemolishStart.value().x, targetTile.x), std::min(optDemolishStart.value().y, targetTile.y));
