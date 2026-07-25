@@ -16,7 +16,7 @@ public:
     } audio;
     static struct _Display {
         uint64_t fps;
-        bool vSync;
+        int vSyncMode;
         bool fullscreen;
     } display;
     static struct _Gameplay {
