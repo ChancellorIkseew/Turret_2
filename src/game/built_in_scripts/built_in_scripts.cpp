@@ -31,23 +31,24 @@ void BuiltInScripts::execute(Engine& engine, const TimeCount& timeCount) {
     targetEnemies();
     respawnShuttle();
     if (engine.getSession().getGameMode() == GameMode::survival) {
-        if (!world.getBlocks().getMeta().getCore())
+        const auto& cores = world.getBlocks().getMeta().getCores();
+        if (cores.empty())
             engine.getGUI().addToOverlay(frontend::initGameOver(engine));
     }
 }
 
 void BuiltInScripts::targetEnemies() {
-    const auto optCoreTile = world.getBlocks().getMeta().getCore();
+    const auto& cores = world.getBlocks().getMeta().getCores();
     auto& soa = world.getMobs().getSoa();
     const TeamID enemyTeam = 1; // refactor get team
-    if (!optCoreTile) {
+    if (cores.empty()) {
         for (size_t i = 0; i < soa.mobCount; ++i) {
             if (soa.teamID[i] == enemyTeam)
                 soa.motionData[i].target = soa.position[i];
         }
     }
     else {
-        const TileCoord coreTile = optCoreTile.value();
+        const TileCoord coreTile = cores[0];
         const PixelCoord halfCoreSize = t1::HALF_TILE_PC * static_cast<float>(world.getBlocks().at(coreTile).block->size);
         const PixelCoord coreCenter = t1::pixel(coreTile) + halfCoreSize;
         for (size_t i = 0; i < soa.mobCount; ++i) {
@@ -58,8 +59,8 @@ void BuiltInScripts::targetEnemies() {
 }
 
 void BuiltInScripts::respawnShuttle() {
-    const auto optCoreTile = world.getBlocks().getMeta().getCore();
-    if (!optCoreTile)
+    const auto& cores = world.getBlocks().getMeta().getCores();
+    if (cores.empty())
         return; // players core does not exist
     auto& soa = world.getMobs().getSoa();
     MobPresetID shuttle = assets.getPresets().getMobID("shuttle");
@@ -68,7 +69,7 @@ void BuiltInScripts::respawnShuttle() {
         if (soa.teamID[i] == playerTeam && soa.preset[i] == shuttle)
             return; // shuttle is allive
     }
-    spawnMob(shuttle, t1::tileCenter(optCoreTile.value()), playerTeam);
+    spawnMob(shuttle, t1::tileCenter(cores[0]), playerTeam);
 }
 
 void BuiltInScripts::spawnWave(const uint32_t waveNumber) {

@@ -29,7 +29,7 @@ void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& bloc
         meta.getTurrets().addTurret(preset, tile, t1::pixel(tile) + origin, t1::PI - angleRad, teamID, ShootingData(), 0);
     }
     if (block->getType() == BlockType::core)
-        meta.setCorePosition(tile);
+        meta.addCore(tile);
     if (block->getType() == BlockType::in_progress)
         meta.addBlockInProgress(tile);
 
@@ -51,7 +51,7 @@ void BlockMap::demolish(TileCoord tile) {
     if (at(masterTile).type == BlockType::turret)
         meta.markForRemove(masterTile);
     if (at(masterTile).type == BlockType::core)
-        meta.setCorePosition(std::nullopt);
+        meta.removeCore(masterTile);
     if (at(masterTile).type == BlockType::in_progress)
         meta.removeBlockInProgress(masterTile);
 

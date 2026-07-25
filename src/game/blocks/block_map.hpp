@@ -16,7 +16,7 @@ class BlocksMeta {
     TurretsPool turrets;
     std::vector<size_t> markedForRemove;
     std::vector<TileCoord> blocksInProgress;
-    std::optional<TileCoord> core;
+    std::vector<TileCoord> cores;
 public:
     BlocksMeta() : turrets(64) {}
     //
@@ -41,17 +41,22 @@ public:
         markedForRemove.clear();
     }
 
-    std::optional<TileCoord> getCore() const noexcept { return core; }
-    void setCorePosition(const std::optional<TileCoord> tile) { core = tile; }
+    const auto& getCores() { return cores; }
+    void addCore(const TileCoord tile) { cores.push_back(tile); }
+    void removeCore(const TileCoord tile) {
+        auto it = std::ranges::find(cores, tile);
+        if (it != cores.end())
+            cores.erase(it);
+    }
 
     const auto& getBlocksInProgress() { return blocksInProgress; }
     void addBlockInProgress(const TileCoord tile) {
-        auto it = std::find(blocksInProgress.begin(), blocksInProgress.end(), tile);
+        auto it = std::ranges::find(blocksInProgress, tile);
         if (it == blocksInProgress.end())
             blocksInProgress.push_back(tile);
     }
     void removeBlockInProgress(const TileCoord tile) {
-        auto it = std::find(blocksInProgress.begin(), blocksInProgress.end(), tile);
+        auto it = std::ranges::find(blocksInProgress, tile);
         if (it != blocksInProgress.end())
             blocksInProgress.erase(it);
     }
