@@ -7,6 +7,9 @@ screenshots/
 controls.tin
 settings.tin
 
+#temporary
+res/sounds
+
 # logs:
 latest_log.txt
 AS_DEBUG/

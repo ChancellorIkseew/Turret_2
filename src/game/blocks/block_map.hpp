@@ -122,9 +122,11 @@ public:
     bool isInProgress(TileCoord tile) const noexcept { return isFilled(tile) && at(tile).block->getType() == BlockType::in_progress; }
     bool canPlace(const TileCoord tile, const int size) const noexcept;
     //
+    enum class BuildResult { build_complite, build, demolish_complite, demolish };
+    //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block);
     void demolish(TileCoord tile);
-    void build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets, Inventory& inventory);
+    BuildResult build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets, Inventory& inventory);
     void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
     std::optional<InProgressAim> getClosestInProgress(const PixelCoord mobPosition);
     //

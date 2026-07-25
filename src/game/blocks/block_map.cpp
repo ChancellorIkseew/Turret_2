@@ -62,7 +62,8 @@ void BlockMap::demolish(TileCoord tile) {
     at(masterTile).demolish();
 }
 
-void BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets, Inventory& inventory) {
+using Result = BlockMap::BuildResult;
+Result BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets, Inventory& inventory) {
     const TileCoord masterTile = getMaster(tile);
     assert(isInProgress(masterTile));
 
@@ -76,21 +77,21 @@ void BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t bu
         const int16_t step = std::min({ remaining, buildSpeed, resourceMaxStep });
         inventory.consumeByBuild(preset, blockInProgress->progress, step);
         blockInProgress->increeseProgress(step);
+        if (!blockInProgress->isProgressFull(totalTime))
+            return Result::build;
+        std::unique_ptr<Block> block = makeBlock(blockInProgress->presetID, preset, blockInProgress->rotation);
+        demolish(masterTile);
+        place(masterTile, teamID, block);
+        return Result::build_complite;
     }
     else /* BPAction::demolish */ {
         const int16_t step = std::min(blockInProgress->progress, buildSpeed);
         inventory.refundByDemolish(preset, blockInProgress->progress, step);
         blockInProgress->increeseProgress(step);
-    }
-
-    if (!blockInProgress->isProgressFull(totalTime))
-        return;
-    if (blockInProgress->action == BPAction::demolish)
+        if (!blockInProgress->isProgressFull(totalTime))
+            return Result::demolish;
         demolish(masterTile);
-    else {
-        std::unique_ptr<Block> block = makeBlock(blockInProgress->presetID, preset, blockInProgress->rotation);
-        demolish(masterTile);
-        place(masterTile, teamID, block);
+        return Result::demolish_complite;
     }
 }
 

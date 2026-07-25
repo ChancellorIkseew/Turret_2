@@ -1,6 +1,7 @@
 #include "construction_system.hpp"
 //
 #include "engine/assets/presets.hpp"
+#include "engine/audio/sound_queue.hpp"
 #include "engine/coords/transforms.hpp"
 #include "game/blocks/block_map.hpp"
 #include "game/blocks/schematic/schematic.hpp"
@@ -8,8 +9,16 @@
 #include "game/entities/build_beams.hpp"
 #include "game/entities/mobs_pool.hpp"
 
+static void onBlockPlace(SoundQueue& sounds, PixelCoord position) {
+    sounds.pushSound("block_place", position);
+}
+
+static void onBlockBreak(SoundQueue& sounds, PixelCoord position) {
+    sounds.pushSound("block_break", position);
+}
+
 void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schematic& schematic,
-    BlockMap& blocks, BuildBeamsPool& buildBeams, TeamsPool& teams) {
+    BlockMap& blocks, BuildBeamsPool& buildBeams, TeamsPool& teams, SoundQueue& sounds) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
         if (!mobPreset.canBuild)
@@ -22,13 +31,20 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schemati
 
         if (closestInProgress.has_value() && closestInProgress->squareDistance < SQ_RANGE) {
             const TileCoord targetTile = closestInProgress->masterTile;
+            const int blockSize = blocks.at(targetTile).block->size;
             soa.angle[i] = t1::atan(closestInProgress->center - position);
 
-            const InProgress* block = static_cast<const InProgress*>(blocks.at(targetTile).block.get());
-            const uint32_t color = (block->action == BPAction::build) ? cl::BEIGE : cl::RED;
+            using Result = BlockMap::BuildResult;
+            Inventory& teamInventory = teams.getTeamByID(soa.teamID[i])->getInventory();
+            const Result result = blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets, teamInventory);
 
-            blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets, teams.getTeamByID(soa.teamID[i])->getInventory());
-            buildBeams.addBeam(position, targetTile, block->size, color);
+            const uint32_t color = (result <= Result::build) ? cl::BEIGE : cl::RED;
+            buildBeams.addBeam(position, targetTile, blockSize, color);
+
+            if (result == Result::build_complite)
+                onBlockPlace(sounds, closestInProgress->center/*particles, blockSize*/);
+            if (result == Result::demolish_complite)
+                onBlockBreak(sounds, closestInProgress->center/*particles, blockSize*/);
             continue;
         }
 
