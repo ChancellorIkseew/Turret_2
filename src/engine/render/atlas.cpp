@@ -3,7 +3,7 @@
 #include <SDL3/SDL_render.h>
 #include <unordered_map>
 #include "engine/debug/logger.hpp"
-#include "engine/io/folders.hpp"
+#include "engine/io/io.hpp"
 #include "packer/packer.hpp"
 #include "renderer.hpp"
 
@@ -12,16 +12,14 @@ constexpr Uint32 TRANSPARENT = 0U;
 static debug::Logger logger("texture_atlas");
 
 void Atlas::addTexture(const fs::path& path) {
-    if (!io::folders::fileExists(path)) {
-        logger.error() << "Image file does not exist: " << path;
-        return;
-    }
     std::string name = path.filename().stem().string();
     if (atlas.contains(name)) {
         logger.warning() << "Texture with name \"" << name << "\" already exists.";
         return;
     }
-    Surface surface(SDL_LoadPNG(path.string().c_str()));
+    std::string blob = io::readFile(path, io::Log::only_error);
+    SDL_IOStream* stream = SDL_IOFromConstMem(blob.data(), blob.size());
+    Surface surface(SDL_LoadPNG_IO(stream, true));
     if (!surface.raw()) {
         logger.error() << "Texture was not created. File: " << path << " " << SDL_GetError();
         return;

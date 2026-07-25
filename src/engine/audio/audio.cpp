@@ -2,10 +2,9 @@
 //
 #include <SDL3_mixer/SDL_mixer.h>
 #include <span>
-#include <stdexcept>
 #include "engine/coords/transforms.hpp"
 #include "engine/debug/logger.hpp"
-#include "engine/io/folders.hpp"
+#include "engine/io/io.hpp"
 #include "game/player/camera.hpp"
 
 constexpr float BASE_CAMERA_ALTITUDE = 10.0f;
@@ -53,15 +52,13 @@ Audio::~Audio() {
 }
 
 void Audio::loadSound(const std::string& id, const std::filesystem::path& path) {
-    if (!io::folders::fileExists(path)) {
-        logger.error() << "Sound file does not exist: " << path;
-        return;
-    }
     if (audioCache.contains(id)) {
         logger.warning() << "Track already exists." << path.filename().string();
         return;
     }
-    MIX_Audio* audio = MIX_LoadAudio(mixer, path.string().c_str(), false);
+    std::string blob = io::readFile(path, io::Log::only_error);
+    SDL_IOStream* stream = SDL_IOFromConstMem(blob.data(), blob.size());
+    MIX_Audio* audio = MIX_LoadAudio_IO(mixer, stream, false, true);
     if (!audio)
         logger.error() << "Failed to load audio: " << id << ". " << SDL_GetError();
     audioCache[id] = audio; // nullptr if error.
