@@ -99,7 +99,7 @@ void Schematic::drawCancelArea(Renderer& renderer, const TileCoord start, const 
 }
 
 static bool isDestroyed(const BlockMap& blocks, const Blueprint& bp) noexcept {
-    return bp.action == BPAction::demolish || !blocks.isFilled(bp.tile);
+    return bp.action == BPAction::demolish && !blocks.isFilled(bp.tile);
 }
 
 void Schematic::syncWithWorld(const BlockMap& blocks) {
