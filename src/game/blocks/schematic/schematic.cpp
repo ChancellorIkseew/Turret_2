@@ -1,8 +1,10 @@
 #include "schematic.hpp"
 //
+#include <functional>
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/render/renderer.hpp"
+#include "game/blocks/block_map.hpp"
 
 void Schematic::drawBlockFrame(Renderer& renderer, const TileCoord tile, const int size, const uint32_t color) {
     const PixelCoord position = t1::pixel(tile);
@@ -94,4 +96,12 @@ void Schematic::drawCancelArea(Renderer& renderer, const TileCoord start, const 
         if (intersects)
             drawBlockFrame(renderer, bp.tile, bp.size, cl::RED);
     }
+}
+
+static bool isDestroyed(const BlockMap& blocks, const Blueprint& bp) noexcept {
+    return bp.action == BPAction::demolish || !blocks.isFilled(bp.tile);
+}
+
+void Schematic::syncWithWorld(const BlockMap& blocks) {
+    std::erase_if(blueprints, std::bind_front(isDestroyed, std::ref(blocks)));
 }

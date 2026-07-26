@@ -4,6 +4,7 @@
 #include "engine/coords/transforms.hpp"
 #include "game/blocks/block.hpp"
 
+class BlockMap;
 class Presets;
 class Renderer;
 
@@ -89,6 +90,7 @@ public:
     void removeByArea(const TileCoord start, const TileCoord end, const BPAction action) noexcept;
     void drawCancelArea(Renderer& renderer, const TileCoord start, const TileCoord end);
 
+    void syncWithWorld(const BlockMap& blocks);
     void drawGhosts(Renderer& renderer, const Presets& presets, const uint64_t timeMs) const;
     bool empty() const noexcept { return blueprints.empty(); }
     void clear() noexcept { blueprints.clear(); }

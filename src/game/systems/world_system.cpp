@@ -24,6 +24,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     auto& chunks = world.getChunks();
     auto& mobs = world.getMobs();
     auto& shells = world.getShells();
+    auto& schematic = world.getSchematic();
     auto& particles = world.getParticles();
     auto mobTurrets = fromMobs(mobs.getSoa());
     auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
@@ -33,14 +34,15 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     blocks.updateBlocks(world.getMap(), presets, world.getTeams());
     shells::processShells(world, presets, worldSounds, camera);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
-    ai::updateMovingAI(mobs.getSoa(), presets, playerController, world.getSchematic(), blocks);
+    ai::updateMovingAI(mobs.getSoa(), presets, playerController, schematic, blocks);
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
     turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     particles::updateParticles(particles);
     // Build when spans are used and can be spoiled.
-    construction::buildBlueprints(mobs.getSoa(), presets, world.getSchematic(), blocks,
+    schematic.syncWithWorld(blocks);
+    construction::buildBlueprints(mobs.getSoa(), presets, schematic, blocks,
         world.getBuildBems(), world.getTeams(), worldSounds, particles);
     // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
