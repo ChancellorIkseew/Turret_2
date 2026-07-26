@@ -136,12 +136,12 @@ void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camer
 void shells::drawShellsLighting(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t shellCount = soa.shellCount;
     constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
-    constexpr PixelCoord OFFSET(8.f, 16.f);
+    constexpr PixelCoord OFFSET(4.f, 8.f);
 
     for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(soa.position[i]))
             continue;
         const auto& visual = presets.getShell(soa.preset[i]).visual;
-        renderer.draw(rect, soa.position[i], visual.size + OFFSET, visual.origin + OFFSET / 2.f, t1::PI - soa.angle[i], cl::ORANGE);
+        renderer.draw(rect, soa.position[i], visual.size + OFFSET * 2.f, visual.origin + OFFSET, t1::PI - soa.angle[i], cl::ORANGE);
     }
 }

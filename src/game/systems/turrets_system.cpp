@@ -91,8 +91,7 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;
             constexpr PixelCoord SIZE(15.f, 15.f);
-            constexpr uint32_t COLOR_FADING = 0x00'00'00'08;
-            particles.addParticle(position, SIZE, angle, 0.2f, cl::ORANGE, COLOR_FADING, 15, PType::light);
+            particles.addParticle(position, SIZE, angle, 0.2f, cl::ORANGE, 0, 15, PType::light);
             sounds.pushSound(turret.visual.shotSound, position);
         }
         constexpr float MAX_RECOIL = 2.f;

@@ -11,7 +11,9 @@ static inline void reduceLifeTime(ParticleSoA& soa) {
 
 static inline void reduceColor(ParticleSoA& soa) {
     for (auto&& [color, colorFading] : std::views::zip(soa.color, soa.colorFading)) {
-        color -= colorFading;
+        const uint32_t rgb   = color & 0xFF'FF'FF'00;
+        const uint32_t alpha = color & 0x00'00'00'FF;
+        color = rgb | std::max<uint32_t>(0, (alpha - colorFading));
     }
 }
 
