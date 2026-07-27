@@ -12,7 +12,7 @@ class Camera;
 
 class Audio {
     MIX_Mixer* mixer = nullptr;
-    std::unordered_map<std::string, MIX_Audio*> audioCache;
+    std::unordered_map<std::string, MIX_Audio*> sounds;
     std::array<MIX_Track*, 64> worldTrackPool;
     std::array<MIX_Track*, 4>     uiTrackPool;
     std::array<MIX_Track*, 2>  musicTrackPool;
@@ -24,10 +24,10 @@ class Audio {
 public:
     Audio();
     ~Audio();
-    void loadSound(const std::string& id, const std::filesystem::path& path);
-    void playDiegetic(const std::string& id, const PixelCoord object, const Camera& camera);
-    void playMusic(const std::string& id);
-    void playUI(const std::string& id);
+    void loadSound(const std::string& name, const std::filesystem::path& path);
+    void playDiegetic(const std::string& name, const PixelCoord object, const Camera& camera);
+    void playMusic(const std::string& name);
+    void playUI(const std::string& name);
     //
     void pauseWorldSounds();
     void resumeWorldSounds();

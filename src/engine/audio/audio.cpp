@@ -41,8 +41,8 @@ Audio::Audio() {
 }
 
 Audio::~Audio() {
-    for (auto& [id, audio] : audioCache) {
-        MIX_DestroyAudio(audio);
+    for (auto& [name, sound] : sounds) {
+        MIX_DestroyAudio(sound);
     }
     freePool(worldTrackPool);
     freePool(uiTrackPool);
@@ -51,17 +51,17 @@ Audio::~Audio() {
     MIX_Quit();
 }
 
-void Audio::loadSound(const std::string& id, const std::filesystem::path& path) {
-    if (audioCache.contains(id)) {
+void Audio::loadSound(const std::string& name, const std::filesystem::path& path) {
+    if (sounds.contains(name)) {
         logger.warning() << "Track already exists." << path.filename().string();
         return;
     }
     std::string blob = io::readFile(path, io::Log::only_error);
     SDL_IOStream* stream = SDL_IOFromConstMem(blob.data(), blob.size());
-    MIX_Audio* audio = MIX_LoadAudio_IO(mixer, stream, false, true);
-    if (!audio)
-        logger.error() << "Failed to load audio: " << id << ". " << SDL_GetError();
-    audioCache[id] = audio; // nullptr if error.
+    MIX_Audio* sound = MIX_LoadAudio_IO(mixer, stream, false, true);
+    if (!sound)
+        logger.error() << "Failed to load audio: " << name << ". " << SDL_GetError();
+    sounds[name] = sound; // nullptr if error.
 }
 
 static MIX_Track* findFreeTrack(std::span<MIX_Track*> trackPool) {
@@ -72,9 +72,9 @@ static MIX_Track* findFreeTrack(std::span<MIX_Track*> trackPool) {
     return nullptr;
 }
 
-static void play(MIX_Audio* audio, MIX_Track* track, const MIX_Point3D* point3D) {
+static void play(MIX_Audio* sound, MIX_Track* track, const MIX_Point3D* point3D) {
     MIX_SetTrack3DPosition(track, point3D);
-    MIX_SetTrackAudio(track, audio);
+    MIX_SetTrackAudio(track, sound);
     MIX_PlayTrack(track, 0);
 }
 
@@ -90,19 +90,19 @@ void Audio::playDiegetic(const std::string& id, const PixelCoord object, const C
     const PixelCoord delta = applyGuardZone(object - camera.getRealCenter()) / t1::TILE;
     const float altitude = BASE_CAMERA_ALTITUDE / camera.getMapScale();
     MIX_Point3D point3D(delta.x, -delta.y, -altitude); // Why -y, -z? See MIX_Point3D comments.
-    play(audioCache[id], track, &point3D);
+    play(sounds[id], track, &point3D);
 }
 
 void Audio::playUI(const std::string& id) {
     MIX_Track* track = findFreeTrack(uiTrackPool);
     if (track)
-        play(audioCache[id], track, nullptr);
+        play(sounds[id], track, nullptr);
 }
 
 void Audio::playMusic(const std::string& id) {
     MIX_Track* track = findFreeTrack(musicTrackPool);
     if (track)
-        play(audioCache[id], track, nullptr);
+        play(sounds[id], track, nullptr);
 }
 
 void Audio::pauseWorldSounds() {
