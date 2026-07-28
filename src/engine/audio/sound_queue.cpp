@@ -14,13 +14,13 @@ void SoundQueue::pushSoundLoop(const std::string& name, const PixelCoord positio
     agg.count += 1;
 }
 
-void SoundQueue::play(Audio& audio, const Camera& camera) {
+void SoundQueue::play(Audio& audio, const Camera& camera, const int64_t timeMs) {
     for (const auto& [name, agg] : loops) {
         if (agg.count == 0)
             continue;
         const PixelCoord averagePos = agg.accumulatedPosition / static_cast<float>(agg.count);
         const float volumeFactor = std::min(std::sqrt(static_cast<float>(agg.count)), 2.0f);
-        audio.playLoopDiegetic(name, averagePos, camera, volumeFactor);
+        audio.playLoopDiegetic(name, averagePos, camera, volumeFactor, timeMs);
     }
 
     constexpr float PITCH_JITTER_RANGE = 0.06f; // +-3% pitch

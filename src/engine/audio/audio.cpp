@@ -44,11 +44,15 @@ Audio::Audio() {
         if (!state.track)
             throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
     }
+
+    SDL_AudioSpec spec;
+    if (MIX_GetMixerFormat(mixer, &spec))
+        sampleRate = spec.freq;
 }
 
 Audio::~Audio() {
     for (auto& [name, sound] : sounds) {
-        MIX_DestroyAudio(sound);
+        MIX_DestroyAudio(sound.audio);
     }
     freePool(worldTrackPool);
     freePool(uiTrackPool);
@@ -64,10 +68,14 @@ void Audio::loadSound(const std::string& name, const std::filesystem::path& path
     }
     std::string blob = io::readFile(path, io::Log::only_error);
     SDL_IOStream* stream = SDL_IOFromConstMem(blob.data(), blob.size());
-    MIX_Audio* sound = MIX_LoadAudio_IO(mixer, stream, false, true);
-    if (!sound)
+    MIX_Audio* audio = MIX_LoadAudio_IO(mixer, stream, false, true);
+    if (!audio) {
         logger.error() << "Failed to load audio: " << name << ". " << SDL_GetError();
-    sounds[name] = sound; // nullptr if error.
+        return;
+    }
+    const Sint64 frames = MIX_GetAudioDuration(audio);
+    const Sint64 durationFrames = (frames > 0) ? frames : 1;
+    sounds[name] = Sound(audio, durationFrames);
 }
 
 static MIX_Track* findFreeTrack(std::span<MIX_Track*> trackPool) {
@@ -81,9 +89,9 @@ static MIX_Track* findFreeTrack(std::span<MIX_Track*> trackPool) {
     return nullptr;
 }
 
-static void play(MIX_Audio* sound, MIX_Track* track, const MIX_Point3D* point3D) {
+static void play(MIX_Audio* audio, MIX_Track* track, const MIX_Point3D* point3D) {
     MIX_SetTrack3DPosition(track, point3D);
-    MIX_SetTrackAudio(track, sound);
+    MIX_SetTrackAudio(track, audio);
     MIX_PlayTrack(track, 0);
 }
 
@@ -98,7 +106,8 @@ static MIX_Point3D calculate3DPosition(const PixelCoord object, const Camera& ca
     return MIX_Point3D(delta.x, -delta.y, -altitude);
 }
 
-void Audio::playDiegetic(const std::string& name, const PixelCoord object, const Camera& camera, float gainFactor, float pitch) {
+void Audio::playDiegetic(const std::string& name, const PixelCoord object, const Camera& camera,
+    const float gainFactor, const float pitch) {
     MIX_Track* track = findFreeTrack(worldTrackPool);
     if (!track)
         return;
@@ -106,14 +115,16 @@ void Audio::playDiegetic(const std::string& name, const PixelCoord object, const
     const float finalGain = masterVolume * worldVolume * gainFactor;
     MIX_SetTrack3DPosition(track, &point3D);
     MIX_SetTrackGain(track, finalGain);
-    MIX_SetTrackAudio(track, sounds[name]);
+    MIX_SetTrackAudio(track, sounds[name].audio);
     SDL_AudioStream* stream = MIX_GetTrackAudioStream(track);
     if (stream)
         SDL_SetAudioStreamFrequencyRatio(stream, pitch);
     MIX_PlayTrack(track, 0);
 }
 
-void Audio::playLoopDiegetic(const std::string& name, const PixelCoord object, const Camera& camera, float gainFactor) {
+void Audio::playLoopDiegetic(const std::string& name, const PixelCoord object, const Camera& camera,
+    const float gainFactor, const int64_t globalTimeMs) {
+    const Sound& resource = sounds[name];
     const MIX_Point3D point3D = calculate3DPosition(object, camera);
     const float finalGain = masterVolume * worldVolume * gainFactor;
 
@@ -132,9 +143,13 @@ void Audio::playLoopDiegetic(const std::string& name, const PixelCoord object, c
             state.updatedThisFrame = true;
             MIX_SetTrack3DPosition(state.track, &point3D);
             MIX_SetTrackGain(state.track, finalGain);
-            MIX_SetTrackAudio(state.track, sounds[name]);
+            MIX_SetTrackAudio(state.track, resource.audio);
             MIX_SetTrackLoops(state.track, -1);
             MIX_PlayTrack(state.track, 0);
+            constexpr int64_t MS_PER_SECOND = 1000;
+            const int64_t globalFrames = globalTimeMs * sampleRate / MS_PER_SECOND;
+            const int64_t startFrame = globalFrames % resource.durationFrames;
+            MIX_SetTrackPlaybackPosition(state.track, startFrame);
             return;
         }
     }
@@ -153,13 +168,13 @@ void Audio::endFrame() {
 void Audio::playUI(const std::string& id) {
     MIX_Track* track = findFreeTrack(uiTrackPool);
     if (track)
-        play(sounds[id], track, nullptr);
+        play(sounds[id].audio, track, nullptr);
 }
 
 void Audio::playMusic(const std::string& id) {
     MIX_Track* track = findFreeTrack(musicTrackPool);
     if (track)
-        play(sounds[id], track, nullptr);
+        play(sounds[id].audio, track, nullptr);
 }
 
 void Audio::pauseWorldSounds() {

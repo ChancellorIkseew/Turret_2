@@ -26,5 +26,5 @@ class SoundQueue {
 public:
     void pushSound(const std::string& name, const PixelCoord position);
     void pushSoundLoop(const std::string& name, const PixelCoord position);
-    void play(Audio& audio, const Camera& camera);
+    void play(Audio& audio, const Camera& camera, const int64_t timeMs);
 };

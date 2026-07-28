@@ -10,6 +10,11 @@ struct MIX_Mixer;
 struct MIX_Track;
 class Camera;
 
+struct Sound {
+    MIX_Audio* audio = nullptr;
+    int64_t durationFrames = 0;
+};
+
 struct LoopTrackState {
     MIX_Track* track = nullptr;
     std::string currentSoundName;
@@ -18,7 +23,8 @@ struct LoopTrackState {
 
 class Audio {
     MIX_Mixer* mixer = nullptr;
-    std::unordered_map<std::string, MIX_Audio*> sounds;
+    int64_t sampleRate = 44100;
+    std::unordered_map<std::string, Sound> sounds;
     std::array<MIX_Track*, 64> worldTrackPool;
     std::array<MIX_Track*, 4>     uiTrackPool;
     std::array<MIX_Track*, 2>  musicTrackPool;
@@ -32,9 +38,9 @@ public:
     Audio();
     ~Audio();
     void loadSound(const std::string& name, const std::filesystem::path& path);
-    void playDiegetic(const std::string& name, const PixelCoord object, const Camera& camera,
-        float gainFactor = 1.0f, float pitch = 1.0f);
-    void playLoopDiegetic(const std::string& name, const PixelCoord object, const Camera& camera, float gainFactor = 1.0f);
+    void playDiegetic(const std::string& name, const PixelCoord object, const Camera& camera, const float gainFactor, const float pitch);
+    void playLoopDiegetic(const std::string& name, const PixelCoord object, const Camera& camera,
+        const float gainFactor, const int64_t globalTimeMs);
     void endFrame();
     //
     void playMusic(const std::string& name);
