@@ -186,15 +186,13 @@ void Audio::pauseWorldSounds() {
 
 void Audio::resumeWorldSounds() {
     for (MIX_Track* track : worldTrackPool) {
-        if (MIX_TrackPaused(track))
-            MIX_ResumeTrack(track);
+        MIX_ResumeTrack(track);
     }
 }
 
 void Audio::clearWorldSounds() {
     for (MIX_Track* track : worldTrackPool) {
-        if (MIX_TrackPlaying(track))
-            MIX_StopTrack(track, FADING_FRAME_COUNT);
+        MIX_StopTrack(track, FADING_FRAME_COUNT);
     }
 }
 
