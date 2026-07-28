@@ -89,8 +89,7 @@ static MIX_Track* findFreeTrack(std::span<MIX_Track*> trackPool) {
     return nullptr;
 }
 
-static void play(MIX_Audio* audio, MIX_Track* track, const MIX_Point3D* point3D) {
-    MIX_SetTrack3DPosition(track, point3D);
+static void playMono(MIX_Audio* audio, MIX_Track* track) {
     MIX_SetTrackAudio(track, audio);
     MIX_PlayTrack(track, 0);
 }
@@ -168,19 +167,18 @@ void Audio::endFrame() {
 void Audio::playUI(const std::string& id) {
     MIX_Track* track = findFreeTrack(uiTrackPool);
     if (track)
-        play(sounds[id].audio, track, nullptr);
+        playMono(sounds[id].audio, track);
 }
 
 void Audio::playMusic(const std::string& id) {
     MIX_Track* track = findFreeTrack(musicTrackPool);
     if (track)
-        play(sounds[id].audio, track, nullptr);
+        playMono(sounds[id].audio, track);
 }
 
 void Audio::pauseWorldSounds() {
     for (MIX_Track* track : worldTrackPool) {
-        if (MIX_TrackPlaying(track))
-            MIX_PauseTrack(track);
+        MIX_PauseTrack(track);
     }
 }
 
