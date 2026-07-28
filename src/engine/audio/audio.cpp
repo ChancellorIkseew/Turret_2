@@ -72,8 +72,11 @@ void Audio::loadSound(const std::string& name, const std::filesystem::path& path
 
 static MIX_Track* findFreeTrack(std::span<MIX_Track*> trackPool) {
     for (MIX_Track* track : trackPool) {
-        if (!MIX_TrackPlaying(track))
+        if (!MIX_TrackPlaying(track)) {
+            if (SDL_AudioStream* stream = MIX_GetTrackAudioStream(track))
+                SDL_SetAudioStreamFrequencyRatio(stream, 1.0f);
             return track;
+        }
     }
     return nullptr;
 }
