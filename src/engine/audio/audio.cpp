@@ -38,6 +38,12 @@ Audio::Audio() {
     fillPool(worldTrackPool, mixer);
     fillPool(uiTrackPool, mixer);
     fillPool(musicTrackPool, mixer);
+
+    for (auto& state : loopTrackPool) {
+        state.track = MIX_CreateTrack(mixer);
+        if (!state.track)
+            throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
+    }
 }
 
 Audio::~Audio() {
@@ -83,14 +89,62 @@ static constexpr PixelCoord applyGuardZone(const PixelCoord position) {
     return t1::contains(GUARD_ZONE * -1.f, GUARD_ZONE, position) ? PixelCoord(0.f, 0.f) : position;
 }
 
-void Audio::playDiegetic(const std::string& id, const PixelCoord object, const Camera& camera) {
+static MIX_Point3D calculate3DPosition(const PixelCoord object, const Camera& camera) {
+    const PixelCoord delta = applyGuardZone(object - camera.getRealCenter()) / t1::TILE;
+    const float altitude = BASE_CAMERA_ALTITUDE / camera.getMapScale();
+    return MIX_Point3D(delta.x, -delta.y, -altitude);
+}
+
+void Audio::playDiegetic(const std::string& name, const PixelCoord object, const Camera& camera, float gainFactor, float pitch) {
     MIX_Track* track = findFreeTrack(worldTrackPool);
     if (!track)
         return;
-    const PixelCoord delta = applyGuardZone(object - camera.getRealCenter()) / t1::TILE;
-    const float altitude = BASE_CAMERA_ALTITUDE / camera.getMapScale();
-    MIX_Point3D point3D(delta.x, -delta.y, -altitude); // Why -y, -z? See MIX_Point3D comments.
-    play(sounds[id], track, &point3D);
+    const MIX_Point3D point3D = calculate3DPosition(object, camera);
+    const float finalGain = masterVolume * worldVolume * gainFactor;
+    MIX_SetTrack3DPosition(track, &point3D);
+    MIX_SetTrackGain(track, finalGain);
+    MIX_SetTrackAudio(track, sounds[name]);
+    SDL_AudioStream* stream = MIX_GetTrackAudioStream(track);
+    if (stream)
+        SDL_SetAudioStreamFrequencyRatio(stream, pitch);
+    MIX_PlayTrack(track, 0);
+}
+
+void Audio::playLoopDiegetic(const std::string& name, const PixelCoord object, const Camera& camera, float gainFactor) {
+    const MIX_Point3D point3D = calculate3DPosition(object, camera);
+    const float finalGain = masterVolume * worldVolume * gainFactor;
+
+    for (auto& state : loopTrackPool) {
+        if (state.currentSoundName == name && MIX_TrackPlaying(state.track)) {
+            MIX_SetTrack3DPosition(state.track, &point3D);
+            MIX_SetTrackGain(state.track, finalGain);
+            state.updatedThisFrame = true;
+            return;
+        }
+    }
+
+    for (auto& state : loopTrackPool) {
+        if (!MIX_TrackPlaying(state.track)) {
+            state.currentSoundName = name;
+            state.updatedThisFrame = true;
+            MIX_SetTrack3DPosition(state.track, &point3D);
+            MIX_SetTrackGain(state.track, finalGain);
+            MIX_SetTrackAudio(state.track, sounds[name]);
+            MIX_SetTrackLoops(state.track, -1);
+            MIX_PlayTrack(state.track, 0);
+            return;
+        }
+    }
+}
+
+void Audio::endFrame() {
+    for (auto& state : loopTrackPool) {
+        if (MIX_TrackPlaying(state.track) && !state.updatedThisFrame) {
+            MIX_StopTrack(state.track, FADING_FRAME_COUNT);
+            state.currentSoundName.clear();
+        }
+        state.updatedThisFrame = false;
+    }
 }
 
 void Audio::playUI(const std::string& id) {
