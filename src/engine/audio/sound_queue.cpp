@@ -23,7 +23,7 @@ void SoundQueue::play(Audio& audio, const Camera& camera, const int64_t timeMs) 
         audio.playLoopDiegetic(name, averagePos, camera, volumeFactor, timeMs);
     }
 
-    constexpr float PITCH_JITTER_RANGE = 0.06f; // +-3% pitch
+    constexpr float PITCH_JITTER_RANGE = 0.03f; // +-3% pitch
     constexpr float VOLUME_JITTER_RANGE = 0.02f; // +-2% volume
 
     for (const auto& [name, position] : oneShots) {

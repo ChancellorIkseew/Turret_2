@@ -81,8 +81,7 @@ void Audio::loadSound(const std::string& name, const std::filesystem::path& path
 static MIX_Track* findFreeTrack(std::span<MIX_Track*> trackPool) {
     for (MIX_Track* track : trackPool) {
         if (!MIX_TrackPlaying(track)) {
-            if (SDL_AudioStream* stream = MIX_GetTrackAudioStream(track))
-                SDL_SetAudioStreamFrequencyRatio(stream, 1.0f);
+            MIX_SetTrackFrequencyRatio(track, 1.0f);
             return track;
         }
     }
@@ -115,9 +114,7 @@ void Audio::playDiegetic(const std::string& name, const PixelCoord object, const
     MIX_SetTrack3DPosition(track, &point3D);
     MIX_SetTrackGain(track, finalGain);
     MIX_SetTrackAudio(track, sounds[name].audio);
-    SDL_AudioStream* stream = MIX_GetTrackAudioStream(track);
-    if (stream)
-        SDL_SetAudioStreamFrequencyRatio(stream, pitch);
+    MIX_SetTrackFrequencyRatio(track, pitch);
     MIX_PlayTrack(track, 0);
 }
 
@@ -165,14 +162,12 @@ void Audio::endFrame() {
 }
 
 void Audio::playUI(const std::string& id) {
-    MIX_Track* track = findFreeTrack(uiTrackPool);
-    if (track)
+    if (MIX_Track* track = findFreeTrack(uiTrackPool))
         playMono(sounds[id].audio, track);
 }
 
 void Audio::playMusic(const std::string& id) {
-    MIX_Track* track = findFreeTrack(musicTrackPool);
-    if (track)
+    if (MIX_Track* track = findFreeTrack(musicTrackPool))
         playMono(sounds[id].audio, track);
 }
 
