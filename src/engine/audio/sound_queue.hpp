@@ -1,23 +1,25 @@
 #pragma once
-#include <vector>
-#include "audio.hpp"
+#include <random>
+#include <string>
+#include <unordered_map>
+#include "engine/coords/pixel_coord.hpp"
+
+class Audio;
+class Camera;
+
+struct SoundAggregate {
+    PixelCoord accumulatedPosition;
+    size_t count = 0;
+};
 
 class SoundQueue {
-    std::vector<std::pair<const std::string, const PixelCoord>> queue;
+    std::unordered_map<std::string, SoundAggregate> oneShots;
+    std::unordered_map<std::string, SoundAggregate> loops;
+    std::mt19937 rngEngine{ std::random_device{}() };
+    std::uniform_real_distribution<float> jitterDist{ -1.0f, 1.0f };
+
 public:
-    SoundQueue() = default;
-    //
-    void pushSound(const std::string& id, const PixelCoord position) {
-        for (auto& [existingID, _positon] : queue) {
-            if (existingID == id)
-                return;
-        }
-        queue.emplace_back(id, position);
-    }
-    void play(Audio& audio, const Camera& camera) {
-        for (auto& [id, position] : queue) {
-            audio.playDiegetic(id, position, camera);
-        }
-        queue.clear();
-    }
+    void pushSound(const std::string& name, const PixelCoord position);
+    void pushSoundLoop(const std::string& name, const PixelCoord position);
+    void play(Audio& audio, const Camera& camera, const int64_t timeMs);
 };

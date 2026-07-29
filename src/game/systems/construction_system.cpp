@@ -54,6 +54,8 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schemati
                 onBlockPlace(sounds, particles, closestInProgress->center, blockSize);
             if (result == Result::demolish_complite)
                 onBlockBreak(sounds, particles, closestInProgress->center, blockSize);
+            if (result == Result::build || result == Result::demolish)
+                sounds.pushSoundLoop("build_beam", position);
             continue;
         }
 
