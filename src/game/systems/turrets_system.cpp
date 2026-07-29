@@ -64,8 +64,9 @@ static inline void fallbackRecoil(TurretComponents& soa) {
 static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPool& particles,
     const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera, const uint64_t timeMs) {
     for (size_t i = 0; i < mobCount; ++i) {
-        if (soa.restReloadTime[i] > 0 || !soa.shootingData[i].isShooting)
+        if (soa.restReloadTime[i] > 0 || soa.ammo[i] < 1 || !soa.shootingData[i].isShooting)
             continue;
+        --soa.ammo[i];
         const TurretPreset& turret = presets.getTurret(soa.preset[i]);
         const ShellPreset& shell = presets.getShell(turret.shell);
         soa.restReloadTime[i] = turret.reload;

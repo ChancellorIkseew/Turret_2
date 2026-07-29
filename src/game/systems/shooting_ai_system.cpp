@@ -66,6 +66,8 @@ void ai::updateShootingAI(TurretComponents& soa, const MobSoA& mobs, const Block
     const Presets& presets, const PlayerController& playerController) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
+        if (soa.ammo[i] < 1)
+            continue;
         switch (soa.shootingData[i].aiType) {
         case ShootingAI::player_controlled:
             updatePlayerControlled(soa, presets, i, playerController);

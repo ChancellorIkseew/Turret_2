@@ -23,13 +23,21 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
             case BlockType::router:
                 static_cast<RouterBlock*>(blockTile.block.get())->provide(tile, *this);
                 break;
-            case BlockType::turret:
-                static_cast<TurretBlock*>(blockTile.block.get());
-                break;
             case BlockType::core:
                 static_cast<CoreBlock*>(blockTile.block.get())->syncTeam(teams.getTeamByID(blockTile.teamID));
                 break;
             }
+        }
+    }
+
+    auto& turrets = meta.getTurrets().getSoa();
+    for (size_t i = 0; i < turrets.turretCount; ++i) {
+        if (turrets.ammo[i] > 0)
+            continue;
+        TurretBlock* block = static_cast<TurretBlock*>(at(turrets.masterTile[i]).block.get());
+        if (block->ammo.count > 0) {
+            block->useAmmo();
+            ++turrets.ammo[i];
         }
     }
 }

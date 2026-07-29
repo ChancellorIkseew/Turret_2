@@ -81,6 +81,9 @@ void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blo
     moveByAI(soa, mobCount);
     resolveCollisions(soa, chunks, presets);
     resolveWorldCollisions(soa, mobCount, blocks, presets);
+    for (auto& ammo : soa.ammo) {
+        ammo = 1;
+    }
 }
 
 void mobs::cleanupMobs(MobsPool& mobsPool, const Presets& presets) {

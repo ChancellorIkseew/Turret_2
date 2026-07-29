@@ -148,10 +148,14 @@ struct FactoryBlock : Block {
 struct TurretBlock : Block {
     TurretPresetID turretPreset;
     BlockRot defaultRotation;
+    ItemStack ammo;
     //
     TurretBlock(TurretPresetID turretPreset, BlockRot rotation) :
         turretPreset(turretPreset), defaultRotation(rotation) {}
     t1_derived BlockType getType() const noexcept final { return BlockType::turret; }
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return item == ItemPresetID(3) && ammo.count < 10; };
+    t1_derived void accept(ItemPresetID item, BlockRot srcRot) final { ++ammo.count; };
+    void useAmmo() { --ammo.count; }
 };
 
 struct IntersectionBlock : Block {

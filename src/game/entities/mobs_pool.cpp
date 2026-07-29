@@ -18,6 +18,7 @@ void MobsPool::reserve(const size_t capacity) {
     soa.currentRecoil.reserve(capacity);
     soa.chassisFrame.reserve(capacity);
     soa.turretFrame.reserve(capacity);
+    soa.ammo.reserve(capacity);
 }
 
 void MobsPool::addMob(
@@ -51,6 +52,7 @@ void MobsPool::addMob(
     soa.currentRecoil.push_back(0.f);
     soa.chassisFrame.push_back(0);
     soa.turretFrame.push_back(0);
+    soa.ammo.push_back(0);
     ++soa.mobCount;
 }
 
@@ -75,6 +77,7 @@ void MobsPool::removeMob(const size_t targetIndex) {
         soa.currentRecoil[targetIndex] = std::move(soa.currentRecoil[lastIndex]);
         soa.chassisFrame[targetIndex] = std::move(soa.chassisFrame[lastIndex]);
         soa.turretFrame[targetIndex] = std::move(soa.turretFrame[lastIndex]);
+        soa.ammo[targetIndex] = std::move(soa.ammo[lastIndex]);
     }
 
     soa.position.pop_back();
@@ -94,4 +97,5 @@ void MobsPool::removeMob(const size_t targetIndex) {
     soa.currentRecoil.pop_back();
     soa.chassisFrame.pop_back();
     soa.turretFrame.pop_back();
+    soa.ammo.pop_back();
 }

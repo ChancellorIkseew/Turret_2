@@ -20,6 +20,7 @@ struct MobSoA {
     std::vector<float> currentRecoil;
     std::vector<uint8_t> chassisFrame;
     std::vector<uint8_t> turretFrame;
+    std::vector<uint8_t> ammo;
     size_t mobCount = 0;
 };
 
