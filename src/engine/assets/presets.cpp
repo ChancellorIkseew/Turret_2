@@ -135,6 +135,7 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<float>("recoil"),
         reader.get<AngleRad>("spread_deg") * RAD_TO_DEGREE,
         reader.get<AngleRad>("rotation_speed"),
+        reader.get<uint8_t>("ammo_by_item"),
         static_cast<uint8_t>(barrelsCount),
         barrels,
         reader.getID(shellIDByName, "shell"),

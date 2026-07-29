@@ -1,5 +1,6 @@
 #include "block_map.hpp"
 //
+#include "engine/assets/presets.hpp"
 #include "game/common/teams_pool.hpp"
 
 void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams) {
@@ -37,7 +38,7 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
         TurretBlock* block = static_cast<TurretBlock*>(at(turrets.masterTile[i]).block.get());
         if (block->ammo.count > 0) {
             block->useAmmo();
-            ++turrets.ammo[i];
+            turrets.ammo[i] += presets.getTurret(turrets.preset[i]).ammoByItem;
         }
     }
 }
