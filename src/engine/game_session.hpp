@@ -23,6 +23,7 @@ class GameSession {
     BuiltInScripts builtInScripts;
 
     TimeCount timeCount;
+    std::optional<uint64_t> lastCoreAttack;
     int tickSpeed = 1;
     bool pausedManually, open = true;
     GameMode gameMode;

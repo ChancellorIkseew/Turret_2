@@ -40,6 +40,8 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     world::update(*world, camera, presets, timeMs, playerController, worldSounds, builtInScripts);
     timeCount.update();
     builtInScripts.execute(engine, timeCount);
+    if (world->getBlocks().getMeta().isCoreAttacked())
+        lastCoreAttack = timeCount.getTickCount();
 }
 
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
@@ -67,7 +69,8 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
     if (Settings::gameplay.vingette) {
         renderer.setShaderProgram(*shaders.vignetteShader);
-        const bool coreAttacked = world->getBlocks().getMeta().isCoreAttacked();
+        constexpr uint64_t HOLD_WARNING_TICKS = 60;
+        const bool coreAttacked = lastCoreAttack && (timeCount.getTickCount() - HOLD_WARNING_TICKS < *lastCoreAttack);
         renderer.drawRect(PixelCoord(0.f, 0.f), mainWindow.getSize(), PixelCoord(0.f, 0.f), 0.f, coreAttacked ? cl::RED : 0x00'09'0D'80);
     }
     renderer.setShaderProgram(*shaders.uiShader);
