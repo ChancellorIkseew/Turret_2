@@ -17,9 +17,12 @@ class BlocksMeta {
     std::vector<size_t> markedForRemove;
     std::vector<TileCoord> blocksInProgress;
     std::vector<TileCoord> cores;
+    bool coreAttacked = false;
 public:
     BlocksMeta() : turrets(64) {}
     //
+    bool isCoreAttacked() const { return coreAttacked; }
+    void setCoreAttacked(const bool flag) { coreAttacked = flag; }
     auto& getTurrets() { return turrets; }
     //
     void markForRemove(TileCoord tile) {

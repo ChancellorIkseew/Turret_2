@@ -94,6 +94,7 @@ struct InProgress : Block {
 
 struct CoreBlock : Block {
     Team* team = nullptr;
+    Health preveouseTickHealth = 0;
     //
     t1_derived BlockType getType() const noexcept final { return BlockType::core; }
     //

@@ -41,4 +41,13 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
             turrets.ammo[i] += presets.getTurret(turrets.preset[i]).ammoByItem;
         }
     }
+
+    meta.setCoreAttacked(false);
+    const auto& cores = meta.getCores();
+    for (TileCoord tile : cores) {
+        CoreBlock* coreBlock = static_cast<CoreBlock*>(at(tile).block.get());
+        if (coreBlock->health < coreBlock->preveouseTickHealth)
+            meta.setCoreAttacked(true);
+        coreBlock->preveouseTickHealth = coreBlock->health;
+    }
 }
