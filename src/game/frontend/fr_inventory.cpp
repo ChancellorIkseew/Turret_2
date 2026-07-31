@@ -1,14 +1,11 @@
 #include "frontend.hpp"
 //
 #include <MINGUI/core/utf8.hpp>
-#include <MINGUI/widgets/grid_layout.hpp>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "game/world/world.hpp"
-
-constexpr int ROW_SIZE = 6;
 
 class FrInvSlot : public Node {
     std::u32string count;
@@ -40,16 +37,14 @@ public:
 
 class FrInventory : public Container {
     Engine& engine;
-    GridLayout* grid;
 public:
-    FrInventory(Engine& engine) : Container(Align::center | Align::up, Orientation::vertical),
+    FrInventory(Engine& engine) : Container(Align::center | Align::up, Orientation::horizontal_grid),
         engine(engine) {
-        grid = addNode(new GridLayout(GridType::from_rows, ROW_SIZE));
-        grid->setPalette(transparentPalette);
-
+        setCollRowLimit(6);
+        setPadding(6.f);
         for (const auto& [name, id] : engine.getAssets().getPresets().getItems()) {
             const TextureRect textureRect = engine.getAssets().getAtlas().at(name);
-            grid->addNode(new FrInvSlot(new T1_UITexture(textureRect), id, 0));
+            addNode(new FrInvSlot(new T1_UITexture(textureRect), id, 0));
         }
     }
 
@@ -57,11 +52,9 @@ public:
         const TeamID playerTeamID = engine.getSession().getPlayerController().getPlayerTeamID();
         Team* platerTeam = engine.getSession().getWorld().getTeams().getTeamByID(playerTeamID);
         Inventory& inventory = platerTeam->getInventory();
-        for (const auto& row : grid->getContents()) {
-            for (const auto& it : static_pointer_cast<Layout>(row)->getContents()) {
-                auto slot = static_pointer_cast<FrInvSlot>(it);
-                slot->setItemCount(inventory.resources[slot->getItemID().asUint()]);
-            }
+        for (const auto& node : getContents()) {
+            auto slot = static_pointer_cast<FrInvSlot>(node);
+            slot->setItemCount(inventory.resources[slot->getItemID().asUint()]);
         }
     }
 };

@@ -8,6 +8,7 @@ START_NAMESPACE_MINGUI
 class Layout : public Node {
     float padding = 3.0f;
     float margin = 5.0f;
+    int collRowLimit = 4; // only for grid
     Orientation orientation;
 protected:
     std::vector<std::shared_ptr<Node>> contents;
@@ -28,6 +29,7 @@ public:
     void clear() { contents.clear(); }
     void setMargin(const float margin) { this->margin = margin; }
     void setPadding(const float padding) { this->padding = padding; }
+    void setCollRowLimit(const int limit) { collRowLimit = limit; }
     void setPosition(const Point position) final {
         Node::setPosition(position);
         arrange();
@@ -48,6 +50,7 @@ public:
 private:
     void arrangeVertical();
     void arrangeHorizontal();
+    void arrangeGrid();
 };
 
 END_NAMESPACE_MINGUI

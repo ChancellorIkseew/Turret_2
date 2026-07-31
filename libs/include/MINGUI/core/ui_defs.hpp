@@ -22,12 +22,9 @@ static inline Align operator|(const Align a, const Align b) {
 
 enum class Orientation : uint8_t {
     vertical,
-    horizontal
-};
-
-enum class GridType : uint8_t {
-    from_colls,
-    from_rows
+    horizontal,
+    vertical_grid,
+    horizontal_grid
 };
 
 enum class ButtonState : uint8_t {
