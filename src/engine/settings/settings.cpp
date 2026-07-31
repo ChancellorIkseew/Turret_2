@@ -28,6 +28,7 @@ void Settings::writeSettings() {
     data.emplace(key_val(display.vSyncMode));
     data.emplace(key_val(display.fullscreen));
     //
+    data.emplace(key_val(gameplay.vingette));
     data.emplace(key_val(gameplay.cameraInertia));
     data.emplace(key_val(gameplay.pauseInBackground));
     data.emplace(key_val(gameplay.pauseOnWorldOpen));
@@ -54,6 +55,7 @@ void Settings::readSettings() {
     data.get(key_val(display.vSyncMode), VSyncMode::synchronized);
     data.get(key_val(display.fullscreen), false);
     //
+    data.get(key_val(gameplay.vingette), true);
     data.get(key_val(gameplay.cameraInertia), true);
     data.get(key_val(gameplay.pauseInBackground), false);
     data.get(key_val(gameplay.pauseOnWorldOpen), false);

@@ -19,6 +19,7 @@ class FrGraphics : public Container {
     Form* fps;
     Checkbox* fullscreen;
     Checkbox* inertia;
+    Checkbox* vingette;
     Selector* vSync;
     Button* off;
     Button* synchronized;
@@ -31,11 +32,13 @@ public:
         fps        = clickable->addNode(new Form(Settings::display.fps, new Uint32Validator(15U, 240U), FORM_SIZE));
         fullscreen = clickable->addNode(new Checkbox(Settings::display.fullscreen));
         inertia    = clickable->addNode(new Checkbox(Settings::gameplay.cameraInertia));
+        vingette   = clickable->addNode(new Checkbox(Settings::gameplay.vingette));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
         labels->addNode(new Label("FPS|TPS"));
         labels->addNode(new Label("fullscreen"));
         labels->addNode(new Label("camera inertia"));
+        labels->addNode(new Label("vingette"));
 
         vSync = main->addNode(new Selector(Orientation::vertical));
         vSync->setMargin(2.0f);
@@ -58,6 +61,7 @@ public:
         Settings::display.fps = validator::to<decltype(Settings::display.fps)>(fps->getText()).value_or(60U);
         Settings::display.fullscreen = fullscreen->getValue();
         Settings::gameplay.cameraInertia = inertia->getValue();
+        Settings::gameplay.vingette = vingette->getValue();
         engine.getSession().getCamera().toggleInertia(Settings::gameplay.cameraInertia);
         if (vSync->isTarget(off))
             Settings::display.vSyncMode = VSyncMode::immediate;

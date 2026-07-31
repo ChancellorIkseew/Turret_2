@@ -65,9 +65,11 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     camera.update(mainWindow.getSize(), mainWindow.getRealFrameDelayNs());
     world::draw(*world, renderer, worldDrawer, camera, engine.getAssets(), timeCount.getTickCount(), engine);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
-    renderer.setShaderProgram(*shaders.vignetteShader);
-    const bool coreAttacked = world->getBlocks().getMeta().isCoreAttacked();
-    renderer.drawRect(PixelCoord(0.f, 0.f), mainWindow.getSize(), PixelCoord(0.f, 0.f), 0.f, coreAttacked ? cl::RED : 0x00'09'0D'FF);
+    if (Settings::gameplay.vingette) {
+        renderer.setShaderProgram(*shaders.vignetteShader);
+        const bool coreAttacked = world->getBlocks().getMeta().isCoreAttacked();
+        renderer.drawRect(PixelCoord(0.f, 0.f), mainWindow.getSize(), PixelCoord(0.f, 0.f), 0.f, coreAttacked ? cl::RED : 0x00'09'0D'80);
+    }
     renderer.setShaderProgram(*shaders.uiShader);
     mobs::drawEnemyMarkers(playerController.getPlayerTeamID(), world->getMobs().getSoa(), camera, renderer);
     gui->draw(renderer, engine.getAssets().getAtlas());

@@ -20,6 +20,7 @@ public:
         bool fullscreen;
     } display;
     static struct _Gameplay {
+        bool vingette;
         bool cameraInertia;
         bool pauseInBackground;
         bool pauseOnWorldOpen;
