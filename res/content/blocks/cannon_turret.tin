@@ -1,5 +1,5 @@
 #visual
-texture=big_iron_wall
+texture=big_turret_base
 frame_ticks=0
 frame_height=64
 frame_order=0
