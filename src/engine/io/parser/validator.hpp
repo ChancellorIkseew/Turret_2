@@ -13,11 +13,11 @@ namespace validator {
     template <class Point, class Base>
     std::optional<Point> stringToPoint(std::string_view str);
 
-    std::optional<bool> toBool(const std::string_view str);
+    std::optional<bool> toBool(std::string_view str);
 
     template <class T>
-    inline std::optional<T> to(const std::string& str) {
-        if constexpr (std::is_same_v<T, std::string>) return str;
+    inline std::optional<T> to(std::string_view str) {
+        if constexpr (std::is_same_v<T, std::string>) return std::string(str);
         else if constexpr (std::is_same_v<T, std::u32string>) return mingui::utf8::to_u32string(str);
         else if constexpr (std::is_same_v<T, uint64_t>) return stringToNumber<uint64_t>(str);
         else if constexpr (std::is_same_v<T, uint32_t>) return stringToNumber<uint32_t>(str);
@@ -38,8 +38,8 @@ namespace validator {
     }
 
     template <class T>
-    inline std::optional<T> to(const std::u32string& u32str) {
-        if constexpr (std::is_same_v<T, std::u32string>) return u32str;
-        return to<T>(mingui::utf8::to_string(u32str));
+    inline std::optional<T> to(std::u32string_view u32str) {
+        if constexpr (std::is_same_v<T, std::u32string_view>) return u32str;
+        return to<T>(mingui::utf8::to_string(u32str.data()));
     }
 }

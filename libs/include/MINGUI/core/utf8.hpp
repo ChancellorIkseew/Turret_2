@@ -1,17 +1,15 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <string_view>
 #include <MINGUI/core/config.hpp>
 
 START_NAMESPACE_MINGUI
 
 namespace utf8 {
-    std::string to_string(const std::u32string& u32Str);
+    std::string to_string(std::u32string_view u32Str);
     char32_t to_char32_t(const char* s) noexcept;
-    std::u32string to_u32string(const char* cStr);
-    inline std::u32string to_u32string(const std::string& str) {
-        return to_u32string(str.c_str());
-    }
+    std::u32string to_u32string(std::string_view str);
 
     namespace priv {
         template <typename T>
@@ -24,11 +22,13 @@ namespace utf8 {
             } while (_UVal_trunc != 0);
             return rNext;
         }
+
+        template<class T>
+        concept IntType = std::is_integral_v<T>;
     }
 
-    template<typename T>
+    template<priv::IntType T>
     inline std::u32string to_u32string(const T value) {
-        static_assert(std::is_integral_v<T>, "T must be integral");
         char32_t buffer[21]; // can hold -2^63 and 2^64 - 1, plus NUL
         char32_t* const bufferEnd = std::end(buffer);
         char32_t* rNext = bufferEnd;

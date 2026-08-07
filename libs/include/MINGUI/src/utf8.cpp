@@ -34,11 +34,11 @@ char32_t utf8::to_char32_t(const char* s) noexcept {
     return cp;
 }
 
-std::u32string utf8::to_u32string(const char* cStr) {
+std::u32string utf8::to_u32string(std::string_view str) {
     std::u32string result;
-    if (!cStr) return result;
+    if (str.empty()) return result;
 
-    const char* current = cStr;
+    const char* current = str.data();
     while (*current != '\0') {
         char32_t codePoint = to_char32_t(current);
         if (codePoint == 0) {
@@ -80,7 +80,7 @@ static inline void appendUTF8Char(std::string& result, char32_t cp) {
     }
 }
 
-std::string utf8::to_string(const std::u32string& u32Str) {
+std::string utf8::to_string(std::u32string_view u32Str) {
     std::string result;
     if (u32Str.empty()) return result;
     for (char32_t codePoint : u32Str) {
