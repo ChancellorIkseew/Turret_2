@@ -12,16 +12,15 @@ class MainCanvas {
     std::vector<std::unique_ptr<Container>> overlay;
     Localization localization;
     TextEdit textEdit;
-    Palette palette;
     Point windowSize;
     Point canvasSize;
     bool allwaysWithOverlay = false;
     float scale;
 public:
     template<IsPoint T>
-    MainCanvas(const T windowSize, Localization&& localization, const Palette palette, const float scale) :
-        MainCanvas(Point(windowSize), std::move(localization), palette, scale) {}
-    MainCanvas(const Point windowSize, Localization&& localization, const Palette palette, const float scale);
+    MainCanvas(const T windowSize, Localization&& localization, const float scale) :
+        MainCanvas(Point(windowSize), std::move(localization), scale) {}
+    MainCanvas(const Point windowSize, Localization&& localization, const float scale);
     //
     ///@brief It is safe even there is no overlay.
     void closeLastOverlaped() noexcept;
@@ -31,6 +30,7 @@ public:
     void update(UIContextBridge& contextBridge, const int frameDelayMs);
     void draw(RenderBridge& renderBridge);
     void translate(Localization&& localization);
+    void setPaletteRecursive(const Palette& palette);
     //
     template<IsPoint T>
     void resize(const T windowSize) noexcept { resize(Point(windowSize)); }

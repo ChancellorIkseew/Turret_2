@@ -40,6 +40,6 @@ namespace validator {
     template <class T>
     inline std::optional<T> to(std::u32string_view u32str) {
         if constexpr (std::is_same_v<T, std::u32string_view>) return u32str;
-        return to<T>(mingui::utf8::to_string(u32str.data()));
+        return to<T>(mingui::utf8::to_string(u32str));
     }
 }

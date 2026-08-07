@@ -4,12 +4,12 @@
 
 MINGUI
 
-void Layout::applyPalette() {
-    for (const auto& it : contents) {
-        if (!it->getPalette().isValid())
-            it->setPalette(getPalette());
-        if (Layout* layout = it->asLayout())
-            layout->applyPalette();
+void Layout::setPaletteRecursive(const Palette& palette) {
+    for (const auto& node : contents) {
+        if (Layout* layout = node->asLayout())
+            layout->setPaletteRecursive(palette);
+        else
+            node->setPalette(palette);
     }
 }
 
@@ -24,11 +24,11 @@ void Layout::arrange() {
 void Layout::arrangeVertical() {
     float maxWidth = padding * 2.0f;
     Point position = Point(padding, padding) + getPosition();
-    for (const auto& it : contents) {
-        it->setPosition(position);
-        position.y += margin + it->getSize().y;
-        if (it->getSize().x > maxWidth)
-            maxWidth = it->getSize().x;
+    for (const auto& node : contents) {
+        node->setPosition(position);
+        position.y += margin + node->getSize().y;
+        if (node->getSize().x > maxWidth)
+            maxWidth = node->getSize().x;
     }
     setSize(Point(maxWidth + padding * 2.0f, position.y - getPosition().y - margin + padding));
 }
@@ -36,11 +36,11 @@ void Layout::arrangeVertical() {
 void Layout::arrangeHorizontal() {
     float maxHeight = padding * 2.0f;
     Point position = Point(padding, padding) + getPosition();
-    for (const auto& it : contents) {
-        it->setPosition(position);
-        position.x += margin + it->getSize().x;
-        if (it->getSize().y > maxHeight)
-            maxHeight = it->getSize().y;
+    for (const auto& node : contents) {
+        node->setPosition(position);
+        position.x += margin + node->getSize().x;
+        if (node->getSize().y > maxHeight)
+            maxHeight = node->getSize().y;
     }
     setSize(Point(position.x - getPosition().x - margin + padding, maxHeight + padding * 2.0f));
 }
@@ -84,7 +84,7 @@ void Layout::arrangeGrid() {
 
 void Layout::draw(RenderQueue& queue) {
     Node::draw(queue);
-    for (const auto& it : contents) {
-        it->draw(queue);
+    for (const auto& node : contents) {
+        node->draw(queue);
     }
 }

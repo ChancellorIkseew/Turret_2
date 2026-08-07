@@ -20,10 +20,7 @@ constexpr PixelCoord DEBUD_PANEL_SIZE(220.f, 120.f);
 
 GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
-mainCanvas(mainWindow.getSize(),
-    tin::read(io::folders::LANG / (Settings::gui.lang + ".tin")).release(),
-    mingui::defaultPalette,
-    Settings::gui.scale),
+mainCanvas(mainWindow.getSize(), tin::read(io::folders::LANG / (Settings::gui.lang + ".tin")).release(), Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
 static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, const float guiScale) {

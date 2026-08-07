@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdint>
 #include <MINGUI/core/config.hpp>
-#include <MINGUI/core/palette.hpp>
 
 START_NAMESPACE_MINGUI
 
@@ -33,21 +32,22 @@ enum class ButtonState : uint8_t {
     checked
 };
 
-constexpr Palette defaultPalette{
-    0x5A'6D'75'80, // nonInteractive
-    0x00'09'0D'A0, // idle
-    0x02'2B'3D'A0, // hover
-    0xA3'BC'C6'A0, // checked
-    0xFF'FF'FF'FF  // text
+struct Palette {
+    uint32_t nonInteractive;
+    uint32_t idle;
+    uint32_t hover;
+    uint32_t checked;
+    uint32_t text;
 };
 
-// Not 0x00'00'00'00 becuase of null palette check
-constexpr Palette transparentPalette{
-    0xFF'FF'FF'00, // nonInteractive
-    0xFF'FF'FF'00, // idle
-    0xFF'FF'FF'00, // hover
-    0xFF'FF'FF'00, // checked
-    0xFF'FF'FF'00  // text
+constexpr Palette NULL_PALETTE{ 0, 0, 0, 0, 0 };
+
+constexpr Palette DEFAULT_PALETTE{
+    .nonInteractive = 0x5A'6D'75'80,
+    .idle           = 0x00'09'0D'A0,
+    .hover          = 0x02'2B'3D'A0,
+    .checked        = 0xA3'BC'C6'A0,
+    .text           = 0xFF'FF'FF'FF
 };
 
 END_NAMESPACE_MINGUI

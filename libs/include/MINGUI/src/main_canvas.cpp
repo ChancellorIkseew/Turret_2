@@ -3,8 +3,8 @@
 
 MINGUI
 
-MainCanvas::MainCanvas(const Point windowSize, Localization&& localization, const Palette palette, const float scale) :
-    windowSize(windowSize), localization(std::move(localization)), palette(palette), scale(scale), canvasSize(windowSize / scale) {
+MainCanvas::MainCanvas(const Point windowSize, Localization&& localization, const float scale) :
+    windowSize(windowSize), localization(std::move(localization)), scale(scale), canvasSize(windowSize / scale) {
 }
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
@@ -64,6 +64,11 @@ void MainCanvas::translate(Localization&& localization) {
     relocateContainers(canvasSize);
 }
 
+void MainCanvas::setPaletteRecursive(const Palette& palette) {
+    for (auto& it : mainLayer) it->setPaletteRecursive(palette);
+    for (auto& it : overlay)   it->setPaletteRecursive(palette);
+}
+
 void MainCanvas::closeLastOverlaped() noexcept {
     if (hasOverlay() && (!allwaysWithOverlay || overlay.size() > 1))
         overlay.back()->close();
@@ -72,9 +77,6 @@ void MainCanvas::closeLastOverlaped() noexcept {
 void MainCanvas::refreshContainer(Container& container) const {
     if (!container.isDirty())
         return;
-    if (!container.getPalette().isValid())
-        container.setPalette(palette);
-    container.applyPalette();
     container.arrange();
     container.translate(localization);
     container.applyAlignment(canvasSize);

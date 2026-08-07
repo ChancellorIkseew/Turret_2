@@ -23,7 +23,7 @@ public:
         emplaceNode(node);
         return node;
     }
-    void applyPalette();
+    void setPaletteRecursive(const Palette& palette);
     virtual void arrange();
     void draw(RenderQueue& queue) override;
     void clear() { contents.clear(); }

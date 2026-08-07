@@ -1,6 +1,5 @@
 #pragma once
 #include <type_traits>
-#include <MINGUI/core/palette.hpp>
 #include <MINGUI/core/ui_context.hpp>
 #include <MINGUI/core/ui_defs.hpp>
 
@@ -13,7 +12,7 @@ class Layout;
 class AbstractButton;
 
 class Node {
-    Palette palette = NULL_PALETTE;
+    Palette palette = DEFAULT_PALETTE;
     Point size, position;
 public:
     Node(const Point size, const Point position) : size(size), position(position) { }
