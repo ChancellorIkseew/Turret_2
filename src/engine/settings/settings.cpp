@@ -3,9 +3,11 @@
 #include "engine/debug/logger.hpp"
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
+#include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/util/platform/platform.hpp"
 #include "engine/window/window.hpp"
+#include "localization.hpp"
 
 Settings::_Audio Settings::audio;
 Settings::_Display Settings::display;
@@ -88,7 +90,7 @@ void Settings::applySettings(Engine& engine) {
     // "cameraInertia" imlemented in game_session.cpp and fr_graphics.cpp
     // "pauseOnWorldOpen" implemented in engine.cpp
     // "showDebugInfo" implemented local in .cpp files
-    // "lang" implemented in gui and main_canvas
+    Localization::load(tin::read(io::folders::LANG / (gui.lang + ".tin")).release());
     // "guiScale" implemented in gui.cpp and fr_gui.cpp
     engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     util::platform::Console::setVisible(Settings::gui.showConsole);

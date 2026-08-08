@@ -5,7 +5,10 @@
 
 class MenuGUI : public GUI {
 public:
-    MenuGUI(Engine& engine) : GUI(engine) {
+    MenuGUI(Engine& engine) : GUI(engine) { init(engine); }
+
+    void init(Engine& engine) final {
+        mainCanvas.closeAll();
         mainCanvas.addToOverlay(frontend::initMainMenu(engine));
         mainCanvas.setAllwaysWithOverlay(true);
     }

@@ -16,11 +16,12 @@ void MainCanvas::addToOverlay(std::unique_ptr<Container> container) {
 void MainCanvas::update(UIContextBridge& contextBridge, const int frameDelayMs) {
     textEdit.update(frameDelayMs);
     UIContext context(contextBridge, textEdit, scale);
-    if (!overlay.empty()) {
+    
+    std::erase_if(mainLayer, [](auto& it) {return !it->isOpen();});
+    std::erase_if(overlay,   [](auto& it) {return !it->isOpen();});
+
+    if (!overlay.empty())
         overlay.back()->callback(context);
-        if (!overlay.back()->isOpen())
-            overlay.pop_back();
-    }
     else { // (overlay.empty)
         for (const auto& it : mainLayer) {
             it->callback(context);
@@ -64,6 +65,10 @@ void MainCanvas::setPaletteRecursive(const Palette& palette) {
 void MainCanvas::closeLastOverlaped() noexcept {
     if (hasOverlay() && (!allwaysWithOverlay || overlay.size() > 1))
         overlay.back()->close();
+}
+void MainCanvas::closeAll() noexcept {
+    for (auto& it : mainLayer) it->close();
+    for (auto& it : overlay)   it->close();
 }
 
 void MainCanvas::refreshContainer(Container& container) const {

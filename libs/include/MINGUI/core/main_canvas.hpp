@@ -23,6 +23,7 @@ public:
     void closeLastOverlaped() noexcept;
     void addToMainLayer(std::unique_ptr<Container> container);
     void addToOverlay(std::unique_ptr<Container> container);
+    void closeAll() noexcept;
     //
     void update(UIContextBridge& contextBridge, const int frameDelayMs);
     void draw(RenderBridge& renderBridge);

@@ -57,11 +57,6 @@ void GUI::draw(Renderer& renderer, const Atlas& atlas) {
     }
 }
 
-void GUI::translate(const std::string& lang) {
-    tin::Data translation = tin::read(io::folders::LANG / (lang + ".tin"));
-    //mainCanvas.translate(translation.release());
-}
-
 void GUI::callback() {
     acceptHotkeys();
     if (!showGUI)

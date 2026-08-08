@@ -12,13 +12,14 @@ constexpr Point BACK_BTN_SIZE(116.0f, 30.0f);
 
 static void changeLang(Engine& engine, const std::string& lang) {
     Settings::gui.lang = lang;
+    Settings::applySettings(engine);
     Settings::writeSettings();
-    engine.getGUI().translate(lang);
+    engine.getGUI().init(engine);
 }
 
 std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
     auto languages = std::make_unique<Container>(Align::center, Orientation::vertical);
-    auto back = languages->addNode(new Button(BACK_BTN_SIZE, "Back"));
+    auto back = languages->addNode(new Button(BACK_BTN_SIZE, tr("Back")));
     back->addCallback([container = languages.get()] { container->close(); });
     auto selector = languages->addNode(new Selector(Orientation::vertical));
 

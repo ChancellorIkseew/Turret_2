@@ -17,10 +17,10 @@ protected:
 public:
     GUI(Engine& engine);
     virtual ~GUI() = default;
+    virtual void init(Engine& engine) = 0;
 
     void draw(Renderer& renderer, const Atlas& atlas);
     virtual void drawDiegeticElements(Renderer& renderer) = 0;
-    void translate(const std::string& lang);
     virtual void callback();
     void addToOverlay(std::unique_ptr<mingui::Container> container);
     bool overlapsWorld() const { return mainCanvas.hasOverlay(); }

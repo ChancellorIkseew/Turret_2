@@ -8,7 +8,10 @@
 class EditorGUI : public GUI {
     std::shared_ptr<BuildTools> buildTools;
 public:
-    EditorGUI(Engine& engine) : GUI(engine) {
+    EditorGUI(Engine& engine) : GUI(engine) { init(engine); }
+
+    void init(Engine& engine) {
+        mainCanvas.closeAll();
         buildTools = std::make_unique<EditorBuildTools>();
         mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
     }

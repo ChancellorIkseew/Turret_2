@@ -10,7 +10,10 @@
 class GameplayGUI : public GUI {
     std::shared_ptr<BuildTools> buildTools;
 public:
-    GameplayGUI(Engine& engine) : GUI(engine) {
+    GameplayGUI(Engine& engine) : GUI(engine) { init(engine); }
+
+    void init(Engine& engine) final {
+        mainCanvas.closeAll();
         buildTools = std::make_unique<GameplayBuildTools>();
         mainCanvas.addToMainLayer(frontend::initTimer(engine));
         mainCanvas.addToMainLayer(frontend::initHint(engine));
