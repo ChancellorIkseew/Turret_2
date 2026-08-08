@@ -13,8 +13,7 @@ class Node {
     Palette palette = DEFAULT_PALETTE;
     Point size, position;
 public:
-    Node(const Point size, const Point position) : size(size), position(position) { }
-    Node(const Point size)                       : size(size) { }
+    Node(const Point size) : size(size) { }
     Node() = default;
     virtual ~Node() = default;
     //

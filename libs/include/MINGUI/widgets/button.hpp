@@ -8,7 +8,7 @@ class Button : public AbstractButton {
     Label label;
 public:
     Button(const Point size, const std::string& name)
-        : AbstractButton(size), label(name) { }
+        : AbstractButton(size), label(name) { centerText(); }
     ~Button() final = default;
     //
     void draw(RenderQueue& queue) final;
