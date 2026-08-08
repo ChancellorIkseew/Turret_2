@@ -78,8 +78,8 @@ void GUI::acceptHotkeys() {
     if (input.jactive(Hide_GUI))
         showGUI = !showGUI;
     if (input.jactive(Screenshot)) {
-        const std::string timeMs = std::to_string(util::time::getLocalTimeMilliseconds());
-        mainWindow.takeScreenshot(io::folders::SCREENSHOTS / ("img" + timeMs + ".png"));
+        const uint64_t timeMs = util::time::getLocalTimeMilliseconds();
+        mainWindow.takeScreenshot(io::folders::SCREENSHOTS / std::format("img{}.png", timeMs));
     }
     if (input.jactive(Show_FPS)) {
         Settings::gui.showFPS = !Settings::gui.showFPS;
