@@ -25,7 +25,7 @@ std::unique_ptr<Container> frontend::initLanguages(Engine& engine) {
     auto contents = io::folders::getContents(io::folders::LANG, io::folders::ContentsType::file);
     for (const auto& file : contents) {
         std::string lang = io::folders::trimExtensions(file);
-        auto btn = selector->addNode(new Button(LANG_BTN_SIZE, lang, false));
+        auto btn = selector->addNode(new Button(LANG_BTN_SIZE, lang));
         btn->addCallback([&, lang] { changeLang(engine, lang); });
         if (lang == Settings::gui.lang)
             selector->setTarget(btn);

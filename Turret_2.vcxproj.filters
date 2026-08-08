@@ -270,9 +270,6 @@
     <ClInclude Include="libs\include\MINGUI\core\utf8.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="libs\include\MINGUI\core\localization.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="libs\include\MINGUI\widgets\icon.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -412,6 +409,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\common\inventory.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\settings\localization.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -30,16 +30,16 @@ public:
         muteInBakcgroung = clickable->addNode(new Checkbox(Settings::audio.muteInBackground));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->addNode(new Label("master"));
-        labels->addNode(new Label("world"));
-        labels->addNode(new Label("ui"));
-        labels->addNode(new Label("music"));
-        labels->addNode(new Label("toggle sound"));
-        labels->addNode(new Label("mute in background"));
+        labels->addNode(new Label(tr("master")));
+        labels->addNode(new Label(tr("world")));
+        labels->addNode(new Label(tr("ui")));
+        labels->addNode(new Label(tr("music")));
+        labels->addNode(new Label(tr("toggle sound")));
+        labels->addNode(new Label(tr("mute in background")));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, "Apply"))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(engine); });
     }
 
     void applySettings(Engine& engine) {

@@ -20,7 +20,7 @@ constexpr PixelCoord DEBUD_PANEL_SIZE(220.f, 120.f);
 
 GUI::GUI(Engine& engine) : engine(engine),
 mainWindow(engine.getMainWindow()),
-mainCanvas(mainWindow.getSize(), tin::read(io::folders::LANG / (Settings::gui.lang + ".tin")).release(), Settings::gui.scale),
+mainCanvas(mainWindow.getSize(), Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
 static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, const float guiScale) {
@@ -59,7 +59,7 @@ void GUI::draw(Renderer& renderer, const Atlas& atlas) {
 
 void GUI::translate(const std::string& lang) {
     tin::Data translation = tin::read(io::folders::LANG / (lang + ".tin"));
-    mainCanvas.translate(translation.release());
+    //mainCanvas.translate(translation.release());
 }
 
 void GUI::callback() {

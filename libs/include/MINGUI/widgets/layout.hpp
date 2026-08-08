@@ -34,11 +34,6 @@ public:
         Node::setPosition(position);
         arrange();
     }
-    void translate(const Localization& localization) final {
-        for (auto& it : contents) {
-            it->translate(localization);
-        }
-    }
     void callback(UIContext& context) override {
         for (auto& it : contents) {
             it->callback(context);

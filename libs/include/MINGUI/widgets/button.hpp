@@ -7,12 +7,11 @@ START_NAMESPACE_MINGUI
 class Button : public AbstractButton {
     Label label;
 public:
-    Button(const Point size, const std::string& name, const bool translateble = true)
-        : AbstractButton(size), label(name, translateble) { }
+    Button(const Point size, const std::string& name)
+        : AbstractButton(size), label(name) { }
     ~Button() final = default;
     //
     void draw(RenderQueue& queue) final;
-    void translate(const Localization& localization) final;
     void setPosition(const Point position) final;
     void setText(const std::string& name);
 private:

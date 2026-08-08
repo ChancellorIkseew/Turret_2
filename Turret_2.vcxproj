@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\include\MINGUI\core\form_validator.hpp" />
-    <ClInclude Include="libs\include\MINGUI\core\localization.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\point.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\text_edit.hpp" />
     <ClInclude Include="libs\include\MINGUI\core\ui_context_bridge.hpp" />
@@ -90,6 +89,7 @@
     <ClInclude Include="src\engine\render\render_geometry.hpp" />
     <ClInclude Include="src\engine\scripting\scripting.hpp" />
     <ClInclude Include="src\engine\settings\settings.hpp" />
+    <ClInclude Include="src\engine\settings\localization.hpp" />
     <ClInclude Include="src\engine\time_count.hpp" />
     <ClInclude Include="src\engine\util\fast_rand.hpp" />
     <ClInclude Include="src\engine\util\platform\platform.hpp" />

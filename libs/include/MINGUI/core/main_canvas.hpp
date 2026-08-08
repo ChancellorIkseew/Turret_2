@@ -1,5 +1,4 @@
 #pragma once
-#include <MINGUI/core/localization.hpp>
 #include <MINGUI/core/text_edit.hpp>
 #include <MINGUI/render/render_queue.hpp>
 #include <MINGUI/widgets/container.hpp>
@@ -10,7 +9,6 @@ class MainCanvas {
     RenderQueue renderQueue;
     std::vector<std::unique_ptr<Container>> mainLayer;
     std::vector<std::unique_ptr<Container>> overlay;
-    Localization localization;
     TextEdit textEdit;
     Point windowSize;
     Point canvasSize;
@@ -18,9 +16,8 @@ class MainCanvas {
     float scale;
 public:
     template<IsPoint T>
-    MainCanvas(const T windowSize, Localization&& localization, const float scale) :
-        MainCanvas(Point(windowSize), std::move(localization), scale) {}
-    MainCanvas(const Point windowSize, Localization&& localization, const float scale);
+    MainCanvas(const T windowSize, const float scale) : MainCanvas(Point(windowSize), scale) {}
+    MainCanvas(const Point windowSize, const float scale);
     //
     ///@brief It is safe even there is no overlay.
     void closeLastOverlaped() noexcept;
@@ -29,7 +26,6 @@ public:
     //
     void update(UIContextBridge& contextBridge, const int frameDelayMs);
     void draw(RenderBridge& renderBridge);
-    void translate(Localization&& localization);
     void setPaletteRecursive(const Palette& palette);
     //
     template<IsPoint T>

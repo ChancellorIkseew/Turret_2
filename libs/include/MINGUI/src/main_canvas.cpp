@@ -3,9 +3,8 @@
 
 MINGUI
 
-MainCanvas::MainCanvas(const Point windowSize, Localization&& localization, const float scale) :
-    windowSize(windowSize), localization(std::move(localization)), scale(scale), canvasSize(windowSize / scale) {
-}
+MainCanvas::MainCanvas(const Point windowSize, const float scale) :
+    windowSize(windowSize), scale(scale), canvasSize(windowSize / scale) {}
 
 void MainCanvas::addToMainLayer(std::unique_ptr<Container> container) {
     mainLayer.push_back(std::move(container));
@@ -57,13 +56,6 @@ bool MainCanvas::ownsMouse(const Point mousePosition) const noexcept {
     return false;
 }
 
-void MainCanvas::translate(Localization&& localization) {
-    this->localization = std::move(localization);
-    for (auto& it : mainLayer) it->translate(this->localization);
-    for (auto& it : overlay)   it->translate(this->localization);
-    relocateContainers(canvasSize);
-}
-
 void MainCanvas::setPaletteRecursive(const Palette& palette) {
     for (auto& it : mainLayer) it->setPaletteRecursive(palette);
     for (auto& it : overlay)   it->setPaletteRecursive(palette);
@@ -78,7 +70,6 @@ void MainCanvas::refreshContainer(Container& container) const {
     if (!container.isDirty())
         return;
     container.arrange();
-    container.translate(localization);
     container.applyAlignment(canvasSize);
     container.applyAlignment(canvasSize); // temporary. needs bugfix
     container.markDirty(false);

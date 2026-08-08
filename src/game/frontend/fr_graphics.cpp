@@ -36,16 +36,16 @@ public:
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
         labels->addNode(new Label("FPS|TPS"));
-        labels->addNode(new Label("fullscreen"));
-        labels->addNode(new Label("camera inertia"));
-        labels->addNode(new Label("vingette"));
+        labels->addNode(new Label(tr("fullscreen")));
+        labels->addNode(new Label(tr("camera inertia")));
+        labels->addNode(new Label(tr("vingette")));
 
         vSync = main->addNode(new Selector(Orientation::vertical));
         vSync->setMargin(2.0f);
-        vSync->addNode(new Label("V-Sync mode"));
-        off          = vSync->addNode(new Button(S_BTN_SIZE, "off"));
-        synchronized = vSync->addNode(new Button(S_BTN_SIZE, "synchronized"));
-        adaptive     = vSync->addNode(new Button(S_BTN_SIZE, "adaptive"));
+        vSync->addNode(new Label(tr("V-Sync mode")));
+        off          = vSync->addNode(new Button(S_BTN_SIZE, tr("off")));
+        synchronized = vSync->addNode(new Button(S_BTN_SIZE, tr("synchronized")));
+        adaptive     = vSync->addNode(new Button(S_BTN_SIZE, tr("adaptive")));
         switch (Settings::display.vSyncMode) {
         case VSyncMode::immediate:    vSync->setTarget(off);          break;
         case VSyncMode::synchronized: vSync->setTarget(synchronized); break;
@@ -53,8 +53,8 @@ public:
         }
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, "Apply"))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(engine); });
     }
 
     void applySettings(Engine& engine) {

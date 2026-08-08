@@ -12,7 +12,7 @@ void FrSaves::update() {
     clear();
     auto contents = io::folders::getContents(io::folders::SAVES, io::folders::ContentsType::folder);
     for (const auto& it : contents) {
-        auto btn = addNode(new Button(BTN_SIZE, it, false));
+        auto btn = addNode(new Button(BTN_SIZE, it));
         btn->addCallback([&, it] { targetFolder = it; });
     }
 }

@@ -30,8 +30,8 @@ public:
         icons->setMargin(8.0f);
         icons->setPadding(8.0f);
 
-        frequency->addNode(new Label("Frequency"));
-        deposite ->addNode(new Label("Deposite"));
+        frequency->addNode(new Label(tr("Frequency")));
+        deposite ->addNode(new Label(tr("Deposite")));
         icons    ->addNode(new Icon(ICON_SIZE, nullptr));
 
         for (const auto& [id, f, d] : overlayPresets) {
@@ -68,9 +68,9 @@ public:
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->addNode(new Label("Seed"));
-        labels->addNode(new Label("Width"));
-        labels->addNode(new Label("Height"));
+        labels->addNode(new Label(tr("Seed")));
+        labels->addNode(new Label(tr("Width")));
+        labels->addNode(new Label(tr("Height")));
 
         auto forms = main->addNode(new Layout(Orientation::vertical));
         seed   = forms->addNode(new Form(0U, new Uint64Validator(0U, MAX_SEED)));
@@ -80,8 +80,8 @@ public:
         oProps = main->addNode(new OProps(engine.getAssets().getAtlas()));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, "Apply"))->addCallback([&] { createWorld(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { createWorld(engine); });
     }
 private:
     void createWorld(Engine& engine) {

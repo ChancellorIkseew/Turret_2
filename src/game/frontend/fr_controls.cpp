@@ -26,12 +26,12 @@ public:
             if (!binding.changable)
                 continue;
             bindNames->addNode(new Label(bindName));
-            auto btn = bindings->addNode(new Button(BTN_SIZE, '[' + Controls::getKeyName(bindName) + ']', false));
+            auto btn = bindings->addNode(new Button(BTN_SIZE, '[' + Controls::getKeyName(bindName) + ']'));
             btn->addCallback([=, this] { targetBinding(btn, bindName); });
         }
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); Controls::writeBindings(); });
+        lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); Controls::writeBindings(); });
     }
 
     void targetBinding(Button* btn, const std::string& bindName) {

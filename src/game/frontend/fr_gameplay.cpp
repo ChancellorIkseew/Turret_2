@@ -19,12 +19,12 @@ public:
         pauseOnWorldOpen  = clickable->addNode(new Checkbox(Settings::gameplay.pauseOnWorldOpen));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->addNode(new Label("pause in background"));
-        labels->addNode(new Label("pause on world open"));
+        labels->addNode(new Label(tr("pause in background")));
+        labels->addNode(new Label(tr("pause on world open")));
 
         auto lower = addNode(new Layout(Orientation::horizontal));
-        lower->addNode(new Button(BTN_SIZE, "Back"))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, "Apply"))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(engine); });
     }
 
     void applySettings(Engine& engine) {

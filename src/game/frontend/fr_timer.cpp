@@ -25,9 +25,9 @@ static int countEnemies(GameSession& session) {
 
 class FrTimer : public Container {
     Engine& engine;
-    Label* currentWave;
-    Label* timeToWave;
-    Label* enemiesCount;
+    Label* wave;
+    Label* startsIn;
+    Label* enemiesRemaining;
     Selector* playback;
     IconButton* pause;
     IconButton* x1;
@@ -35,7 +35,7 @@ class FrTimer : public Container {
     IconButton* x4;
 public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
-        addNode(new Button(BTN_SIZE, "start wave"))->addCallback([&] { engine.getSession().startNewWave(); });
+        addNode(new Button(BTN_SIZE, tr("start wave")))->addCallback([&] { engine.getSession().startNewWave(); });
 
         playback = addNode(new Selector(Orientation::horizontal));
         playback->setPadding(1.0f);
@@ -49,17 +49,9 @@ public:
         x2   ->addCallback([&] { setTickSpeed(2); });
         x4   ->addCallback([&] { setTickSpeed(4); });
 
-        auto wave = addNode(new Layout(Orientation::horizontal));
-        wave->addNode(new Label("wave :"));
-        currentWave = wave->addNode(new Label("", false));
-
-        auto waveIn = addNode(new Layout(Orientation::horizontal));
-        waveIn->addNode(new Label("starts in :"));
-        timeToWave = waveIn->addNode(new Label("", false));
-
-        auto enemiesRemaining = addNode(new Layout(Orientation::horizontal));
-        enemiesRemaining->addNode(new Label("enemies remaining :"));
-        enemiesCount = enemiesRemaining->addNode(new Label("", false));
+        wave             = addNode(new Label(tr("wave")));
+        startsIn         = addNode(new Label(tr("starts in")));
+        enemiesRemaining = addNode(new Label(tr("enemies remaining")));
     }
 private:
     void callback(UIContext& context) final {
@@ -67,9 +59,9 @@ private:
         constexpr uint64_t DEFAULT_FPS_TPS = 60;
         const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
         const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
-        currentWave->setText(std::format("{}",waveCount));
-        timeToWave->setText(util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS));
-        enemiesCount->setText(std::format("{}", countEnemies(engine.getSession())));
+        wave->setText(tr("wave {}", waveCount));
+        startsIn->setText(tr("starts in {}", util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS)));
+        enemiesRemaining->setText(tr("enemies remaining {}", countEnemies(engine.getSession())));
         updatePlayback();
         markDirty();
     }

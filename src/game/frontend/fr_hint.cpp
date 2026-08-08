@@ -45,8 +45,8 @@ public:
             trimedName = util::removePrefix(floorName, "floor_");
             icon->setTexture(new T1_UITexture(assets.getAtlas().at(floorName)));
         }
-        label->setText(trimedName);
-        position->setText("X: " + std::to_string(targetTile.x) + " Y: " + std::to_string(targetTile.y));
+        label->setText(tr(trimedName));
+        position->setText(std::format("X:{} Y:{}", targetTile.x, targetTile.y));
         markDirty();
     }
 };

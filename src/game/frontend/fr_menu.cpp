@@ -9,10 +9,10 @@ constexpr Point BTN_SIZE(200.0f, 50.0f);
 std::unique_ptr<Container> frontend::initMenu(Engine& engine) {
     auto menu = std::make_unique<Container>(Align::center, Orientation::vertical);
 
-    auto back     = menu->addNode(new Button(BTN_SIZE, "Back"));
-    auto save     = menu->addNode(new Button(BTN_SIZE, "Save"));
-    auto settings = menu->addNode(new Button(BTN_SIZE, "Settings"));
-    auto exit     = menu->addNode(new Button(BTN_SIZE, "Exit to menu"));
+    auto back     = menu->addNode(new Button(BTN_SIZE, tr("Back")));
+    auto save     = menu->addNode(new Button(BTN_SIZE, tr("Save")));
+    auto settings = menu->addNode(new Button(BTN_SIZE, tr("Settings")));
+    auto exit     = menu->addNode(new Button(BTN_SIZE, tr("Exit to menu")));
 
     back    ->addCallback([container = menu.get()] { container->close(); });
     save    ->addCallback([&] { engine.getGUI().addToOverlay(frontend::initWorldSaving(engine)); });
