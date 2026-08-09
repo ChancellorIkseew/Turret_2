@@ -28,4 +28,9 @@ namespace frontend {
     std::unique_ptr<Container> initGraphics(Engine& engine);
     std::unique_ptr<Container> initAudio(Engine& engine);
     std::unique_ptr<Container> initGUI(Engine& engine);
+
+    inline void useLabelsSpacing(Layout* layout) {
+        layout->setMargin(9.f);
+        layout->setPadding(5.f);
+    }
 }

@@ -21,6 +21,7 @@ public:
 
         auto bindNames = main->addNode(new Layout(Orientation::vertical));
         bindings       = main->addNode(new Selector(Orientation::vertical));
+        frontend::useLabelsSpacing(bindNames);
 
         for (const auto& [bindName, binding] : Controls::getBindings()) {
             if (!binding.changable)

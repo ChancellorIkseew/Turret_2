@@ -26,6 +26,7 @@ public:
         showConsole  = clickable->addNode(new Checkbox(Settings::gui.showConsole));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
+        frontend::useLabelsSpacing(labels);
         labels->addNode(new Label(tr("GUI scale")));
         labels->addNode(new Label(tr("custom cursor")));
         labels->addNode(new Label(tr("show console")));

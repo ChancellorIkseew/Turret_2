@@ -68,8 +68,7 @@ public:
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
-        labels->setMargin(9.f);
-        labels->setPadding(5.f);
+        frontend::useLabelsSpacing(labels);
         labels->addNode(new Label(tr("Seed")));
         labels->addNode(new Label(tr("Width")));
         labels->addNode(new Label(tr("Height")));

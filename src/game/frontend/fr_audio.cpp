@@ -30,6 +30,7 @@ public:
         muteInBakcgroung = clickable->addNode(new Checkbox(Settings::audio.muteInBackground));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
+        frontend::useLabelsSpacing(labels);
         labels->addNode(new Label(tr("master")));
         labels->addNode(new Label(tr("world")));
         labels->addNode(new Label(tr("ui")));
