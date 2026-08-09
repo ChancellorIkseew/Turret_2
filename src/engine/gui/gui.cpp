@@ -27,9 +27,9 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, con
     PixelCoord position = PixelCoord(mainWindow.getSize().x / guiScale - DEBUD_PANEL_SIZE.x , 0.f);
     renderer.drawRect(position, DEBUD_PANEL_SIZE, PixelCoord(0, 0), 0.f, BLACK);
     position += PixelCoord(20.f, 20.f);
-    text::drawString(renderer, U"FPS|TPS: " + mingui::utf8::to_u32string(NS_PER_SECOND / std::max<uint64_t>(mainWindow.getRealFrameDelayNs(), 1)), position, WHITE);
+    text::drawString(renderer, std::format("FPS|TPS: {}", NS_PER_SECOND / std::max<uint64_t>(mainWindow.getRealFrameDelayNs(), 1)), position, WHITE);
     position.y += 20.f;
-    text::drawString(renderer, U"Frame|tick time MS: " + mingui::utf8::to_u32string(mainWindow.getRealFrameDelayMs()), position, WHITE);
+    text::drawString(renderer, std::format("Frame|tick time MS: {}", mainWindow.getRealFrameDelayMs()), position, WHITE);
     static uint64_t updateTimer = 1001;
     static plt::MemoryUsage memUsage = plt::MemoryUsage(0, 0);
     updateTimer += mainWindow.getRealFrameDelayMs();
@@ -38,9 +38,9 @@ static void drawDebugPanel(Renderer& renderer, const MainWindow& mainWindow, con
         memUsage = plt::getMemoryUsage();
     }
     position.y += 20.f;
-    text::drawString(renderer, U"Mem reserved MB: " + mingui::utf8::to_u32string(memUsage.reservedMB), position, WHITE);
+    text::drawString(renderer, std::format("Mem reserved MB: {}",memUsage.reservedMB), position, WHITE);
     position.y += 20.f;
-    text::drawString(renderer, U"Mem used MB    : " + mingui::utf8::to_u32string(memUsage.usedMB), position, WHITE);
+    text::drawString(renderer, std::format("Mem used MB    : {}", memUsage.usedMB), position, WHITE);
 }
 
 void GUI::draw(Renderer& renderer, const Atlas& atlas) {

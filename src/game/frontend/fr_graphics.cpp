@@ -10,10 +10,10 @@
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
 
-constexpr Point BTN_SIZE(120.0f, 30.0f);
-constexpr Point S_BTN_SIZE(150.0f, 20.0f);
-constexpr Point FORM_SIZE(28.0f, 20.0f);
-constexpr Point BIG_FORM_SIZE(52.0f, 20.0f);
+constexpr Point BTN_SIZE(120, 30);
+constexpr Point S_BTN_SIZE(150, 20);
+constexpr Point FORM_SIZE(28, 20);
+constexpr Point BIG_FORM_SIZE(52, 20);
 
 class FrGraphics : public Container {
     Form* fps;

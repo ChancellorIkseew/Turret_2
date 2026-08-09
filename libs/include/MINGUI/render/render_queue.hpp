@@ -15,7 +15,7 @@ public:
     void add(const Point position, const Point size, const uint32_t color) {
         mainLayer.emplace_back(position, size, color);
     }
-    void add(const Point position, const Point glyphSize, const std::u32string_view string, const uint32_t color) {
+    void add(const Point position, const Point glyphSize, const std::string_view string, const uint32_t color) {
         mainLayerTexts.emplace_back(position, glyphSize, string, color);
     }
     void add(const Point position, const Point size, TextureBridge* textureBridge) {

@@ -3,7 +3,7 @@
 #include "MINGUI/widgets/button.hpp"
 #include "layouts/l_saves.hpp"
 
-constexpr Point BTN_SIZE(120.0f, 30.0f);
+constexpr Point BTN_SIZE(120, 30);
 
 class FrWorldLoading : public Container{
     FrSaves* saves = nullptr;

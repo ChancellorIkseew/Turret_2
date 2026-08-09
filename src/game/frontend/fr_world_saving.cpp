@@ -4,7 +4,7 @@
 #include "MINGUI/widgets/form.hpp"
 #include "layouts/l_saves.hpp"
 
-constexpr Point BTN_SIZE(120.0f, 30.0f);
+constexpr Point BTN_SIZE(120, 30);
 
 class FrWorldSaving : public Container {
     FrSaves* saves = nullptr;
@@ -20,7 +20,7 @@ public:
     }
 private:
     void saveWorld(Engine& engine) {
-        saves->saveWorld(engine, utf8::to_string(worldName->getText()));
+        saves->saveWorld(engine, worldName->getText());
         markDirty();
     }
 };

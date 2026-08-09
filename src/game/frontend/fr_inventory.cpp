@@ -8,17 +8,17 @@
 #include "game/world/world.hpp"
 
 class FrInvSlot : public Node {
-    std::u32string count;
+    std::string count;
     std::unique_ptr<TextureBridge> item;
     ItemPresetID itemID;
 public:
     FrInvSlot(TextureBridge* item, const ItemPresetID itemID, const uint32_t count) :
-        item(item), itemID(itemID), count(formatCount(count)) { setSize(Point(48.f, 16.f)); }
+        item(item), itemID(itemID), count(formatCount(count)) { setSize(Point(48, 16)); }
     void callback(UIContext& context) final {/*empty*/}
     void draw(RenderQueue& queue) final {
         constexpr Point GLYPH_SIZE = Point(8, 16);
-        constexpr Point ICON_SIZE = Point(16.f, 16.f);
-        constexpr Point OFFSET = Point(16.f, 0.f);
+        constexpr Point ICON_SIZE = Point(16, 16);
+        constexpr Point OFFSET = Point(16, 0);
         queue.add(getPosition(), ICON_SIZE, item.get());
         queue.add(getPosition() + OFFSET, GLYPH_SIZE, count, 0xFF'FF'FF'FF);
     }
@@ -27,12 +27,12 @@ public:
     void setItemCount(const uint64_t value) {
         count = formatCount(value);
     }
-    static std::u32string formatCount(const uint64_t value) {
+    static std::string formatCount(const uint64_t value) {
         if (value < 1000)
-            return utf8::to_u32string(std::format("{}", value));
+            return std::format("{}", value);
         if (value < 1'000'000)
-            return utf8::to_u32string(std::format("{}K", value / 1000));
-        return utf8::to_u32string(std::format("{}M", value / 1'000'000));
+            return std::format("{}K", value / 1000);
+        return std::format("{}M", value / 1'000'000);
     }
 };
 

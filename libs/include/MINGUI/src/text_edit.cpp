@@ -13,7 +13,7 @@ void TextEdit::update(const int frameDelayMs) {
         inputTimer -= frameDelayMs;
 }
 
-void TextEdit::moveCarriageToCursor(const UIContext& context, const std::u32string& text,
+void TextEdit::moveCarriageToCursor(const UIContext& context, const std::string& text,
     const Point nodePosition, const float glyphWidth) {
     const auto positionInForm = context.getMousePosition() - nodePosition;
     carPos = static_cast<size_t>(positionInForm.x / glyphWidth);
@@ -21,7 +21,7 @@ void TextEdit::moveCarriageToCursor(const UIContext& context, const std::u32stri
         carPos = text.length();
 }
 
-static void editForm(const UIContext& context, std::u32string& text, const Point size,
+static void editForm(const UIContext& context, std::string& text, const Point size,
     const std::unique_ptr<mingui::Validator>& validator, size_t& carPos, int& inputTimer, const float glyphWidth) {
     const TextInput input = context.getTextInput();
     //
@@ -52,7 +52,7 @@ static void editForm(const UIContext& context, std::u32string& text, const Point
     }
 }
 
-void TextEdit::edit(const UIContext& context, std::u32string& text, const Point nodeSize,
+void TextEdit::edit(const UIContext& context, std::string& text, const Point nodeSize,
     const Point nodePosition, const float glyphWidth, const std::unique_ptr<mingui::Validator>& validator) {
     editingActive = true;
     if (context.getMouseClicked())

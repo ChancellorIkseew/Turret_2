@@ -5,7 +5,7 @@
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 
-constexpr Point BTN_SIZE(200.0f, 50.0f);
+constexpr Point BTN_SIZE(200, 50);
 
 std::unique_ptr<Container> frontend::initSettings(Engine& engine) {
     auto settings = std::make_unique<Container>(Align::center, Orientation::vertical);

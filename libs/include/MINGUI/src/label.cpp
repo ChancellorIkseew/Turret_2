@@ -5,14 +5,11 @@
 MINGUI
 
 void Label::draw(RenderQueue& queue) {
-    queue.add(getPosition(), glyphSize, visibleText, getPalette().text);
-}
-
-void Label::resizeByText(const std::u32string& visibleText) {
-    setSize(Point(static_cast<float>(visibleText.length()) * glyphSize.x, glyphSize.y));
+    queue.add(getPosition(), glyphSize, text, getPalette().text);
 }
 
 void Label::setText(const std::string& text) {
-    visibleText = utf8::to_u32string(text);
-    resizeByText(visibleText);
+    this->text = text;
+    //TODO: utf
+    setSize(Point(static_cast<float>(text.length()) * glyphSize.x, glyphSize.y));
 }

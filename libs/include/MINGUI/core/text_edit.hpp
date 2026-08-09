@@ -16,9 +16,9 @@ public:
     TextEdit() = default;
     void update(const int frameDelayMs);
     //
-    void moveCarriageToCursor(const UIContext& context, const std::u32string& text,
+    void moveCarriageToCursor(const UIContext& context, const std::string& text,
         const Point nodePosition, const float glyphWidth);
-    void edit(const UIContext& context, std::u32string& text, const Point nodeSize,
+    void edit(const UIContext& context, std::string& text, const Point nodeSize,
         const Point nodePosition, const float glyphWidth, const std::unique_ptr<mingui::Validator>& validator);
     //
     size_t getCarrigePosition() const noexcept { return carPos; }

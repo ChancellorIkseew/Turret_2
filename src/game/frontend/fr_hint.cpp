@@ -8,7 +8,7 @@
 #include "engine/util/string_util.hpp"
 #include "game/world/world.hpp"
 
-constexpr Point ICON_SIZE(16.0f, 16.0f);
+constexpr Point ICON_SIZE(16, 16);
 
 class FrHint : public Container {
     Icon*  icon  = nullptr;

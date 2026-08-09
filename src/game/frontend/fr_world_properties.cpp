@@ -13,8 +13,8 @@
 #include "game/world_saver/gen_preset_saver.hpp"
 
 constexpr uint64_t MAX_SEED = std::numeric_limits<uint64_t>::max();
-constexpr Point BTN_SIZE(120.0f, 30.0f);
-constexpr Point ICON_SIZE(16.0f, 16.0f);
+constexpr Point BTN_SIZE(120, 30);
+constexpr Point ICON_SIZE(16, 16);
 
 class OProps : public Layout {
     OverlayPresets overlayPresets;
@@ -32,7 +32,7 @@ public:
 
         frequency->addNode(new Label(tr("Frequency")));
         deposite ->addNode(new Label(tr("Deposite")));
-        icons    ->addNode(new Icon(ICON_SIZE, nullptr));
+        icons    ->addNode(new Icon(Point(16, 10), nullptr));
 
         for (const auto& [id, f, d] : overlayPresets) {
             std::string itemName = util::swapPrefix(id, "item_");

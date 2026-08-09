@@ -4,7 +4,7 @@
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 
-constexpr Point BTN_SIZE(200.0f, 50.0f);
+constexpr Point BTN_SIZE(200, 50);
 
 std::unique_ptr<Container> frontend::initMainMenu(Engine& engine) {
     auto menu = std::make_unique<Container>(Align::center, Orientation::vertical);

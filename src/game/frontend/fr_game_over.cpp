@@ -7,7 +7,7 @@
 #include "engine/settings/localization.hpp"
 #include "engine/util/time.hpp"
 
-constexpr Point BTN_SIZE(200.0f, 50.0f);
+constexpr Point BTN_SIZE(200, 50);
 constexpr uint64_t DEFAULT_FPS_TPS = 60;
 
 static std::unique_ptr<Layout> initStatistics(GameSession& session) {

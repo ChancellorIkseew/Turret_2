@@ -6,7 +6,7 @@
 #include "engine/io/folders.hpp"
 #include "game/world_saver/world_saver.hpp"
 
-constexpr Point BTN_SIZE(120.0f, 30.0f);
+constexpr Point BTN_SIZE(120, 30);
 
 void FrSaves::update() {
     clear();

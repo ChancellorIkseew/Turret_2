@@ -26,9 +26,9 @@ static t1_finline void drawGlyph(Renderer& renderer, char32_t symbol, const Pixe
     renderer.draw(glyphRect, position, PixelCoord(GLYPH_SIZE, GLYPH_SIZE), PixelCoord(0.f, 0.f), 0.f, color);
 }
 
-void text::drawString(Renderer& renderer, const std::u32string_view text, const PixelCoord position, const uint32_t color) {
+void text::drawString(Renderer& renderer, const std::string_view text, const PixelCoord position, const uint32_t color) {
     PixelCoord glyphPosition = PixelCoord(t1::ceil(position));
-    for (const auto it : text) {
+    for (const char it : text) {
         if (it != ' ')
             drawGlyph(renderer, it, glyphPosition, color);
         glyphPosition.x += GLYPH_SIZE / 2.0f;

@@ -8,7 +8,7 @@
 #include "engine/window/input/input.hpp"
 
 constexpr uint32_t INPUT_RELOAD = 160U;
-constexpr Point BTN_SIZE(100.0f, 20.0f);
+constexpr Point BTN_SIZE(100, 20);
 
 class FrControls : public Container {
     Engine& engine;

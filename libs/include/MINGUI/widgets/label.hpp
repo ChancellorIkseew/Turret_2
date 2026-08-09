@@ -5,11 +5,11 @@
 START_NAMESPACE_MINGUI
 
 class Label : public Node {
-    std::u32string visibleText;
-    Point glyphSize = Point(8.0f, 16.0f);
+    std::string text;
+    Point glyphSize;
 public:
-    Label(const std::string& text) :
-        visibleText(utf8::to_u32string(text)) { resizeByText(visibleText); }
+    Label(const std::string& text, const Point glyphSize = Point(8.0f, 16.0f)) :
+        glyphSize(glyphSize) { setText(text); }
     ~Label() final = default;
     //
     void setText(const std::string& text);
@@ -17,8 +17,6 @@ public:
     void draw(RenderQueue& queue) final;
     void callback(UIContext& context) final { };
     void setGlyphSize(const Point size) { glyphSize = size; }
-private:
-    void resizeByText(const std::u32string& visibleText);
 };
 
 END_NAMESPACE_MINGUI

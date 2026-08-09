@@ -6,7 +6,7 @@
 #include "engine/gui/gui.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 
-constexpr Point BTN_SIZE(32.0f, 32.0f);
+constexpr Point BTN_SIZE(32, 32);
 
 class JEISlot : public mingui::Icon {
     TileData tileData;

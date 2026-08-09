@@ -5,7 +5,7 @@
 #include "MINGUI/widgets/label.hpp"
 #include "engine/settings/settings.hpp"
 
-constexpr Point BTN_SIZE(120.0f, 30.0f);
+constexpr Point BTN_SIZE(120, 30);
 
 class FrGameplay : public Container {
     Checkbox* pauseInBackground;

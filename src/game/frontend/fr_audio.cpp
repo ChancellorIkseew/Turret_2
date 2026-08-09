@@ -7,8 +7,8 @@
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
 
-constexpr Point BTN_SIZE(120.0f, 30.0f);
-constexpr Point FORM_SIZE(28.0f, 20.0f);
+constexpr Point BTN_SIZE(120, 30);
+constexpr Point FORM_SIZE(28, 20);
 
 class FrAudio : public Container {
     Form* master;
