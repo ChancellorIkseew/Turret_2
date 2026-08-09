@@ -18,12 +18,10 @@ static inline constexpr bool isNotANSI(const char32_t symbol) {
 }
 
 static void validateUnsignedIntegral(std::u32string& text) {
-    const auto it = std::remove_if(text.begin(), text.end(), isNotUnsignedIntegral);
-    text.erase(it, text.end());
+    std::erase_if(text, isNotUnsignedIntegral);
 }
 static void validateIntegral(std::u32string& text) {
-    const auto it = std::remove_if(text.begin(), text.end(), isNotIntegral);
-    text.erase(it, text.end());
+    std::erase_if(text, isNotIntegral);
 }
 
 bool Uint64Validator::isValid(const char32_t symbol) const { return !isNotUnsignedIntegral(symbol); }
@@ -82,19 +80,17 @@ void Int8Validator::validateValue(std::u32string& text) const {
 
 bool FloatValidator::isValid(const char32_t symbol) const { return !isNotFloat(symbol); }
 void FloatValidator::validateText(std::u32string& text) const {
-    const auto it = std::remove_if(text.begin(), text.end(), isNotFloat);
-    text.erase(it, text.end());
+    std::erase_if(text, isNotFloat);
 }
 void FloatValidator::validateValue(std::u32string& text) const {
-    const float value = validator::to<float>(text).value_or(0.0f);
+    const float value = validator::to<float>(text).value_or(0.f);
     text = mingui::utf8::to_u32string(std::clamp(value, min, max));
 }
 
 bool ANSIValidator::isValid(const char32_t symbol) const { return !isNotANSI(symbol); }
 void ANSIValidator::validateText(std::u32string& text) const {
-    const auto it = std::remove_if(text.begin(), text.end(), isNotANSI);
-    text.erase(it, text.end());
+    std::erase_if(text, isNotANSI);
 }
 void ANSIValidator::validateValue(std::u32string& text) const {
-    ANSIValidator::validateText(text);
+    std::erase_if(text, isNotANSI);
 }
