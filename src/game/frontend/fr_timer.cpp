@@ -9,7 +9,6 @@
 #include "engine/util/time.hpp"
 #include "game/world/world.hpp"
 
-constexpr Point BTN_SIZE(120.0f, 20.0f);
 constexpr Point ICON_SIZE(20, 20);
 
 static int countEnemies(GameSession& session) {
@@ -36,11 +35,18 @@ class FrTimer : public Container {
 public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
         setPadding(12.f);
-        addNode(new Button(BTN_SIZE, tr("start wave")))->addCallback([&] { engine.getSession().startNewWave(); });
-
-        playback = addNode(new Selector(Orientation::horizontal));
-        playback->setPadding(1.0f);
         const Atlas& atlas = engine.getAssets().getAtlas();
+        auto bar = addNode(new Layout(Orientation::horizontal));
+        bar->setPalette(NULL_PALETTE);
+        bar->setPadding(0.f);
+        bar->setMargin(24.f);
+
+        auto startWave = bar->addNode(new IconButton(Point(38, 38), 2.0f, new T1_UITexture(atlas.at("start_wave_btn"))));
+        startWave->addCallback([&] { engine.getSession().startNewWave(); });
+        startWave->setPalette(Palette{ .idle = cl::RED, .hover = 0x84'54'54'FF });
+
+        playback = bar->addNode(new Selector(Orientation::horizontal));
+        playback->setPadding(1.0f);
         pause = playback->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("pause_btn"))));
         x1    = playback->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x1_btn"))));
         x2    = playback->addNode(new IconButton(ICON_SIZE, 2.0f, new T1_UITexture(atlas.at("x2_btn"))));
@@ -50,9 +56,9 @@ public:
         x2   ->addCallback([&] { setTickSpeed(2); });
         x4   ->addCallback([&] { setTickSpeed(4); });
 
-        wave             = addNode(new Label(tr("wave")));
-        startsIn         = addNode(new Label(tr("starts in")));
-        enemiesRemaining = addNode(new Label(tr("enemies remaining")));
+        wave             = addNode(new Label(""));
+        startsIn         = addNode(new Label(""));
+        enemiesRemaining = addNode(new Label(""));
         wave->setPalette(Palette{ .text = cl::BEIGE });
     }
 private:
@@ -61,9 +67,9 @@ private:
         constexpr uint64_t DEFAULT_FPS_TPS = 60;
         const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
         const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
-        wave->setText(tr("wave {}", waveCount));
-        startsIn->setText(tr("starts in {}", util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS)));
-        enemiesRemaining->setText(tr("enemies remaining {}", countEnemies(engine.getSession())));
+        wave->setText(tr("Wave {}", waveCount));
+        startsIn->setText(tr("Starts in {}", util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS)));
+        enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(engine.getSession())));
         updatePlayback();
         markDirty();
     }
