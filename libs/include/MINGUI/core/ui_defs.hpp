@@ -33,14 +33,14 @@ enum class ButtonState : uint8_t {
 };
 
 struct Palette {
-    uint32_t nonInteractive;
-    uint32_t idle;
-    uint32_t hover;
-    uint32_t checked;
-    uint32_t text;
+    uint32_t nonInteractive = 0;
+    uint32_t idle = 0;
+    uint32_t hover = 0;
+    uint32_t checked = 0;
+    uint32_t text = 0;
 };
 
-constexpr Palette NULL_PALETTE{ 0, 0, 0, 0, 0 };
+constexpr Palette NULL_PALETTE{};
 
 constexpr Palette DEFAULT_PALETTE{
     .nonInteractive = 0x5A'6D'75'80,

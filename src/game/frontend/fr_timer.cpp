@@ -35,6 +35,7 @@ class FrTimer : public Container {
     IconButton* x4;
 public:
     FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
+        setPadding(12.f);
         addNode(new Button(BTN_SIZE, tr("start wave")))->addCallback([&] { engine.getSession().startNewWave(); });
 
         playback = addNode(new Selector(Orientation::horizontal));
@@ -52,6 +53,7 @@ public:
         wave             = addNode(new Label(tr("wave")));
         startsIn         = addNode(new Label(tr("starts in")));
         enemiesRemaining = addNode(new Label(tr("enemies remaining")));
+        wave->setPalette(Palette{ .text = cl::BEIGE });
     }
 private:
     void callback(UIContext& context) final {

@@ -27,8 +27,8 @@ public:
         icons     = addNode(new Layout(Orientation::vertical));
         frequency = addNode(new Layout(Orientation::vertical));
         deposite  = addNode(new Layout(Orientation::vertical));
-        icons->setMargin(8.0f);
-        icons->setPadding(8.0f);
+        icons->setMargin(8.f);
+        icons->setPadding(8.f);
 
         frequency->addNode(new Label(tr("Frequency")));
         deposite ->addNode(new Label(tr("Deposite")));
@@ -68,6 +68,8 @@ public:
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
+        labels->setMargin(9.f);
+        labels->setPadding(5.f);
         labels->addNode(new Label(tr("Seed")));
         labels->addNode(new Label(tr("Width")));
         labels->addNode(new Label(tr("Height")));

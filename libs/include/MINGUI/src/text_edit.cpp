@@ -16,7 +16,7 @@ void TextEdit::update(const int frameDelayMs) {
 void TextEdit::moveCarriageToCursor(const UIContext& context, const std::u32string& text,
     const Point nodePosition, const float glyphWidth) {
     const auto positionInForm = context.getMousePosition() - nodePosition;
-    carPos = static_cast<size_t>(positionInForm.x / (glyphWidth / 2.0f));
+    carPos = static_cast<size_t>(positionInForm.x / glyphWidth);
     if (carPos > text.length())
         carPos = text.length();
 }
@@ -43,7 +43,7 @@ static void editForm(const UIContext& context, std::u32string& text, const Point
         text.erase(carPos, 1);
     }
     //
-    if (size.x >= static_cast<float>(text.size() + 1) * glyphWidth / 2.0f) {
+    if (size.x >= static_cast<float>(text.size() + 1) * glyphWidth) {
         std::optional<uint32_t> sym = input.lastSymbolEntered;
         if (sym.has_value() && (!validator || validator && validator->isValid(sym.value()))) {
             text.insert(carPos, 1, sym.value());

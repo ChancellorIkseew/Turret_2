@@ -16,10 +16,11 @@ public:
         item(item), itemID(itemID), count(formatCount(count)) { setSize(Point(48.f, 16.f)); }
     void callback(UIContext& context) final {/*empty*/}
     void draw(RenderQueue& queue) final {
-        static constexpr Point ICON_SIZE = Point(16.f, 16.f);
-        static constexpr Point OFFSET = Point(16.f, 0.f);
+        constexpr Point GLYPH_SIZE = Point(8, 16);
+        constexpr Point ICON_SIZE = Point(16.f, 16.f);
+        constexpr Point OFFSET = Point(16.f, 0.f);
         queue.add(getPosition(), ICON_SIZE, item.get());
-        queue.add(getPosition() + OFFSET, count, 0xFF'FF'FF'FF);
+        queue.add(getPosition() + OFFSET, GLYPH_SIZE, count, 0xFF'FF'FF'FF);
     }
     //
     ItemPresetID getItemID() const { return itemID; }

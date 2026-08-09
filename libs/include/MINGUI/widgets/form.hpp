@@ -11,7 +11,7 @@ class Form : public Clickable {
     static constexpr Point DEFAULT_FORM_SIZE{100.0f, 20.0f};
     std::u32string text;
     std::unique_ptr<Validator> validator;
-    Point glyphSize = Point(16.0f, 16.0f);
+    Point glyphSize = Point(8.0f, 16.0f);
     size_t carrigePosition = 0;
 public:
     template<typename T>

@@ -7,10 +7,10 @@ MINGUI
 
 void Form::draw(RenderQueue& queue) {
     Clickable::draw(queue);
-    queue.add(getPosition(), text, getPalette().text);
+    queue.add(getPosition(), glyphSize, text, getPalette().text);
     if (state == ButtonState::checked) {
         auto position = getPosition();
-        position.x += static_cast<float>(carrigePosition) * (glyphSize.x / 2.0f);
+        position.x += static_cast<float>(carrigePosition) * glyphSize.x;
         position.y += 1.0f;
         queue.add(position, Point(1.0f, glyphSize.y), getPalette().text);
     }
