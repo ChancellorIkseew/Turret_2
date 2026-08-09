@@ -1,7 +1,7 @@
 #pragma once
-#include "MINGUI/core/utf8.hpp"
 #include <cstdint>
 #include <optional>
+#include <string>
 #include <string_view>
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/coords/tile_coord.hpp"
@@ -18,7 +18,6 @@ namespace validator {
     template <class T>
     inline std::optional<T> to(std::string_view str) {
         if constexpr (std::is_same_v<T, std::string>) return std::string(str);
-        else if constexpr (std::is_same_v<T, std::u32string>) return mingui::utf8::to_u32string(str);
         else if constexpr (std::is_same_v<T, uint64_t>) return stringToNumber<uint64_t>(str);
         else if constexpr (std::is_same_v<T, uint32_t>) return stringToNumber<uint32_t>(str);
         else if constexpr (std::is_same_v<T, uint16_t>) return stringToNumber<uint16_t>(str);
@@ -35,11 +34,5 @@ namespace validator {
             static_assert(false, "Unsupported type for validator::to<T>");
             return std::nullopt;
         }
-    }
-
-    template <class T>
-    inline std::optional<T> to(std::u32string_view u32str) {
-        if constexpr (std::is_same_v<T, std::u32string_view>) return u32str;
-        return to<T>(mingui::utf8::to_string(u32str));
     }
 }

@@ -17,9 +17,7 @@ public:
         UIContextBridge::textInput.arrowLeft_  = input.jactive(Arrow_left);
         UIContextBridge::textInput.arrowRight_ = input.jactive(Arrow_right);
 
-        const char32_t symbol = mingui::utf8::to_char32_t(input.getLastSymbolEntered());
-        if (symbol != '\0')
-            UIContextBridge::textInput.lastSymbolEntered = symbol;
+        UIContextBridge::textInput.textEntered = input.getTextEntered();
     }
 
     void onIdled(mingui::Clickable& node) final {

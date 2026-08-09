@@ -1,7 +1,6 @@
 #pragma once
 #include "MINGUI/render/render_bridge.hpp"
 #include "engine/render/renderer.hpp"
-#include "engine/render/text.hpp"
 
 struct T1_UITexture : mingui::TextureBridge {
     TextureRect textureRect;
@@ -22,9 +21,7 @@ public:
         constexpr float ANGLE_RAD = 0;
         renderer.drawRect(position, size, ORIGIN, ANGLE_RAD, rect.color);
     }
-    void drawText(mingui::Text text) final {
-        text::drawString(renderer, text.string, PixelCoord(text.position.x, text.position.y), text.color);
-    }
+    void drawText(mingui::Text text) final;
     void drawSprite(mingui::Sprite sprite) final {
         const TextureRect textureRect = static_cast<T1_UITexture*>(sprite.textureBridge)->textureRect;
         const PixelCoord position(sprite.position.x, sprite.position.y);

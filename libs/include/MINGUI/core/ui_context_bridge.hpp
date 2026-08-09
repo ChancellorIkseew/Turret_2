@@ -1,5 +1,6 @@
 #pragma once
 #include <optional>
+#include <string_view>
 #include <MINGUI/core/config.hpp>
 #include <MINGUI/core/point.hpp>
 
@@ -8,7 +9,7 @@ START_NAMESPACE_MINGUI
 class Clickable;
 
 struct TextInput {
-    std::optional<char32_t> lastSymbolEntered;
+    std::string_view textEntered;
     bool delete_     = false;
     bool backspace_  = false;
     bool arrowLeft_  = false;

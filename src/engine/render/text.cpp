@@ -13,7 +13,7 @@ static PixelCoord startLatin;
 static PixelCoord startCyrilic;
 static PixelCoord atlasSize;
 
-static t1_finline void drawGlyph(Renderer& renderer, char32_t symbol, const PixelCoord position, const uint32_t color) noexcept {
+void text::drawGlyph(Renderer& renderer, char32_t symbol, const PixelCoord position, const uint32_t color) noexcept {
     TextureRect glyphRect = TextureRect(startLatin.x, startLatin.y, GLYPH_SIZE / atlasSize.x, GLYPH_SIZE / atlasSize.y);
     if (symbol >= CYRILIC_BEGIN) {
         glyphRect.x = startCyrilic.x;
@@ -30,7 +30,7 @@ void text::drawString(Renderer& renderer, const std::string_view text, const Pix
     PixelCoord glyphPosition = PixelCoord(t1::ceil(position));
     for (const char it : text) {
         if (it != ' ')
-            drawGlyph(renderer, it, glyphPosition, color);
+            text::drawGlyph(renderer, it, glyphPosition, color);
         glyphPosition.x += GLYPH_SIZE / 2.0f;
     }
 }

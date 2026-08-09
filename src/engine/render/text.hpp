@@ -8,6 +8,7 @@ class Atlas;
 class Renderer;
 
 namespace text {
+    void drawGlyph(Renderer& renderer, char32_t symbol, const PixelCoord position, const uint32_t color) noexcept;
     void drawString(Renderer& renderer, const std::string_view text, const PixelCoord pos, const uint32_t color);
     void setFont(const Atlas& atlas, const std::string& latin, const std::string& cyrilic);
 }

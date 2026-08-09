@@ -16,7 +16,7 @@ void Input::update(const SDL_Event& event) {
         return;
     }
     if (event.type == SDL_EVENT_TEXT_INPUT) {
-        symbolJustEntered = event.text.text;
+        textEntered = event.text.text;
         return;
     }
 
@@ -47,7 +47,7 @@ void Input::update(const SDL_Event& event) {
 
 void Input::reset(SDL_Window* sdlWindow) {
     mouseWheelScroll = MouseWheelScroll::none;
-    symbolJustEntered = nullptr;
+    textEntered = "";
     lastKeyPressed.reset();
     for (auto& [bindName, binding] : Controls::getBindings()) {
         binding.justTriggered = false;
@@ -68,20 +68,6 @@ bool Input::jactive(cString bindName) const {
 }
 bool Input::released(cString bindName) const {
     return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).released;
-}
-
-PixelCoord Input::getMouseCoord() const {
-    return mouseCoord;
-}
-MouseWheelScroll Input::getMouseWheelScroll() const {
-    return mouseWheelScroll;
-}
-
-std::optional<Binding> Input::getLastKeyPressed() const {
-    return lastKeyPressed;
-}
-const char* Input::getLastSymbolEntered() const {
-    return symbolJustEntered;
 }
 
 void Input::consumeMouseClicks() {

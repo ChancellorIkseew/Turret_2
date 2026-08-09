@@ -1,6 +1,5 @@
 #include "frontend.hpp"
 //
-#include <MINGUI/core/utf8.hpp>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"

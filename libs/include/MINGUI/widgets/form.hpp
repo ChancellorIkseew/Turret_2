@@ -2,7 +2,6 @@
 #include <memory>
 #include <string>
 #include <MINGUI/core/form_validator.hpp>
-#include <MINGUI/core/utf8.hpp>
 #include <MINGUI/widgets/clickable.hpp>
 
 START_NAMESPACE_MINGUI

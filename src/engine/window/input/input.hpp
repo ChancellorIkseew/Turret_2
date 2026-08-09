@@ -1,5 +1,6 @@
 #pragma once
 #include <optional>
+#include <string_view>
 #include "binding.hpp"
 #include "engine/coords/pixel_coord.hpp"
 
@@ -9,7 +10,7 @@ class MainWindow;
 
 class Input {
     std::optional<Binding> lastKeyPressed;
-    const char* symbolJustEntered = nullptr;
+    std::string_view textEntered;
     PixelCoord mouseCoord;
     MouseWheelScroll mouseWheelScroll = MouseWheelScroll::none;
     bool textInputActive = false;
@@ -17,22 +18,21 @@ public:
     Input() = default;
 
     ///@brief Check any press/click.
-    bool active(const cString bindName) const;
+    bool active(cString bindName) const;
     ///@brief Check only short press/click.
-    bool jactive(const cString bindName) const;
+    bool jactive(cString bindName) const;
     ///@brief Check any press/click ended.
-    bool released(const cString bindName) const;
+    bool released(cString bindName) const;
 
     ///@brief Coordinate in window.
-    PixelCoord getMouseCoord() const;
+    PixelCoord getMouseCoord() const { return mouseCoord; }
     ///@brief (none/up/down)
-    MouseWheelScroll getMouseWheelScroll() const;
+    MouseWheelScroll getMouseWheelScroll() const { return mouseWheelScroll; }
 
     ///@brief Int code and input type(keyboard/mouse) of the last key/button press.
     /// Is used for controls rebinding, but can have other usages.
-    std::optional<Binding> getLastKeyPressed() const;
-    ///@brief Last symbol entered in any text field.
-    const char* getLastSymbolEntered() const;
+    std::optional<Binding> getLastKeyPressed() const { return lastKeyPressed; }
+    std::string_view getTextEntered() const { return textEntered; }
     ///@brief start/stop checking.
     void enableTextInput(const bool flag) { textInputActive = flag; }
 
