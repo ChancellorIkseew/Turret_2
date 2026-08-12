@@ -32,7 +32,8 @@ void BlocksDrawer::drawShadows(const BlockMap& blocks, const Camera& camera, Ren
 
 void BlocksDrawer::draw(const BlockMap& blocks, const Presets& presets, Renderer& renderer) {
     for (const auto& tile : cashedTiles) {
-        blocks.at(tile).block->draw(*this, renderer, tile);
+        if (blocks.at(tile).type == BlockType::belt)
+            blocks.at(tile).block->draw(*this, renderer, tile);
     }
 
     int i = 0;
@@ -41,6 +42,11 @@ void BlocksDrawer::draw(const BlockMap& blocks, const Presets& presets, Renderer
         TextureRect textureRect = presets.getItem(itemPresetID).textureRect;
         renderer.draw(textureRect, itemPositions[i], ITEM_SIZE);
         ++i;
+    }
+
+    for (const auto& tile : cashedTiles) {
+        if (blocks.at(tile).type != BlockType::belt)
+            blocks.at(tile).block->draw(*this, renderer, tile);
     }
 }
 
