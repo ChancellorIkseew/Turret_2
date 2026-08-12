@@ -104,14 +104,12 @@ struct CoreBlock : Block {
 };
 
 struct DrillBlock : Block {
-    uint8_t itemPerTick;
-    TickCount restReloadTime;
+    ItemStack inventory;
+    int8_t mineSpeed = 1;
     t1_derived BlockType getType() const noexcept final { return BlockType::drill; }
 public: //
-    void mine(TickCount deltaTick) {
-
-    }
-    void throwItem(TileCoord tile, const BlockMap& map, const WorldMap& terrain, const Presets& presets);
+    void mine(TileCoord tile, const WorldMap& terrain, const Presets& presets);
+    void throwItem(TileCoord tile, const BlockMap& map);
 };
 
 struct BeltBlock : Block {

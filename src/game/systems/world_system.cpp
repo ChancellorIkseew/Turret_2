@@ -17,7 +17,7 @@
 
 void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile);
 
-void world::update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs,
+void world::update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs, const uint64_t tickCount,
     const PlayerController& playerController, SoundQueue& worldSounds, BuiltInScripts& scripts) {
     //
     auto& blocks = world.getBlocks();
@@ -31,7 +31,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     //
     world.getBuildBems().clear();
     chunks.update(mobs.getSoa());
-    blocks.updateBlocks(world.getMap(), presets, world.getTeams());
+    blocks.updateBlocks(world.getMap(), presets, world.getTeams(), tickCount);
     shells::processShells(world, presets, worldSounds, camera);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, schematic, blocks);

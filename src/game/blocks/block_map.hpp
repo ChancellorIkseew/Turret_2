@@ -139,7 +139,7 @@ public:
         return tile;
     }
     //
-    void updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams);
+    void updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams, const uint64_t tickCount);
 private:
     t1_disable_copy_and_move(BlockMap)
 };

@@ -3,7 +3,9 @@
 #include "engine/assets/presets.hpp"
 #include "game/common/teams_pool.hpp"
 
-void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams) {
+void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams, const uint64_t tickCount) {
+    const bool tickForUpdate = (tickCount % 60) == 0;
+
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
             BlockTile& blockTile = at(x, y);
@@ -13,7 +15,9 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
                 static_cast<BeltBlock*>(blockTile.block.get())->update(tile, *this);
                 break;
             case BlockType::drill:
-                static_cast<DrillBlock*>(blockTile.block.get())->throwItem(tile, *this, terrain, presets);
+                if (tickForUpdate)
+                    static_cast<DrillBlock*>(blockTile.block.get())->mine(tile, terrain, presets);
+                static_cast<DrillBlock*>(blockTile.block.get())->throwItem(tile, *this);
                 break;
             case BlockType::factory:
                 static_cast<FactoryBlock*>(blockTile.block.get());

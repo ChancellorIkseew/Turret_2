@@ -37,7 +37,7 @@ void GameSession::prepare(const Presets& presets) {
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
     const uint64_t timeMs = engine.getMainWindow().getTimeMs();
-    world::update(*world, camera, presets, timeMs, playerController, worldSounds, builtInScripts);
+    world::update(*world, camera, presets, timeMs, timeCount.getTickCount(), playerController, worldSounds, builtInScripts);
     timeCount.update();
     builtInScripts.execute(engine, timeCount);
     if (world->getBlocks().getMeta().isCoreAttacked())

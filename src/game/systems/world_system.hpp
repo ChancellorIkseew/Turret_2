@@ -13,7 +13,7 @@ class World;
 class WorldDrawer;
 
 namespace world {
-    void update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs,
+    void update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs, const uint64_t tickCount,
         const PlayerController& playerController, SoundQueue& worldSounds, BuiltInScripts& scripts);
     void draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Camera& camera, const Assets& assets,
         const uint64_t tickCount, Engine& engine);
