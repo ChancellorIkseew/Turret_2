@@ -65,18 +65,58 @@ static inline void hitBlocks(ShellSoA& shells, BlockMap& blocks, const size_t sh
     }
 }
 
-static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool, const Presets& presets,
-    SoundQueue& sounds, const Camera& camera, const size_t shellsCount) {
+static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool, MobSoA& mobs, BlockMap& blocks,
+    const Presets& presets, SoundQueue& sounds, const Camera& camera, const size_t shellsCount) {
     const auto& soa = shellsPool.getSoa();
     for (size_t i = 0; i < shellsCount; ++i) {
         if (soa.restLifeTime[i] > 0 && soa.restDamage[i] > 0)
             continue;
+        const ShellPreset& preset = presets.getShell(soa.preset[i]);
+        const Health damage = preset.explosion.damage;
+        if (damage > 0) {
+            const float sqRadius = t1::pow2f(preset.explosion.radius);
+            const TeamID teamID = soa.teamID[i];
+            const PixelCoord position = soa.position[i];
+
+            //to mob
+            for (size_t j = 0; j < mobs.mobCount; ++j) {
+                if (teamID == mobs.teamID[j])
+                    continue;
+                const float sqDistance = t1::squareDistance(position, mobs.position[j]);
+                if (sqDistance < sqRadius)
+                    mobs.health[j] = std::max<Health>(0, mobs.health[j] - damage);
+            }
+
+            //to block
+            const int tileRange = t1::tile(preset.explosion.radius);
+            const TileCoord tilePosition = t1::tile(position);
+            const TileCoord mapSize = blocks.getSize();
+            const int startX = std::max(0, tilePosition.x - tileRange);
+            const int startY = std::max(0, tilePosition.y - tileRange);
+            const int endX = std::min(mapSize.x, tilePosition.x + tileRange);
+            const int endY = std::min(mapSize.y, tilePosition.y + tileRange);
+            for (int x = startX; x < endX; ++x) {
+                for (int y = startY; y < endY; ++y) {
+                    const BlockTile& blockTile = blocks.at(x, y);
+                    if (blockTile.type == BlockType::air)
+                        continue;
+                    if (blockTile.teamID == teamID)
+                        continue;
+                    const PixelCoord blockCenter = t1::tileCenter({ x, y });
+                    const float sqDistance = t1::squareDistance(position, blockCenter);
+                    if (sqDistance < sqRadius) {
+                        const TileCoord masterTile = blocks.getMaster(TileCoord(x, y));
+                        blocks.at(masterTile).block->health = std::max<Health>(0, blocks.at(masterTile).block->health - damage);
+                        if (blocks.at(masterTile).block->health < 1)
+                            blocks.demolish(masterTile);
+                    }
+                }
+            }
+        }
         if (!camera.contains(soa.position[i]))
             continue;
-        const ShellPreset& preset = presets.getShell(soa.preset[i]);
-        if (preset.visual.size.y > 6.f) {
+        if (preset.visual.size.y > 6.f)
             sounds.pushSound("shell_explosion", soa.position[i]);
-        }
         constexpr float SPEED = 0.8f;
         const float radius = preset.explosion.radius;
         const PixelCoord size(radius, radius);
@@ -109,7 +149,7 @@ void shells::processShells(World& world, const Presets& presets, SoundQueue& sou
     moveShells(shells, shellCount);
     hitMobs(shells, mobs, shellCount, chunks);
     hitBlocks(shells, blocks, shellCount);
-    finalizeShells(shellsPool, particlesPool, presets, sounds, camera, shellCount);
+    finalizeShells(shellsPool, particlesPool, mobs, blocks, presets, sounds, camera, shellCount);
 }
 
 void shells::cleanupShells(ShellsPool& shellsPool, const Presets& presets) {
