@@ -1,0 +1,12 @@
+#visual
+texture=turret_base
+frame_ticks=0
+frame_height=32
+frame_order=0
+#logic
+archetype=turret
+size=1
+build_time=60
+rotatable=true
+health=200
+turret=rocket_turret

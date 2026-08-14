@@ -1,0 +1,16 @@
+#visual
+texture=rocket_turret
+origin=12.5|11.0
+size=25|22
+shadow_offset=1.5
+shot_sound=rocket_launch
+#logic
+reload=30
+range=610
+recoil=1.0
+spread_deg=0.5
+rotation_speed=0.03
+shooting_ai=basic
+shell=rocket
+barrels=-7|11,7|11
+ammo_by_item=1
