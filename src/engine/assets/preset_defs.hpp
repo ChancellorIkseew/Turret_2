@@ -69,7 +69,6 @@ struct MobPreset {
     Health maxHealth;
     Health maxShieldHealth;
     bool flying;
-    bool canBuild;
     uint8_t buildSpeed;
     MovingAI defaultMovingAI;
     ShootingAI defaultShootingAI;

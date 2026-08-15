@@ -12,7 +12,6 @@ shield_radius=0.0
 health=20
 shield_health=0
 flying=true
-can_build=true
 build_speed=1
 moving_ai=builder
 shooting_ai=basic

@@ -89,7 +89,6 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
         reader.get<Health>("health"),
         reader.get<Health>("shield_health"),
         reader.get<bool>("flying"),
-        reader.get<bool>("can_build"),
         reader.get<uint8_t>("build_speed"),
         mob_ai::getMovingAI(reader.get<std::string>("moving_ai")),
         mob_ai::getShootingAI(reader.get<std::string>("shooting_ai")),
