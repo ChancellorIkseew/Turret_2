@@ -30,7 +30,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schemati
     BlockMap& blocks, BuildBeamsPool& buildBeams, TeamsPool& teams, SoundQueue& sounds, ParticlesPool& particles) {
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
-        if (!mobPreset.buildSpeed > 0)
+        if (mobPreset.buildSpeed < 1)
             continue;
 
         const PixelCoord position = soa.position[i];
