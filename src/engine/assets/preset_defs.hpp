@@ -21,6 +21,7 @@ struct ShellVisualPreset {
     TextureRect textureRect;
     PixelCoord origin;
     PixelCoord size;
+    bool hasTrail;
 };
 
 struct ShellPreset {

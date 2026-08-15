@@ -101,7 +101,8 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
     ShellVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
-        reader.get<PixelCoord>("size")
+        reader.get<PixelCoord>("size"),
+        reader.get<bool>("has_trail")
     };
     Explosion explosion{
         reader.get<Health>("explosion_damage"),

@@ -20,6 +20,16 @@ static inline void moveShells(ShellSoA& soa, const size_t shellCount) {
     }
 }
 
+static inline void makeTrails(const ShellSoA& soa, ParticlesPool& particlesPool, const Presets& presets,
+    const Camera& camera, const size_t shellCount) {
+    for (size_t i = 0; i < shellCount; ++i) {
+        constexpr PixelCoord SIZE(3, 3);
+        constexpr uint32_t FADING = uint32_t(float(0xFF) / 20.f);
+        if (camera.contains(soa.position[i]) && presets.getShell(soa.preset[i]).visual.hasTrail)
+            particlesPool.addParticle(soa.position[i], SIZE, 0.f, 0.f, cl::ORANGE, FADING, 20, PType::light);
+    }
+}
+
 static t1_finline_cxpr void registerDamage(Health& a, Health& b) {
     const Health takenDamage = std::min(a, b);
     a -= takenDamage;
@@ -147,6 +157,7 @@ void shells::processShells(World& world, const Presets& presets, SoundQueue& sou
     const size_t shellCount = shells.shellCount;
     reduceShellsLifeTime(shells);
     moveShells(shells, shellCount);
+    makeTrails(shells, particlesPool, presets, camera, shellCount);
     hitMobs(shells, mobs, shellCount, chunks);
     hitBlocks(shells, blocks, shellCount);
     finalizeShells(shellsPool, particlesPool, mobs, blocks, presets, sounds, camera, shellCount);
