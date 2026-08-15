@@ -10,8 +10,9 @@ int16_t Inventory::getMaxBuildStep(const BlockPreset& preset) const {
             break;
         if (ing.amount <= 0)
             continue;
+        const int64_t amount = ing.amount;
         const int64_t currentAmount = count(ing.itemID);
-        const int64_t possibleStep = (currentAmount * totalTime) / ing.amount;
+        const int64_t possibleStep = (currentAmount * totalTime) / amount;
         minStep = std::min(minStep, possibleStep);
     }
     return static_cast<int16_t>(std::min<int64_t>(minStep, std::numeric_limits<int16_t>::max()));

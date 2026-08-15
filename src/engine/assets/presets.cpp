@@ -49,7 +49,7 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     int i = 0;
     for (const auto& [key, value] : data) {
         uint8_t id = itemIDByName.at(key).asUint();
-        uint16_t amount = validator::to<uint16_t>(value).value();
+        int16_t amount = validator::to<int16_t>(value).value();
         preset.recipe[i] = Ingredient(ItemPresetID(id), amount);
         ++i;
     }

@@ -11,7 +11,7 @@ class FrInvSlot : public Node {
     std::unique_ptr<TextureBridge> item;
     ItemPresetID itemID;
 public:
-    FrInvSlot(TextureBridge* item, const ItemPresetID itemID, const uint32_t count) :
+    FrInvSlot(TextureBridge* item, const ItemPresetID itemID, const int64_t count) :
         item(item), itemID(itemID), count(formatCount(count)) { setSize(Point(48, 16)); }
     void callback(UIContext& context) final {/*empty*/}
     void draw(RenderQueue& queue) final {
@@ -23,10 +23,10 @@ public:
     }
     //
     ItemPresetID getItemID() const { return itemID; }
-    void setItemCount(const uint64_t value) {
+    void setItemCount(const int64_t value) {
         count = formatCount(value);
     }
-    static std::string formatCount(const uint64_t value) {
+    static std::string formatCount(const int64_t value) {
         if (value < 1000)
             return std::format("{}", value);
         if (value < 1'000'000)
