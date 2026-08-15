@@ -86,8 +86,8 @@ struct BlockVisualPreset {
 };
 
 struct Ingredient {
-    ItemPresetID itemID;
-    int16_t amount;
+    ItemPresetID itemID = ItemPresetID(0);
+    int16_t amount = 0;
 };
 
 struct BlockPreset {
