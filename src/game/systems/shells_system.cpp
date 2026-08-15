@@ -89,12 +89,13 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
             const PixelCoord position = soa.position[i];
 
             //to mob
-            for (size_t j = 0; j < mobs.mobCount; ++j) {
-                if (teamID == mobs.teamID[j])
+            for (size_t mob = 0; mob < mobs.mobCount; ++mob) {
+                if (teamID == mobs.teamID[mob] || t1::squareDistance(position, mobs.position[mob]) > sqRadius)
                     continue;
-                const float sqDistance = t1::squareDistance(position, mobs.position[j]);
-                if (sqDistance < sqRadius)
-                    mobs.health[j] = std::max<Health>(0, mobs.health[j] - damage);
+                if (mobs.shieldHealth[mob] > 0)
+                    mobs.shieldHealth[mob] = std::max<Health>(0, mobs.shieldHealth[mob] - damage);
+                else
+                    mobs.health[mob] = std::max<Health>(0, mobs.health[mob] - damage);
             }
 
             //to block
