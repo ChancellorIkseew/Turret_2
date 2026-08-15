@@ -22,8 +22,8 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
             case BlockType::factory:
                 static_cast<FactoryBlock*>(blockTile.block.get());
                 break;
-            case BlockType::intersection:
-                static_cast<IntersectionBlock*>(blockTile.block.get())->provide(tile, *this);
+            case BlockType::junction:
+                static_cast<JunctionBlock*>(blockTile.block.get())->provide(tile, *this);
                 break;
             case BlockType::router:
                 static_cast<RouterBlock*>(blockTile.block.get())->provide(tile, *this);

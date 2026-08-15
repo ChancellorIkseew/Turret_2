@@ -29,7 +29,7 @@ enum class BlockType {
     bridge,
     drill,
     factory,
-    intersection,
+    junction,
     router,
     turret,
     core
@@ -157,14 +157,14 @@ struct TurretBlock : Block {
     void useAmmo() { --ammo.count; }
 };
 
-struct IntersectionBlock : Block {
+struct JunctionBlock : Block {
     struct RotatedItem {
         ItemPresetID item = ItemPresetID(0);
         BlockRot rotation = BlockRot::none;
     };
     RotatedItem vertical, horizontal;
     //
-    t1_derived BlockType getType() const noexcept final { return BlockType::intersection; }
+    t1_derived BlockType getType() const noexcept final { return BlockType::junction; }
     //
     t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final;
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;

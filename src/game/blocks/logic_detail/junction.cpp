@@ -1,6 +1,6 @@
 #include "game/blocks/block_map.hpp"
 
-bool IntersectionBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
+bool JunctionBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
     if (srcRot % 2 == BlockRot::down && vertical.item == ItemPresetID(0))
         return true;
     if (srcRot % 2 == BlockRot::right && horizontal.item == ItemPresetID(0))
@@ -8,7 +8,7 @@ bool IntersectionBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
     return false;
 }
 
-void IntersectionBlock::accept(ItemPresetID item, BlockRot srcRot) {
+void JunctionBlock::accept(ItemPresetID item, BlockRot srcRot) {
     if (srcRot % 2 == BlockRot::down) {
         vertical.item = item;
         vertical.rotation = srcRot;
@@ -18,7 +18,7 @@ void IntersectionBlock::accept(ItemPresetID item, BlockRot srcRot) {
     horizontal.rotation = srcRot;
 }
 
-static inline void tryProvide(TileCoord target, const BlockMap& map, IntersectionBlock::RotatedItem& rotatedItem) {
+static inline void tryProvide(TileCoord target, const BlockMap& map, JunctionBlock::RotatedItem& rotatedItem) {
     const BlockTile& blockTile = map.at(target);
     if (blockTile.type > BlockType::wall && blockTile.block->canAccept(rotatedItem.item, rotatedItem.rotation)) {
         blockTile.block->accept(rotatedItem.item, rotatedItem.rotation);
@@ -27,7 +27,7 @@ static inline void tryProvide(TileCoord target, const BlockMap& map, Intersectio
     }
 }
 
-void IntersectionBlock::provide(TileCoord tile, const BlockMap& map) {
+void JunctionBlock::provide(TileCoord tile, const BlockMap& map) {
     int x = tile.x;
     int y = tile.y;
     if (vertical.item != ItemPresetID(0)) {
