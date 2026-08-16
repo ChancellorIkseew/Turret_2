@@ -1,5 +1,5 @@
 #visual
-texture=intersection
+texture=junction
 frame_ticks=0
 frame_height=32
 frame_order=0
