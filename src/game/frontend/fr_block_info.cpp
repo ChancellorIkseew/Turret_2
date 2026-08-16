@@ -4,6 +4,7 @@
 #include <MINGUI/widgets/button.hpp>
 #include <MINGUI/widgets/icon.hpp>
 #include "engine/engine.hpp"
+#include "engine/coords/transforms.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/settings/localization.hpp"
 
@@ -41,7 +42,7 @@ public:
         }
 
         addNode(new Icon(Point(32, 32), new T1_UITexture(engine.getAssets().getAtlas().at(blockName))));
-        addNode(new Label(tr(blockName)));
+        addNode(new Label(tr(blockName)))->setPalette(Palette{ .text = cl::BEIGE });
         addNode(new Label(tr("Size: {}x{}", preset.size, preset.size)));
         addNode(new Label(tr("Build time: {} ticks", preset.buildTime)));
         addNode(new Label(tr("Durability: {}", preset.maxHealth)));
@@ -56,6 +57,18 @@ public:
                 continue;
             const ItemPreset& preset = engine.getAssets().getPresets().getItem(ing.itemID);
             ingridients->addNode(new FrInvSlot(new T1_UITexture(preset.textureRect), ing.amount));
+        }
+
+        if (preset.archetype == BlockType::turret) {
+            const TurretPreset& turret = engine.getAssets().getPresets().getTurret(preset.turret);
+            const ShellPreset& shell = engine.getAssets().getPresets().getShell(turret.shell);
+            addNode(new Label(tr("Range: {:.2f} tiles", turret.range / t1::TILE_F)));
+            addNode(new Label(tr("Direct damage: {}", shell.damage)));
+            if (shell.explosion.damage > 0) {
+                addNode(new Label(tr("Explosion damage: {}", shell.explosion.damage)));
+                addNode(new Label(tr("Explosion radius: {:.2f} tiles", shell.explosion.radius / t1::TILE_F)));
+            }
+            addNode(new Label(tr("Reload: {} ticks", turret.reload)));
         }
 
         addNode(new Button(Point(260, 30), tr("Back")))->addCallback([&] { close(); });

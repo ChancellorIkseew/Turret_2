@@ -65,6 +65,12 @@ Size: {}x{}=Размер: {}x{}
 Build time: {} ticks=Время строительства: {} тиков
 Durability: {}=Прочность: {}
 Cost:=Стоимость:
+#turret
+Range: {:.2f} tiles=Радиус действия: {:.2f} плиток
+Direct damage: {}=Урон от попадания: {}
+Explosion damage: {}=Урон от взрыва: {}
+Explosion radius: {:.2f} tiles=Радиус взрыва: {:.2f} плиток
+Reload: {} ticks=Перезарядка: {} тиков
 
 #block names
 cannon_turret=Турель-тяжёлая автопушка
