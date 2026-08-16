@@ -59,3 +59,9 @@ iron=железо
 copper=медь
 coal=уголь
 manganum=марганец
+
+#block_info
+Size: {}x{}=Размер: {}x{}
+Build time: {} ticks=Время строительства: {} тиков
+Durability: {}=Прочность: {}
+Cost:=Стоимость:

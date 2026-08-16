@@ -21,6 +21,7 @@ public:
     virtual ~BuildTools() = default;
     //
     JEIContent getContentLevel() const noexcept { return content; }
+    std::optional<TileData> getTileData() const noexcept { return optTileData; }
     void setTileData(const TileData tileData) {
         if (optTileData && optTileData.value() == tileData)
             return optTileData.reset();

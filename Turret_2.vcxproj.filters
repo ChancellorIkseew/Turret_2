@@ -752,5 +752,8 @@
     <ClCompile Include="src\engine\gui\t1_ui_renderer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\frontend\fr_block_info.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
