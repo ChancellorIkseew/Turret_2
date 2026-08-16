@@ -65,3 +65,16 @@ Size: {}x{}=Размер: {}x{}
 Build time: {} ticks=Время строительства: {} тиков
 Durability: {}=Прочность: {}
 Cost:=Стоимость:
+
+#block names
+cannon_turret=Турель-тяжёлая автопушка
+gatling_turret=Турель-автопушка
+laser_turret=Лазерная турель
+rocket_turret=Ракетная турель
+router=Маршрутизатор
+junction=Перекрёсток
+drill=Бур
+iron_wall=Железная стена
+big_iron_wall=Большая железная стена
+core=Ядро
+belt=Конвейер

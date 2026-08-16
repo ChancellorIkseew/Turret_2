@@ -1,1 +1,12 @@
-#should be empty
+#block names
+cannon_turret=Heavy autocannon turret
+gatling_turret=Autocannon turret
+laser_turret=Laser turret
+rocket_turret=Rocket turret
+router=Router
+junction=Junction
+drill=Drill
+iron_wall=Iron wall
+big_iron_wall=Big iron wall
+core=Core
+belt=Belt
