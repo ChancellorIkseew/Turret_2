@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 struct MobSoA;
 struct ShellSoA;
@@ -12,7 +13,7 @@ class ShellsPool;
 class World;
 
 namespace shells {
-    void processShells(World& world, const Presets& presets, SoundQueue& sounds, const Camera& camera);
+    void processShells(World& world, const Presets& presets, SoundQueue& sounds, const Camera& camera, const uint64_t tickCount);
     void cleanupShells(ShellsPool& shellsPool, const Presets& presets);
     void drawShells(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer);
     void drawShellsLighting(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer);

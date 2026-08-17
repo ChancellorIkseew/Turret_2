@@ -76,7 +76,7 @@ static inline void hitBlocks(ShellSoA& shells, BlockMap& blocks, const size_t sh
 }
 
 static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool, MobSoA& mobs, BlockMap& blocks,
-    const Presets& presets, SoundQueue& sounds, const Camera& camera, const size_t shellsCount) {
+    const Presets& presets, SoundQueue& sounds, const Camera& camera, const size_t shellsCount, const uint64_t tickCount) {
     const auto& soa = shellsPool.getSoa();
     for (size_t i = 0; i < shellsCount; ++i) {
         if (soa.restLifeTime[i] > 0 && soa.restDamage[i] > 0)
@@ -141,13 +141,13 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         const int shardsCount = preset.explosion.shardsCount;
         const PixelCoord shardSize(1.0f, preset.visual.size.y);
         for (int j = 0; j < shardsCount; ++j) {
-            const float angle = util::randAngleRad(static_cast<uint32_t>(j * i));
+            const float angle = util::randAngleRad(static_cast<uint32_t>(j * (tickCount % 255)));
             particlesPool.addParticle(soa.position[i], shardSize, angle, SPEED, cl::ORANGE, 0, lifeTime * 2, PType::shard);
         }
     }
 }
 
-void shells::processShells(World& world, const Presets& presets, SoundQueue& sounds, const Camera& camera) {
+void shells::processShells(World& world, const Presets& presets, SoundQueue& sounds, const Camera& camera, const uint64_t tickCount) {
     ShellsPool& shellsPool = world.getShells();
     ShellSoA& shells = shellsPool.getSoa();
     BlockMap& blocks = world.getBlocks();
@@ -161,7 +161,7 @@ void shells::processShells(World& world, const Presets& presets, SoundQueue& sou
     makeTrails(shells, particlesPool, presets, camera, shellCount);
     hitMobs(shells, mobs, shellCount, chunks);
     hitBlocks(shells, blocks, shellCount);
-    finalizeShells(shellsPool, particlesPool, mobs, blocks, presets, sounds, camera, shellCount);
+    finalizeShells(shellsPool, particlesPool, mobs, blocks, presets, sounds, camera, shellCount, tickCount);
 }
 
 void shells::cleanupShells(ShellsPool& shellsPool, const Presets& presets) {
