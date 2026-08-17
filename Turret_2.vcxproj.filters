@@ -225,9 +225,6 @@
     <ClInclude Include="libs\include\MINGUI\widgets\ui_node.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="libs\include\MINGUI\render\render_queue.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="libs\include\MINGUI\core\config.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -603,9 +600,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\ui_node.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="libs\include\MINGUI\src\render_queue.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="libs\include\MINGUI\src\main_canvas.cpp">

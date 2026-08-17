@@ -82,9 +82,9 @@ void Layout::arrangeGrid() {
     setSize(Point(sizeX, sizeY));
 }
 
-void Layout::draw(RenderQueue& queue) {
-    Node::draw(queue);
+void Layout::draw(RenderBridge& renderBridge) {
+    Node::draw(renderBridge);
     for (const auto& node : contents) {
-        node->draw(queue);
+        node->draw(renderBridge);
     }
 }

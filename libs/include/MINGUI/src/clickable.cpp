@@ -1,17 +1,17 @@
 #include <MINGUI/widgets/clickable.hpp>
 //
-#include <MINGUI/render/render_queue.hpp>
+#include <MINGUI/render/render_bridge.hpp>
 
 MINGUI
 
-void Clickable::draw(RenderQueue& queue) {
+void Clickable::draw(RenderBridge& renderBridge) {
     uint32_t color = 0;
     switch (state) {
     case ButtonState::idle:    color = getPalette().idle;    break;
     case ButtonState::hover:   color = getPalette().hover;   break;
     case ButtonState::checked: color = getPalette().checked; break;
     }
-    queue.add(getPosition(), getSize(), color);
+    renderBridge.drawRect(Rect(getPosition(), getSize(), color));
 }
 
 void Clickable::callback(UIContext& context) {

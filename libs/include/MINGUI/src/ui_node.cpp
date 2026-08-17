@@ -1,11 +1,11 @@
 #include <MINGUI/widgets/ui_node.hpp>
 //
-#include <MINGUI/render/render_queue.hpp>
+#include <MINGUI/render/render_bridge.hpp>
 
 MINGUI
 
-void Node::draw(RenderQueue& queue) {
-    queue.add(position, size, palette.nonInteractive);
+void Node::draw(RenderBridge& renderBridge) {
+    renderBridge.drawRect(Rect(position, size, palette.nonInteractive));
 }
 
 bool Node::containsMouse(const Point mousePosition) const noexcept {

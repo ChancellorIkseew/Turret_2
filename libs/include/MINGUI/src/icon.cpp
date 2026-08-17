@@ -1,10 +1,10 @@
 #include <MINGUI/widgets/icon.hpp>
 //
-#include <MINGUI/render/render_queue.hpp>
+#include <MINGUI/render/render_bridge.hpp>
 
 MINGUI
 
-void Icon::draw(RenderQueue& queue) {
+void Icon::draw(RenderBridge& renderBridge) {
     if (texture)
-        queue.add(getPosition(), getSize(), texture.get());
+        renderBridge.drawSprite(Sprite(getPosition(), getSize(), texture.get()));
 }

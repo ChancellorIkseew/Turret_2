@@ -11,7 +11,7 @@ public:
     Clickable(const Point size)                          : Node(size) { }
     ~Clickable() override = default;
     //
-    void draw(RenderQueue& queue) override;
+    void draw(RenderBridge& renderBridge) override;
     void callback(UIContext& context) override;
     void setState(const ButtonState state) { this->state = state; };
     const ButtonState getState() const { return state; }

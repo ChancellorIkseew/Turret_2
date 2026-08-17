@@ -21,7 +21,7 @@ public:
     Form(const Point size = DEFAULT_FORM_SIZE)                   : Clickable(size) { }
     ~Form() final = default;
 
-    void draw(RenderQueue& queue) final;
+    void draw(RenderBridge& renderBridge) final;
     void callback(UIContext& context) final;
     void setGlyphSize(const Point size) { glyphSize = size; }
     const std::string& getText() const { return text; }

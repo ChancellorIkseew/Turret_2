@@ -14,12 +14,12 @@ public:
     FrInvSlot(TextureBridge* item, const ItemPresetID itemID, const int64_t count) :
         item(item), itemID(itemID), count(formatCount(count)) { setSize(Point(48, 16)); }
     void callback(UIContext& context) final {/*empty*/}
-    void draw(RenderQueue& queue) final {
+    void draw(RenderBridge& renderBridge) final {
         constexpr Point GLYPH_SIZE = Point(8, 16);
         constexpr Point ICON_SIZE = Point(16, 16);
         constexpr Point OFFSET = Point(16, 0);
-        queue.add(getPosition(), ICON_SIZE, item.get());
-        queue.add(getPosition() + OFFSET, GLYPH_SIZE, count, 0xFF'FF'FF'FF);
+        renderBridge.drawSprite(Sprite(getPosition(), ICON_SIZE, item.get()));
+        renderBridge.drawText(Text(getPosition() + OFFSET, GLYPH_SIZE, count, 0xFF'FF'FF'FF));
     }
     //
     ItemPresetID getItemID() const { return itemID; }

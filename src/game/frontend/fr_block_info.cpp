@@ -1,6 +1,5 @@
 #include "frontend.hpp"
 //
-#include <MINGUI/render/render_queue.hpp>
 #include <MINGUI/widgets/button.hpp>
 #include <MINGUI/widgets/icon.hpp>
 #include "engine/engine.hpp"
@@ -8,21 +7,21 @@
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/settings/localization.hpp"
 
-class FrInvSlot : public Node {
+class FrCostSlot : public Node {
     std::string count;
     std::unique_ptr<TextureBridge> item;
 public:
-    FrInvSlot(TextureBridge* item, const int64_t count) :
+    FrCostSlot(TextureBridge* item, const int64_t count) :
         item(item), count(std::format("{}", count)) {
         setSize(Point(48, 16));
     }
     void callback(UIContext& context) final {/*empty*/ }
-    void draw(RenderQueue& queue) final {
+    void draw(RenderBridge& renderBridge) final {
         constexpr Point GLYPH_SIZE = Point(8, 16);
         constexpr Point ICON_SIZE = Point(16, 16);
         constexpr Point OFFSET = Point(16, 0);
-        queue.add(getPosition(), ICON_SIZE, item.get());
-        queue.add(getPosition() + OFFSET, GLYPH_SIZE, count, 0xFF'FF'FF'FF);
+        renderBridge.drawSprite(Sprite(getPosition(), ICON_SIZE, item.get()));
+        renderBridge.drawText(Text(getPosition() + OFFSET, GLYPH_SIZE, count, 0xFF'FF'FF'FF));
     }
 };
 
@@ -56,7 +55,7 @@ public:
             if (ing.amount < 1)
                 continue;
             const ItemPreset& preset = engine.getAssets().getPresets().getItem(ing.itemID);
-            ingridients->addNode(new FrInvSlot(new T1_UITexture(preset.textureRect), ing.amount));
+            ingridients->addNode(new FrCostSlot(new T1_UITexture(preset.textureRect), ing.amount));
         }
 
         if (preset.archetype == BlockType::turret) {
@@ -74,9 +73,9 @@ public:
         addNode(new Button(Point(260, 30), tr("Back")))->addCallback([&] { close(); });
     }
 
-    void draw(RenderQueue& queue) final {
-        queue.add(Point(0, 0), Point(4000, 4000), DEFAULT_PALETTE.idle);
-        Container::draw(queue);
+    void draw(RenderBridge& renderBridge) final {
+        renderBridge.drawRect(Rect(Point(0, 0), Point(4000, 4000), DEFAULT_PALETTE.idle));
+        Container::draw(renderBridge);
     }
 };
 

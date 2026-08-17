@@ -1,12 +1,12 @@
 #include <MINGUI/widgets/label.hpp>
 //
-#include <MINGUI/render/render_queue.hpp>
+#include <MINGUI/render/render_bridge.hpp>
 #include <MINGUI/utfcpp/utf8.h>
 
 MINGUI
 
-void Label::draw(RenderQueue& queue) {
-    queue.add(getPosition(), glyphSize, text, getPalette().text);
+void Label::draw(RenderBridge& renderBridge) {
+    renderBridge.drawText(Text(getPosition(), glyphSize, text, getPalette().text));
 }
 
 void Label::setText(const std::string& text) {

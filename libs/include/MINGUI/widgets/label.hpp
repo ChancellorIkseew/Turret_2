@@ -14,7 +14,7 @@ public:
     //
     void setText(const std::string& text);
     //
-    void draw(RenderQueue& queue) final;
+    void draw(RenderBridge& renderBridge) final;
     void callback(UIContext& context) final { };
     void setGlyphSize(const Point size) { glyphSize = size; }
 };

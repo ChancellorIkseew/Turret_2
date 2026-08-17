@@ -1,12 +1,10 @@
 #pragma once
 #include <MINGUI/core/text_edit.hpp>
-#include <MINGUI/render/render_queue.hpp>
 #include <MINGUI/widgets/container.hpp>
 
 START_NAMESPACE_MINGUI
 
 class MainCanvas {
-    RenderQueue renderQueue;
     std::vector<std::unique_ptr<Container>> mainLayer;
     std::vector<std::unique_ptr<Container>> overlay;
     TextEdit textEdit;

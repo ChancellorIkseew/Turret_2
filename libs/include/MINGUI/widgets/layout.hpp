@@ -25,7 +25,7 @@ public:
     }
     void setPaletteRecursive(const Palette& palette);
     virtual void arrange();
-    void draw(RenderQueue& queue) override;
+    void draw(RenderBridge& renderBridge) override;
     void clear() { contents.clear(); }
     void setMargin(const float margin) { this->margin = margin; }
     void setPadding(const float padding) { this->padding = padding; }

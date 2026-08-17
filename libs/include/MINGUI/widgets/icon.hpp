@@ -13,7 +13,7 @@ public:
     }
     ~Icon() override = default;
     //
-    void draw(RenderQueue& queue) override;
+    void draw(RenderBridge& renderBridge) override;
     void callback(UIContext& context) override { }
     //
     void setTexture(TextureBridge* texture) {

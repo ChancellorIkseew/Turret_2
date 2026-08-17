@@ -11,7 +11,7 @@ public:
         : AbstractButton(size), label(name) { centerText(); }
     ~Button() final = default;
     //
-    void draw(RenderQueue& queue) final;
+    void draw(RenderBridge& renderBridge) final;
     void setPosition(const Point position) final;
     void setText(const std::string& name);
 private:

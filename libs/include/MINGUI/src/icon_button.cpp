@@ -2,9 +2,9 @@
 
 MINGUI
 
-void IconButton::draw(RenderQueue& queue) {
-    Clickable::draw(queue);
-    icon.draw(queue);
+void IconButton::draw(RenderBridge& renderBridge) {
+    Clickable::draw(renderBridge);
+    icon.draw(renderBridge);
 }
 void IconButton::setPosition(const Point position) {
     Node::setPosition(position);

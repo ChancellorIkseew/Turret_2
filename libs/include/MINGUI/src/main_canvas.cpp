@@ -33,13 +33,12 @@ void MainCanvas::draw(RenderBridge& renderBridge) {
     for (const auto& it : mainLayer) refreshContainer(*it);
     for (const auto& it : overlay)   refreshContainer(*it);
 
+    renderBridge.setScale(scale);
     for (const auto& it : mainLayer) {
-        it->draw(renderQueue);
+        it->draw(renderBridge);
     }
     if (hasOverlay())
-        overlay.back()->draw(renderQueue);
-    renderBridge.setScale(scale);
-    renderQueue.drawAndClear(renderBridge);
+        overlay.back()->draw(renderBridge);
 }
 
 void MainCanvas::resize(const Point windowSize) noexcept {

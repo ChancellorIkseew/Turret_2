@@ -2,10 +2,10 @@
 
 MINGUI
 
-void Button::draw(RenderQueue& queue) {
-    Clickable::draw(queue);
+void Button::draw(RenderBridge& renderBridge) {
+    Clickable::draw(renderBridge);
     label.setPalette(getPalette()); // temporary. Needs better fix
-    label.draw(queue);
+    label.draw(renderBridge);
 }
 
 void Button::setPosition(const Point position) {

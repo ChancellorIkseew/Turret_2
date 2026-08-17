@@ -7,7 +7,7 @@ START_NAMESPACE_MINGUI
 
 class AbstractButton;
 class Layout;
-class RenderQueue;
+class RenderBridge;
 
 class Node {
     Palette palette = DEFAULT_PALETTE;
@@ -17,7 +17,7 @@ public:
     Node() = default;
     virtual ~Node() = default;
     //
-    virtual void draw(RenderQueue& queue);
+    virtual void draw(RenderBridge& renderBridge);
     virtual void callback(UIContext& context) = 0;
     //
     Point getPosition() const noexcept { return position; }
