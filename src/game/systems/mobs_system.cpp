@@ -76,11 +76,22 @@ static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
     }
 }
 
+static inline void animateMoving(MobSoA& soa, const size_t mobCount, const Presets& presets) {
+    for (size_t i = 0; i < mobCount; ++i) {
+        const auto& visual = presets.getMob(soa.preset[i]).visual;
+        ++soa.chassisTick[i];
+        const uint8_t frame = soa.chassisTick[i] / visual.frameTicks;
+        if (frame >= visual.frameCount)
+            soa.chassisTick[i] = 0;
+    }
+}
+
 void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks, const Presets& presets) {
     const size_t mobCount = soa.mobCount;
     moveByAI(soa, mobCount);
     resolveCollisions(soa, chunks, presets);
     resolveWorldCollisions(soa, mobCount, blocks, presets);
+    animateMoving(soa, mobCount, presets);
     for (auto& ammo : soa.ammo) {
         ammo = 1;
     }
@@ -116,21 +127,16 @@ void mobs::drawHealthBars(const MobSoA& soa, const Presets& presets, const Camer
     }
 }
 
-void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount) {
+void mobs::drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t mobCount = soa.mobCount;
     for (size_t i = 0; i < mobCount; ++i) {
         if (!camera.contains(soa.position[i]))
             continue;
         const auto& visual = presets.getMob(soa.preset[i]).visual;
-        if (tickCount % visual.frameTicks == 0 && soa.velocity[i] != PixelCoord(0.0f, 0.0f)) {
-            ++soa.chassisFrame[i];
-            if (soa.chassisFrame[i] >= presets.getMob(soa.preset[i]).visual.frameCount)
-                soa.chassisFrame[i] = 0;
-        }
-
+        const uint8_t frame = soa.chassisTick[i] / visual.frameTicks;
         TextureRect frameTextureRect = visual.textureRect;
         frameTextureRect.h = visual.frameHeight;
-        frameTextureRect.y += static_cast<float>(visual.frameOrder[soa.chassisFrame[i]]) * visual.frameHeight;
+        frameTextureRect.y += static_cast<float>(visual.frameOrder[frame]) * visual.frameHeight;
         renderer.draw(frameTextureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
     }
 }
@@ -142,8 +148,8 @@ void mobs::drawMobShields(const MobSoA& soa, const Presets& presets, const Camer
             continue;
         constexpr TextureRect RECT{ 0.f, 0.f, 1.f, 1.f };
         const auto& preset = presets.getMob(soa.preset[i]);
-        PixelCoord origin(preset.shieldRadius, preset.shieldRadius);
-        PixelCoord size = origin * 2.f;
+        const PixelCoord origin(preset.shieldRadius, preset.shieldRadius);
+        const PixelCoord size = origin * 2.f;
         renderer.draw(RECT, soa.position[i], size, origin, 0.f, 0xFF'FF'FF'00);
     }
 }

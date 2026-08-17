@@ -9,7 +9,7 @@ inline void drawEntities(const Camera& camera, Renderer& renderer,
     BlockMap& blocks, MobSoA& mobs, const ShellSoA& shells, const Presets& presets, const uint64_t tickCount) {
     turrets::drawShadows(fromBlocks(blocks.getMeta().getTurrets().getSoa()), presets, camera, renderer);
     turrets::drawTurrets(fromBlocks(blocks.getMeta().getTurrets().getSoa()), presets, camera, renderer);
-    mobs::drawMobs(mobs, presets, camera, renderer, tickCount);
+    mobs::drawMobs(mobs, presets, camera, renderer);
     turrets::drawShadows(fromMobs(mobs), presets, camera, renderer);
     turrets::drawTurrets(fromMobs(mobs), presets, camera, renderer);
     shells::drawShells(shells, presets, camera, renderer);
