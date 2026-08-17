@@ -5,6 +5,7 @@
 struct MobSoA {
     std::vector<float> hitboxRadius;
     std::vector<PixelCoord> position;
+    std::vector<PixelCoord> preveousePosition;
     std::vector<PixelCoord> velocity;
     std::vector<AngleRad> angle;
     std::vector<Health> health;

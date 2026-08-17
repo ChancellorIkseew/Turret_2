@@ -70,14 +70,17 @@ static inline void resolveWorldCollisions(MobSoA& soa, const size_t mobCount, co
     }
 }
 
-static inline void moveByAI(MobSoA& soa, const size_t mobCount) {
+static inline void moveByVelocity(MobSoA& soa, const size_t mobCount) {
     for (size_t i = 0; i < mobCount; ++i) {
+        soa.preveousePosition[i] = soa.position[i];
         soa.position[i] += soa.velocity[i];
     }
 }
 
 static inline void animateMoving(MobSoA& soa, const size_t mobCount, const Presets& presets) {
     for (size_t i = 0; i < mobCount; ++i) {
+        if (t1::areCloserCircle(soa.position[i], soa.preveousePosition[i], 0.04f))
+            continue;
         const auto& visual = presets.getMob(soa.preset[i]).visual;
         ++soa.chassisTick[i];
         const uint8_t frame = soa.chassisTick[i] / visual.frameTicks;
@@ -88,7 +91,7 @@ static inline void animateMoving(MobSoA& soa, const size_t mobCount, const Prese
 
 void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks, const Presets& presets) {
     const size_t mobCount = soa.mobCount;
-    moveByAI(soa, mobCount);
+    moveByVelocity(soa, mobCount);
     resolveCollisions(soa, chunks, presets);
     resolveWorldCollisions(soa, mobCount, blocks, presets);
     animateMoving(soa, mobCount, presets);

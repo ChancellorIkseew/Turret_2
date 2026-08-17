@@ -2,6 +2,7 @@
 
 void MobsPool::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
+    soa.preveousePosition.reserve(capacity);
     soa.velocity.reserve(capacity);
     soa.angle.reserve(capacity);
     soa.health.reserve(capacity);
@@ -36,6 +37,7 @@ void MobsPool::addMob(
     const AngleRad turretAngle) {
 
     soa.position.push_back(position);
+    soa.preveousePosition.push_back(position);
     soa.velocity.push_back(PixelCoord(0, 0));
     soa.angle.push_back(angle);
     soa.health.push_back(health);
@@ -61,6 +63,7 @@ void MobsPool::removeMob(const size_t targetIndex) {
 
     if (targetIndex != lastIndex) {
         soa.position[targetIndex] = std::move(soa.position[lastIndex]);
+        soa.preveousePosition[targetIndex] = std::move(soa.preveousePosition[lastIndex]);
         soa.velocity[targetIndex] = std::move(soa.velocity[lastIndex]);
         soa.angle[targetIndex] = std::move(soa.angle[lastIndex]);
         soa.health[targetIndex] = std::move(soa.health[lastIndex]);
@@ -81,6 +84,7 @@ void MobsPool::removeMob(const size_t targetIndex) {
     }
 
     soa.position.pop_back();
+    soa.preveousePosition.pop_back();
     soa.velocity.pop_back();
     soa.angle.pop_back();
     soa.health.pop_back();
