@@ -6,6 +6,13 @@ amount=2
 scaling=1
 }
 {
+mob=rocket_bot
+begin=6
+spacing=2
+amount=1
+scaling=1
+}
+{
 mob=cannoner_bot
 begin=5
 spacing=5
