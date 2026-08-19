@@ -29,10 +29,8 @@ void GameSession::prepare(const Presets& presets) {
     camera.teleport(t1::tileCenter(corePosition));
     //
     Inventory& inventory = playerTeam->getInventory();
-    inventory.resources[0] = 999;
-    inventory.resources[1] = 988;
-    inventory.resources[2] = 977;
-    inventory.resources[3] = 966;
+    inventory.resources[presets.getItemID("item_copper").asUint()] = 999;
+    inventory.resources[presets.getItemID("item_iron").asUint()] = 999;
 }
 
 void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
