@@ -14,8 +14,8 @@ plt::MemoryUsage plt::getMemoryUsage() {
         statm >> vmPages >> rssPages;
         long pageSizeBytes = sysconf(_SC_PAGE_SIZE);
         //
-        const size_t usedMB =    (rssPages * pageSizeBytes);
-        const size_t reservedMB = (vmPages * pageSizeBytes);
+        const size_t usedMB =    (rssPages * pageSizeBytes) / 1024 / 1024;
+        const size_t reservedMB = (vmPages * pageSizeBytes) / 1024 / 1024;
         return plt::MemoryUsage(reservedMB, usedMB);
     }
     return plt::MemoryUsage(0, 0);
