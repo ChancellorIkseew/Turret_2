@@ -35,6 +35,7 @@ public:
         vingette   = clickable->addNode(new Checkbox(Settings::gameplay.vingette));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
+        frontend::useLabelsSpacing(labels);
         labels->addNode(new Label("FPS|TPS"));
         labels->addNode(new Label(tr("fullscreen")));
         labels->addNode(new Label(tr("camera inertia")));
