@@ -1,7 +1,7 @@
 #include "game/blocks/block_map.hpp"
 
 bool JunctionBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
-    if (srcRot % 2 == BlockRot::down && vertical.item == ItemPresetID(0))
+    if (srcRot % 2 == BlockRot::up && vertical.item == ItemPresetID(0))
         return true;
     if (srcRot % 2 == BlockRot::right && horizontal.item == ItemPresetID(0))
         return true;
@@ -9,7 +9,7 @@ bool JunctionBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
 }
 
 void JunctionBlock::accept(ItemPresetID item, BlockRot srcRot) {
-    if (srcRot % 2 == BlockRot::down) {
+    if (srcRot % 2 == BlockRot::up) {
         vertical.item = item;
         vertical.rotation = srcRot;
         return;
