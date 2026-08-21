@@ -34,7 +34,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schemati
             continue;
 
         const PixelCoord position = soa.position[i];
-        constexpr float RANGE = 128.f;
+        constexpr float RANGE = t1::pixelF(8);
         constexpr float SQ_RANGE = t1::pow2f(RANGE);
         const auto closestInProgress = blocks.getClosestInProgress(position);
 

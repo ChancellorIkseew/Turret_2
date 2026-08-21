@@ -49,7 +49,7 @@ static inline void updateBuilder(MobSoA& soa, const Presets& presets, const size
             aiData.target = mobPosition;
     }
     
-    if (t1::areCloserRect(aiData.target, mobPosition, 64.f))
+    if (t1::areCloserRect(aiData.target, mobPosition, 128.f))
         soa.velocity[index] = NO_MOTION;
     else {
         const AngleRad motionAngle = t1::atan(aiData.target - mobPosition);
