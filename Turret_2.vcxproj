@@ -100,6 +100,7 @@
     <ClInclude Include="src\engine\window\window.hpp" />
     <ClInclude Include="src\game\blocks\block.hpp" />
     <ClInclude Include="src\game\blocks\block_map.hpp" />
+    <ClInclude Include="src\game\blocks\logic_detail\blocks_common.hpp" />
     <ClInclude Include="src\game\blocks\make_block.hpp" />
     <ClInclude Include="src\game\blocks\offset_table.hpp" />
     <ClInclude Include="src\game\blocks\schematic\schematic.hpp" />

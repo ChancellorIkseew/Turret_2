@@ -17,7 +17,7 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
             case BlockType::drill:
                 if (tickForUpdate)
                     static_cast<DrillBlock*>(blockTile.block.get())->mine(tile, terrain, presets);
-                static_cast<DrillBlock*>(blockTile.block.get())->throwItem(tile, *this);
+                static_cast<DrillBlock*>(blockTile.block.get())->provide(tile, *this);
                 break;
             case BlockType::factory:
                 static_cast<FactoryBlock*>(blockTile.block.get());

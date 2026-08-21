@@ -1,7 +1,5 @@
-#include "game/blocks/block.hpp"
-//
+#include "blocks_common.hpp"
 #include "engine/assets/presets.hpp"
-#include "game/blocks/block_map.hpp"
 #include "game/world/world_map.hpp"
 
 void DrillBlock::mine(TileCoord tile, const WorldMap& terrain, const Presets& presets) {
@@ -12,17 +10,6 @@ void DrillBlock::mine(TileCoord tile, const WorldMap& terrain, const Presets& pr
     inventory.count = std::min(inventory.count + mineSpeed, MAX_ITEMS);
 }
 
-void DrillBlock::throwItem(TileCoord tile, const BlockMap& map) {
-    for (int i = 0; i < 4; ++i) {
-        if (inventory.count < 1)
-            return;
-        const TileCoord targetTile = tile + DIR_VECS[i];
-        const BlockTile& blockTile = map.at(targetTile);
-        if (blockTile.type > BlockType::wall) {
-            if (blockTile.block->canAccept(inventory.item, static_cast<BlockRot>(i))) {
-                blockTile.block->accept(inventory.item, static_cast<BlockRot>(i));
-                --inventory.count;
-            } 
-        }
-    }
+void DrillBlock::provide(TileCoord tile, const BlockMap& map) {
+    throwItem(tile, size, map, inventory, step);
 }

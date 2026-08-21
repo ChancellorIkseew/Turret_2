@@ -43,13 +43,6 @@ enum BlockRot : int8_t {
     none  = -1
 };
 
-static constexpr TileCoord DIR_VECS[] = {
-    { 0, -1 }, // up
-    { 1, 0 },  // right
-    { 0, 1 },  // down
-    { -1, 0 }  // left
-};
-
 struct Block {
     Health health = 0;
     BlockPresetID presetID = BlockPresetID(0);
@@ -106,10 +99,11 @@ struct CoreBlock : Block {
 struct DrillBlock : Block {
     ItemStack inventory;
     int8_t mineSpeed = 1;
+    uint8_t step;
     t1_derived BlockType getType() const noexcept final { return BlockType::drill; }
 public: //
     void mine(TileCoord tile, const WorldMap& terrain, const Presets& presets);
-    void throwItem(TileCoord tile, const BlockMap& map);
+    void provide(TileCoord tile, const BlockMap& map);
 };
 
 struct BeltBlock : Block {
@@ -173,6 +167,7 @@ struct JunctionBlock : Block {
 
 struct RouterBlock : Block {
     ItemStack inventory;
+    uint8_t step;
     //
     t1_derived BlockType getType() const noexcept final { return BlockType::router; }
     //

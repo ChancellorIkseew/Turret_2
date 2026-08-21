@@ -2,9 +2,16 @@
 //
 #include <cassert>
 #include "game/blocks/block_map.hpp"
-#include "engine/debug/logger.hpp"
+//#include "engine/debug/logger.hpp"
 
-static debug::Logger logger("t1_test");
+//static debug::Logger logger("t1_test");
+
+inline constexpr TileCoord DIR_VECS[] = {
+    { 0, -1 }, // up
+    { 1, 0 },  // right
+    { 0, 1 },  // down
+    { -1, 0 }  // left
+};
 
 static constexpr float approach(float current, float target, float step) noexcept {
     if (current < target) return std::min(current + step, target);
