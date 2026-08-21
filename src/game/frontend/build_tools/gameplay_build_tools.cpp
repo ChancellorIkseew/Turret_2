@@ -150,7 +150,7 @@ void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t t
         const BlockMap& blocks = engine.getSession().getWorld().getBlocks();
         for (int x = nStart.x; x < nEnd.x + 1; ++x) {
             for (int y = nStart.y; y < nEnd.y + 1; ++y) {
-                if (blocks.at(TileCoord(x, y)).type == BlockType::air)
+                if (!blocks.isFilled(TileCoord(x, y)))
                     continue;
                 const TileCoord masterTile = blocks.getMaster(TileCoord(x, y));
                 const int size = blocks.at(masterTile).block->size;
