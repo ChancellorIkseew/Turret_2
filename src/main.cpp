@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     try {
         Settings::readSettings();
         Controls::readBindings();
-        Engine engine("Turret_2.0.14 - pre-alpha", PixelCoord(720, 480));
+        Engine engine("Turret_2.0.15 - pre-alpha", PixelCoord(720, 480));
         Settings::applySettings(engine);
         engine.run();
     }
