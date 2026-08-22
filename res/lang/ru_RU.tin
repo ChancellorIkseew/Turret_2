@@ -76,6 +76,7 @@ Reload: {} ticks=Перезарядка: {} тиков
 cannon_turret=Турель-тяжёлая автопушка
 gatling_turret=Турель-автопушка
 laser_turret=Лазерная турель
+rail_turret=Рельсовая турель
 rocket_turret=Ракетная турель
 router=Маршрутизатор
 junction=Перекрёсток

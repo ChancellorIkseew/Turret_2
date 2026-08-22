@@ -1,0 +1,16 @@
+#visual
+texture=rail_turret
+origin=25|31.0
+size=50|58
+shadow_offset=2
+shot_sound=railgun_shot
+#logic
+reload=45
+range=650
+recoil=4.0
+spread_deg=0.1
+rotation_speed=0.02
+shooting_ai=basic
+shell=rail_bolt
+barrels=0|32
+ammo_by_item=1

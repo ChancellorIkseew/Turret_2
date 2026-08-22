@@ -1,0 +1,12 @@
+#visual
+texture=big_turret_base
+frame_ticks=0
+frame_height=64
+frame_order=0
+#logic
+archetype=turret
+size=2
+build_time=250
+rotatable=true
+health=950
+turret=rail_turret
