@@ -63,7 +63,7 @@ void GBuildTools::update(Engine& engine) {
         demolish(map, blocks, schematic, optDemolishStart.value(), targetTile);
         optDemolishStart.reset();
     }
-    if (input.jactive(Build_Shoot) && !optTileData)
+    if (input.jactive(Build_Shoot) && mouseFree && !optTileData)
         rejectDemolition(blocks, schematic, targetTile);
     if (input.jactive(Clear_schematic))
         schematic.clear();
