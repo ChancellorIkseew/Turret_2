@@ -67,7 +67,7 @@ void MobsPool::removeMob(const size_t targetIndex) {
         soa.velocity[targetIndex] = std::move(soa.velocity[lastIndex]);
         soa.angle[targetIndex] = std::move(soa.angle[lastIndex]);
         soa.health[targetIndex] = std::move(soa.health[lastIndex]);
-        soa.shieldHealth[targetIndex] = std::move(soa.health[lastIndex]);
+        soa.shieldHealth[targetIndex] = std::move(soa.shieldHealth[lastIndex]);
         soa.teamID[targetIndex] = std::move(soa.teamID[lastIndex]);
         soa.preset[targetIndex] = std::move(soa.preset[lastIndex]);
         soa.turretPreset[targetIndex] = std::move(soa.turretPreset[lastIndex]);
