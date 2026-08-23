@@ -19,6 +19,8 @@ void JunctionBlock::accept(ItemPresetID item, BlockRot srcRot) {
 }
 
 static inline void tryProvide(TileCoord target, const BlockMap& map, JunctionBlock::RotatedItem& rotatedItem) {
+    if (!map.contains(target))
+        return;
     const BlockTile& blockTile = map.at(target);
     if (blockTile.type > BlockType::wall && blockTile.block->canAccept(rotatedItem.item, rotatedItem.rotation)) {
         blockTile.block->accept(rotatedItem.item, rotatedItem.rotation);
