@@ -1,3 +1,4 @@
+#pragma once
 #include "game/blocks/block_map.hpp"
 
 struct PerimeterStep {
