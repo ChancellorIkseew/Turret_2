@@ -5,7 +5,7 @@ def process_file(file_path: Path):
     extension = file_path.suffix
 
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, 'r', encoding='utf-8', newline='') as file:
             content = file.read()
         
         modified_content = content
@@ -23,13 +23,18 @@ def process_file(file_path: Path):
         if '\t' in modified_content:
             modified_content = modified_content.replace('\t', '    ')
             needs_rewrite = True
-            
-        if not modified_content.endswith('\n'):
-            modified_content += '\n'
+        
+        normalized_crlf = modified_content.replace('\r\n', '\n').replace('\r', '\n').replace('\n', '\r\n')
+        if normalized_crlf != modified_content:
+            modified_content = normalized_crlf
             needs_rewrite = True
-            
+        
+        if not modified_content.endswith('\r\n'):
+            modified_content += '\r\n'
+            needs_rewrite = True
+        
         if needs_rewrite:
-            with open(file_path, 'w', encoding='utf-8') as file:
+            with open(file_path, 'w', encoding='utf-8', newline='') as file:
                 file.write(modified_content)
             print(f"processed: {file_path}")
     
