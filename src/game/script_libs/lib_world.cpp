@@ -55,7 +55,7 @@ void script_libs::registerWorld(const ScriptsHandler& scriptsHandler) {
     scriptsHandler.registerFunction("int world_getWidth()", asFunctionPtr(getWidth));
     scriptsHandler.registerFunction("int world_getHeight()", asFunctionPtr(getHeight));
     scriptsHandler.registerFunction("void world_placeFloor(int x, int y, uint8 floorID)", asFunctionPtr(placeFloor));
-    scriptsHandler.registerFunction("void world_placeOre(int x, int y, uint8 oreID)", asFunctionPtr(placeFloor));
+    scriptsHandler.registerFunction("void world_placeOre(int x, int y, uint8 oreID)", asFunctionPtr(placeOre));
     scriptsHandler.registerFunction("void world_spawnMob(string preset, int x, int y, uint8 teamID)", asFunctionPtr(spawnMob));
     scriptsHandler.registerFunction("void world_spawnShell(string preset, int x, int y, float angle, uint8 teamID)", asFunctionPtr(spawnShell));
 }
