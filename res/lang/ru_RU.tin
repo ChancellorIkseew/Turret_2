@@ -72,7 +72,7 @@ Explosion damage: {}=Урон от взрыва: {}
 Explosion radius: {:.2f} tiles=Радиус взрыва: {:.2f} плиток
 Reload: {} ticks=Перезарядка: {} тиков
 
-#block names
+#block_names
 cannon_turret=Турель-тяжёлая автопушка
 gatling_turret=Турель-автопушка
 laser_turret=Лазерная турель
