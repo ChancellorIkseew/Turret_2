@@ -43,6 +43,8 @@ public:
         const float gainFactor, const int64_t globalTimeMs);
     void endFrame();
     //
+    bool isMusicPlaying() const;
+    void stopMusic();
     void playMusic(const std::string& name);
     void playUI(const std::string& name);
     //

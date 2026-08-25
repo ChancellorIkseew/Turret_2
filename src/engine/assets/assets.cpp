@@ -23,6 +23,10 @@ static void loadSounds(Audio& audio) {
     for (const auto& fileName : fileNames) {
         audio.loadSound(io::folders::trimExtensions(fileName), io::folders::SOUNDS / fileName);
     }
+    const auto musicFileNames = io::folders::getContents(io::folders::RES / "music", io::folders::ContentsType::file);
+    for (const auto& fileName : musicFileNames) {
+        audio.loadSound(io::folders::trimExtensions(fileName), io::folders::RES / "music" / fileName);
+    }
 }
 
 void Assets::load(Renderer& renderer) {

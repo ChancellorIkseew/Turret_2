@@ -161,13 +161,28 @@ void Audio::endFrame() {
     }
 }
 
-void Audio::playUI(const std::string& id) {
-    if (MIX_Track* track = findFreeTrack(uiTrackPool))
-        playMono(sounds[id].audio, track);
+bool Audio::isMusicPlaying() const {
+    for (MIX_Track* track : musicTrackPool) {
+        if (MIX_TrackPlaying(track))
+            return true;
+    }
+    return false;
+}
+
+void Audio::stopMusic() {
+    for (MIX_Track* track : musicTrackPool) {
+        MIX_StopTrack(track, FADING_FRAME_COUNT);
+    }
 }
 
 void Audio::playMusic(const std::string& id) {
+    stopMusic();
     if (MIX_Track* track = findFreeTrack(musicTrackPool))
+        playMono(sounds[id].audio, track);
+}
+
+void Audio::playUI(const std::string& id) {
+    if (MIX_Track* track = findFreeTrack(uiTrackPool))
         playMono(sounds[id].audio, track);
 }
 

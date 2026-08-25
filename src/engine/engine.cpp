@@ -39,6 +39,15 @@ static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engin
     throw std::runtime_error("Failed to create GUI.");
 }
 
+static GameMode getGameMode(const EngineCommand command) {
+    switch (command) {
+    case EngineCommand::main_menu:           return GameMode::menu;
+    case EngineCommand::gameplay_new_world:  return GameMode::survival;
+    case EngineCommand::gameplay_load_world: return GameMode::survival;
+    default:                                 return GameMode::editor;
+    }
+}
+
 std::unique_ptr<GameSession> Engine::createSession() {
     std::unique_ptr<World> world = createWorld(command, worldFolder, worldProperties, assets);
     if (!world) {
@@ -46,9 +55,7 @@ std::unique_ptr<GameSession> Engine::createSession() {
         return nullptr;
     }
     const bool paused = command == EngineCommand::main_menu ? false : Settings::gameplay.pauseOnWorldOpen;
-    const bool survival = command == EngineCommand::gameplay_new_world || command == EngineCommand::gameplay_load_world;
-    const GameMode gameMode = survival ? GameMode::survival : GameMode::sandbox;
-    return std::make_unique<GameSession>(std::move(world), createGUI(command, *this), assets, paused, gameMode);
+    return std::make_unique<GameSession>(std::move(world), createGUI(command, *this), assets, paused, getGameMode(command));
 }
 
 void Engine::run() {
