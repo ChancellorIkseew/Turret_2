@@ -51,6 +51,7 @@
     <ClInclude Include="src\engine\assets\shaders.hpp" />
     <ClInclude Include="src\engine\assets\waves.hpp" />
     <ClInclude Include="src\engine\audio\audio.hpp" />
+    <ClInclude Include="src\engine\audio\music_queue.hpp" />
     <ClInclude Include="src\engine\audio\sound_queue.hpp" />
     <ClInclude Include="src\engine\coords\pixel_coord.hpp" />
     <ClInclude Include="src\engine\coords\math.hpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="src\engine\assets\presets.cpp" />
     <ClCompile Include="src\engine\assets\waves.cpp" />
     <ClCompile Include="src\engine\audio\audio.cpp" />
+    <ClCompile Include="src\engine\audio\music_queue.cpp" />
     <ClCompile Include="src\engine\audio\sound_queue.cpp" />
     <ClCompile Include="src\engine\debug\logger.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />

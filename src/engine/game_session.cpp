@@ -10,10 +10,11 @@
 #include "game/world/world.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
-GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, const Assets& assets,
+GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets,
     const bool paused, const GameMode gameMode) :
     camera(world->getMap().getSize(), Settings::gameplay.cameraInertia), world(std::move(world)), gui(std::move(gui)),
-    worldDrawer(assets), pausedManually(paused), timeCount(0, 10800), builtInScripts(assets, *this->world), gameMode(gameMode) {
+    worldDrawer(assets), pausedManually(paused), timeCount(0, 10800), builtInScripts(assets, *this->world),
+    musicQueue(assets.getAudio()), gameMode(gameMode) {
     prepare(assets.getPresets());
 }
 GameSession::~GameSession() = default;
@@ -42,29 +43,6 @@ void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
         lastCoreAttack = timeCount.getTickCount();
 }
 
-static void updateMusic(GameMode gameMode, Audio& audio) {
-    if (gameMode == GameMode::menu && !audio.isMusicPlaying()) {
-        audio.playMusic("ost_menu");
-        return;
-    }
-
-    bool bossWave = false;
-    static uint64_t timer = 0;
-    constexpr uint64_t WAIT_TICKS = 60 * 60 * 2;
-
-    if (!audio.isMusicPlaying())
-        timer++;
-    else
-        timer = 0;
-
-    if (bossWave) {
-        audio.playMusic("ost_boss_1");
-        return;
-    }
-    if (timer > WAIT_TICKS)
-        audio.playMusic("ost_neutral_1");
-}
-
 void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
     Events::reset(); // for editor // needs update
     auto& mainWindow = engine.getMainWindow();
@@ -82,7 +60,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
             updateSimulation(presets, engine);
         }
     }
-    updateMusic(gameMode, engine.getAssets().getAudio());
+    musicQueue.update(0, gameMode);
     scriptsHandler.execute();
     //
     mainWindow.clear();
