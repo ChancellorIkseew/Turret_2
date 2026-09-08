@@ -28,7 +28,7 @@ private:
     void move(const Input& input);
     void mine();
     void shoot(const Input& input, const Camera& camera);
-    void captureMobOrTurret(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets,
-        const std::optional<size_t> mob, const std::optional<size_t> turret, const Presets& presets) const;
+    void captureMobOrTurret(const PixelCoord mousePosition, MobSoA& mobs, TurretSoA& turrets,
+        const std::optional<size_t> controlledMob, const std::optional<size_t> controlledTurret, const Presets& presets) const;
     void moveCamera(const MobSoA& mobs, const std::optional<size_t> mob, const bool paused, Camera& camera, const Input& input) const;
 };

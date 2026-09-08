@@ -1,5 +1,6 @@
 #include "player_controller.hpp"
 //
+#include <bit>
 #include "camera.hpp"
 #include "engine/assets/presets.hpp"
 #include "engine/window/input/input.hpp"
@@ -56,26 +57,27 @@ void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA
     mine();
     moveCamera(mobs, mob, paused, camera, input);
     if (input.jactive(Control_unit))
-        captureMobOrTurret(input, camera, mobs, turrets, mob, turret, presets);
+        captureMobOrTurret(camera.fromScreenToMap(input.getMouseCoord()), mobs, turrets, mob, turret, presets);
 }
 
-void PlCtr::captureMobOrTurret(const Input& input, const Camera& camera, MobSoA& mobs, TurretSoA& turrets,
-    const std::optional<size_t> mob, const std::optional<size_t> turret, const Presets& presets) const {
-    if (mob) {
-        const auto& preset = presets.getMob(mobs.preset[*mob]);
-        mobs.motionData[*mob].aiType = preset.defaultMovingAI;
-        mobs.shootingData[*mob].aiType = preset.defaultShootingAI;
+void PlCtr::captureMobOrTurret(const PixelCoord mousePosition, MobSoA& mobs, TurretSoA& turrets,
+    const std::optional<size_t> controlledMob, const std::optional<size_t> controlledTurret, const Presets& presets) const {
+    if (controlledMob) {
+        const auto& preset = presets.getMob(mobs.preset[*controlledMob]);
+        mobs.motionData[*controlledMob].aiType = preset.defaultMovingAI;
+        mobs.shootingData[*controlledMob].aiType = preset.defaultShootingAI;
     }
-    if (turret) {
-        // TODO: const auto& preset = presets.getTurret(mobs.preset[*turret]); // when it would be implemented
-        turrets.shootingData[*turret].aiType = ShootingAI::basic;
+    if (controlledTurret) {
+        // TODO: const auto& preset = presets.getTurret(turrets.preset[*turret]); // when it would be implemented
+        turrets.shootingData[*controlledTurret].aiType = ShootingAI::basic;
     }
 
-    const PixelCoord mousePosition = input.getMouseCoord();
     for (size_t i = 0; i < mobs.mobCount; ++i) {
         if (mobs.teamID[i] != m_playerTeamID)
             continue;
-        if (t1::areCloserRect(camera.fromMapToScreen(mobs.position[i]), mousePosition, 20.f)) {
+        const float hitboxRadius = presets.getMob(mobs.preset[i]).hitboxRadius;
+
+        if (t1::areCloserCircle(mobs.position[i], mousePosition, hitboxRadius * 0.9f)) {
             mobs.motionData[i].aiType = MovingAI::player_controlled;
             mobs.shootingData[i].aiType = ShootingAI::player_controlled;
             return; // avoid capcture both mob and turret
@@ -85,7 +87,10 @@ void PlCtr::captureMobOrTurret(const Input& input, const Camera& camera, MobSoA&
     for (size_t i = 0; i < turrets.turretCount; ++i) {
         if (turrets.teamID[i] != m_playerTeamID)
             continue;
-        if (t1::areCloserRect(camera.fromMapToScreen(turrets.position[i]), mousePosition, 20.f)) {
+        const PixelCoord size = presets.getTurret(turrets.preset[i]).visual.size;
+        const float hitboxRadius = static_cast<float>(std::bit_ceil(static_cast<uint32_t>(size.y / 2.f)));
+
+        if (t1::areCloserRect(turrets.position[i], mousePosition, hitboxRadius * 0.9f)) {
             turrets.shootingData[i].aiType = ShootingAI::player_controlled;
             return; // avoid capcture both mob and turret
         }
