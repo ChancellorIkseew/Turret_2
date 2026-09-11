@@ -50,48 +50,46 @@ void PlCtr::moveCamera(const MobSoA& mobs, const std::optional<size_t> mob, cons
 }
 
 void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, TurretSoA& turrets, const Presets& presets) {
-    const auto mob = findPlayerControlled(mobs.shootingData);
-    const auto turret = findPlayerControlled(turrets.shootingData);
+    const Unit unitControlled{ .mob = findPlayerControlled(mobs.shootingData), .turret = findPlayerControlled(turrets.shootingData) };
     const PixelCoord mousePosition = camera.fromScreenToMap(input.getMouseCoord());
     move(input);
     shoot(mousePosition, input);
     mine();
-    moveCamera(mobs, mob, paused, camera, input);
-    m_unitSelected = m_holdsBlock ? UnitSelected{} : setectUnit(mousePosition, mobs, turrets, mob, turret, presets);
+    moveCamera(mobs, unitControlled.mob, paused, camera, input);
+    m_unitSelected = m_holdsBlock ? Unit{} : setectUnit(mousePosition, mobs, turrets, unitControlled, presets);
     if (!m_holdsBlock && input.jactive(Control_unit))
-        captureUnit(mobs, turrets, mob, turret, presets);
+        captureUnit(mobs, turrets, unitControlled, presets);
 }
 
-UnitSelected PlCtr::setectUnit(const PixelCoord mousePosition, MobSoA& mobs, TurretSoA& turrets,
-    const std::optional<size_t> controlledMob, const std::optional<size_t> controlledTurret, const Presets& presets) const {
+PlCtr::Unit PlCtr::setectUnit(const PixelCoord mousePosition, const MobSoA& mobs, const TurretSoA& turrets,
+    const Unit controlled, const Presets& presets) const {
     for (size_t i = 0; i < mobs.mobCount; ++i) {
-        if (mobs.teamID[i] != m_playerTeamID || controlledMob && i == *controlledMob)
+        if (mobs.teamID[i] != m_playerTeamID || controlled.mob && i == *controlled.mob)
             continue;
         const float hitboxRadius = presets.getMob(mobs.preset[i]).hitboxRadius;
         if (t1::areCloserCircle(mobs.position[i], mousePosition, hitboxRadius * 0.9f))
-            return UnitSelected{ .mob = i, .turret = std::nullopt };
+            return Unit{ .mob = i, .turret = std::nullopt };
     }
     for (size_t i = 0; i < turrets.turretCount; ++i) {
-        if (turrets.teamID[i] != m_playerTeamID || controlledTurret && i == *controlledTurret)
+        if (turrets.teamID[i] != m_playerTeamID || controlled.turret && i == *controlled.turret)
             continue;
         const PixelCoord size = presets.getTurret(turrets.preset[i]).visual.size;
         const float hitboxRadius = static_cast<float>(std::bit_ceil(static_cast<uint32_t>(size.y / 2.f)));
         if (t1::areCloserRect(turrets.position[i], mousePosition, hitboxRadius * 0.9f))
-            return UnitSelected{ .mob = std::nullopt, .turret = i };
+            return Unit{ .mob = std::nullopt, .turret = i };
     }
-    return UnitSelected{};
+    return Unit{};
 }
 
-void PlCtr::captureUnit(MobSoA& mobs, TurretSoA& turrets,
-    const std::optional<size_t> controlledMob, const std::optional<size_t> controlledTurret, const Presets& presets) const {
-    if (controlledMob) {
-        const auto& preset = presets.getMob(mobs.preset[*controlledMob]);
-        mobs.motionData[*controlledMob].aiType = preset.defaultMovingAI;
-        mobs.shootingData[*controlledMob].aiType = preset.defaultShootingAI;
+void PlCtr::captureUnit(MobSoA& mobs, TurretSoA& turrets, const Unit controlled, const Presets& presets) const {
+    if (controlled.mob) {
+        const auto& preset = presets.getMob(mobs.preset[*controlled.mob]);
+        mobs.motionData[*controlled.mob].aiType = preset.defaultMovingAI;
+        mobs.shootingData[*controlled.mob].aiType = preset.defaultShootingAI;
     }
-    if (controlledTurret) {
-        // TODO: const auto& preset = presets.getTurret(turrets.preset[*turret]); // when it would be implemented
-        turrets.shootingData[*controlledTurret].aiType = ShootingAI::basic;
+    if (controlled.turret) {
+        // TODO: const auto& preset = presets.getTurret(turrets.preset[*controlled.turret]); // when it would be implemented
+        turrets.shootingData[*controlled.turret].aiType = ShootingAI::basic;
     }
 
     if (m_unitSelected.mob) {

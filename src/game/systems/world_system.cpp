@@ -19,7 +19,7 @@
 void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile);
 
 void drawUnitSelected(Renderer& renderer, const MobSoA& mobs, const TurretSoA& turrets,
-    const Presets& presets, const UnitSelected selected);
+    const Presets& presets, const PlayerController::Unit selected);
 
 void world::update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs, const uint64_t tickCount,
     const PlayerController& playerController, SoundQueue& worldSounds, BuiltInScripts& scripts) {
@@ -95,7 +95,7 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     world.getBuildBems().draw(renderer, tickCount);
     //
     renderer.setShaderProgram(*shaders.monochromeShader);
-    const UnitSelected unitSelected = engine.getSession().getPlayerController().getUnitSelected();
+    const PlayerController::Unit unitSelected = engine.getSession().getPlayerController().getUnitSelected();
     drawUnitSelected(renderer, world.getMobs().getSoa(), world.getBlocks().getMeta().getTurrets().getSoa(), presets, unitSelected);
 }
 
@@ -114,7 +114,7 @@ void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& p
 }
 
 void drawUnitSelected(Renderer& renderer, const MobSoA& mobs, const TurretSoA& turrets,
-    const Presets& presets, const UnitSelected selected) {
+    const Presets& presets, const PlayerController::Unit selected) {
     constexpr uint32_t COLOR = cl::BEIGE_TR | 0x80;
     if (selected.mob) {
         const size_t i = selected.mob.value();
