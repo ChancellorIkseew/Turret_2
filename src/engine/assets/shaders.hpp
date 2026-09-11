@@ -4,6 +4,7 @@
 
 class Shaders {
 public:
+    std::optional<ShaderProgram> monochromeShader;
     std::optional<ShaderProgram> baseShader;
     std::optional<ShaderProgram> lightingShader;
     std::optional<ShaderProgram> additiveLightShader;

@@ -37,6 +37,7 @@ void Assets::load(Renderer& renderer) {
     waves.load();
 
     auto path = io::folders::RES / "shaders";
+    shaders.monochromeShader.emplace(path / "vertex.glsl", path / "fragment_monochrome.glsl", Pipeline());
     shaders.baseShader.emplace(path / "vertex.glsl", path / "fragment_texturing.glsl", Pipeline());
     shaders.lightingShader.emplace(path / "vertex_lighting.glsl", path / "fragment_lighting.glsl", Pipeline(GL_ONE, GL_ONE, true));
     shaders.additiveLightShader.emplace(path / "vertex_lighting.glsl", path / "fragment_lighting.glsl", Pipeline(GL_ONE, GL_ONE, false));

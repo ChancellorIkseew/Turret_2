@@ -2,6 +2,7 @@
 //
 #include "engine/assets/assets.hpp"
 #include "engine/engine.hpp"
+#include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
 #include "game/systems/ai_system.hpp"
 #include "game/systems/construction_system.hpp"
@@ -16,6 +17,9 @@
 #include "game/world_drawer/world_drawer.hpp"
 
 void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile);
+
+void drawUnitSelected(Renderer& renderer, const MobSoA& mobs, const TurretSoA& turrets,
+    const Presets& presets, const UnitSelected selected);
 
 void world::update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs, const uint64_t tickCount,
     const PlayerController& playerController, SoundQueue& worldSounds, BuiltInScripts& scripts) {
@@ -89,6 +93,10 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //
     renderer.setShaderProgram(*shaders.buildBeamShader);
     world.getBuildBems().draw(renderer, tickCount);
+    //
+    renderer.setShaderProgram(*shaders.monochromeShader);
+    const UnitSelected unitSelected = engine.getSession().getPlayerController().getUnitSelected();
+    drawUnitSelected(renderer, world.getMobs().getSoa(), world.getBlocks().getMeta().getTurrets().getSoa(), presets, unitSelected);
 }
 
 void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& presets, BlockMap& blocks, const TileCoord targetTile) {
@@ -102,5 +110,32 @@ void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& p
         const float range = presets.getTurret(turrets.preset[i]).range;
         Schematic::drawRange(renderer, turrets.position[i], range);
         break;
+    }
+}
+
+void drawUnitSelected(Renderer& renderer, const MobSoA& mobs, const TurretSoA& turrets,
+    const Presets& presets, const UnitSelected selected) {
+    constexpr uint32_t COLOR = cl::BEIGE_TR | 0x80;
+    if (selected.mob) {
+        const size_t i = selected.mob.value();
+        const auto& preset = presets.getMob(mobs.preset[i]);
+        const auto& visual = preset.visual;
+        const auto& tVisual = presets.getTurret(preset.turret).visual;
+
+        const uint8_t frame = mobs.chassisTick[i] / visual.frameTicks;
+        TextureRect frameTextureRect = visual.textureRect;
+        frameTextureRect.h = visual.frameHeight;
+        frameTextureRect.y += static_cast<float>(visual.frameOrder[frame]) * visual.frameHeight;
+
+        renderer.draw(frameTextureRect, mobs.position[i], visual.size, visual.origin, t1::PI - mobs.angle[i], COLOR);
+        renderer.draw(tVisual.textureRect, mobs.position[i], tVisual.size, tVisual.origin, t1::PI - mobs.turretAngle[i], COLOR);
+    }
+    if (selected.turret) {
+        const size_t i = selected.turret.value();
+        const PixelCoord recoilVector(std::sin(turrets.angle[i]), std::cos(turrets.angle[i]));
+        const PixelCoord position = turrets.position[i] - recoilVector * turrets.currentRecoil[i];
+        const auto& visual = presets.getTurret(turrets.preset[i]).visual;
+
+        renderer.draw(visual.textureRect, position, visual.size, visual.origin, t1::PI - turrets.angle[i], COLOR);
     }
 }
