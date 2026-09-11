@@ -32,7 +32,7 @@ static inline void rotateTurrets(TurretComponents& soa, const Presets& presets, 
     if (soa.velocity.empty()) {
         for (size_t i = 0; i < mobCount; ++i) {
             const AngleRad rotationSpeed = presets.getTurret(soa.preset[i]).rotationSpeed;
-            if (soa.shootingData[i].isShooting)
+            if (soa.shootingData[i].isShooting || soa.shootingData[i].aiType == ShootingAI::player_controlled)
                 rotateTurret(soa.turretAngle[i], rotationSpeed, soa.shootingData[i].target - soa.position[i]);
         }
         return;
