@@ -37,5 +37,6 @@ private:
     Unit setectUnit(const PixelCoord mousePosition, const MobSoA& mobs, const TurretSoA& turrets,
         const Unit controlled, const Presets& presets) const;
     void captureUnit(MobSoA& mobs, TurretSoA& turrets, const Unit controlled, const Presets& presets) const;
-    void moveCamera(const MobSoA& mobs, const std::optional<size_t> mob, const bool paused, Camera& camera, const Input& input) const;
+    void moveCamera(const MobSoA& mobs, const TurretSoA& turrets, const Unit controlled, const bool paused,
+        Camera& camera, const Input& input) const;
 };

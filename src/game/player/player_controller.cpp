@@ -39,14 +39,18 @@ void PlCtr::move(const Input& input) {
     m_motionVector = delta;
 }
 
-void PlCtr::moveCamera(const MobSoA& mobs, const std::optional<size_t> mob, const bool paused, Camera& camera, const Input& input) const {
-    if (!mob || paused) {
+void PlCtr::moveCamera(const MobSoA& mobs, const TurretSoA& turrets, const Unit controlled, const bool paused,
+    Camera& camera, const Input& input) const {
+    camera.scale(input);
+    if (!controlled.mob && !controlled.turret || paused) {
         camera.move(m_motionVector);
         camera.moveByMouse(input);
-    }  
-    else
-        camera.setTargetCenter(mobs.position[*mob]);
-    camera.scale(input);
+        return;
+    }
+    if (controlled.mob)
+        camera.setTargetCenter(mobs.position[*controlled.mob]);
+    if (controlled.turret)
+        camera.setTargetCenter(turrets.position[*controlled.turret]);
 }
 
 void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA& mobs, TurretSoA& turrets, const Presets& presets) {
@@ -55,7 +59,7 @@ void PlCtr::update(const Input& input, Camera& camera, const bool paused, MobSoA
     move(input);
     shoot(mousePosition, input);
     mine();
-    moveCamera(mobs, unitControlled.mob, paused, camera, input);
+    moveCamera(mobs, turrets, unitControlled, paused, camera, input);
     m_unitSelected = m_holdsBlock ? Unit{} : setectUnit(mousePosition, mobs, turrets, unitControlled, presets);
     if (!m_holdsBlock && input.jactive(Control_unit))
         captureUnit(mobs, turrets, unitControlled, presets);
