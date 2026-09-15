@@ -37,7 +37,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     chunks.update(mobs.getSoa());
     blocks.updateBlocks(world.getMap(), presets, world.getTeams(), tickCount);
     shells::processShells(world, presets, worldSounds, camera, tickCount);
-    mobs::processMobs(mobs.getSoa(), chunks, blocks, presets);
+    mobs::processMobs(mobs.getSoa(), chunks, blocks, presets, particles, camera);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, schematic, blocks);
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
@@ -87,6 +87,10 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //
     renderer.setShaderProgram(*shaders.shieldShader);
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
+    //
+    renderer.setShaderProgram(*shaders.smokeShader);
+    drawSmokeParticles(camera, renderer, world.getParticles().getSoa());
+    //
     renderer.setShaderProgram(*shaders.additiveLightShader);
     shells::drawShellsLighting(world.getShells().getSoa(), presets, camera, renderer);
     drawLightParticles(camera, renderer, world.getParticles().getSoa());

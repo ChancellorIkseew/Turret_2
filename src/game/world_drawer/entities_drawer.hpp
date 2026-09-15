@@ -12,5 +12,6 @@ inline void drawEntities(const Camera& camera, Renderer& renderer,
     mobs::drawMobs(mobs, presets, camera, renderer);
     turrets::drawShadows(fromMobs(mobs), presets, camera, renderer);
     turrets::drawTurrets(fromMobs(mobs), presets, camera, renderer);
+    mobs::drawFlyingMobs(mobs, presets, camera, renderer);
     shells::drawShells(shells, presets, camera, renderer);
 }

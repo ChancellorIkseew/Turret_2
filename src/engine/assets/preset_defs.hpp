@@ -61,6 +61,8 @@ struct MobVisualPreset {
     float frameHeight;
     uint8_t frameCount;
     std::array<uint8_t, 16> frameOrder;
+    uint8_t enginesCount;
+    std::array<PixelCoord, 4> engines;
 };
 
 struct MobPreset {

@@ -8,6 +8,7 @@ public:
     std::optional<ShaderProgram> baseShader;
     std::optional<ShaderProgram> lightingShader;
     std::optional<ShaderProgram> additiveLightShader;
+    std::optional<ShaderProgram> smokeShader;
     std::optional<ShaderProgram> squareShadowShader;
     std::optional<ShaderProgram> emergeShader;
     std::optional<ShaderProgram> shieldShader;

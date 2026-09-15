@@ -5,6 +5,7 @@
 #include "game/blocks/block_map.hpp"
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mobs_pool.hpp"
+#include "game/entities/particles_pool.hpp"
 #include "game/player/camera.hpp"
 
 static inline void resolveCollision(MobSoA& soa, const size_t current, const size_t other, const Presets& presets) {
@@ -89,12 +90,42 @@ static inline void animateMoving(MobSoA& soa, const size_t mobCount, const Prese
     }
 }
 
-void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks, const Presets& presets) {
+static inline void makeTrails(const MobSoA& soa, ParticlesPool& particlesPool, const Presets& presets,
+    const Camera& camera, const size_t mobCount) {
+    for (size_t i = 0; i < mobCount; ++i) {
+        constexpr PixelCoord SIZE(5, 5);
+        constexpr uint32_t FADING = uint32_t(float(0xFF) / 8.f);
+        const auto& preset = presets.getMob(soa.preset[i]);
+        const auto& visual = preset.visual;
+
+        if (!camera.contains(soa.position[i]) || !preset.flying)
+            continue;
+        for (size_t e = 0; e < visual.enginesCount; ++e) {
+            PixelCoord position = soa.position[i];
+            const PixelCoord localMuzzle = visual.engines[e];
+
+            const float sin = sinf(soa.angle[i]);
+            const float cos = cosf(soa.angle[i]);
+
+            position.x += localMuzzle.x * cos + localMuzzle.y * sin;
+            position.y += -localMuzzle.x * sin + localMuzzle.y * cos;
+
+            const TickCount lifeTime = t1::areCloserCircle(soa.position[i], soa.preveousePosition[i], 0.04f) ? 2 : 8;
+            particlesPool.addParticle(position, SIZE * 1.5f, 0.f, 0.f, 0x80'80'80'FF, 0, 2, PType::smoke);
+            particlesPool.addParticle(position, SIZE, 0.f, 0.f, cl::ORANGE, FADING, lifeTime, PType::light);
+            particlesPool.addParticle(position, SIZE * 1.5f, 0.f, 0.f, 0x00'60'60'FF, 0, 2, PType::light);
+        }
+    }
+}
+
+void mobs::processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks, const Presets& presets,
+    ParticlesPool& particles, const Camera& camera) {
     const size_t mobCount = soa.mobCount;
     moveByVelocity(soa, mobCount);
     resolveCollisions(soa, chunks, presets);
     resolveWorldCollisions(soa, mobCount, blocks, presets);
     animateMoving(soa, mobCount, presets);
+    makeTrails(soa, particles, presets, camera, mobCount);
     for (auto& ammo : soa.ammo) {
         ammo = 1;
     }
@@ -178,5 +209,47 @@ void mobs::drawEnemyMarkers(const TeamID playerTeamID, const MobSoA& soa, const 
         constexpr PixelCoord MARKER_ORIGIN(2.5f, -100.f);
         float angle = t1::atan(cameraCenter - soa.position[i]);
         renderer.drawRect(windowCenter, MARKER_SIZE, MARKER_ORIGIN, t1::PI - angle, 0x84'34'34'FF);
+    }
+}
+
+void mobs::drawFlyingMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
+    const size_t mobCount = soa.mobCount;
+
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (!camera.contains(soa.position[i]))
+            continue;
+        const auto& preset = presets.getMob(soa.preset[i]);
+        if (!preset.flying)
+            continue;
+        const auto& visual = preset.visual;
+
+        constexpr PixelCoord SHADOW_OFFSET(20, 20);
+        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i], 0x00'00'00'40);
+    }
+
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (!camera.contains(soa.position[i]))
+            continue;
+        const auto& preset = presets.getMob(soa.preset[i]);
+        if (!preset.flying)
+            continue;
+        const auto& visual = preset.visual;
+        const uint8_t frame = soa.chassisTick[i] / visual.frameTicks;
+        TextureRect frameTextureRect = visual.textureRect;
+        frameTextureRect.h = visual.frameHeight;
+        frameTextureRect.y += static_cast<float>(visual.frameOrder[frame]) * visual.frameHeight;
+        renderer.draw(frameTextureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i]);
+    }
+
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (!camera.contains(soa.position[i]))
+            continue;
+        const auto& preset = presets.getMob(soa.preset[i]);
+        if (!preset.flying)
+            continue;
+        const PixelCoord recoilVector(std::sin(soa.turretAngle[i]), std::cos(soa.turretAngle[i]));
+        const PixelCoord position = soa.position[i] - recoilVector * soa.currentRecoil[i];
+        const auto& visual = presets.getTurret(preset.turret).visual;
+        renderer.draw(visual.textureRect, position, visual.size, visual.origin, t1::PI - soa.turretAngle[i]);
     }
 }

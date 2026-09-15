@@ -7,15 +7,18 @@ class BlockMap;
 class Camera;
 class ChunkGrid;
 class MobsPool;
+class ParticlesPool;
 class Presets;
 class Renderer;
 
 namespace mobs {
-    void processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks, const Presets& presets);
+    void processMobs(MobSoA& soa, const ChunkGrid& chunks, const BlockMap& blocks, const Presets& presets,
+        ParticlesPool& particles, const Camera& camera);
     void cleanupMobs(MobsPool& mobsPool, const Presets& presets);
     //
     void drawHealthBars(const MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer);
     void drawMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer);
     void drawMobShields(const MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer, const uint64_t tickCount);
     void drawEnemyMarkers(const TeamID playerTeamID, const MobSoA& soa, const Camera& camera, Renderer& renderer);
+    void drawFlyingMobs(MobSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer);
 }

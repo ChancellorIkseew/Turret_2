@@ -5,6 +5,7 @@ size=23|25
 frame_ticks=4
 frame_height=25
 frame_order=0
+engines=3|-10,-3|-10
 #logic
 speed=8.0
 hitbox_radius=10.5
