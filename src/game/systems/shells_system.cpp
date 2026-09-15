@@ -135,6 +135,8 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         for (int j = 0; j < 8; ++j) {
             const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
             const uint32_t ALPHA = 0xFF'FF'FF'80;
+            if (damage > 0)
+                particlesPool.addParticle(soa.position[i], size * 1.5f, angle, SPEED * 0.5f, 0xC0'C0'C0'FF, 0, lifeTime * 2, PType::smoke);
             particlesPool.addParticle(soa.position[i], size, angle, SPEED, cl::ORANGE & ALPHA, 0, lifeTime, PType::light);
         }
 
@@ -142,7 +144,7 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         const PixelCoord shardSize(1.0f, preset.visual.size.y);
         for (int j = 0; j < shardsCount; ++j) {
             const float angle = util::randAngleRad(static_cast<uint32_t>(j * (tickCount % 255)));
-            particlesPool.addParticle(soa.position[i], shardSize, angle, SPEED, cl::ORANGE, 0, lifeTime * 2, PType::shard);
+            particlesPool.addParticle(soa.position[i], shardSize, angle, SPEED, cl::BEIGE, 0, lifeTime * 2, PType::shard);
         }
     }
 }
