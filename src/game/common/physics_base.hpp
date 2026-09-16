@@ -10,12 +10,14 @@ using AngleRad = float;
 using TickCount = uint16_t;
 
 namespace cl {
-    constexpr uint32_t TR     = 0xFF'FF'FF'00;
-    constexpr uint32_t RED    = 0x84'34'34'FF;
-    constexpr uint32_t BEIGE  = 0xFA'DC'86'FF;
-    constexpr uint32_t ORANGE = 0xFF'A5'00'FF;
-    constexpr uint32_t RED_TR = RED & TR;
+    constexpr uint32_t TR       = 0xFF'FF'FF'00;
+    constexpr uint32_t RED      = 0x84'34'34'FF;
+    constexpr uint32_t BEIGE    = 0xFA'DC'86'FF;
+    constexpr uint32_t ORANGE   = 0xFF'A5'00'FF;
+    constexpr uint32_t RED_TR   = RED & TR;
     constexpr uint32_t BEIGE_TR = BEIGE & TR;
+    constexpr uint32_t SMOKE    = 0xC0'C0'C0'FF;
+    constexpr uint32_t SHADOW   = 0x00'00'00'40;
 }
 
 struct Aim {

@@ -180,11 +180,10 @@ void mobs::drawMobShields(const MobSoA& soa, const Presets& presets, const Camer
     for (size_t i = 0; i < mobCount; ++i) {
         if (soa.shieldHealth[i] < 1 || !camera.contains(soa.position[i]))
             continue;
-        constexpr TextureRect RECT{ 0.f, 0.f, 1.f, 1.f };
         const auto& preset = presets.getMob(soa.preset[i]);
         const PixelCoord origin(preset.shieldRadius, preset.shieldRadius);
         const PixelCoord size = origin * 2.f;
-        renderer.draw(RECT, soa.position[i], size, origin, 0.f, 0xFF'FF'FF'00);
+        renderer.draw(FULL_UV_RECT, soa.position[i], size, origin);
     }
 }
 
@@ -223,8 +222,8 @@ void mobs::drawFlyingMobs(MobSoA& soa, const Presets& presets, const Camera& cam
             continue;
         const auto& visual = preset.visual;
 
-        constexpr PixelCoord SHADOW_OFFSET(20, 20);
-        renderer.draw(visual.textureRect, soa.position[i], visual.size, visual.origin, t1::PI - soa.angle[i], 0x00'00'00'40);
+        constexpr PixelCoord SHADOW_OFFSET(-20, 20);
+        renderer.draw(visual.textureRect, soa.position[i] + SHADOW_OFFSET, visual.size, visual.origin, t1::PI - soa.angle[i], cl::SHADOW);
     }
 
     for (size_t i = 0; i < mobCount; ++i) {

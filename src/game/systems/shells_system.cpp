@@ -136,7 +136,7 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
             const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
             const uint32_t ALPHA = 0xFF'FF'FF'80;
             if (damage > 0)
-                particlesPool.addParticle(soa.position[i], size * 1.5f, angle, SPEED * 0.5f, 0xC0'C0'C0'FF, 0, lifeTime * 2, PType::smoke);
+                particlesPool.addParticle(soa.position[i], size * 1.5f, angle, SPEED * 0.5f, cl::SMOKE, 0, lifeTime * 2, PType::smoke);
             particlesPool.addParticle(soa.position[i], size, angle, SPEED, cl::ORANGE & ALPHA, 0, lifeTime, PType::light);
         }
 
@@ -189,13 +189,12 @@ void shells::drawShells(const ShellSoA& soa, const Presets& presets, const Camer
 
 void shells::drawShellsLighting(const ShellSoA& soa, const Presets& presets, const Camera& camera, Renderer& renderer) {
     const size_t shellCount = soa.shellCount;
-    constexpr TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
     constexpr PixelCoord OFFSET(4.f, 8.f);
 
     for (size_t i = 0; i < shellCount; ++i) {
         if (!camera.contains(soa.position[i]))
             continue;
         const auto& visual = presets.getShell(soa.preset[i]).visual;
-        renderer.draw(rect, soa.position[i], visual.size + OFFSET * 2.f, visual.origin + OFFSET, t1::PI - soa.angle[i], cl::ORANGE);
+        renderer.draw(FULL_UV_RECT, soa.position[i], visual.size + OFFSET * 2.f, visual.origin + OFFSET, t1::PI - soa.angle[i], cl::ORANGE);
     }
 }

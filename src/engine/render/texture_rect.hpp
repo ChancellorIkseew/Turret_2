@@ -5,6 +5,7 @@ struct TextureRect {
 };
 
 constexpr TextureRect NULL_TEXTURE_RECT = TextureRect{ 0.f, 0.f, 0.f, 0.f };
+constexpr TextureRect FULL_UV_RECT      = TextureRect{ 0.f, 0.f, 1.f, 1.f };
 
 inline constexpr bool operator==(TextureRect left, TextureRect right) noexcept {
     return left.x == right.x && left.y == right.y &&

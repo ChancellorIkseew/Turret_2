@@ -8,7 +8,6 @@
 void BlocksDrawer::drawShadows(const BlockMap& blocks, const Camera& camera, Renderer& renderer) {
     const TileCoord start = camera.getBuildingsStartTile();
     const TileCoord end = camera.getEndTile();
-    const TextureRect rect{ 0.f, 0.f, 1.f, 1.f };
 
     cashedTiles.clear();
     inProgress.clear();
@@ -25,8 +24,7 @@ void BlocksDrawer::drawShadows(const BlockMap& blocks, const Camera& camera, Ren
     for (const auto& tile : cashedTiles) {
         constexpr PixelCoord SHADOW_SIZE(64.f, 64.f);
         constexpr PixelCoord BLENDING_AREA(16.f, 16.f);
-        constexpr PixelCoord ORIGIN(0.f, 0.f);
-        renderer.draw(rect, t1::pixel(tile) - BLENDING_AREA, SHADOW_SIZE, ORIGIN, 0.f, 0x00'00'00'FF);
+        renderer.draw(FULL_UV_RECT, t1::pixel(tile) - BLENDING_AREA, SHADOW_SIZE);
     }
 }
 
