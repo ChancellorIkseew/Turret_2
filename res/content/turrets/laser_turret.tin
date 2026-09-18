@@ -4,6 +4,7 @@ origin=9.5|14.0
 size=19|25
 shadow_offset=1.5
 shot_sound=autocannon_shot
+casing_ejection=false
 #logic
 reload=0
 range=310

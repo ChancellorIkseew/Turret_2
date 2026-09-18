@@ -92,9 +92,21 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;
             constexpr PixelCoord SIZE(15.f, 15.f);
-            particles.addParticle(position, SIZE, angle, 0.2f, cl::SMOKE, 0, 15, PType::smoke);
-            particles.addParticle(position, SIZE / 1.5, angle, 0.2f, cl::ORANGE, 0, 15, PType::light);
+            particles.addParticle(position, SIZE, angle, 0.f, 0.2f, 0.f, cl::SMOKE, 0, 15, PType::smoke);
+            particles.addParticle(position, SIZE / 1.5, angle, 0.f, 0.2f, 0.f, cl::ORANGE, 0, 15, PType::light);
             sounds.pushSound(turret.visual.shotSound, position);
+            if (turret.visual.ejectionPortsCount > 0) {
+                PixelCoord localPort = turret.visual.ejectionPorts[soa.currentBarrel[i]];
+                localPort.y -= soa.currentRecoil[i];
+                PixelCoord port = soa.position[i];
+                port.x +=  localPort.x * cos + localPort.y * sin;
+                port.y += -localPort.x * sin + localPort.y * cos;
+                const PixelCoord size(shell.visual.size.y, shell.visual.size.x);
+                const float casingAngle = localPort.x < 0 ? angle - t1::TAU + 0.2f : angle + t1::TAU - 0.2f;
+                const float rotationSpeed = localPort.x < 0 ? -0.004f : 0.004f;
+                constexpr uint32_t FADING = uint32_t(float(0xFF) / 90.f);
+                particles.addParticle(port, size, casingAngle, rotationSpeed, 0.2f, 0.002f, cl::BEIGE, FADING, 90, PType::shard);
+            }
         }
         constexpr float MAX_RECOIL = 2.f;
         soa.currentRecoil[i] = std::min(MAX_RECOIL, soa.currentRecoil[i] + turret.recoil);

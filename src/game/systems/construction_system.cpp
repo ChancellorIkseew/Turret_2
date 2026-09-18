@@ -18,12 +18,12 @@ constexpr TickCount LIFE_TICKS = 50;
 
 static void onBlockPlace(SoundQueue& sounds, ParticlesPool& particles, PixelCoord position, int size) {
     sounds.pushSound("block_place", position);
-    particles.addParticle(position, t1::pixel(size, size), 0.f, 0.f, BUILD_COLOR, FADING, LIFE_TICKS, PType::shard);
+    particles.addParticle(position, t1::pixel(size, size), 0.f, 0.f, 0.f, 0.f, BUILD_COLOR, FADING, LIFE_TICKS, PType::shard);
 }
 
 static void onBlockBreak(SoundQueue& sounds, ParticlesPool& particles, PixelCoord position, int size) {
     sounds.pushSound("block_break", position);
-    particles.addParticle(position, t1::pixel(size, size), 0.f, 0.f, BREAK_COLOR, FADING, LIFE_TICKS, PType::shard);
+    particles.addParticle(position, t1::pixel(size, size), 0.f, 0.f, 0.f, 0.f, BREAK_COLOR, FADING, LIFE_TICKS, PType::shard);
 }
 
 void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schematic& schematic,

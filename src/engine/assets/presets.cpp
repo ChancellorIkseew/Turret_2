@@ -127,12 +127,18 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
 static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const ShellFindMap& shellIDByName) {
     std::array<PixelCoord, 4> barrels;
     size_t barrelsCount = reader.getArray<PixelCoord>("barrels", barrels);
+    std::array<PixelCoord, 4> ejectionPorts;
+    size_t ejectionPortsCount = 0;
+    if (reader.get<bool>("casing_ejection"))
+        ejectionPortsCount = reader.getArray<PixelCoord>("ejection_ports", ejectionPorts);
     TurretVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
         reader.get<float>("shadow_offset"),
-        reader.get<std::string>("shot_sound")
+        reader.get<std::string>("shot_sound"),
+        static_cast<uint8_t>(ejectionPortsCount),
+        ejectionPorts
     };
     constexpr float RAD_TO_DEGREE = t1::PI / 180.f;
     return TurretPreset{

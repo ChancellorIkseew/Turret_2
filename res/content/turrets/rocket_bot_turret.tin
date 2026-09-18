@@ -4,6 +4,7 @@ origin=17.5|12.0
 size=35|25
 shadow_offset=2
 shot_sound=rocket_launch
+casing_ejection=false
 #logic
 reload=30
 range=610

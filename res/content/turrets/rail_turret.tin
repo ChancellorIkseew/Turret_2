@@ -4,6 +4,7 @@ origin=25|31.0
 size=50|58
 shadow_offset=2
 shot_sound=railgun_shot
+casing_ejection=false
 #logic
 reload=45
 range=650

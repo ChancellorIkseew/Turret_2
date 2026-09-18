@@ -7,7 +7,9 @@ void ParticlesPool::reserve(const size_t capacity) {
     soa.facing.reserve(capacity);
     soa.size.reserve(capacity);
     soa.angle.reserve(capacity);
+    soa.rotationSpeed.reserve(capacity);
     soa.speed.reserve(capacity);
+    soa.deceleration.reserve(capacity);
     soa.color.reserve(capacity);
     soa.colorFading.reserve(capacity);
     soa.restLifeTime.reserve(capacity);
@@ -18,7 +20,9 @@ void ParticlesPool::addParticle(
     const PixelCoord position,
     const PixelCoord size,
     const float angle,
+    const float rotationSpeed,
     const float speed,
+    const float deceleration,
     const uint32_t color,
     const uint32_t colorFading,
     const TickCount restLifeTime,
@@ -28,7 +32,9 @@ void ParticlesPool::addParticle(
     soa.facing.emplace_back(sinf(angle), cosf(angle));
     soa.size.push_back(size);
     soa.angle.push_back(angle);
+    soa.rotationSpeed.push_back(rotationSpeed);
     soa.speed.push_back(speed);
+    soa.deceleration.push_back(deceleration);
     soa.color.push_back(color);
     soa.colorFading.push_back(colorFading);
     soa.restLifeTime.push_back(restLifeTime);
@@ -44,7 +50,9 @@ void ParticlesPool::removeParticle(const size_t index) {
         soa.facing[index] = std::move(soa.facing[last]);
         soa.size[index] = std::move(soa.size[last]);
         soa.angle[index] = std::move(soa.angle[last]);
+        soa.rotationSpeed[index] = std::move(soa.rotationSpeed[last]);
         soa.speed[index] = std::move(soa.speed[last]);
+        soa.deceleration[index] = std::move(soa.deceleration[last]);
         soa.color[index] = std::move(soa.color[last]);
         soa.colorFading[index] = std::move(soa.colorFading[last]);
         soa.restLifeTime[index] = std::move(soa.restLifeTime[last]);
@@ -55,7 +63,9 @@ void ParticlesPool::removeParticle(const size_t index) {
     soa.facing.pop_back();
     soa.size.pop_back();
     soa.angle.pop_back();
+    soa.rotationSpeed.pop_back();
     soa.speed.pop_back();
+    soa.deceleration.pop_back();
     soa.color.pop_back();
     soa.colorFading.pop_back();
     soa.restLifeTime.pop_back();

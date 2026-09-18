@@ -10,7 +10,9 @@ struct ParticleSoA {
     std::vector<PixelCoord> facing;
     std::vector<PixelCoord> size;
     std::vector<AngleRad> angle;
+    std::vector<AngleRad> rotationSpeed;
     std::vector<float> speed;
+    std::vector<float> deceleration;
     std::vector<uint32_t> color;
     std::vector<uint32_t> colorFading;
     std::vector<TickCount> restLifeTime;
@@ -33,7 +35,9 @@ public:
         const PixelCoord position,
         const PixelCoord size,
         const float angle,
+        const float rotationSpeed,
         const float speed,
+        const float deceleration,
         const uint32_t color,
         const uint32_t colorFading,
         const TickCount restLifeTime,

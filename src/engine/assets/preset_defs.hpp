@@ -38,6 +38,8 @@ struct TurretVisualPreset {
     PixelCoord size;
     float shadowOffset;
     std::string shotSound;
+    uint8_t ejectionPortsCount;
+    std::array<PixelCoord, 4> ejectionPorts;
 };
 
 struct TurretPreset {

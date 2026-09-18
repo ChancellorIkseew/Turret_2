@@ -111,9 +111,9 @@ static inline void makeTrails(const MobSoA& soa, ParticlesPool& particlesPool, c
             position.y += -localMuzzle.x * sin + localMuzzle.y * cos;
 
             const TickCount lifeTime = t1::areCloserCircle(soa.position[i], soa.preveousePosition[i], 0.04f) ? 2 : 8;
-            particlesPool.addParticle(position, SIZE * 1.5f, 0.f, 0.f, 0x80'80'80'FF, 0, 2, PType::smoke);
-            particlesPool.addParticle(position, SIZE, 0.f, 0.f, cl::ORANGE, FADING, lifeTime, PType::light);
-            particlesPool.addParticle(position, SIZE * 1.5f, 0.f, 0.f, 0x00'60'60'FF, 0, 2, PType::light);
+            particlesPool.addParticle(position, SIZE * 1.5f, 0.f, 0.f, 0.f, 0.f, 0x80'80'80'FF, 0, 2, PType::smoke);
+            particlesPool.addParticle(position, SIZE, 0.f, 0.f, 0.f, 0.f, cl::ORANGE, FADING, lifeTime, PType::light);
+            particlesPool.addParticle(position, SIZE * 1.5f, 0.f, 0.f, 0.f, 0.f, 0x00'60'60'FF, 0, 2, PType::light);
         }
     }
 }

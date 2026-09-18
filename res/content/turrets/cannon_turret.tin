@@ -4,6 +4,8 @@ origin=25|30.0
 size=50|57
 shadow_offset=2
 shot_sound=cannon_shot
+casing_ejection=true
+ejection_ports=8|-10.5,-8|-10.5
 #logic
 reload=10
 range=460

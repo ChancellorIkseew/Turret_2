@@ -26,7 +26,7 @@ static inline void makeTrails(const ShellSoA& soa, ParticlesPool& particlesPool,
         constexpr PixelCoord SIZE(3, 3);
         constexpr uint32_t FADING = uint32_t(float(0xFF) / 20.f);
         if (camera.contains(soa.position[i]) && presets.getShell(soa.preset[i]).visual.hasTrail)
-            particlesPool.addParticle(soa.position[i], SIZE, 0.f, 0.f, cl::ORANGE, FADING, 20, PType::light);
+            particlesPool.addParticle(soa.position[i], SIZE, 0.f, 0.f, 0.f, 0.f, cl::ORANGE, FADING, 20, PType::light);
     }
 }
 
@@ -136,15 +136,15 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
             const float angle = soa.angle[i] + t1::TAU * 0.5f * static_cast<float>(j);
             const uint32_t ALPHA = 0xFF'FF'FF'80;
             if (damage > 0)
-                particlesPool.addParticle(soa.position[i], size * 1.5f, angle, SPEED * 0.5f, cl::SMOKE, 0, lifeTime * 2, PType::smoke);
-            particlesPool.addParticle(soa.position[i], size, angle, SPEED, cl::ORANGE & ALPHA, 0, lifeTime, PType::light);
+                particlesPool.addParticle(soa.position[i], size * 1.5f, angle, 0.f, SPEED * 0.5f, 0.f, cl::SMOKE, 0, lifeTime * 2, PType::smoke);
+            particlesPool.addParticle(soa.position[i], size, angle, 0.f, SPEED, 0.f, cl::ORANGE & ALPHA, 0, lifeTime, PType::light);
         }
 
         const int shardsCount = preset.explosion.shardsCount;
         const PixelCoord shardSize(1.0f, preset.visual.size.y);
         for (int j = 0; j < shardsCount; ++j) {
             const float angle = util::randAngleRad(static_cast<uint32_t>(j * (tickCount % 255)));
-            particlesPool.addParticle(soa.position[i], shardSize, angle, SPEED, cl::BEIGE, 0, lifeTime * 2, PType::shard);
+            particlesPool.addParticle(soa.position[i], shardSize, angle, 0.f, SPEED, 0.f, cl::BEIGE, 0, lifeTime * 2, PType::shard);
         }
     }
 }
