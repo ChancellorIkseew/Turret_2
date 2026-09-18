@@ -94,7 +94,7 @@ static inline void makeTrails(const MobSoA& soa, ParticlesPool& particlesPool, c
     const Camera& camera, const size_t mobCount) {
     for (size_t i = 0; i < mobCount; ++i) {
         constexpr PixelCoord SIZE(5, 5);
-        constexpr uint32_t FADING = uint32_t(float(0xFF) / 8.f);
+        constexpr uint32_t FADING = cl::fading(8);
         const auto& preset = presets.getMob(soa.preset[i]);
         const auto& visual = preset.visual;
 

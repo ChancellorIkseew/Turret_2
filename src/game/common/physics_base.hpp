@@ -10,6 +10,10 @@ using AngleRad = float;
 using TickCount = uint16_t;
 
 namespace cl {
+    inline constexpr uint32_t fading(const TickCount lifeTime, const uint8_t startAlpha = 0xFF) {
+        return uint32_t(float(startAlpha) / float(lifeTime));
+    }
+
     constexpr uint32_t TR       = 0xFF'FF'FF'00;
     constexpr uint32_t RED      = 0x84'34'34'FF;
     constexpr uint32_t BEIGE    = 0xFA'DC'86'FF;

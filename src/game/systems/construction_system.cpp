@@ -13,8 +13,8 @@
 constexpr uint32_t ALPHA = 0xFF'FF'FF'A0;
 constexpr uint32_t BUILD_COLOR = cl::BEIGE & ALPHA;
 constexpr uint32_t BREAK_COLOR = cl::RED   & ALPHA;
-constexpr uint32_t FADING = 3;
 constexpr TickCount LIFE_TICKS = 50;
+constexpr uint32_t FADING = cl::fading(50, 0xA0);
 
 static void onBlockPlace(SoundQueue& sounds, ParticlesPool& particles, PixelCoord position, int size) {
     sounds.pushSound("block_place", position);

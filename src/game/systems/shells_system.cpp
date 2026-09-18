@@ -24,9 +24,10 @@ static inline void makeTrails(const ShellSoA& soa, ParticlesPool& particlesPool,
     const Camera& camera, const size_t shellCount) {
     for (size_t i = 0; i < shellCount; ++i) {
         constexpr PixelCoord SIZE(3, 3);
-        constexpr uint32_t FADING = uint32_t(float(0xFF) / 20.f);
+        constexpr TickCount LIFE_TIME = 20;
+        constexpr uint32_t FADING = cl::fading(LIFE_TIME);
         if (camera.contains(soa.position[i]) && presets.getShell(soa.preset[i]).visual.hasTrail)
-            particlesPool.addParticle(soa.position[i], SIZE, 0.f, 0.f, 0.f, 0.f, cl::ORANGE, FADING, 20, PType::light);
+            particlesPool.addParticle(soa.position[i], SIZE, 0.f, 0.f, 0.f, 0.f, cl::ORANGE, FADING, LIFE_TIME, PType::light);
     }
 }
 
