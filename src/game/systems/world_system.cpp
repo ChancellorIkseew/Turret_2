@@ -88,6 +88,9 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     renderer.setShaderProgram(*shaders.shieldShader);
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
     //
+    renderer.setShaderProgram(*shaders.sparkShader);
+    drawSparkParticles(camera, renderer, world.getParticles().getSoa());
+    //
     renderer.setShaderProgram(*shaders.smokeShader);
     drawSmokeParticles(camera, renderer, world.getParticles().getSoa());
     //

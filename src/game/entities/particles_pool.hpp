@@ -3,7 +3,7 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "game/common/physics_base.hpp"
 
-enum class PType : uint8_t { light, smoke, shard };
+enum class PType : uint8_t { light, smoke, shard, spark };
 
 struct ParticleSoA {
     std::vector<PixelCoord> position;

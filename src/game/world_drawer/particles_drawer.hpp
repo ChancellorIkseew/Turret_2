@@ -33,3 +33,14 @@ inline void drawShardParticles(const Camera& camera, Renderer& renderer, const P
             renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
+
+// Same with shard but uses other shader
+inline void drawSparkParticles(const Camera& camera, Renderer& renderer, const ParticleSoA& soa) {
+    const size_t particleCount = soa.particleCount;
+    if (particleCount == 0)
+        return;
+    for (size_t i = 0; i < particleCount; ++i) {
+        if (soa.type[i] == PType::spark && camera.contains(soa.position[i]))
+            renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
+    }
+}

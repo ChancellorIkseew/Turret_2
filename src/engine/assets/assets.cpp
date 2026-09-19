@@ -44,6 +44,7 @@ void Assets::load(Renderer& renderer) {
     shaders.smokeShader.emplace(path / "vertex_lighting.glsl", path / "fragment_smoke.glsl", Pipeline());
     shaders.squareShadowShader.emplace(path / "vertex_lighting.glsl", path / "fragment_shadow.glsl", Pipeline(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, false));
     shaders.emergeShader.emplace(path / "vertex.glsl", path / "fragment_emerge.glsl", Pipeline());
+    shaders.sparkShader.emplace(path / "vertex.glsl", path / "fragment_texturing.glsl", Pipeline(GL_SRC_ALPHA, GL_ONE, false));
     shaders.shieldShader.emplace(path / "vertex.glsl", path / "fragment_shield.glsl", Pipeline());
     shaders.buildBeamShader.emplace(path / "vertex.glsl", path / "fragment_build_beam.glsl", Pipeline());
     shaders.vignetteShader.emplace(path / "vertex.glsl", path / "fragment_vignette.glsl", Pipeline());

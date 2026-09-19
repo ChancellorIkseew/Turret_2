@@ -99,7 +99,7 @@ static inline void makeSparks(TurretComponents& soa, ParticlesPool& particles, c
             constexpr PixelCoord SIZE(1, 1);
             constexpr TickCount LIFE_TIME = 5;
             constexpr uint32_t FADING = cl::fading(LIFE_TIME);
-            particles.addParticle(position, SIZE, 0.f, 0.f, 0.f, 0.f, cl::CYAN, FADING, LIFE_TIME, PType::shard);
+            particles.addParticle(position, SIZE, 0.f, 0.f, 0.f, 0.f, cl::CYAN, FADING, LIFE_TIME, PType::spark);
         }
     }
 }

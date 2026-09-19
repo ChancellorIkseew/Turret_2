@@ -11,6 +11,7 @@ public:
     std::optional<ShaderProgram> smokeShader;
     std::optional<ShaderProgram> squareShadowShader;
     std::optional<ShaderProgram> emergeShader;
+    std::optional<ShaderProgram> sparkShader;
     std::optional<ShaderProgram> shieldShader;
     std::optional<ShaderProgram> buildBeamShader;
     std::optional<ShaderProgram> vignetteShader;
