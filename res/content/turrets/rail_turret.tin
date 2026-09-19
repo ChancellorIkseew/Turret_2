@@ -6,7 +6,7 @@ shadow_offset=2
 shot_sound=railgun_shot
 casing_ejection=false
 sparks=true
-spark_areas=0|0
+spark_areas=0|6
 spark_area_size=16|23
 #logic
 reload=45

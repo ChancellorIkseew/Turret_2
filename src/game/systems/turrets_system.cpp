@@ -63,33 +63,43 @@ static inline void fallbackRecoil(TurretComponents& soa) {
 
 static inline void makeSparks(TurretComponents& soa, ParticlesPool& particles, const Presets& presets,
     const size_t mobCount, const Camera& camera, const uint64_t timeMs) {
+    constexpr float SPARK_DENSITY = 0.05f;
+
     for (size_t i = 0; i < mobCount; ++i) {
-        if (!camera.contains(soa.position[i]) || soa.restReloadTime[i] < 1)
+        if (soa.restReloadTime[i] < 1 || !camera.contains(soa.position[i]))
             continue;
+
         const TurretPreset& turret = presets.getTurret(soa.preset[i]);
         if (turret.visual.sparkAreasCount < 1)
             continue;
 
         const PixelCoord sparkArea = turret.visual.sparkAreas[soa.currentBarrel[i]];
-        const PixelCoord sparkAreaSize = turret.visual.sparkAreaSize * 0.5;
-        
-        const float sin = sinf(soa.turretAngle[i]);
-        const float cos = cosf(soa.turretAngle[i]);
+        const PixelCoord sparkAreaSize = turret.visual.sparkAreaSize;
 
-        for (int j = 0; j < soa.restReloadTime[i]; ++j) {
+        const float reloadProgress = static_cast<float>(soa.restReloadTime[i]) / static_cast<float>(turret.reload);
+        const float area = sparkAreaSize.x * sparkAreaSize.y;
+        const int sparksToSpawn = static_cast<int>(area * SPARK_DENSITY * t1::pow2f(reloadProgress));
+        if (sparksToSpawn < 1)
+            continue;
+
+        const float sin = std::sin(soa.turretAngle[i]);
+        const float cos = std::cos(soa.turretAngle[i]);
+        const PixelCoord halfSize = sparkAreaSize * 0.5f;
+
+        for (int j = 0; j < sparksToSpawn; ++j) {
             const float u = util::randMunus1to1(static_cast<uint32_t>(timeMs + i + j));
             const float v = util::randMunus1to1(static_cast<uint32_t>(timeMs * timeMs + i + j));
 
-            PixelCoord local(sparkAreaSize.x * u, sparkAreaSize.y * v + 8.f);
-            local.y -= soa.currentRecoil[i];
+            const PixelCoord local(sparkArea.x + halfSize.x * u, sparkArea.y + halfSize.y * v - soa.currentRecoil[i]);
 
             PixelCoord position = soa.position[i];
-            position.x += local.x * cos + local.y * sin;
+            position.x +=  local.x * cos + local.y * sin;
             position.y += -local.x * sin + local.y * cos;
 
             constexpr PixelCoord SIZE(1, 1);
-            constexpr uint32_t FADING = cl::fading(5);
-            particles.addParticle(position, SIZE, 0.f, 0.f, 0.f, 0.f, cl::CYAN, FADING, 5, PType::shard);
+            constexpr TickCount LIFE_TIME = 5;
+            constexpr uint32_t FADING = cl::fading(LIFE_TIME);
+            particles.addParticle(position, SIZE, 0.f, 0.f, 0.f, 0.f, cl::CYAN, FADING, LIFE_TIME, PType::shard);
         }
     }
 }
