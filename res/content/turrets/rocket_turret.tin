@@ -5,6 +5,7 @@ size=25|22
 shadow_offset=1.5
 shot_sound=rocket_launch
 casing_ejection=false
+sparks=false
 #logic
 reload=30
 range=610

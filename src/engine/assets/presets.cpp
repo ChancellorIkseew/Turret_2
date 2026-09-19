@@ -131,6 +131,13 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
     size_t ejectionPortsCount = 0;
     if (reader.get<bool>("casing_ejection"))
         ejectionPortsCount = reader.getArray<PixelCoord>("ejection_ports", ejectionPorts);
+    std::array<PixelCoord, 4> sparkAreas;
+    size_t sparkAreasCount = 0;
+    PixelCoord sparkAreaSize;
+    if (reader.get<bool>("sparks")) {
+        sparkAreasCount = reader.getArray<PixelCoord>("spark_areas", sparkAreas);
+        sparkAreaSize = reader.get<PixelCoord>("spark_area_size");
+    }
     TurretVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
@@ -138,7 +145,10 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<float>("shadow_offset"),
         reader.get<std::string>("shot_sound"),
         static_cast<uint8_t>(ejectionPortsCount),
-        ejectionPorts
+        static_cast<uint8_t>(sparkAreasCount),
+        sparkAreaSize,
+        ejectionPorts,
+        sparkAreas
     };
     constexpr float RAD_TO_DEGREE = t1::PI / 180.f;
     return TurretPreset{

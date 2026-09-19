@@ -61,6 +61,39 @@ static inline void fallbackRecoil(TurretComponents& soa) {
     }
 }
 
+static inline void makeSparks(TurretComponents& soa, ParticlesPool& particles, const Presets& presets,
+    const size_t mobCount, const Camera& camera, const uint64_t timeMs) {
+    for (size_t i = 0; i < mobCount; ++i) {
+        if (!camera.contains(soa.position[i]) || soa.restReloadTime[i] < 1)
+            continue;
+        const TurretPreset& turret = presets.getTurret(soa.preset[i]);
+        if (turret.visual.sparkAreasCount < 1)
+            continue;
+
+        const PixelCoord sparkArea = turret.visual.sparkAreas[soa.currentBarrel[i]];
+        const PixelCoord sparkAreaSize = turret.visual.sparkAreaSize * 0.5;
+        
+        const float sin = sinf(soa.turretAngle[i]);
+        const float cos = cosf(soa.turretAngle[i]);
+
+        for (int j = 0; j < soa.restReloadTime[i]; ++j) {
+            const float u = util::randMunus1to1(static_cast<uint32_t>(timeMs + i + j));
+            const float v = util::randMunus1to1(static_cast<uint32_t>(timeMs * timeMs + i + j));
+
+            PixelCoord local(sparkAreaSize.x * u, sparkAreaSize.y * v + 8.f);
+            local.y -= soa.currentRecoil[i];
+
+            PixelCoord position = soa.position[i];
+            position.x += local.x * cos + local.y * sin;
+            position.y += -local.x * sin + local.y * cos;
+
+            constexpr PixelCoord SIZE(1, 1);
+            constexpr uint32_t FADING = cl::fading(5);
+            particles.addParticle(position, SIZE, 0.f, 0.f, 0.f, 0.f, cl::CYAN, FADING, 5, PType::shard);
+        }
+    }
+}
+
 static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPool& particles,
     const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera, const uint64_t timeMs) {
     for (size_t i = 0; i < mobCount; ++i) {
@@ -119,6 +152,7 @@ void turrets::processTurrets(TurretComponents& soa, ShellsPool& shells, Particle
     reduceRestReload(soa);
     rotateTurrets(soa, presets, mobCount);
     shoot(soa, shells, particles, presets, mobCount, sounds, camera, timeMs);
+    makeSparks(soa, particles, presets, mobCount, camera, timeMs);
     fallbackRecoil(soa);
 }
 
