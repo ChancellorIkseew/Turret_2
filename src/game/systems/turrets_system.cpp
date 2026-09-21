@@ -134,9 +134,9 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
         if (camera.contains(position)) {
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;
-            constexpr PixelCoord SIZE(15.f, 15.f);
-            particles.addParticle(position, SIZE, angle, 0.f, 0.2f, 0.f, cl::SMOKE, 0, 15, PType::smoke);
-            particles.addParticle(position, SIZE / 1.5, angle, 0.f, 0.2f, 0.f, cl::ORANGE, 0, 15, PType::light);
+            const PixelCoord flameSize = PixelCoord(10, 10) * shell.visual.size.x;
+            particles.addParticle(position, flameSize * 1.5f, angle, 0.f, 0.2f, 0.f, cl::SMOKE, 0, 15, PType::smoke);
+            particles.addParticle(position, flameSize, angle, 0.f, 0.2f, 0.f, cl::ORANGE, 0, 15, PType::light);
             sounds.pushSound(turret.visual.shotSound, position);
             if (turret.visual.ejectionPortsCount > 0) {
                 PixelCoord localPort = turret.visual.ejectionPorts[soa.currentBarrel[i]];

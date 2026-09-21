@@ -9,7 +9,7 @@ inline void drawLightParticles(const Camera& camera, Renderer& renderer, const P
         return;
     for (size_t i = 0; i < particleCount; ++i) {
         if (soa.type[i] == PType::light && camera.contains(soa.position[i]))
-            renderer.draw(FULL_UV_RECT, soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
+            renderer.draw(FULL_UV_RECT, soa.position[i], soa.size[i], soa.size[i] / 2.f, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
 
@@ -20,7 +20,7 @@ inline void drawSmokeParticles(const Camera& camera, Renderer& renderer, const P
         return;
     for (size_t i = 0; i < particleCount; ++i) {
         if (soa.type[i] == PType::smoke && camera.contains(soa.position[i]))
-            renderer.draw(FULL_UV_RECT, soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
+            renderer.draw(FULL_UV_RECT, soa.position[i], soa.size[i], soa.size[i] / 2.f, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
 
@@ -30,7 +30,7 @@ inline void drawShardParticles(const Camera& camera, Renderer& renderer, const P
         return;
     for (size_t i = 0; i < particleCount; ++i) {
         if (soa.type[i] == PType::shard && camera.contains(soa.position[i]))
-            renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
+            renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2.f, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
 
@@ -41,6 +41,6 @@ inline void drawSparkParticles(const Camera& camera, Renderer& renderer, const P
         return;
     for (size_t i = 0; i < particleCount; ++i) {
         if (soa.type[i] == PType::spark && camera.contains(soa.position[i]))
-            renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2, t1::PI - soa.angle[i], soa.color[i]);
+            renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2.f, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
