@@ -4,9 +4,9 @@ origin=1.0|1.0
 size=2.0|9.0
 has_trail=true
 #logic
-speed=6.0
+speed=12.0
 damage=120
-life_time=105
+life_time=53
 explosion_damage=0
 explosion_radius=5.0
 shards_count=5
