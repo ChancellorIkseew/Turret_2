@@ -20,7 +20,7 @@ static inline void reduceColor(ParticleSoA& soa) {
 static inline void move(ParticleSoA& soa) {
     for (size_t i = 0; i < soa.particleCount; ++i) {
         soa.speed[i] -= soa.deceleration[i];
-        soa.position[i] += soa.facing[i] * soa.speed[i];
+        soa.position[i] += soa.velocity[i] * soa.speed[i];
     }
     for (size_t i = 0; i < soa.particleCount; ++i) {
         soa.angle[i] += soa.rotationSpeed[i];

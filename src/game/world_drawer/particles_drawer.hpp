@@ -44,3 +44,13 @@ inline void drawSparkParticles(const Camera& camera, Renderer& renderer, const P
             renderer.drawRect(soa.position[i], soa.size[i], soa.size[i] / 2.f, t1::PI - soa.angle[i], soa.color[i]);
     }
 }
+
+inline void drawCasingParticles(const TextureRect casing, const Camera& camera, Renderer& renderer, const ParticleSoA& soa) {
+    const size_t particleCount = soa.particleCount;
+    if (particleCount == 0)
+        return;
+    for (size_t i = 0; i < particleCount; ++i) {
+        if (soa.type[i] == PType::casing && camera.contains(soa.position[i]))
+            renderer.draw(casing, soa.position[i], soa.size[i], soa.size[i] / 2.f, t1::PI - soa.angle[i], soa.color[i]);
+    }
+}

@@ -88,15 +88,18 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     renderer.setShaderProgram(*shaders.shieldShader);
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
     //
-    renderer.setShaderProgram(*shaders.sparkShader);
-    drawSparkParticles(camera, renderer, world.getParticles().getSoa());
-    //
     renderer.setShaderProgram(*shaders.smokeShader);
     drawSmokeParticles(camera, renderer, world.getParticles().getSoa());
+    //
+    renderer.setShaderProgram(*shaders.casingShader);
+    drawCasingParticles(assets.getAtlas().at("casing"), camera, renderer, world.getParticles().getSoa());
     //
     renderer.setShaderProgram(*shaders.additiveLightShader);
     shells::drawShellsLighting(world.getShells().getSoa(), presets, camera, renderer);
     drawLightParticles(camera, renderer, world.getParticles().getSoa());
+    //
+    renderer.setShaderProgram(*shaders.sparkShader);
+    drawSparkParticles(camera, renderer, world.getParticles().getSoa());
     //
     renderer.setShaderProgram(*shaders.buildBeamShader);
     world.getBuildBems().draw(renderer, tickCount);
