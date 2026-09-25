@@ -66,45 +66,45 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     //renderer.setShaderProgram(*shaders.lightingShader);
     // Draw lifthing here, before other. Now ligthing is not needed.
     //
-    renderer.setShaderProgram(*shaders.baseShader);
+    renderer.setShaderProgram(*shaders.base);
     drawer.drawMap(camera, renderer, world.getMap());
     //
-    renderer.setShaderProgram(*shaders.squareShadowShader);
+    renderer.setShaderProgram(*shaders.squareShadow);
     drawer.drawBlockShadows(world.getBlocks(), camera, renderer);
     //
-    renderer.setShaderProgram(*shaders.baseShader);
+    renderer.setShaderProgram(*shaders.base);
     drawer.drawBlocks(world.getBlocks(), renderer, presets);
     world.getSchematic().drawGhosts(renderer, presets, timeMs);
     //
-    renderer.setShaderProgram(*shaders.emergeShader);
+    renderer.setShaderProgram(*shaders.emerge);
     drawer.drawBlocksInProgress(world.getBlocks(), renderer, presets);
     //
-    renderer.setShaderProgram(*shaders.baseShader);
+    renderer.setShaderProgram(*shaders.base);
     engine.getGUI().drawDiegeticElements(renderer);
     drawEntities(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
     drawInfoOnCursor(renderer, camera, presets, world.getBlocks(), targetTile);
     //
-    renderer.setShaderProgram(*shaders.shieldShader);
+    renderer.setShaderProgram(*shaders.shield);
     mobs::drawMobShields(world.getMobs().getSoa(), presets, camera, renderer, tickCount);
     //
-    renderer.setShaderProgram(*shaders.smokeShader);
+    renderer.setShaderProgram(*shaders.smoke);
     drawSmokeParticles(camera, renderer, world.getParticles().getSoa());
     //
-    renderer.setShaderProgram(*shaders.casingShader);
+    renderer.setShaderProgram(*shaders.casing);
     drawCasingParticles(assets.getAtlas().at("casing"), camera, renderer, world.getParticles().getSoa());
     //
-    renderer.setShaderProgram(*shaders.additiveLightShader);
+    renderer.setShaderProgram(*shaders.additiveLight);
     shells::drawShellsLighting(world.getShells().getSoa(), presets, camera, renderer);
     drawLightParticles(camera, renderer, world.getParticles().getSoa());
     //
-    renderer.setShaderProgram(*shaders.sparkShader);
+    renderer.setShaderProgram(*shaders.spark);
     drawSparkParticles(camera, renderer, world.getParticles().getSoa());
     //
-    renderer.setShaderProgram(*shaders.buildBeamShader);
+    renderer.setShaderProgram(*shaders.buildBeam);
     world.getBuildBems().draw(renderer, tickCount);
     //
-    renderer.setShaderProgram(*shaders.monochromeShader);
+    renderer.setShaderProgram(*shaders.monochrome);
     const PlayerController::Unit unitSelected = engine.getSession().getPlayerController().getUnitSelected();
     drawUnitSelected(renderer, world.getMobs().getSoa(), world.getBlocks().getMeta().getTurrets().getSoa(), presets, unitSelected);
 }

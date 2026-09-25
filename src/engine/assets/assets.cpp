@@ -37,17 +37,17 @@ void Assets::load(Renderer& renderer) {
     waves.load();
 
     auto path = io::folders::RES / "shaders";
-    shaders.monochromeShader.emplace(path / "vertex.glsl", path / "fragment_monochrome.glsl", Pipeline());
-    shaders.baseShader.emplace(path / "vertex.glsl", path / "fragment_texturing.glsl", Pipeline());
-    shaders.lightingShader.emplace(path / "vertex_lighting.glsl", path / "fragment_lighting.glsl", Pipeline(GL_ONE, GL_ONE, true));
-    shaders.additiveLightShader.emplace(path / "vertex_lighting.glsl", path / "fragment_lighting.glsl", Pipeline(GL_ONE, GL_ONE, false));
-    shaders.smokeShader.emplace(path / "vertex_lighting.glsl", path / "fragment_smoke.glsl", Pipeline());
-    shaders.squareShadowShader.emplace(path / "vertex_lighting.glsl", path / "fragment_shadow.glsl", Pipeline());
-    shaders.emergeShader.emplace(path / "vertex.glsl", path / "fragment_emerge.glsl", Pipeline());
-    shaders.sparkShader.emplace(path / "vertex.glsl", path / "fragment_texturing.glsl", Pipeline(GL_SRC_ALPHA, GL_ONE, false));
-    shaders.casingShader.emplace(path / "vertex.glsl", path / "fragment_casing.glsl", Pipeline(GL_ONE, GL_ONE_MINUS_SRC_COLOR, false));
-    shaders.shieldShader.emplace(path / "vertex.glsl", path / "fragment_shield.glsl", Pipeline());
-    shaders.buildBeamShader.emplace(path / "vertex.glsl", path / "fragment_build_beam.glsl", Pipeline());
-    shaders.vignetteShader.emplace(path / "vertex.glsl", path / "fragment_vignette.glsl", Pipeline());
-    shaders.uiShader.emplace(path / "vertex.glsl", path / "fragment_ui.glsl", Pipeline());
+    shaders.monochrome.emplace(path / "vertex.glsl", path / "fragment_monochrome.glsl", Pipeline());
+    shaders.base.emplace(path / "vertex.glsl", path / "fragment_texturing.glsl", Pipeline());
+    shaders.lighting.emplace(path / "vertex_lighting.glsl", path / "fragment_lighting.glsl", Pipeline(GL_ONE, GL_ONE, true));
+    shaders.additiveLight.emplace(path / "vertex_lighting.glsl", path / "fragment_lighting.glsl", Pipeline(GL_ONE, GL_ONE, false));
+    shaders.smoke.emplace(path / "vertex_lighting.glsl", path / "fragment_smoke.glsl", Pipeline());
+    shaders.squareShadow.emplace(path / "vertex_lighting.glsl", path / "fragment_shadow.glsl", Pipeline());
+    shaders.emerge.emplace(path / "vertex.glsl", path / "fragment_emerge.glsl", Pipeline());
+    shaders.spark.emplace(path / "vertex.glsl", path / "fragment_texturing.glsl", Pipeline(GL_SRC_ALPHA, GL_ONE, false));
+    shaders.casing.emplace(path / "vertex.glsl", path / "fragment_casing.glsl", Pipeline(GL_ONE, GL_ONE_MINUS_SRC_COLOR, false));
+    shaders.shield.emplace(path / "vertex.glsl", path / "fragment_shield.glsl", Pipeline());
+    shaders.buildBeam.emplace(path / "vertex.glsl", path / "fragment_build_beam.glsl", Pipeline());
+    shaders.vignette.emplace(path / "vertex.glsl", path / "fragment_vignette.glsl", Pipeline());
+    shaders.ui.emplace(path / "vertex.glsl", path / "fragment_ui.glsl", Pipeline());
 }

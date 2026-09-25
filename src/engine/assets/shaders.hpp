@@ -4,17 +4,17 @@
 
 class Shaders {
 public:
-    std::optional<ShaderProgram> monochromeShader;
-    std::optional<ShaderProgram> baseShader;
-    std::optional<ShaderProgram> lightingShader;
-    std::optional<ShaderProgram> additiveLightShader;
-    std::optional<ShaderProgram> smokeShader;
-    std::optional<ShaderProgram> squareShadowShader;
-    std::optional<ShaderProgram> emergeShader;
-    std::optional<ShaderProgram> sparkShader;
-    std::optional<ShaderProgram> casingShader;
-    std::optional<ShaderProgram> shieldShader;
-    std::optional<ShaderProgram> buildBeamShader;
-    std::optional<ShaderProgram> vignetteShader;
-    std::optional<ShaderProgram> uiShader;
+    std::optional<ShaderProgram> monochrome;
+    std::optional<ShaderProgram> base;
+    std::optional<ShaderProgram> lighting;
+    std::optional<ShaderProgram> additiveLight;
+    std::optional<ShaderProgram> smoke;
+    std::optional<ShaderProgram> squareShadow;
+    std::optional<ShaderProgram> emerge;
+    std::optional<ShaderProgram> spark;
+    std::optional<ShaderProgram> casing;
+    std::optional<ShaderProgram> shield;
+    std::optional<ShaderProgram> buildBeam;
+    std::optional<ShaderProgram> vignette;
+    std::optional<ShaderProgram> ui;
 };
