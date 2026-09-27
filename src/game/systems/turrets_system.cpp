@@ -147,10 +147,10 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
                 const PixelCoord size(shell.visual.size.y, shell.visual.size.x);
                 const float casingAngle = localPort.x < 0 ? angle - t1::TAU + 0.2f : angle + t1::TAU - 0.2f;
                 const float casingVisAngle = localPort.x < 0 ? angle + t1::TAU + 0.2f : angle + t1::TAU - 0.2f;
-                const float rotationSpeed = localPort.x < 0 ? -0.004f : 0.004f;
-                constexpr uint32_t FADING = cl::fading(90);
+                const float rotationSpeed = localPort.x < 0 ? -0.01f : 0.01f;
+                constexpr uint32_t FADING = cl::fading(45);
                 particles.addParticleEx(port, size, casingAngle, casingVisAngle,
-                    rotationSpeed, 0.2f, 0.002f, cl::ORANGE, FADING, 90, PType::casing);
+                    rotationSpeed, 0.5f, 0.01f, cl::ORANGE, FADING, 45, PType::casing);
             }
         }
         constexpr float MAX_RECOIL = 2.f;
