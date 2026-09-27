@@ -18,11 +18,10 @@ Engine::Engine(const std::string& windowTitle, const PixelCoord windowSize) :
     mainWindow(windowTitle, windowSize), scriptsHandler(std::make_unique<ScriptsHandler>()) { }
 Engine::~Engine() = default;
 
-static std::unique_ptr<World> createWorld(const EngineCommand command, const std::string& folder,
-    WorldProperties& properties, const Assets& assets) {
-    if (command == EngineCommand::gameplay_load_world || command == EngineCommand::editor_load_world)
-        return serializer::loadWorld(folder);
-    return gen::generateWorld(properties, assets);
+static std::unique_ptr<World> createWorld(const SessionRequest& request, const Assets& assets) {
+    if (request.command == EngineCommand::gameplay_load_world || request.command == EngineCommand::editor_load_world)
+        return serializer::loadWorld(request.worldFolder);
+    return gen::generateWorld(request.worldProperties, assets);
 }
 
 static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engine) {
@@ -48,14 +47,14 @@ static GameMode getGameMode(const EngineCommand command) {
     }
 }
 
-std::unique_ptr<GameSession> Engine::createSession() {
-    std::unique_ptr<World> world = createWorld(command, worldFolder, worldProperties, assets);
-    if (!world) {
-        openMainMenu();
+std::unique_ptr<GameSession> createSession(const SessionRequest& request, Engine& engine) {
+    Assets& assets = engine.getAssets();
+    std::unique_ptr<World> world = createWorld(request, assets);
+    if (!world)
         return nullptr;
-    }
+    const EngineCommand command = request.command;
     const bool paused = command == EngineCommand::main_menu ? false : Settings::gameplay.pauseOnWorldOpen;
-    return std::make_unique<GameSession>(std::move(world), createGUI(command, *this), assets, paused, getGameMode(command));
+    return std::make_unique<GameSession>(std::move(world), createGUI(command, engine), assets, paused, getGameMode(command));
 }
 
 void Engine::run() {
@@ -64,47 +63,46 @@ void Engine::run() {
     assets.load(mainWindow.getRenderer());
     openMainMenu();
     while (mainWindow.isOpen()) {
-        if (session && session->isOpen())
+        processSessionRequest();
+        if (session)
             session->update(*this, assets.getPresets(), *scriptsHandler);
-        else {
-            session = createSession();
-            script_libs::initNewGame(*this);
-        }
     }
 }
 
+void Engine::changeSession(SessionRequest request) {
+    sessionRequest = std::move(request);
+}
+
 void Engine::loadWorldInGame(const std::string& folder) {
-    closeSession();
-    command = EngineCommand::gameplay_load_world;
-    worldFolder = folder;
+    changeSession({.command = EngineCommand::gameplay_load_world, .worldFolder = folder });
 }
 void Engine::loadWorldInEditor(const std::string& folder) {
-    closeSession();
-    command = EngineCommand::editor_load_world;
-    worldFolder = folder;
+    changeSession({ .command = EngineCommand::editor_load_world, .worldFolder = folder });
 }
-void Engine::createWorldInGame(WorldProperties& properties) {
-    closeSession();
-    command = EngineCommand::gameplay_new_world;
-    worldProperties = properties;
+void Engine::createWorldInGame(WorldProperties properties) {
+    changeSession({ .command = EngineCommand::gameplay_new_world, .worldProperties = std::move(properties) });
 }
 void Engine::createWorldInEditor() {
-    closeSession();
-    command = EngineCommand::editor_new_world;
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
-    worldProperties = WorldProperties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
+    WorldProperties properties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
+    changeSession({ .command = EngineCommand::editor_new_world, .worldProperties = properties });
 }
 void Engine::openMainMenu() {
-    closeSession();
-    command = EngineCommand::main_menu;
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
-    worldProperties = WorldProperties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
+    WorldProperties properties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
+    changeSession({ .command = EngineCommand::main_menu, .worldProperties = properties });
 }
 
 GUI& Engine::getGUI() { return session->getGUI(); }
 
-void Engine::closeSession() {
-    if (session) session->close();
+void Engine::processSessionRequest() {
+    if (!sessionRequest)
+        return;
+    std::unique_ptr<GameSession> newSession = createSession(*sessionRequest, *this);
+    sessionRequest.reset();
+    if (newSession)
+        session.reset(newSession.release());
+    script_libs::initNewGame(*this);
 }

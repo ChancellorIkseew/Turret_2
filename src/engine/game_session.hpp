@@ -27,7 +27,7 @@ class GameSession {
     TimeCount timeCount;
     std::optional<uint64_t> lastCoreAttack;
     int tickSpeed = 1;
-    bool pausedManually, open = true;
+    bool pausedManually;
     GameMode gameMode;
 public:
     GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets, const bool paused, const GameMode gameMode);
@@ -40,10 +40,8 @@ public:
     Camera& getCamera() { return camera; }
     PlayerController& getPlayerController() { return playerController; }
 
-    void close() { open = false; }
     void setPaused(const bool flag, Engine& engine);
     void setTickSpeed(const int ticksInFrame) { tickSpeed = ticksInFrame; }
-    bool isOpen() const { return open; }
     bool isPausedManually() const { return pausedManually; }
     GameMode getGameMode() const { return gameMode; }
     int getTickSpeed() const { return tickSpeed; }

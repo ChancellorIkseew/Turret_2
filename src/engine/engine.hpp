@@ -9,21 +9,26 @@ class GameSession;
 class GUI;
 class ScriptsHandler;
 
+struct SessionRequest {
+    EngineCommand command{ EngineCommand::main_menu };
+    std::string worldFolder;
+    WorldProperties worldProperties;
+};
+
 class Engine {
     MainWindow mainWindow;
     Assets assets;
-    WorldProperties worldProperties;
-    std::string worldFolder;
-    EngineCommand command = EngineCommand::main_menu;
+    std::optional<SessionRequest> sessionRequest;
     std::unique_ptr<GameSession> session;
     std::unique_ptr<ScriptsHandler> scriptsHandler;
 public:
     Engine(const std::string& windowTitle, const PixelCoord windowSize);
     ~Engine();
     void run();
+    void changeSession(SessionRequest request);
     void loadWorldInGame(const std::string& folder);
     void loadWorldInEditor(const std::string& folder);
-    void createWorldInGame(WorldProperties& properties);
+    void createWorldInGame(WorldProperties properties);
     void createWorldInEditor();
     void openMainMenu();
     //
@@ -36,7 +41,6 @@ public:
     Assets& getAssets() { return assets; };
     GUI& getGUI();
 private:
-    std::unique_ptr<GameSession> createSession();
-    void closeSession();
+    void processSessionRequest();
     t1_disable_copy_and_move(Engine)
 };
