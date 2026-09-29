@@ -31,7 +31,6 @@ fullscreen=полный экран
 GUI scale=масштаб интерфейса
 Starts in {}=До нападения {}
 master=общая громкость
-max particles=максимум частиц
 music=музыка
 mute in background=заглушить звук при свёрнутой игре
 off=выкл.
@@ -47,6 +46,12 @@ vingette=виньетирование
 Wave {}=Волна {}
 waves defeated=отражено волн
 world=игровой мир
+
+block cost multiplier=множитель стоимости блоков
+enemy count multiplier=множитель численности врагов
+wave spacing=интервал волн
+toggle enemy waves=включить волны врагов
+
 #base_pack
 snow=снег
 ice=лёд

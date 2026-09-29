@@ -1,8 +1,9 @@
 #include "frontend.hpp"
 //
 #include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/icon.hpp"
+#include "MINGUI/widgets/checkbox.hpp"
 #include "MINGUI/widgets/form.hpp"
+#include "MINGUI/widgets/icon.hpp"
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/validator.hpp"
@@ -57,11 +58,37 @@ public:
     }
 };
 
+class OtherWorldSettings : public Layout {
+    Form* blockCostMul  = nullptr;
+    Form* enemyCountMul = nullptr;
+    Form* waveSpacing   = nullptr;
+    Checkbox* toggleEnemyWaves = nullptr;
+public:
+    OtherWorldSettings() : Layout(Orientation::horizontal) {
+        auto labels    = addNode(new Layout(Orientation::vertical));
+        frontend::useLabelsSpacing(labels);
+        labels->addNode(new Label(tr("block cost multiplier")));
+        labels->addNode(new Label(tr("enemy count multiplier")));
+        labels->addNode(new Label(tr("wave spacing")));
+        labels->addNode(new Label(tr("toggle enemy waves")));
+        auto clickable = addNode(new Layout(Orientation::vertical));
+        blockCostMul  = clickable->addNode(new Form(1, new Uint8Validator(1, 10)));
+        enemyCountMul = clickable->addNode(new Form(1, new Uint8Validator(1, 10)));
+        waveSpacing   = clickable->addNode(new Form(180, new Int64Validator(0, 1000)));
+        toggleEnemyWaves = clickable->addNode(new Checkbox(true));
+    }
+
+    void apply() {
+
+    }
+};
+
 class FrWorldProperties : public Container {
     Form* seed   = nullptr;
     Form* width  = nullptr;
     Form* height = nullptr;
     OProps* oProps = nullptr;
+    OtherWorldSettings* otherSettings = nullptr;
 public:
     ~FrWorldProperties() final = default;
     FrWorldProperties(Engine& engine) : Container(Align::center, Orientation::vertical) {
@@ -79,6 +106,8 @@ public:
         height = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
 
         oProps = main->addNode(new OProps(engine.getAssets().getAtlas()));
+
+        otherSettings = addNode(new OtherWorldSettings());
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
