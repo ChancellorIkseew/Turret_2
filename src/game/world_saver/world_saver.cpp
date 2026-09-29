@@ -37,7 +37,8 @@ std::unique_ptr<World> serializer::loadWorld(const std::string& folder) {
         //
         auto map = serializer::loadMap(path);
         logger.info() << "World successfully load.";
-        return std::make_unique<World>(map);
+        //return std::make_unique<World>(map); //TODO: update
+        return nullptr;
     }
     catch (const std::exception& exception) {
         logger.error() << "Failed to load world. " << exception.what();

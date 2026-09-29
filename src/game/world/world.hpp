@@ -7,6 +7,7 @@
 #include "game/entities/mobs_pool.hpp"
 #include "game/entities/particles_pool.hpp"
 #include "game/entities/shells_pool.hpp"
+#include "world_config.hpp"
 #include "world_map.hpp"
 
 class World {
@@ -20,12 +21,14 @@ class World {
     ParticlesPool particles;
     Schematic blueprints;
     BuildBeamsPool buildBeams;
+    WorldConfig worldConfig;
 public:
-    World(WorldMap& map) :
-        blocks(map.getSize()),
+    World(WorldMap& map, const WorldConfig& worldConfig) :
+        blocks(worldConfig.mapSize),
         map(std::move(map)),
         mobs(128),
-        shells(256) { }
+        shells(256),
+        worldConfig(worldConfig) { }
     //
     const WorldMap& getMap() const noexcept { return map; }
     const BlockMap& getBlocks() const noexcept { return blocks; }
@@ -35,6 +38,7 @@ public:
     const ShellsPool& getShells() const noexcept { return shells; }
     const ParticlesPool& getParticles() const noexcept { return particles; }
     const Schematic& getSchematic() const noexcept { return blueprints; }
+    const WorldConfig& getConfig() const noexcept { return worldConfig; }
     WorldMap& getMap() noexcept { return map; }
     BlockMap& getBlocks() noexcept { return blocks; }
     TeamsPool& getTeams() noexcept { return teams; }

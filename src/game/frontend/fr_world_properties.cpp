@@ -69,17 +69,20 @@ public:
         frontend::useLabelsSpacing(labels);
         labels->addNode(new Label(tr("block cost multiplier")));
         labels->addNode(new Label(tr("enemy count multiplier")));
-        labels->addNode(new Label(tr("wave spacing")));
+        labels->addNode(new Label(tr("wave spacing (seconds)")));
         labels->addNode(new Label(tr("toggle enemy waves")));
         auto clickable = addNode(new Layout(Orientation::vertical));
         blockCostMul  = clickable->addNode(new Form(1, new Uint8Validator(1, 10)));
         enemyCountMul = clickable->addNode(new Form(1, new Uint8Validator(1, 10)));
-        waveSpacing   = clickable->addNode(new Form(180, new Int64Validator(0, 1000)));
+        waveSpacing   = clickable->addNode(new Form(180, new Int64Validator(1, 60 * 7200)));
         toggleEnemyWaves = clickable->addNode(new Checkbox(true));
     }
 
-    void apply() {
-
+    void apply(WorldConfig& config) {
+        config.blockCostMul = validator::to<int64_t>(blockCostMul->getText()).value_or(1);
+        config.enemyCountMul = validator::to<uint64_t>(enemyCountMul->getText()).value_or(1);
+        config.ticksPerWave = validator::to<uint64_t>(waveSpacing->getText()).value_or(1) * 60;
+        config.toggleWaves = toggleEnemyWaves->getValue();
     }
 };
 
@@ -115,12 +118,12 @@ public:
     }
 private:
     void createWorld(Engine& engine) {
-        WorldProperties properties(
-            TileCoord(validator::to<int>(width->getText()).value_or(100),
-                validator::to<int>(height->getText()).value_or(100)),
-            validator::to<uint64_t>(seed->getText()).value_or(0U),
-            serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT),
-            oProps->getPresets());
+        WorldConfig config;
+        otherSettings->apply(config);
+        config.seed = validator::to<uint64_t>(seed->getText()).value_or(0U);
+        config.mapSize = TileCoord(validator::to<int>(width ->getText()).value_or(100),
+                                   validator::to<int>(height->getText()).value_or(100));
+        WorldProperties properties(config, serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT), oProps->getPresets());
         engine.createWorldInGame(properties);
     }
 };

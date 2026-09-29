@@ -54,14 +54,14 @@ static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Pr
 }
 
 static WorldMap generateMap(const WorldProperties& properties, const Assets& assets) {
-    const auto mapSize = properties.mapSize;
+    const auto mapSize = properties.worldConfig.mapSize;
     const auto floorPresets = prepareFloorPresets(properties.floorPresets, assets.getIndexes());
     const auto overlayPresets = prepareOverlayPresets(properties.overlayPresets, assets.getPresets());
     //
-    const PerlinNoise2D mainNoise(properties.seed);
-    const PerlinNoise2D supportNoise(properties.seed + 100U);
-    const SquirellNoise2D squirellNoise(properties.seed);
-    const SpotGenerator2D spotGenerator(properties.seed);
+    const PerlinNoise2D mainNoise(properties.worldConfig.seed);
+    const PerlinNoise2D supportNoise(properties.worldConfig.seed + 100U);
+    const SquirellNoise2D squirellNoise(properties.worldConfig.seed);
+    const SpotGenerator2D spotGenerator(properties.worldConfig.seed);
     //
     std::vector<uint8_t>   floor(mapSize.x * mapSize.y);
     std::vector<OrePresetID> ore(mapSize.x * mapSize.y);
@@ -84,5 +84,5 @@ static WorldMap generateMap(const WorldProperties& properties, const Assets& ass
 
 std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Assets& assets) {
     auto map = generateMap(properties, assets);
-    return std::make_unique<World>(map);
+    return std::make_unique<World>(map, properties.worldConfig);
 }

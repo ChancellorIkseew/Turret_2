@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "engine/coords/tile_coord.hpp"
+#include "game/world/world_config.hpp"
 
 class Assets;
 class World;
@@ -27,18 +27,15 @@ using OverlayPresets = std::vector<OverlayPreset>;
 
 struct WorldProperties {
     WorldProperties() = default;
-    WorldProperties(const TileCoord mapSize,
-        const uint64_t seed,
+    WorldProperties(const WorldConfig& worldConfig,
         const FloorPresets& floorPresets,
         const OverlayPresets& overlayPresets) :
-        mapSize(mapSize),
-        seed(seed),
+        worldConfig(worldConfig),
         floorPresets(floorPresets),
         overlayPresets(overlayPresets) { }
-    TileCoord mapSize = TileCoord(20, 20);
-    uint64_t seed = 0U;
     FloorPresets floorPresets;
     OverlayPresets overlayPresets;
+    WorldConfig worldConfig;
 };
 
 namespace gen {

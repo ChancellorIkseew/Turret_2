@@ -49,7 +49,7 @@ world=игровой мир
 
 block cost multiplier=множитель стоимости блоков
 enemy count multiplier=множитель численности врагов
-wave spacing=интервал волн
+wave spacing (seconds)=интервал волн (в секундах)
 toggle enemy waves=включить волны врагов
 
 #base_pack

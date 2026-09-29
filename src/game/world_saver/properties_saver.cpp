@@ -9,8 +9,8 @@ static debug::Logger logger("properties_saver");
 
 void serializer::save(const WorldProperties& properties, const std::filesystem::path& path) {
     tin::Data data;
-    data.emplace("map_size", std::to_string(properties.mapSize.x) + '|' + std::to_string(properties.mapSize.y));
-    data.emplace("seed", std::to_string(properties.seed));
+    data.emplace("map_size", std::to_string(properties.worldConfig.mapSize.x) + '|' + std::to_string(properties.worldConfig.mapSize.y));
+    data.emplace("seed", std::to_string(properties.worldConfig.seed));
     tin::write(path / "world_properties.tin", data);
     saveFloorPreset(properties.floorPresets, path);
     saveOverlayPreset(properties.overlayPresets, path);
@@ -22,5 +22,6 @@ WorldProperties serializer::load(const std::filesystem::path& path) {
     uint64_t seed = data.get<uint64_t>("seed").value_or(0U);
     FloorPresets floor = loadFloorPreset(path);
     OverlayPresets overlay = loadOverlayPreset(path);
-    return WorldProperties(mapSize, seed, floor, overlay);
+    WorldConfig config{ .mapSize = mapSize, .seed = seed };
+    return WorldProperties(config, floor, overlay);
 }

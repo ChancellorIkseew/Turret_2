@@ -85,13 +85,15 @@ void Engine::createWorldInGame(WorldProperties properties) {
 void Engine::createWorldInEditor() {
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
-    WorldProperties properties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
+    WorldConfig config{ .mapSize = TileCoord(100, 100), .seed = 0, .toggleWaves = false, };
+    WorldProperties properties(config, floorPresets, overlayPresets);
     changeSession({ .command = EngineCommand::editor_new_world, .worldProperties = properties });
 }
 void Engine::openMainMenu() {
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
-    WorldProperties properties(TileCoord(100, 100), 0U, floorPresets, overlayPresets);
+    WorldConfig config{ .mapSize = TileCoord(100, 100), .seed = 0, .toggleWaves = false, };
+    WorldProperties properties(config, floorPresets, overlayPresets);
     changeSession({ .command = EngineCommand::main_menu, .worldProperties = properties });
 }
 
