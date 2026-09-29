@@ -129,7 +129,8 @@ public:
     //
     void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block);
     void demolish(TileCoord tile);
-    BuildResult build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets, Inventory& inventory);
+    BuildResult build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets,
+        Inventory& inventory, const int16_t costMul);
     void applyBlueprint(const Blueprint& blueprint, const TeamID teamID, const Presets& presets);
     std::optional<InProgressAim> getClosestInProgress(const PixelCoord mobPosition);
     //

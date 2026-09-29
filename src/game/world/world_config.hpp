@@ -6,8 +6,8 @@
 struct WorldConfig {
     TileCoord mapSize = TileCoord(20, 20);
     uint64_t seed = 0;
-    int64_t blockCostMul = 1;
     uint64_t ticksPerWave = 10800; // 3 minutes.
     uint32_t enemyCountMul = 1;
+    int16_t blockCostMul = 1;
     bool toggleWaves = true;
 };

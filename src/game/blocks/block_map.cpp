@@ -63,7 +63,8 @@ void BlockMap::demolish(TileCoord tile) {
 }
 
 using Result = BlockMap::BuildResult;
-Result BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets, Inventory& inventory) {
+Result BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets,
+    Inventory& inventory, const int16_t costMul) {
     const TileCoord masterTile = getMaster(tile);
     assert(isInProgress(masterTile));
 
@@ -73,9 +74,9 @@ Result BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t 
 
     if (blockInProgress->action == BPAction::build) {
         const int16_t remaining = totalTime - std::min(blockInProgress->progress, totalTime);
-        const int16_t resourceMaxStep = inventory.getMaxBuildStep(preset);
+        const int16_t resourceMaxStep = inventory.getMaxBuildStep(preset, costMul);
         const int16_t step = std::min({ remaining, buildSpeed, resourceMaxStep });
-        inventory.consumeByBuild(preset, blockInProgress->progress, step);
+        inventory.consumeByBuild(preset, blockInProgress->progress, step, costMul);
         blockInProgress->increeseProgress(step);
         if (!blockInProgress->isProgressFull(totalTime))
             return Result::build;
@@ -86,7 +87,7 @@ Result BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t 
     }
     else /* BPAction::demolish */ {
         const int16_t step = std::min(blockInProgress->progress, buildSpeed);
-        inventory.refundByDemolish(preset, blockInProgress->progress, step);
+        inventory.refundByDemolish(preset, blockInProgress->progress, step, costMul);
         blockInProgress->increeseProgress(step);
         if (!blockInProgress->isProgressFull(totalTime))
             return Result::demolish;

@@ -22,7 +22,7 @@ public:
         resources[item.asUint()] += amount;
     }
     //
-    int16_t getMaxBuildStep(const BlockPreset& preset) const;
-    void consumeByBuild(const BlockPreset& preset, const int16_t currentProgress, const int16_t step);
-    void refundByDemolish(const BlockPreset& preset, const int16_t currentProgress, const int16_t step);
+    int16_t getMaxBuildStep(const BlockPreset& preset, const int16_t costMul) const;
+    void consumeByBuild(const BlockPreset& preset, const int16_t currentProgress, const int16_t step, const int16_t costMul);
+    void refundByDemolish(const BlockPreset& preset, const int16_t currentProgress, const int16_t step, const int16_t costMul);
 };

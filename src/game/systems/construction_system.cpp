@@ -3,12 +3,7 @@
 #include "engine/assets/presets.hpp"
 #include "engine/audio/sound_queue.hpp"
 #include "engine/coords/transforms.hpp"
-#include "game/blocks/block_map.hpp"
-#include "game/blocks/schematic/schematic.hpp"
-#include "game/common/teams_pool.hpp"
-#include "game/entities/build_beams.hpp"
-#include "game/entities/mobs_pool.hpp"
-#include "game/entities/particles_pool.hpp"
+#include "game/world/world.hpp"
 
 constexpr uint32_t ALPHA = 0xFF'FF'FF'A0;
 constexpr uint32_t BUILD_COLOR = cl::BEIGE & ALPHA;
@@ -26,8 +21,16 @@ static void onBlockBreak(SoundQueue& sounds, ParticlesPool& particles, PixelCoor
     particles.addParticle(position, t1::pixel(size, size), 0.f, 0.f, 0.f, 0.f, BREAK_COLOR, FADING, LIFE_TICKS, PType::shard);
 }
 
-void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schematic& schematic,
-    BlockMap& blocks, BuildBeamsPool& buildBeams, TeamsPool& teams, SoundQueue& sounds, ParticlesPool& particles) {
+void construction::buildBlueprints(World& world, MobSoA& soa, const Presets& presets, SoundQueue& sounds) {
+    TeamsPool& teams = world.getTeams();
+    BlockMap& blocks = world.getBlocks();
+    ParticlesPool& particles = world.getParticles();
+    Schematic& schematic = world.getSchematic();
+    BuildBeamsPool& buildBeams = world.getBuildBems();
+    const int16_t costMul = world.getConfig().blockCostMul;
+
+    schematic.syncWithWorld(blocks);
+
     for (size_t i = 0; i < soa.mobCount; ++i) {
         const auto& mobPreset = presets.getMob(soa.preset[i]);
         if (mobPreset.buildSpeed < 1)
@@ -45,7 +48,7 @@ void construction::buildBlueprints(MobSoA& soa, const Presets& presets, Schemati
 
             using Result = BlockMap::BuildResult;
             Inventory& teamInventory = teams.getTeamByID(soa.teamID[i])->getInventory();
-            const Result result = blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets, teamInventory);
+            const Result result = blocks.build(targetTile, soa.teamID[i], mobPreset.buildSpeed, presets, teamInventory, costMul);
 
             const uint32_t color = (result <= Result::build) ? cl::BEIGE : cl::RED;
             buildBeams.addBeam(position, targetTile, blockSize, color);
