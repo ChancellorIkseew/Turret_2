@@ -16,7 +16,7 @@ public:
     BuiltInScripts(const Assets& assets, World& world) : assets(assets), world(world) { }
 
     void execute(Engine& engine, const TimeCount& timeCount);
-    void spawnWave(const uint32_t wavenumber);
+    void spawnWave(const uint32_t waveNumber, const uint32_t mobCountMul);
     void targetEnemies();
     void respawnShuttle();
 

@@ -80,7 +80,7 @@ public:
 
     void apply(WorldConfig& config) {
         config.blockCostMul = validator::to<int64_t>(blockCostMul->getText()).value_or(1);
-        config.enemyCountMul = validator::to<uint64_t>(enemyCountMul->getText()).value_or(1);
+        config.enemyCountMul = validator::to<uint32_t>(enemyCountMul->getText()).value_or(1);
         config.ticksPerWave = validator::to<uint64_t>(waveSpacing->getText()).value_or(1) * 60;
         config.toggleWaves = toggleEnemyWaves->getValue();
     }

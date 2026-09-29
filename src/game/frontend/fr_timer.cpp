@@ -33,7 +33,7 @@ class FrTimer : public Container {
     IconButton* x2;
     IconButton* x4;
 public:
-    FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {
+    FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {    
         setPadding(12.f);
         const Atlas& atlas = engine.getAssets().getAtlas();
         auto bar = addNode(new Layout(Orientation::horizontal));
@@ -64,12 +64,19 @@ public:
 private:
     void callback(UIContext& context) final {
         Container::callback(context);
-        constexpr uint64_t DEFAULT_FPS_TPS = 60;
-        const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
-        const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
-        wave->setText(tr("Wave {}", waveCount));
-        startsIn->setText(tr("Starts in {}", util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS)));
-        enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(engine.getSession())));
+        if (engine.getSession().getWorld().getConfig().toggleWaves) {
+            constexpr uint64_t DEFAULT_FPS_TPS = 60;
+            const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
+            const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
+            wave->setText(tr("Wave {}", waveCount));
+            startsIn->setText(tr("Starts in {}", util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS)));
+            enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(engine.getSession())));
+        }
+        else {
+            wave->setText(tr("Wave {}", 0));
+            startsIn->setText(tr("Starts in {}", 0));
+            enemiesRemaining->setText(tr("Enemy waves off", countEnemies(engine.getSession())));
+        }
         updatePlayback();
         markDirty();
     }

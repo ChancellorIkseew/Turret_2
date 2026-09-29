@@ -27,6 +27,7 @@ adaptive=адаптивный
 camera inertia=инерция камеры
 custom cursor=изменённый курсор
 Enemies remaining {}=Противников осталось {}
+Enemy waves off=Волны врагов отключены
 fullscreen=полный экран
 GUI scale=масштаб интерфейса
 Starts in {}=До нападения {}

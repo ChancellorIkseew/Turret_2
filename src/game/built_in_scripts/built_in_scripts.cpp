@@ -26,8 +26,11 @@ static PixelCoord randomMapBorderCoord(std::mt19937& gen, const TileCoord mapSiz
 void BuiltInScripts::execute(Engine& engine, const TimeCount& timeCount) {
     if (engine.getSession().getGameMode() == GameMode::survival) {
         if (timeCount.isWaveJustChanged()) {
+            const WorldConfig& worldConfig = world.getConfig();
+            if (!worldConfig.toggleWaves)
+                return;
             engine.getAssets().getAudio().playUI("wave_start");
-            spawnWave(timeCount.getWaveCount());
+            spawnWave(timeCount.getWaveCount(), worldConfig.enemyCountMul);
         }
         targetEnemies();
         respawnShuttle();
@@ -72,7 +75,7 @@ void BuiltInScripts::respawnShuttle() {
     spawnMob(shuttle, t1::tileCenter(cores[0]), playerTeam);
 }
 
-void BuiltInScripts::spawnWave(const uint32_t waveNumber) {
+void BuiltInScripts::spawnWave(const uint32_t waveNumber, const uint32_t mobCountMul) {
     const int seed = 0; // TODO: get seed from somewhere
     const TileCoord mapSize = world.getMap().getSize();
     std::mt19937 randomizer(waveNumber + seed);
@@ -84,7 +87,8 @@ void BuiltInScripts::spawnWave(const uint32_t waveNumber) {
 
     for (size_t i = 0; i < wave.mob.size(); ++i) {
         const MobPresetID presetID = presets.getMobID(wave.mob[i]);
-        for (uint32_t j = 0; j < wave.amount[i]; ++j) {
+        const uint32_t amount = wave.amount[i] * mobCountMul;
+        for (uint32_t j = 0; j < amount; ++j) {
             spawnMob(presetID, position, enemyTeam);
         }
     }
