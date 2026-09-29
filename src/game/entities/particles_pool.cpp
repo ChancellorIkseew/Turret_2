@@ -4,7 +4,7 @@
 
 void ParticlesPool::reserve(const size_t capacity) {
     soa.position.reserve(capacity);
-    soa.velocity.reserve(capacity);
+    soa.facing.reserve(capacity);
     soa.size.reserve(capacity);
     soa.angle.reserve(capacity);
     soa.rotationSpeed.reserve(capacity);
@@ -30,7 +30,7 @@ void ParticlesPool::addParticleEx(
     const PType type) {
 
     soa.position.push_back(position);
-    soa.velocity.emplace_back(sinf(motionAngle), cosf(motionAngle));
+    soa.facing.emplace_back(sinf(motionAngle), cosf(motionAngle));
     soa.size.push_back(size);
     soa.angle.push_back(angle);
     soa.rotationSpeed.push_back(rotationSpeed);
@@ -48,7 +48,7 @@ void ParticlesPool::removeParticle(const size_t index) {
 
     if (index != last) {
         soa.position[index] = std::move(soa.position[last]);
-        soa.velocity[index] = std::move(soa.velocity[last]);
+        soa.facing[index] = std::move(soa.facing[last]);
         soa.size[index] = std::move(soa.size[last]);
         soa.angle[index] = std::move(soa.angle[last]);
         soa.rotationSpeed[index] = std::move(soa.rotationSpeed[last]);
@@ -61,7 +61,7 @@ void ParticlesPool::removeParticle(const size_t index) {
     }
 
     soa.position.pop_back();
-    soa.velocity.pop_back();
+    soa.facing.pop_back();
     soa.size.pop_back();
     soa.angle.pop_back();
     soa.rotationSpeed.pop_back();

@@ -7,7 +7,7 @@ enum class PType : uint8_t { light, smoke, shard, spark, casing };
 
 struct ParticleSoA {
     std::vector<PixelCoord> position;
-    std::vector<PixelCoord> velocity;
+    std::vector<PixelCoord> facing;
     std::vector<PixelCoord> size;
     std::vector<AngleRad> angle;
     std::vector<AngleRad> rotationSpeed;
