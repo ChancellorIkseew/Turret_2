@@ -47,7 +47,7 @@ static GameMode getGameMode(const EngineCommand command) {
     }
 }
 
-std::unique_ptr<GameSession> createSession(const SessionRequest& request, Engine& engine) {
+static std::unique_ptr<GameSession> createSession(const SessionRequest& request, Engine& engine) {
     Assets& assets = engine.getAssets();
     std::unique_ptr<World> world = createWorld(request, assets);
     if (!world)
