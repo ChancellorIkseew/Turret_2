@@ -22,11 +22,11 @@ static int getHeight() {
 
 static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID) {
     if (!script_libs::assets->getPresets().hasMobID(presetName)) {
-        logger.warning() << "Preset does not exist. Preset: " << presetName;
+        logger.warning("Preset does not exist. Preset: {}", presetName);
         return;
     }
     if (!script_libs::world->getTeams().containsID(teamID)) {
-        logger.warning() << "Team with ID does not exist. TeamID: " << static_cast<int>(teamID);
+        logger.warning("Team with ID does not exist. TeamID: {}", static_cast<int>(teamID));
         return;
     }
 
@@ -36,11 +36,11 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
 
 static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TeamID teamID) {
     if (!script_libs::assets->getPresets().hasShellID(presetName)) {
-        logger.warning() << "Preset does not exist. Preset: " << presetName;
+        logger.warning("Preset does not exist. Preset: {}", presetName);
         return;
     }
     if (!script_libs::world->getTeams().containsID(teamID)) {
-        logger.warning() << "Team with ID does not exist. TeamID: " << static_cast<int>(teamID);
+        logger.warning("Team with ID does not exist. TeamID: {}", static_cast<int>(teamID));
         return;
     }
     const Presets& presets = script_libs::assets->getPresets();

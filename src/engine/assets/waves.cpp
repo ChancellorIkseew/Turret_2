@@ -22,7 +22,7 @@ void Waves::load() {
             );
         }
         catch (const std::bad_optional_access&) {
-            logger.error() << "Failed to create waves data file: " << "default.jtin";
+            logger.error("Failed to create waves data file: default.jtin");
         }
     }
 }

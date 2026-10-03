@@ -25,7 +25,7 @@ void Cursor::setType(const CursorType type) {
     }
     Surface cursorSurface(SDL_LoadPNG(path.string().c_str()));
     if (!cursorSurface.raw())
-        logger.error() << "Cold not Load image from file " << path;
+        logger.error("Cold not Load image from file {}", path.string());
     SDL_Cursor* cursor = SDL_CreateColorCursor(cursorSurface.raw(), 0, 0);
     SDL_SetCursor(cursor);
 }

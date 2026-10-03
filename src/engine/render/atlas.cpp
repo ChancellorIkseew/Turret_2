@@ -14,14 +14,14 @@ static debug::Logger logger("texture_atlas");
 void Atlas::addTexture(const fs::path& path) {
     std::string name = path.filename().stem().string();
     if (atlas.contains(name)) {
-        logger.warning() << "Texture with name \"" << name << "\" already exists.";
+        logger.warning("Texture already exists: \"{}\".", name);
         return;
     }
     std::string blob = io::readFile(path, io::Log::only_error);
     SDL_IOStream* stream = SDL_IOFromConstMem(blob.data(), blob.size());
     Surface surface(SDL_LoadPNG_IO(stream, true));
     if (!surface.raw()) {
-        logger.error() << "Texture was not created. File: " << path << " " << SDL_GetError();
+        logger.error("Texture was not created. File: {} Error: {}", path.string(), SDL_GetError());
         return;
     }
     atlas.emplace(name, SDL_Rect(0, 0, surface.raw()->w, surface.raw()->h));
@@ -42,7 +42,7 @@ void Atlas::build(Renderer& renderer) {
 
 TextureRect Atlas::at(const std::string& name) const noexcept {
     if (!atlas.contains(name)) {
-        logger.error() << "Texture was not created yet or does not exist: " << name;
+        logger.error("Texture was not created yet or does not exist: \"{}\".", name);
         return NULL_TEXTURE_RECT;
     }
     TextureRect fRect;

@@ -32,7 +32,7 @@ static auto prepareFloorPresets(const FloorPresets& floorPresets, const Indexes&
     std::vector<PreparedFloor> result;
     for (const auto& [name, height] : floorPresets) {
         if (!indexes.getFloor().contains(name)) {
-            logger.warning() << "Content is not registred: \"" << name << "\"";
+            logger.warning("Content is not registred: \"{}\".", name);
             continue;
         }
         result.emplace_back(indexes.getFloor().at(name), height);
@@ -45,7 +45,7 @@ static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Pr
     std::vector<PreparedOverlay> result;
     for (const auto& [name, frequency, deposit] : overlayPresets) {
         if (!presets.getOres().contains(name)) {
-            logger.warning() << "Content is not registred: \"" << name << "\"";
+            logger.warning("Content is not registred: \"{}\".", name);
             continue;
         }
         result.emplace_back(presets.getOres().at(name).asUint(), frequency, deposit);

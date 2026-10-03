@@ -93,7 +93,7 @@ public:
     }
 private:
     [[noreturn]] void fail(const std::string& message) const {
-        logger.error() << "[" << fileName << "] " << message;
+        logger.error("[{}] {}", fileName, message);
         failed = true;
         throw std::bad_optional_access();
     }

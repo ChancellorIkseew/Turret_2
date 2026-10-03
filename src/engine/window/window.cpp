@@ -13,7 +13,7 @@ static debug::Logger logger("main_window");
 static inline void loadIcon(SDL_Window* window) {
     Surface iconSurface(SDL_LoadPNG(ICON_PATH.string().c_str()));
     if (!iconSurface.raw())
-        logger.error() << "Could not Load image from file " << ICON_PATH;
+        logger.error("Could not Load image from file {}", ICON_PATH.string());
     SDL_SetWindowIcon(window, iconSurface.raw());
 }
 
@@ -95,19 +95,19 @@ void MainWindow::makeDelay() {
 
 void MainWindow::takeScreenshot(const std::filesystem::path& path) const {
     if (!io::folders::createOrCheckFolder(path.parent_path())) {
-        logger.error() << "Failed to create or find directory.";
+        logger.error("Failed to create or find directory.");
         return;
     }
     Surface windowSurface = renderer.takeScreenshot();
     if (!windowSurface.raw()) {
-        logger.error() << "Failed to take screenshot.";
+        logger.error("Failed to take screenshot.");
         return;
     }
     std::thread thread([path, windowSurface = std::move(windowSurface)]() mutable {
         if (SDL_SavePNG(windowSurface.raw(), path.string().c_str()))
-            logger.info() << "Screenshot saved. Path: " << path;
+            logger.info("Screenshot saved. Path: {}", path.string());
         else
-            logger.error() << "SDL_SavePNG error: " << SDL_GetError();
+            logger.error("SDL_SavePNG error: {}", SDL_GetError());
         });
     thread.detach();
 }

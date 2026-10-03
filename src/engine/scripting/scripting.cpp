@@ -39,10 +39,10 @@ void ScriptsHandler::load() {
 
     mainLoop = scriptModule->GetFunctionByDecl("void main()");
     if (!mainLoop)
-        logger.error() << "Script function \"void main()\" not found.";
+        logger.error("Script function \"void main()\" not found.");
 }
 
 void ScriptsHandler::registerFunction(cString declAS, asSFuncPtr functionPtr) const {
     if (engine->RegisterGlobalFunction(declAS, functionPtr, asCALL_CDECL) < 0)
-        logger.error() << "Failed to register function: " << declAS;
+        logger.error("Failed to register function: {}", declAS);
 }

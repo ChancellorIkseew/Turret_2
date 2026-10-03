@@ -17,11 +17,11 @@ static std::ofstream fout;
 static std::mutex mutex;
 static std::string utcOffset = "";
 
-LogMessage::~LogMessage() {
-    logger->log(level, ss.str());
+void Logger::logFormated(LogLevel level, std::string_view fmt, std::format_args args) const {
+    log(level, std::vformat(fmt, args));
 }
 
-void Logger::log(LogLevel level, const std::string& message) const {
+void Logger::log(LogLevel level, std::string_view message) const {
 #ifdef NDEBUG
     if (level == LogLevel::debug) return;
 #endif
@@ -66,6 +66,6 @@ void Logger::init(const std::string& filename) {
     catch (...) {
         utcOffset = "+0000";
         Logger logger("logger_init");
-        logger.error() << "failed to get timezone";
+        logger.error("failed to get timezone");
     }
 }

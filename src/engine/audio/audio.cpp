@@ -32,7 +32,7 @@ Audio::Audio() {
         throw std::runtime_error(SDL_MIXER_ERROR + SDL_GetError());
     mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
     if (!mixer) {
-        logger.error() << SDL_MIXER_ERROR + SDL_GetError();
+        logger.error("{}{}", SDL_MIXER_ERROR, SDL_GetError());
         return;
     }
     fillPool(worldTrackPool, mixer);
@@ -63,14 +63,14 @@ Audio::~Audio() {
 
 void Audio::loadSound(const std::string& name, const std::filesystem::path& path) {
     if (sounds.contains(name)) {
-        logger.warning() << "Track already exists." << path.filename().string();
+        logger.warning("Track already exists: \"{}\".", name);
         return;
     }
     std::string blob = io::readFile(path, io::Log::only_error);
     SDL_IOStream* stream = SDL_IOFromConstMem(blob.data(), blob.size());
     MIX_Audio* audio = MIX_LoadAudio_IO(mixer, stream, false, true);
     if (!audio) {
-        logger.error() << "Failed to load audio: " << name << ". " << SDL_GetError();
+        logger.error("Failed to load audio: \"{}\". {}", name, SDL_GetError());
         return;
     }
     const Sint64 frames = MIX_GetAudioDuration(audio);

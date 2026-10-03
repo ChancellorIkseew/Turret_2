@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
         engine.run();
     }
     catch (const std::exception& exception) {
-        logger.error() << exception.what();
+        logger.error(exception.what());
         if (Settings::gui.showConsole)
             system("pause");
     }

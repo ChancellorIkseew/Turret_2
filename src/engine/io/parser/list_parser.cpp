@@ -25,6 +25,6 @@ list::Data list::read(fs::path path) {
         if (!line.empty() && line[0] != '#')
             data.push_back(std::string(line));
     }
-    logger.info() << "Parsed file: " << path;
+    logger.info("Parsed file: {}", path.string());
     return data;
 }

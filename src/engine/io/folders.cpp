@@ -22,7 +22,7 @@ bool io::folders::fileExists(const std::filesystem::path& path) {
 
 bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
     if (!isPathValid(path)) {
-        logger.error() << "Failed to create directory. Invalid symbols in path. Path: " << path;
+        logger.error("Failed to create directory. Invalid symbols in path. Path: {}", path.string());
         return false;
     }
 
@@ -30,13 +30,13 @@ bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
         // If a file with this path exists, but this file is not a directory,
         // "fs::create_directory" will throw an exception.
         if (fs::create_directory(path))
-            logger.info() << "Created directory: " << path;
+            logger.info("Created directory: {}", path.string());
         else
-            logger.info() << "Directory already exists: " << path;
+            logger.info("Directory already exists: {}", path.string());
         return true;
     }
     catch (const fs::filesystem_error& exception) {
-        logger.error() << "Failed to create directory:" << path << FS_EXCEPTION << exception.what();
+        logger.error("Failed to create directory: {}{}{}", path.string(), FS_EXCEPTION, exception.what());
         return false;
     }
 }
@@ -44,7 +44,7 @@ bool io::folders::createOrCheckFolder(const std::filesystem::path& path) {
 io::folders::Contents io::folders::getContents(const std::filesystem::path& path, const ContentsType type) {
     Contents contents;
     if (!folderExists(path)) {
-        logger.error() << "Directory does not exist. Path: " << path;
+        logger.error("Directory does not exist. Path: {}", path.string());
         return contents;
     }
     for (const auto& entry : fs::directory_iterator(path)) {
@@ -52,20 +52,20 @@ io::folders::Contents io::folders::getContents(const std::filesystem::path& path
             type == ContentsType::file && entry.is_regular_file())
             contents.push_back(entry.path().filename().string());
     }
-    logger.info() << "Read directory: " << path;
+    logger.info("Read directory: {}", path.string());
     return contents;
 }
 
 void io::folders::deleteFolder(const std::filesystem::path& path) {
     if (!folderExists(path)) {
-        logger.error() << "Directory does not exist. Path: " << path;
+        logger.error("Directory does not exist. Path: {}", path.string());
         return;
     }
     try {
         fs::remove_all(path);
-        logger.info() << "Deleted directory: " << path;
+        logger.info("Deleted directory: {}", path.string());
     }
     catch (const fs::filesystem_error& exception) {
-        logger.error() << "Failed to delete directory: " << path << FS_EXCEPTION << exception.what();
+        logger.error("Failed to delete directory: {}{}{}", path.string(), FS_EXCEPTION, exception.what());
     }
 }

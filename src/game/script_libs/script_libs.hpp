@@ -37,7 +37,7 @@ namespace script_libs {
     }
 
     [[noreturn]] inline void logAndThrow(const std::string& message) noexcept(false) {
-        logger.error() << message;
+        logger.error(message);
         throw std::runtime_error("");
     }
 }

@@ -45,7 +45,7 @@ void Controls::readBindings() {
     tin::Data data = tin::read(controls);
     if (data.empty()) {
         writeBindings();
-        logger.info() << "Saved file with default controls. File: " << controls;
+        logger.info("Saved file with default controls. File: {}", controls.string());
         return;
     }
     for (const auto& [bindName, keyName] : data) {
@@ -55,12 +55,12 @@ void Controls::readBindings() {
 
 void Controls::addBinding(const std::string& bindName, const std::string& keyName) {
     if (bindings.contains(bindName)) {
-        logger.warning() << "BindName already exists. BindName : " << bindName;
+        logger.warning("BindName already exists. BindName : \"{}\".", bindName);
         return;
     }
     const auto binding = getBinding(keyName);
     if (binding.code == SDL_SCANCODE_UNKNOWN) {
-        logger.error() << "Detected as keyboard input type. Incorrect keyName: " << keyName;
+        logger.error("Detected as keyboard input type. Incorrect keyName: \"{}\".", keyName);
         return;
     }
     bindings.emplace(bindName, binding);

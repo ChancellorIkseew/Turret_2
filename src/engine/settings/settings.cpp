@@ -71,7 +71,7 @@ void Settings::readSettings() {
     //
     if (data.empty()) {
         writeSettings();
-        logger.info() << "Saved file with default settings. File: settings.tin";
+        logger.info("Saved file with default settings. File: settings.tin");
     }
 }
 

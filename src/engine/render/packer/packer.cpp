@@ -17,7 +17,7 @@ static SDL_Point calculateSize(const int square, const int maxWidth, const int m
         w = std::max(square / maxHeight, maxWidth);
     w = std::bit_ceil(static_cast<uint32_t>(w));
     h = std::bit_ceil(static_cast<uint32_t>(h));
-    logger.info() << "1st packing attempt size: " << w << " " << h;
+    logger.info("1st packing attempt size: {} {}", w, h);
     return SDL_Point(w, h);
 }
 
@@ -46,7 +46,7 @@ SDL_Point packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas)
         if (result != 0)
             break;
         if (i >= MAX_PACK_ATTEMPTS) {
-            logger.error() << "Packing failed. Attempts: " << i << ". Final attemtp size: " << size.x << " " << size.y;
+            logger.error("Packing failed. Attempts: {}. Final attemtp size: x{} y{}", i, size.x, size.y);
             break;
         }
         if (size.x >= size.y)
@@ -59,9 +59,9 @@ SDL_Point packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas)
     for (auto& [name, rect] : atlas) {
         rect.x = rects[i].x;
         rect.y = rects[i].y;
-        logger.debug() << "Texture placed: \"" << name << "\" position: " << rect.x << " " << rect.y;
+        logger.debug("Texture placed: \"{}\" position: x{} y{}", name, rect.x, rect.y);
         ++i;
     }
-    logger.info() << "Atlas packed. Size: " << size.x << " " << size.y;
+    logger.info("Atlas packed. Size: x{} y{}", size.x, size.y);
     return size;
  }

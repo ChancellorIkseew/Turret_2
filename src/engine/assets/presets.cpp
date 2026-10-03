@@ -188,13 +188,13 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
                 addPreset(name, createShellPreset(reader, atlas), shellStore, shellIDByName, nextShellID);
             if constexpr (std::is_same_v<PresetType, TurretPreset>)
                 addPreset(name, createTurretPreset(reader, atlas, shellIDByName), turretStore, turretIDByName, nextTurretID);
-            logger.debug() << "Preset created: " << name;
+            logger.debug("Preset created: {}", name);
         }
         catch (const std::bad_optional_access&) {
-            logger.error() << "Failed to create preset (missing data in file): " << file;
+            logger.error("Failed to create preset (missing data in file): {}", file);
         }
         catch (const std::out_of_range&) {
-            logger.error() << "Failed to create preset (dependency ID not found): " << file;
+            logger.error("Failed to create preset (dependency ID not found): {}", file);
         }
     }
 }
