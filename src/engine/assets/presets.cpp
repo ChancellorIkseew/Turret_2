@@ -74,9 +74,7 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
     std::array<uint8_t, 16> frameOrder;
     size_t frameCount = reader.getArray<uint8_t>("frame_order", frameOrder);
     std::array<PixelCoord, 4> engines;
-    size_t enginesCount = 0;
-    if (reader.get<bool>("flying"))
-        enginesCount = reader.getArray<PixelCoord>("engines", engines);
+    size_t enginesCount = reader.getOptArray<PixelCoord>("engines", engines);
     MobVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
@@ -128,16 +126,9 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
     std::array<PixelCoord, 4> barrels;
     size_t barrelsCount = reader.getArray<PixelCoord>("barrels", barrels);
     std::array<PixelCoord, 4> ejectionPorts;
-    size_t ejectionPortsCount = 0;
-    if (reader.get<bool>("casing_ejection"))
-        ejectionPortsCount = reader.getArray<PixelCoord>("ejection_ports", ejectionPorts);
+    size_t ejectionPortsCount = reader.getOptArray<PixelCoord>("ejection_ports", ejectionPorts);
     std::array<PixelCoord, 4> sparkAreas;
-    size_t sparkAreasCount = 0;
-    PixelCoord sparkAreaSize;
-    if (reader.get<bool>("sparks")) {
-        sparkAreasCount = reader.getArray<PixelCoord>("spark_areas", sparkAreas);
-        sparkAreaSize = reader.get<PixelCoord>("spark_area_size");
-    }
+    size_t sparkAreasCount = reader.getOptArray<PixelCoord>("spark_areas", sparkAreas);
     TurretVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
@@ -146,7 +137,7 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<std::string>("shot_sound"),
         static_cast<uint8_t>(ejectionPortsCount),
         static_cast<uint8_t>(sparkAreasCount),
-        sparkAreaSize,
+        reader.getOpt<PixelCoord>("spark_area_size"),
         ejectionPorts,
         sparkAreas
     };

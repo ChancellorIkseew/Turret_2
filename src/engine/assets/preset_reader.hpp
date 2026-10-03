@@ -19,8 +19,16 @@ public:
         : data(data), fileName(fileName), failed(failed), logger("preset_reader") { }
 
     template<typename T>
+    T getOpt(const std::string& key) const {
+        std::optional<T> res = data.get<T>(key);
+        if (!res)
+            return T();
+        return *res;
+    }
+
+    template<typename T>
     T get(const std::string& key) const {
-    std::optional<T> res = data.get<T>(key);
+        std::optional<T> res = data.get<T>(key);
         if (!res)
             fail("Missing or invalid key: " + key);
         return *res;
@@ -40,6 +48,27 @@ public:
         if (!idMap.contains(targetName))
             fail( "Dependency not found: " + targetName);
         return idMap.at(targetName);
+    }
+
+    template<typename T>
+    size_t getOptArray(const std::string& key, std::span<T> outArray) const {
+        std::vector<std::string> list = data.getList(key);
+
+        if (list.empty())
+            return 0;
+
+        if (list.size() > outArray.size())
+            fail("Too many elements in [" + key + "]. Found: " +
+                std::to_string(list.size()) + ", Max: " + std::to_string(outArray.size()));
+
+        for (size_t i = 0; i < list.size(); ++i) {
+            auto val = validator::to<T>(list[i]);
+            if (!val)
+                fail("Invalid format in list [" + key + "] at index " +
+                    std::to_string(i) + ": '" + list[i] + "'");
+            outArray[i] = *val;
+        }
+        return list.size();
     }
 
     template<typename T>
