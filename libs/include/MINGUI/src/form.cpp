@@ -34,3 +34,9 @@ void Form::callback(UIContext& context) {
         context.getTextEdit().moveCarriageToCursor(context, text, getPosition(), glyphSize.x);
     }
 }
+
+void Form::setText(const std::string& text) {
+    const size_t maxSymbols = static_cast<size_t>(getSize().x / glyphSize.x);
+    this->text = text.substr(0, maxSymbols);
+    validator->validateText(this->text);
+}

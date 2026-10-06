@@ -1,15 +1,17 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/checkbox.hpp"
-#include "MINGUI/widgets/form.hpp"
-#include "MINGUI/widgets/icon.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/checkbox.hpp>
+#include <MINGUI/widgets/form.hpp>
+#include <MINGUI/widgets/icon_button.hpp>
+#include <random>
 #include "engine/engine.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/render/text.hpp"
 #include "engine/util/string_util.hpp"
+#include "engine/util/time.hpp"
 #include "game/generation/generation.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 
@@ -87,6 +89,7 @@ public:
 };
 
 class FrWorldProperties : public Container {
+    IconButton* regenSeed = nullptr;
     Form* seed   = nullptr;
     Form* width  = nullptr;
     Form* height = nullptr;
@@ -95,6 +98,7 @@ class FrWorldProperties : public Container {
 public:
     ~FrWorldProperties() final = default;
     FrWorldProperties(Engine& engine) : Container(Align::center, Orientation::vertical) {
+        const Atlas& atlas = engine.getAssets().getAtlas();
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
@@ -104,19 +108,31 @@ public:
         labels->addNode(new Label(tr("Height")));
 
         auto forms = main->addNode(new Layout(Orientation::vertical));
-        seed   = forms->addNode(new Form(0U, new Uint64Validator(0U, MAX_SEED)));
+        auto seedL = forms->addNode(new Layout(Orientation::horizontal));
+        seedL->setPadding(0.f);
+        seedL->setPalette(NULL_PALETTE);
+        seed = seedL->addNode(new Form(0U, new Uint64Validator(0U, MAX_SEED)));
+        regenSeed = seedL->addNode(new IconButton(PixelCoord(20, 20), 2.0f, new T1_UITexture(atlas.at("retry_btn"))));
         width  = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
         height = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
 
-        oProps = main->addNode(new OProps(engine.getAssets().getAtlas()));
+        oProps = main->addNode(new OProps(atlas));
 
         otherSettings = addNode(new OtherWorldSettings());
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
         lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { createWorld(engine); });
+
+        regenSeed->addCallback([&] { generateSeed(); });
     }
 private:
+    void generateSeed() {
+        std::mt19937_64 randomizer(util::time::getLocalTimeMilliseconds());
+        std::uniform_int_distribution<uint64_t> dist;
+        seed->setText(std::format("{}", dist(randomizer)));
+    }
+
     void createWorld(Engine& engine) {
         WorldConfig config;
         otherSettings->apply(config);

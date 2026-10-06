@@ -24,6 +24,7 @@ public:
     void draw(RenderBridge& renderBridge) final;
     void callback(UIContext& context) final;
     void setGlyphSize(const Point size) { glyphSize = size; }
+    void setText(const std::string& text);
     const std::string& getText() const { return text; }
     std::string& getText() { return text; }
 };
