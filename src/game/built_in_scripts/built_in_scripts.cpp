@@ -9,7 +9,7 @@
 #include "game/frontend/frontend.hpp"
 #include "game/world/world.hpp"
 
-static PixelCoord randomMapBorderCoord(std::mt19937& gen, const TileCoord mapSize) {
+static PixelCoord randomMapBorderCoord(std::mt19937_64& gen, const TileCoord mapSize) {
     using IntRand = std::uniform_int_distribution<int>;
     const int side = IntRand(0, 3)(gen);
     const int x = IntRand(0, mapSize.x - 1)(gen);
@@ -74,10 +74,8 @@ void BuiltInScripts::respawnShuttle() {
 }
 
 void BuiltInScripts::spawnWave(const uint32_t waveNumber, const uint32_t mobCountMul) {
-    const int seed = 0; // TODO: get seed from somewhere
-    const TileCoord mapSize = world.getMap().getSize();
-    std::mt19937 randomizer(waveNumber + seed);
-    const PixelCoord position = randomMapBorderCoord(randomizer, mapSize);
+    std::mt19937_64 randomizer(world.getConfig().seed + waveNumber);
+    const PixelCoord position = randomMapBorderCoord(randomizer, world.getMap().getSize());
     //
     const auto& presets = assets.getPresets();
     const Wave wave = assets.getWaves().getWave(waveNumber);
