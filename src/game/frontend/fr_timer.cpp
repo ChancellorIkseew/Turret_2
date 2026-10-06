@@ -64,19 +64,15 @@ public:
 private:
     void callback(UIContext& context) final {
         Container::callback(context);
-        if (engine.getSession().getWorld().getConfig().toggleWaves) {
+        const TimeCount& timeCount = engine.getSession().getTimeCount();
+        wave->setText(tr("Wave {}", timeCount.getWaveCount()));
+        enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(engine.getSession())));
+        if (engine.getSession().getWorld().getConfig().wavesByTimer) {
             constexpr uint64_t DEFAULT_FPS_TPS = 60;
-            const auto waveCount = engine.getSession().getTimeCount().getWaveCount();
-            const auto ticksToWave = engine.getSession().getTimeCount().getTicksToNextWave();
-            wave->setText(tr("Wave {}", waveCount));
-            startsIn->setText(tr("Starts in {}", util::time::timerFormat(ticksToWave / DEFAULT_FPS_TPS)));
-            enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(engine.getSession())));
+            startsIn->setText(tr("Starts in {}", util::time::timerFormat(timeCount.getTicksToNextWave() / DEFAULT_FPS_TPS)));
         }
-        else {
-            wave->setText(tr("Wave {}", 0));
+        else
             startsIn->setText(tr("Starts in {}", 0));
-            enemiesRemaining->setText(tr("Enemy waves off", countEnemies(engine.getSession())));
-        }
         updatePlayback();
         markDirty();
     }

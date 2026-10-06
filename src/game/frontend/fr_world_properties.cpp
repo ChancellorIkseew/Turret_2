@@ -62,7 +62,7 @@ class OtherWorldSettings : public Layout {
     Form* blockCostMul  = nullptr;
     Form* enemyCountMul = nullptr;
     Form* waveSpacing   = nullptr;
-    Checkbox* toggleEnemyWaves = nullptr;
+    Checkbox* wavesByTimer = nullptr;
 public:
     OtherWorldSettings() : Layout(Orientation::horizontal) {
         auto labels    = addNode(new Layout(Orientation::vertical));
@@ -70,19 +70,19 @@ public:
         labels->addNode(new Label(tr("block cost multiplier")));
         labels->addNode(new Label(tr("enemy count multiplier")));
         labels->addNode(new Label(tr("wave spacing (seconds)")));
-        labels->addNode(new Label(tr("toggle enemy waves")));
+        labels->addNode(new Label(tr("launch waves by timer")));
         auto clickable = addNode(new Layout(Orientation::vertical));
         blockCostMul  = clickable->addNode(new Form(1, new Uint8Validator(0, 20)));
         enemyCountMul = clickable->addNode(new Form(1, new Uint8Validator(1, 10)));
         waveSpacing   = clickable->addNode(new Form(180, new Uint64Validator(1, 60 * 7200)));
-        toggleEnemyWaves = clickable->addNode(new Checkbox(true));
+        wavesByTimer = clickable->addNode(new Checkbox(true));
     }
 
     void apply(WorldConfig& config) {
         config.blockCostMul = validator::to<int16_t>(blockCostMul->getText()).value_or(1);
         config.enemyCountMul = validator::to<uint32_t>(enemyCountMul->getText()).value_or(1);
         config.ticksPerWave = validator::to<uint64_t>(waveSpacing->getText()).value_or(1) * 60;
-        config.toggleWaves = toggleEnemyWaves->getValue();
+        config.wavesByTimer = wavesByTimer->getValue();
     }
 };
 

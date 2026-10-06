@@ -27,8 +27,6 @@ void BuiltInScripts::execute(Engine& engine, const TimeCount& timeCount) {
     if (engine.getSession().getGameMode() == GameMode::survival) {
         if (timeCount.isWaveJustChanged()) {
             const WorldConfig& worldConfig = world.getConfig();
-            if (!worldConfig.toggleWaves)
-                return;
             engine.getAssets().getAudio().playUI("wave_start");
             spawnWave(timeCount.getWaveCount(), worldConfig.enemyCountMul);
         }

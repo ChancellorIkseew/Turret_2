@@ -51,7 +51,7 @@ world=игровой мир
 block cost multiplier=множитель стоимости блоков
 enemy count multiplier=множитель численности врагов
 wave spacing (seconds)=интервал волн (в секундах)
-toggle enemy waves=включить волны врагов
+launch waves by timer=запускать волны по таймеру
 
 #base_pack
 snow=снег

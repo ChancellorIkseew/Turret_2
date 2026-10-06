@@ -9,5 +9,5 @@ struct WorldConfig {
     uint64_t ticksPerWave = 10800; // 3 minutes.
     uint32_t enemyCountMul = 1;
     int16_t blockCostMul = 1;
-    bool toggleWaves = true;
+    bool wavesByTimer = true;
 };
