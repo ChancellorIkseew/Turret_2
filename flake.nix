@@ -40,7 +40,7 @@
       {
         packages.default = pkgs.stdenv.mkDerivation {
           pname = "Turret_2";
-          version = "2.0.16";
+          version = "2.0.17";
           src = ./.;
 
           nativeBuildInputs = with pkgs; [
