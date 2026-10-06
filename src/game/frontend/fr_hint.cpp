@@ -1,7 +1,7 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/icon.hpp"
-#include "MINGUI/widgets/label.hpp"
+#include <MINGUI/widgets/icon.hpp>
+#include <MINGUI/widgets/label.hpp>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"

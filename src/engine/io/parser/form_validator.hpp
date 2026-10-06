@@ -1,5 +1,5 @@
 #pragma once
-#include "MINGUI/core/form_validator.hpp"
+#include <MINGUI/core/form_validator.hpp>
 
 struct Uint64Validator : mingui::Validator {
     const uint64_t min, max;

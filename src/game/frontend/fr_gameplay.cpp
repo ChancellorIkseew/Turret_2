@@ -1,8 +1,8 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/checkbox.hpp"
-#include "MINGUI/widgets/label.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/checkbox.hpp>
+#include <MINGUI/widgets/label.hpp>
 #include "engine/settings/settings.hpp"
 
 constexpr Point BTN_SIZE(120, 30);

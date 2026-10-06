@@ -1,7 +1,7 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/selector.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/selector.hpp>
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/io/folders.hpp"

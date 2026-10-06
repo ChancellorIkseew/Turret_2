@@ -1,7 +1,7 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/form.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/form.hpp>
 #include "layouts/l_saves.hpp"
 
 constexpr Point BTN_SIZE(120, 30);

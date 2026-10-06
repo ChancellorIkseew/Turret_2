@@ -1,10 +1,10 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/checkbox.hpp"
-#include "MINGUI/widgets/form.hpp"
-#include "MINGUI/widgets/label.hpp"
-#include "MINGUI/widgets/selector.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/checkbox.hpp>
+#include <MINGUI/widgets/form.hpp>
+#include <MINGUI/widgets/label.hpp>
+#include <MINGUI/widgets/selector.hpp>
 #include "engine/engine.hpp"
 #include "engine/game_session.hpp"
 #include "engine/io/parser/validator.hpp"

@@ -1,9 +1,9 @@
 #include "frontend.hpp"
 //
-#include "MINGUI/widgets/button.hpp"
-#include "MINGUI/widgets/checkbox.hpp"
-#include "MINGUI/widgets/form.hpp"
-#include "MINGUI/widgets/label.hpp"
+#include <MINGUI/widgets/button.hpp>
+#include <MINGUI/widgets/checkbox.hpp>
+#include <MINGUI/widgets/form.hpp>
+#include <MINGUI/widgets/label.hpp>
 #include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/io/parser/validator.hpp"
