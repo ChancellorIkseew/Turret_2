@@ -110,9 +110,10 @@ public:
         auto forms = main->addNode(new Layout(Orientation::vertical));
         auto seedL = forms->addNode(new Layout(Orientation::horizontal));
         seedL->setPadding(0.f);
+        seedL->setMargin(0.f);
         seedL->setPalette(NULL_PALETTE);
         seed = seedL->addNode(new Form(0U, new Uint64Validator(0U, MAX_SEED)));
-        regenSeed = seedL->addNode(new IconButton(PixelCoord(20, 20), 2.0f, new T1_UITexture(atlas.at("retry_btn"))));
+        regenSeed = seedL->addNode(new IconButton(PixelCoord(20, 20), 2.f, new T1_UITexture(atlas.at("retry_btn"))));
         width  = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
         height = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
 

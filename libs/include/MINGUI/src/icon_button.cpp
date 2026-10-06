@@ -8,6 +8,6 @@ void IconButton::draw(RenderBridge& renderBridge) {
 }
 void IconButton::setPosition(const Point position) {
     Node::setPosition(position);
-    const Point padding = (getSize() - icon.getSize()) / 2;
+    const Point padding = (getSize() - icon.getSize()) / 2.f;
     icon.setPosition(position + padding);
 }
