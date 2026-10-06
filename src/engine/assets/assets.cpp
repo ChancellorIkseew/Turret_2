@@ -6,9 +6,8 @@
 
 static void loadTextures(Atlas& atlas, Renderer& renderer) {
     atlas.clear();
-    const auto fileNames = io::folders::getContents(io::folders::IMAGES, io::folders::ContentsType::file);
-    for (const auto& fileName : fileNames) {
-        atlas.addTexture(io::folders::IMAGES / fileName);
+    for (const auto& entry : fs::recursive_directory_iterator(io::folders::IMAGES)) {
+        atlas.addTexture(entry.path());
     }
 
     atlas.addTexture(io::folders::FONTS / "vc_latin.png");
@@ -19,13 +18,11 @@ static void loadTextures(Atlas& atlas, Renderer& renderer) {
 
 static void loadSounds(Audio& audio) {
     //audio.clear();
-    const auto fileNames = io::folders::getContents(io::folders::SOUNDS, io::folders::ContentsType::file);
-    for (const auto& fileName : fileNames) {
-        audio.loadSound(io::folders::trimExtensions(fileName), io::folders::SOUNDS / fileName);
+    for (const auto& entry : fs::recursive_directory_iterator(io::folders::SOUNDS)) {
+        audio.loadSound(entry.path());
     }
-    const auto musicFileNames = io::folders::getContents(io::folders::RES / "music", io::folders::ContentsType::file);
-    for (const auto& fileName : musicFileNames) {
-        audio.loadSound(io::folders::trimExtensions(fileName), io::folders::RES / "music" / fileName);
+    for (const auto& entry : fs::recursive_directory_iterator(io::folders::RES / "music")) {
+        audio.loadSound(entry.path());
     }
 }
 

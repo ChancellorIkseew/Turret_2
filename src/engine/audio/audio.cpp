@@ -61,7 +61,8 @@ Audio::~Audio() {
     MIX_Quit();
 }
 
-void Audio::loadSound(const std::string& name, const std::filesystem::path& path) {
+void Audio::loadSound(const std::filesystem::path& path) {
+    std::string name = path.filename().stem().string();
     if (sounds.contains(name)) {
         logger.warning("Track already exists: \"{}\".", name);
         return;

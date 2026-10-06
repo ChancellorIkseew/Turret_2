@@ -37,7 +37,7 @@ class Audio {
 public:
     Audio();
     ~Audio();
-    void loadSound(const std::string& name, const std::filesystem::path& path);
+    void loadSound(const std::filesystem::path& path);
     void playDiegetic(const std::string& name, const PixelCoord object, const Camera& camera, const float gainFactor, const float pitch);
     void playLoopDiegetic(const std::string& name, const PixelCoord object, const Camera& camera,
         const float gainFactor, const int64_t globalTimeMs);
