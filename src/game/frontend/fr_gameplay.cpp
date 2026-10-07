@@ -11,7 +11,7 @@ class FrGameplay : public Container {
     Checkbox* pauseInBackground;
     Checkbox* pauseOnWorldOpen;
 public:
-    FrGameplay(Engine& engine) : Container(Align::center, Orientation::vertical) {
+    FrGameplay(App& app) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));
@@ -25,17 +25,17 @@ public:
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(app); });
     }
 
-    void applySettings(Engine& engine) {
+    void applySettings(App& app) {
         Settings::gameplay.pauseInBackground = pauseInBackground->getValue();
         Settings::gameplay.pauseOnWorldOpen  = pauseOnWorldOpen ->getValue();
-        Settings::applySettings(engine);
+        Settings::applySettings(app);
         Settings::writeSettings();
     }
 };
 
-std::unique_ptr<Container> frontend::initGameplay(Engine& engine) {
-    return std::make_unique<FrGameplay>(engine);
+std::unique_ptr<Container> frontend::initGameplay(App& app) {
+    return std::make_unique<FrGameplay>(app);
 }

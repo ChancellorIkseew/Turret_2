@@ -2,22 +2,22 @@
 #include "MINGUI/core/main_canvas.hpp"
 
 class Atlas;
-class Engine;
+class App;
 class Input;
 class MainWindow;
 class Renderer;
 
 class GUI {
 protected:
-    Engine& engine;
+    App& app;
     MainWindow& mainWindow;
     mingui::MainCanvas mainCanvas;
     Input& input;
     bool showGUI = true, showAtlas = false;
 public:
-    GUI(Engine& engine);
+    GUI(App& app);
     virtual ~GUI() = default;
-    virtual void init(Engine& engine) = 0;
+    virtual void init(App& app) = 0;
 
     void draw(Renderer& renderer, const Atlas& atlas);
     virtual void drawDiegeticElements(Renderer& renderer) = 0;

@@ -2,7 +2,7 @@
 #include <string>
 #include "MINGUI/widgets/selector.hpp"
 
-class Engine;
+class App;
 
 using namespace mingui;
 
@@ -14,8 +14,8 @@ public:
     }
 
     void deleteWorld();
-    void saveWorld(Engine& engine, const std::string& folder);
-    void loadWorld(Engine& engine) const;
+    void saveWorld(App& app, const std::string& folder);
+    void loadWorld(App& app) const;
 private:
     void update();
 };

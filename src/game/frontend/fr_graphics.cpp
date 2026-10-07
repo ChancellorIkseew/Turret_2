@@ -5,10 +5,10 @@
 #include <MINGUI/widgets/form.hpp>
 #include <MINGUI/widgets/label.hpp>
 #include <MINGUI/widgets/selector.hpp>
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
+#include "game/game_session.hpp"
 
 constexpr Point BTN_SIZE(120, 30);
 constexpr Point S_BTN_SIZE(150, 20);
@@ -25,7 +25,7 @@ class FrGraphics : public Container {
     Button* synchronized;
     Button* adaptive;
 public:
-    FrGraphics(Engine& engine) : Container(Align::center, Orientation::vertical) {
+    FrGraphics(App& app) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));
@@ -55,26 +55,26 @@ public:
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(app); });
     }
 
-    void applySettings(Engine& engine) {
+    void applySettings(App& app) {
         Settings::display.fps = validator::to<decltype(Settings::display.fps)>(fps->getText()).value_or(60U);
         Settings::display.fullscreen = fullscreen->getValue();
         Settings::gameplay.cameraInertia = inertia->getValue();
         Settings::gameplay.vingette = vingette->getValue();
-        engine.getSession().getCamera().toggleInertia(Settings::gameplay.cameraInertia);
+        app.getSession().getCamera().toggleInertia(Settings::gameplay.cameraInertia);
         if (vSync->isTarget(off))
             Settings::display.vSyncMode = VSyncMode::immediate;
         if (vSync->isTarget(synchronized))
             Settings::display.vSyncMode = VSyncMode::synchronized;
         if (vSync->isTarget(adaptive))
             Settings::display.vSyncMode = VSyncMode::adaptive;
-        Settings::applySettings(engine);
+        Settings::applySettings(app);
         Settings::writeSettings();
     }
 };
 
-std::unique_ptr<Container> frontend::initGraphics(Engine& engine) {
-    return std::make_unique<FrGraphics>(engine);
+std::unique_ptr<Container> frontend::initGraphics(App& app) {
+    return std::make_unique<FrGraphics>(app);
 }

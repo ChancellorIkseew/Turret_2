@@ -1,9 +1,9 @@
 #include "frontend.hpp"
 //
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
+#include "game/game_session.hpp"
 #include "game/world/world.hpp"
 
 class FrInvSlot : public Node {
@@ -36,21 +36,20 @@ public:
 };
 
 class FrInventory : public Container {
-    Engine& engine;
+    App& app;
 public:
-    FrInventory(Engine& engine) : Container(Align::center | Align::up, Orientation::horizontal_grid),
-        engine(engine) {
+    FrInventory(App& app) : Container(Align::center | Align::up, Orientation::horizontal_grid), app(app) {
         setCollRowLimit(6);
         setPadding(6.f);
-        for (const auto& [name, id] : engine.getAssets().getPresets().getItems()) {
-            const TextureRect textureRect = engine.getAssets().getAtlas().at(name);
+        for (const auto& [name, id] : app.getAssets().getPresets().getItems()) {
+            const TextureRect textureRect = app.getAssets().getAtlas().at(name);
             addNode(new FrInvSlot(new T1_UITexture(textureRect), id, 0));
         }
     }
 
     void callback(UIContext& context) {
-        const TeamID playerTeamID = engine.getSession().getPlayerController().getPlayerTeamID();
-        Team* platerTeam = engine.getSession().getWorld().getTeams().getTeamByID(playerTeamID);
+        const TeamID playerTeamID = app.getSession().getPlayerController().getPlayerTeamID();
+        Team* platerTeam = app.getSession().getWorld().getTeams().getTeamByID(playerTeamID);
         Inventory& inventory = platerTeam->getInventory();
         for (const auto& node : getContents()) {
             auto slot = static_pointer_cast<FrInvSlot>(node);
@@ -59,6 +58,6 @@ public:
     }
 };
 
-std::unique_ptr<Container> frontend::initInventory(Engine& engine) {
-    return std::make_unique<FrInventory>(engine);
+std::unique_ptr<Container> frontend::initInventory(App& app) {
+    return std::make_unique<FrInventory>(app);
 }

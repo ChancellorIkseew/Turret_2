@@ -1,8 +1,8 @@
 #pragma once
+#include "app.hpp"
 #include "engine/debug/logger.hpp"
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
 #include "engine/scripting/scripting.hpp"
+#include "game/game_session.hpp"
 
 namespace script_libs {
     void registerInput(const ScriptsHandler& scriptsHandler);
@@ -26,14 +26,14 @@ namespace script_libs {
     inline PlayerController* playerController;
     inline BuiltInScripts* builtInScripts;
 
-    inline void initNewGame(Engine& engine) {
-        assets = &engine.getAssets();
-        camera = &engine.getSession().getCamera();
-        gui    = &engine.getGUI();
-        input  = &engine.getMainWindow().getInput();
-        world  = &engine.getSession().getWorld();
-        playerController = &engine.getSession().getPlayerController();
-        builtInScripts   = &engine.getSession().getBuiltInScripts();
+    inline void initNewGame(App& app) {
+        assets = &app.getAssets();
+        camera = &app.getSession().getCamera();
+        gui    = &app.getGUI();
+        input  = &app.getMainWindow().getInput();
+        world  = &app.getSession().getWorld();
+        playerController = &app.getSession().getPlayerController();
+        builtInScripts   = &app.getSession().getBuiltInScripts();
     }
 
     [[noreturn]] inline void logAndThrow(const std::string& message) noexcept(false) {

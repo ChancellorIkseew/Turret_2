@@ -1,36 +1,35 @@
 #pragma once
 #include "gui.hpp"
 //
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
 #include "engine/window/input/input.hpp"
 #include "game/frontend/build_tools/gameplay_build_tools.hpp"
 #include "game/frontend/frontend.hpp"
+#include "game/game_session.hpp"
 
 class GameplayGUI : public GUI {
     std::shared_ptr<BuildTools> buildTools;
 public:
-    GameplayGUI(Engine& engine) : GUI(engine) { init(engine); }
+    GameplayGUI(App& app) : GUI(app) { init(app); }
 
-    void init(Engine& engine) final {
+    void init(App& app) final {
         mainCanvas.closeAll();
         buildTools = std::make_unique<GameplayBuildTools>();
-        mainCanvas.addToMainLayer(frontend::initTimer(engine));
-        mainCanvas.addToMainLayer(frontend::initHint(engine));
-        mainCanvas.addToMainLayer(frontend::initInventory(engine));
-        mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
+        mainCanvas.addToMainLayer(frontend::initTimer(app));
+        mainCanvas.addToMainLayer(frontend::initHint(app));
+        mainCanvas.addToMainLayer(frontend::initInventory(app));
+        mainCanvas.addToMainLayer(frontend::initJEI(app, buildTools));
     }
 
     void callback() final {
-        buildTools->update(engine);
+        buildTools->update(app);
         if (input.jactive(Pause) && !mainCanvas.hasOverlay())
-            engine.getSession().setPaused(!engine.getSession().isPausedManually(), engine);
+            app.getSession().setPaused(!app.getSession().isPausedManually(), app);
         if (input.jactive(Escape) && !mainCanvas.hasOverlay())
-            return GUI::addToOverlay(frontend::initMenu(engine));
+            return GUI::addToOverlay(frontend::initMenu(app));
         GUI::callback();
     }
 
     void drawDiegeticElements(Renderer& renderer) final {
-        buildTools->drawDraft(engine, renderer, engine.getMainWindow().getTimeMs());
+        buildTools->drawDraft(app, renderer, app.getMainWindow().getTimeMs());
     }
 };

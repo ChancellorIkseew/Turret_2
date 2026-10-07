@@ -3,7 +3,7 @@
 
 enum class GameMode : uint8_t { survival, editor, menu };
 
-enum class EngineCommand : uint8_t {
+enum class appCommand : uint8_t {
     gameplay_load_world,
     gameplay_new_world,
     editor_load_world,

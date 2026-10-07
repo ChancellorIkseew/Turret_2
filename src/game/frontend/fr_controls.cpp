@@ -3,7 +3,7 @@
 #include <MINGUI/widgets/button.hpp>
 #include <MINGUI/widgets/label.hpp>
 #include <MINGUI/widgets/selector.hpp>
-#include "engine/engine.hpp"
+#include "app.hpp"
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 
@@ -11,12 +11,12 @@ constexpr uint32_t INPUT_RELOAD = 160U;
 constexpr Point BTN_SIZE(100, 20);
 
 class FrControls : public Container {
-    Engine& engine;
+    App& app;
     uint64_t inputReload = 0;
     std::string bindName;
     Selector* bindings = nullptr;
 public:
-    FrControls(Engine& engine) : Container(Align::center, Orientation::vertical), engine(engine) {
+    FrControls(App& app) : Container(Align::center, Orientation::vertical), app(app) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto bindNames = main->addNode(new Layout(Orientation::vertical));
@@ -47,10 +47,10 @@ public:
         Container::callback(context);
         
         if (inputReload > 0) {
-            inputReload -= engine.getMainWindow().getRealFrameDelayMs();
+            inputReload -= app.getMainWindow().getRealFrameDelayMs();
             return;
         }
-        const std::optional<Binding> lastKey = engine.getMainWindow().getInput().getLastKeyPressed();
+        const std::optional<Binding> lastKey = app.getMainWindow().getInput().getLastKeyPressed();
         if (!bindings->getTarget().lock() || !lastKey.has_value())
             return;
         inputReload = INPUT_RELOAD;
@@ -62,6 +62,6 @@ public:
     }
 };
 
-std::unique_ptr<Container> frontend::initControls(Engine& engine) {
-    return std::make_unique<FrControls>(engine);
+std::unique_ptr<Container> frontend::initControls(App& app) {
+    return std::make_unique<FrControls>(app);
 }

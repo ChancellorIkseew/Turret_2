@@ -1,12 +1,11 @@
 #include "built_in_scripts.hpp"
 //
 #include <random>
-#include "engine/assets/assets.hpp"
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
 #include "engine/gui/gui.hpp"
 #include "game/blocks/make_block.hpp"
 #include "game/frontend/frontend.hpp"
+#include "game/game_session.hpp"
 #include "game/world/world.hpp"
 
 static PixelCoord randomMapBorderCoord(std::mt19937_64& gen, const TileCoord mapSize) {
@@ -23,18 +22,18 @@ static PixelCoord randomMapBorderCoord(std::mt19937_64& gen, const TileCoord map
     }
 }
 
-void BuiltInScripts::execute(Engine& engine, const TimeCount& timeCount) {
-    if (engine.getSession().getGameMode() == GameMode::survival) {
+void BuiltInScripts::execute(App& app, const TimeCount& timeCount) {
+    if (app.getSession().getGameMode() == GameMode::survival) {
         if (timeCount.isWaveJustChanged()) {
             const WorldConfig& worldConfig = world.getConfig();
-            engine.getAssets().getAudio().playUI("wave_start");
+            app.getAssets().getAudio().playUI("wave_start");
             spawnWave(timeCount.getWaveCount(), worldConfig.enemyCountMul);
         }
         targetEnemies();
         respawnShuttle();
         const auto& cores = world.getBlocks().getMeta().getCores();
         if (cores.empty())
-            engine.getGUI().addToOverlay(frontend::initGameOver(engine));
+            app.getGUI().addToOverlay(frontend::initGameOver(app));
     }
 }
 

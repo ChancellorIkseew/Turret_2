@@ -1,7 +1,7 @@
 #include "gameplay_build_tools.hpp"
 //
-#include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
+#include "game/game_session.hpp"
 #include "game/world/world.hpp"
 
 using GBuildTools = GameplayBuildTools;
@@ -29,10 +29,10 @@ void GBuildTools::updateDraft(const TileCoord start, TileCoord target, const int
     }
 }
 
-void GBuildTools::update(Engine& engine) {
-    const Input& input = engine.getMainWindow().getInput();
-    const bool mouseFree = !engine.getGUI().ownsMouse();
-    GameSession& session = engine.getSession();
+void GBuildTools::update(App& app) {
+    const Input& input = app.getMainWindow().getInput();
+    const bool mouseFree = !app.getGUI().ownsMouse();
+    GameSession& session = app.getSession();
     WorldMap& map = session.getWorld().getMap();
     BlockMap& blocks = session.getWorld().getBlocks();
     Schematic& schematic = session.getWorld().getSchematic();
@@ -47,11 +47,11 @@ void GBuildTools::update(Engine& engine) {
     if (optTileData && input.jactive(Build_Shoot) && mouseFree)
         optBuildStart = targetTile;
     if (optTileData && optBuildStart && input.active(Build_Shoot)) {
-        const int blockSize = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id)).size;
+        const int blockSize = app.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id)).size;
         updateDraft(optBuildStart.value(), targetTile, blockSize);
     } 
     if (optTileData && optBuildStart && input.released(Build_Shoot)) {
-        const int blockSize = engine.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id)).size;
+        const int blockSize = app.getAssets().getPresets().getBlock(BlockPresetID(optTileData.value().id)).size;
         buildDraft(session.getWorld(), optTileData.value(), blockSize);
         optBuildStart.reset();
         draft.clear();
@@ -135,9 +135,9 @@ static void drawDemolitonRect(Renderer& renderer, const TileCoord start, const T
     renderer.drawRect(nStart + size, PixelCoord(size.x, 4.f), PixelCoord(size.x, 4.f), 0.f, cl::RED);
 }
 
-void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) {
-    const Schematic& schematic = engine.getSession().getWorld().getSchematic();
-    const Input& input = engine.getMainWindow().getInput();
+void GBuildTools::drawDraft(App& app, Renderer& renderer, const uint64_t timeMs) {
+    const Schematic& schematic = app.getSession().getWorld().getSchematic();
+    const Input& input = app.getMainWindow().getInput();
     if (!optTileData && !optDemolishStart && !schematic.isAir(targetTile) && !input.active(Demolish)) {
         const Blueprint blueprint = schematic.getBlock(targetTile);
         Schematic::drawBlockFrame(renderer, blueprint.tile, blueprint.size, cl::BEIGE);
@@ -146,8 +146,8 @@ void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t t
         drawDemolitonRect(renderer, optDemolishStart.value(), targetTile);
         const TileCoord nStart = TileCoord(std::min(optDemolishStart.value().x, targetTile.x), std::min(optDemolishStart.value().y, targetTile.y));
         const TileCoord nEnd = TileCoord(std::max(optDemolishStart.value().x, targetTile.x), std::max(optDemolishStart.value().y, targetTile.y));
-        engine.getSession().getWorld().getSchematic().drawCancelArea(renderer, nStart, nEnd);
-        const BlockMap& blocks = engine.getSession().getWorld().getBlocks();
+        app.getSession().getWorld().getSchematic().drawCancelArea(renderer, nStart, nEnd);
+        const BlockMap& blocks = app.getSession().getWorld().getBlocks();
         for (int x = nStart.x; x < nEnd.x + 1; ++x) {
             for (int y = nStart.y; y < nEnd.y + 1; ++y) {
                 if (!blocks.isFilled(TileCoord(x, y)))
@@ -160,10 +160,10 @@ void GBuildTools::drawDraft(Engine& engine, Renderer& renderer, const uint64_t t
     }
     if (optTileData) {
         if (!optBuildStart)
-            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs, true);   
+            drawOneBlock(app, renderer, targetTile, optTileData.value(), timeMs, true);   
         else {
             for (const TileCoord tile : draft) {
-                drawOneBlock(engine, renderer, tile, optTileData.value(), timeMs, false);
+                drawOneBlock(app, renderer, tile, optTileData.value(), timeMs, false);
             }
         }
     }

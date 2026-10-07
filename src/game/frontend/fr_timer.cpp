@@ -3,10 +3,10 @@
 #include <MINGUI/widgets/button.hpp>
 #include <MINGUI/widgets/icon_button.hpp>
 #include <MINGUI/widgets/selector.hpp>
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/util/time.hpp"
+#include "game/game_session.hpp"
 #include "game/world/world.hpp"
 
 constexpr Point ICON_SIZE(20, 20);
@@ -23,7 +23,7 @@ static int countEnemies(GameSession& session) {
 }
 
 class FrTimer : public Container {
-    Engine& engine;
+    App& app;
     Label* wave;
     Label* startsIn;
     Label* enemiesRemaining;
@@ -33,16 +33,16 @@ class FrTimer : public Container {
     IconButton* x2;
     IconButton* x4;
 public:
-    FrTimer(Engine& engine) : Container(Align::left | Align::up, Orientation::vertical), engine(engine) {    
+    FrTimer(App& app) : Container(Align::left | Align::up, Orientation::vertical), app(app) {    
         setPadding(12.f);
-        const Atlas& atlas = engine.getAssets().getAtlas();
+        const Atlas& atlas = app.getAssets().getAtlas();
         auto bar = addNode(new Layout(Orientation::horizontal));
         bar->setPalette(NULL_PALETTE);
         bar->setPadding(0.f);
         bar->setMargin(24.f);
 
         auto startWave = bar->addNode(new IconButton(Point(38, 38), 2.0f, new T1_UITexture(atlas.at("start_wave_btn"))));
-        startWave->addCallback([&] { engine.getSession().startNewWave(); });
+        startWave->addCallback([&] { app.getSession().startNewWave(); });
         startWave->setPalette(Palette{ .idle = cl::RED, .hover = 0x84'54'54'FF });
 
         playback = bar->addNode(new Selector(Orientation::horizontal));
@@ -64,10 +64,10 @@ public:
 private:
     void callback(UIContext& context) final {
         Container::callback(context);
-        const TimeCount& timeCount = engine.getSession().getTimeCount();
+        const TimeCount& timeCount = app.getSession().getTimeCount();
         wave->setText(tr("Wave {}", timeCount.getWaveCount()));
-        enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(engine.getSession())));
-        if (engine.getSession().getWorld().getConfig().wavesByTimer) {
+        enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(app.getSession())));
+        if (app.getSession().getWorld().getConfig().wavesByTimer) {
             constexpr uint64_t DEFAULT_FPS_TPS = 60;
             startsIn->setText(tr("Starts in {}", util::time::timerFormat(timeCount.getTicksToNextWave() / DEFAULT_FPS_TPS)));
         }
@@ -78,8 +78,8 @@ private:
     }
 
     void updatePlayback() {
-        const bool paused = engine.getSession().isPausedManually();
-        const auto tickSpeed = paused ? 0 : engine.getSession().getTickSpeed();
+        const bool paused = app.getSession().isPausedManually();
+        const auto tickSpeed = paused ? 0 : app.getSession().getTickSpeed();
         playback->resetTarget();
         switch (tickSpeed) {
         case 0: playback->setTarget(pause); break;
@@ -90,14 +90,14 @@ private:
     }
 
     void pauseWorld() {
-        engine.getSession().setPaused(true, engine);
+        app.getSession().setPaused(true, app);
     }
     void setTickSpeed(const int speed) {
-        engine.getSession().setTickSpeed(speed);
-        engine.getSession().setPaused(false, engine);
+        app.getSession().setTickSpeed(speed);
+        app.getSession().setPaused(false, app);
     }
 };
 
-std::unique_ptr<Container> frontend::initTimer(Engine& engine) {
-    return std::make_unique<FrTimer>(engine);
+std::unique_ptr<Container> frontend::initTimer(App& app) {
+    return std::make_unique<FrTimer>(app);
 }

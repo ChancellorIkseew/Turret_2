@@ -8,12 +8,12 @@ constexpr Point BTN_SIZE(120, 30);
 class FrWorldLoading : public Container{
     FrSaves* saves = nullptr;
 public:
-    FrWorldLoading(Engine& engine) : Container(Align::center, Orientation::vertical) {
+    FrWorldLoading(App& app) : Container(Align::center, Orientation::vertical) {
         saves = addNode(new FrSaves());
         auto lower = addNode(new Layout(Orientation::horizontal));
 
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, tr("Load")))->addCallback([&] { saves->loadWorld(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Load")))->addCallback([&] { saves->loadWorld(app); });
         lower->addNode(new Button(BTN_SIZE, tr("Delete")))->addCallback([&] { deleteWorld(); });
     }
 private:
@@ -23,6 +23,6 @@ private:
     }
 };
 
-std::unique_ptr<Container> frontend::initWorldLoading(Engine& engine) {
-    return std::make_unique<FrWorldLoading>(engine);
+std::unique_ptr<Container> frontend::initWorldLoading(App& app) {
+    return std::make_unique<FrWorldLoading>(app);
 }

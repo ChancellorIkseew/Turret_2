@@ -1,9 +1,9 @@
 #include "l_saves.hpp"
 //
 #include "MINGUI/widgets/button.hpp"
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
 #include "engine/io/folders.hpp"
+#include "game/game_session.hpp"
 #include "game/world_saver/world_saver.hpp"
 
 constexpr Point BTN_SIZE(120, 30);
@@ -22,13 +22,13 @@ void FrSaves::deleteWorld() {
     update();
 }
 
-void FrSaves::saveWorld(Engine& engine, const std::string& folder) {
+void FrSaves::saveWorld(App& app, const std::string& folder) {
     if (!io::folders::isPathValid(folder))
         return;
-    serializer::saveWorld(engine.getSession().getWorld(), folder);
+    serializer::saveWorld(app.getSession().getWorld(), folder);
     update();
 }
 
-void FrSaves::loadWorld(Engine& engine) const {
-    engine.loadWorldInGame(targetFolder);
+void FrSaves::loadWorld(App& app) const {
+    app.loadWorldInGame(targetFolder);
 }

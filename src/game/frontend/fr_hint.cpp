@@ -2,10 +2,10 @@
 //
 #include <MINGUI/widgets/icon.hpp>
 #include <MINGUI/widgets/label.hpp>
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/util/string_util.hpp"
+#include "game/game_session.hpp"
 #include "game/world/world.hpp"
 
 constexpr Point ICON_SIZE(16, 16);
@@ -14,19 +14,19 @@ class FrHint : public Container {
     Icon*  icon  = nullptr;
     Label* label = nullptr;
     Label* position = nullptr;
-    Engine& engine;
+    App& app;
 public:
-    FrHint(Engine& engine) : Container(Align::down | Align::center, Orientation::horizontal), engine(engine) {
+    FrHint(App& app) : Container(Align::down | Align::center, Orientation::horizontal), app(app) {
         icon = addNode(new Icon(ICON_SIZE, nullptr));
         label = addNode(new Label(""));
         position = addNode(new Label(""));
     }
 
     void callback(UIContext& context) final {
-        const PixelCoord mousePosition = engine.getMainWindow().getInput().getMouseCoord();
-        const Camera& camera = engine.getSession().getCamera();
-        const WorldMap& map = engine.getSession().getWorld().getMap();
-        const auto& assets = engine.getAssets();
+        const PixelCoord mousePosition = app.getMainWindow().getInput().getMouseCoord();
+        const Camera& camera = app.getSession().getCamera();
+        const WorldMap& map = app.getSession().getWorld().getMap();
+        const auto& assets = app.getAssets();
 
         const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
         if (!map.tileExists(targetTile))
@@ -51,6 +51,6 @@ public:
     }
 };
 
-std::unique_ptr<Container> frontend::initHint(Engine& engine) {
-    return std::make_unique<FrHint>(engine);
+std::unique_ptr<Container> frontend::initHint(App& app) {
+    return std::make_unique<FrHint>(app);
 }

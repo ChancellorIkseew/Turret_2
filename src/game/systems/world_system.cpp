@@ -1,9 +1,9 @@
 #include "world_system.hpp"
 //
+#include "app.hpp"
 #include "engine/assets/assets.hpp"
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
 #include "engine/gui/gui.hpp"
+#include "game/game_session.hpp"
 #include "game/systems/ai_system.hpp"
 #include "game/systems/construction_system.hpp"
 #include "game/systems/mobs_system.hpp"
@@ -53,12 +53,12 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
 }
 
 void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Camera& camera, const Assets& assets,
-    const uint64_t tickCount, Engine& engine) {
+    const uint64_t tickCount, App& app) {
     //
     const Presets& presets = assets.getPresets();
     const Shaders& shaders = assets.getShaders();
-    const uint64_t timeMs = engine.getMainWindow().getTimeMs();
-    const TileCoord targetTile = t1::tile(camera.fromScreenToMap(engine.getMainWindow().getInput().getMouseCoord()));
+    const uint64_t timeMs = app.getMainWindow().getTimeMs();
+    const TileCoord targetTile = t1::tile(camera.fromScreenToMap(app.getMainWindow().getInput().getMouseCoord()));
     //
     renderer.setView(camera.getMapScale(), camera.getTranslation());
     //renderer.setShaderProgram(*shaders.lightingShader);
@@ -78,7 +78,7 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     drawer.drawBlocksInProgress(world.getBlocks(), renderer, presets);
     //
     renderer.setShaderProgram(*shaders.base);
-    engine.getGUI().drawDiegeticElements(renderer);
+    app.getGUI().drawDiegeticElements(renderer);
     drawEntities(camera, renderer, world.getBlocks(), world.getMobs().getSoa(), world.getShells().getSoa(), presets, tickCount);
     drawShardParticles(camera, renderer, world.getParticles().getSoa());
     drawInfoOnCursor(renderer, camera, presets, world.getBlocks(), targetTile);
@@ -103,7 +103,7 @@ void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Ca
     world.getBuildBems().draw(renderer, tickCount);
     //
     renderer.setShaderProgram(*shaders.monochrome);
-    const PlayerController::Unit unitSelected = engine.getSession().getPlayerController().getUnitSelected();
+    const PlayerController::Unit unitSelected = app.getSession().getPlayerController().getUnitSelected();
     drawUnitSelected(renderer, world.getMobs().getSoa(), world.getBlocks().getMeta().getTurrets().getSoa(), presets, unitSelected);
 }
 

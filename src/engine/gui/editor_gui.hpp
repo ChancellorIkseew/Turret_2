@@ -2,28 +2,28 @@
 #include "gui.hpp"
 //
 #include "engine/window/input/input.hpp"
-#include "game/frontend/frontend.hpp"
 #include "game/frontend/build_tools/editor_build_tools.hpp"
+#include "game/frontend/frontend.hpp"
 
 class EditorGUI : public GUI {
     std::shared_ptr<BuildTools> buildTools;
 public:
-    EditorGUI(Engine& engine) : GUI(engine) { init(engine); }
+    EditorGUI(App& app) : GUI(app) { init(app); }
 
-    void init(Engine& engine) {
+    void init(App& app) {
         mainCanvas.closeAll();
         buildTools = std::make_unique<EditorBuildTools>();
-        mainCanvas.addToMainLayer(frontend::initJEI(engine, buildTools));
+        mainCanvas.addToMainLayer(frontend::initJEI(app, buildTools));
     }
 
     void callback() final {
-        buildTools->update(engine);
+        buildTools->update(app);
         if (input.jactive(Escape) && !mainCanvas.hasOverlay())
-            return GUI::addToOverlay(frontend::initMenu(engine));
+            return GUI::addToOverlay(frontend::initMenu(app));
         GUI::callback();
     }
 
     void drawDiegeticElements(Renderer& renderer) final {
-        buildTools->drawDraft(engine, renderer, engine.getMainWindow().getTimeMs());
+        buildTools->drawDraft(app, renderer, app.getMainWindow().getTimeMs());
     }
 };

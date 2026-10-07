@@ -9,10 +9,10 @@ class EditorBuildTools : public BuildTools {
 public:
     EditorBuildTools() : BuildTools(JEIContent::all) {}
 
-    void update(Engine& engine) final {
-        const Input& input = engine.getMainWindow().getInput();
-        const bool mouseFree = !engine.getGUI().ownsMouse();
-        GameSession& session = engine.getSession();
+    void update(App& app) final {
+        const Input& input = app.getMainWindow().getInput();
+        const bool mouseFree = !app.getGUI().ownsMouse();
+        GameSession& session = app.getSession();
         WorldMap& map = session.getWorld().getMap();
         BlockMap& blocks = session.getWorld().getBlocks();
         targetTile = t1::tile(session.getCamera().fromScreenToMap(input.getMouseCoord()));
@@ -32,9 +32,9 @@ public:
         }
     }
 
-    void drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) final {
+    void drawDraft(App& app, Renderer& renderer, const uint64_t timeMs) final {
         if (optTileData)
-            drawOneBlock(engine, renderer, targetTile, optTileData.value(), timeMs, true);
+            drawOneBlock(app, renderer, targetTile, optTileData.value(), timeMs, true);
     }
 private:
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const {

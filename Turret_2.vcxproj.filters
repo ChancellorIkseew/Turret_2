@@ -42,9 +42,6 @@
     <ClInclude Include="src\engine\window\window.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\engine.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\frontend\frontend.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -126,9 +123,6 @@
     <ClInclude Include="src\engine\io\parser\validator.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\engine_command.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\generation\squirell_noise.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -171,9 +165,6 @@
     <ClInclude Include="src\engine\assets\preset_reader.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\game_session.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\assets\preset_id.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -190,9 +181,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\assets\waves.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\time_count.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\game\built_in_scripts\built_in_scripts.hpp">
@@ -417,6 +405,18 @@
     <ClInclude Include="src\game\world\world_config.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\app.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine_command.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\time_count.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\game_session.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\render\packer\packer.cpp">
@@ -435,9 +435,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\window\window.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\engine.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\game\frontend\fr_menu.cpp">
@@ -567,9 +564,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\assets\indexes.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\game_session.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\io\parser\jtin_parser.cpp">
@@ -759,6 +753,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\audio\music_queue.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\game_session.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include "settings.hpp"
 //
+#include "app.hpp"
 #include "engine/debug/logger.hpp"
-#include "engine/engine.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
@@ -75,23 +75,23 @@ void Settings::readSettings() {
     }
 }
 
-void Settings::applySettings(Engine& engine) {
+void Settings::applySettings(App& app) {
     float master = static_cast<float>(audio.master) / 100.f;
-    engine.getAssets().getAudio().setMasterVolume(audio.toggleSound ? master : 0.0f);
-    engine.getAssets().getAudio().setWorldVolume(static_cast<float>(audio.world) / 100.f);
-    engine.getAssets().getAudio().setUIVolume(static_cast<float>(audio.ui) / 100.f);
-    engine.getAssets().getAudio().setMusicVolume(static_cast<float>(audio.music) / 100.f);
-    engine.getAssets().getAudio().updateVolume();
+    app.getAssets().getAudio().setMasterVolume(audio.toggleSound ? master : 0.0f);
+    app.getAssets().getAudio().setWorldVolume(static_cast<float>(audio.world) / 100.f);
+    app.getAssets().getAudio().setUIVolume(static_cast<float>(audio.ui) / 100.f);
+    app.getAssets().getAudio().setMusicVolume(static_cast<float>(audio.music) / 100.f);
+    app.getAssets().getAudio().updateVolume();
     // "muteInBackground" implemented in game_session.cpp
     //
-    engine.getMainWindow().setFPS(display.fps);
-    engine.getMainWindow().getRenderer().setVSyncMode(VSyncMode(display.vSyncMode));
-    engine.getMainWindow().setFullscreen(display.fullscreen);
+    app.getMainWindow().setFPS(display.fps);
+    app.getMainWindow().getRenderer().setVSyncMode(VSyncMode(display.vSyncMode));
+    app.getMainWindow().setFullscreen(display.fullscreen);
     // "cameraInertia" imlemented in game_session.cpp and fr_graphics.cpp
-    // "pauseOnWorldOpen" implemented in engine.cpp
+    // "pauseOnWorldOpen" implemented in app.cpp
     // "showDebugInfo" implemented local in .cpp files
     Localization::load(tin::read(io::folders::LANG / (gui.lang + ".tin")).release());
     // "guiScale" implemented in gui.cpp and fr_gui.cpp
-    engine.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
+    app.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     util::platform::Console::setVisible(Settings::gui.showConsole);
 }

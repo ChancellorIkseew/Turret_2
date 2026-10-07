@@ -3,7 +3,7 @@
 #include "engine/coords/transforms.hpp"
 #include "game/world/world.hpp"
 
-void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile,
+void BuildTools::drawOneBlock(App& app, Renderer& renderer, const TileCoord tile,
     const TileData tileData, const uint64_t timeMs, const bool showRange) const {
     const PixelCoord position = t1::pixel(tile);
     uint8_t alpha = 255;
@@ -13,9 +13,9 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
     }
     //
     if (tileData.component == TileComponent::block) {
-        const Presets& presets = engine.getAssets().getPresets();
+        const Presets& presets = app.getAssets().getPresets();
         const int size = presets.getBlock(BlockPresetID(tileData.id)).size;
-        const World& world = engine.getSession().getWorld();
+        const World& world = app.getSession().getWorld();
         const bool canBuild = world.getBlocks().canPlace(tile, size) && world.getSchematic().canPlace(tile, size);
         const uint32_t color = canBuild ? 0xFF'FF'FF'00 + alpha : 0xB4'34'24'C8;
         Schematic::drawBlock(presets, renderer, tile, BlockPresetID(tileData.id), rotation, color, showRange);
@@ -23,14 +23,14 @@ void BuildTools::drawOneBlock(Engine& engine, Renderer& renderer, const TileCoor
     }
     //
     if (tileData.component == TileComponent::overlay) {
-        const OrePreset& preset = engine.getAssets().getPresets().getOre(OrePresetID(tileData.id));
+        const OrePreset& preset = app.getAssets().getPresets().getOre(OrePresetID(tileData.id));
         renderer.draw(preset.textureRect, position, t1::TILE_PC, PixelCoord(0.f, 0.f), 0.f);
         return;
     }
     //
     if (tileData.component == TileComponent::floor) {
-        const std::string& textureName = engine.getAssets().getIndexes().getFloorByIndex(tileData.id);
-        const TextureRect textureRect = engine.getAssets().getAtlas().at(textureName);
+        const std::string& textureName = app.getAssets().getIndexes().getFloorByIndex(tileData.id);
+        const TextureRect textureRect = app.getAssets().getAtlas().at(textureName);
         constexpr PixelCoord BLENDING_AREA(4.f, 4.f);
         constexpr PixelCoord FLOOR_SIZE = t1::TILE_PC + BLENDING_AREA * 2.f;
         renderer.draw(textureRect, position - BLENDING_AREA, FLOOR_SIZE, PixelCoord(0.f, 0.f), 0.f);

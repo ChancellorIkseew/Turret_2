@@ -1,4 +1,4 @@
-#include "engine.hpp"
+#include "app.hpp"
 //
 #include "engine/io/folders.hpp"
 #include "engine/settings/settings.hpp"
@@ -11,53 +11,53 @@
 #include "game/generation/generation.hpp"
 #include "game/world_saver/gen_preset_saver.hpp"
 #include "game/world_saver/world_saver.hpp"
-#include "game_session.hpp"
+#include "game/game_session.hpp"
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GameSession" class in hpp.
-Engine::Engine(const std::string& windowTitle, const PixelCoord windowSize) :
+App::App(const std::string& windowTitle, const PixelCoord windowSize) :
     mainWindow(windowTitle, windowSize), scriptsHandler(std::make_unique<ScriptsHandler>()) { }
-Engine::~Engine() = default;
+App::~App() = default;
 
 static std::unique_ptr<World> createWorld(const SessionRequest& request, const Assets& assets) {
-    if (request.command == EngineCommand::gameplay_load_world || request.command == EngineCommand::editor_load_world)
+    if (request.command == appCommand::gameplay_load_world || request.command == appCommand::editor_load_world)
         return serializer::loadWorld(request.worldFolder);
     return gen::generateWorld(request.worldProperties, assets);
 }
 
-static std::unique_ptr<GUI> createGUI(const EngineCommand command, Engine& engine) {
+static std::unique_ptr<GUI> createGUI(const appCommand command, App& app) {
     switch (command) {
-    case EngineCommand::main_menu:
-        return std::make_unique<MenuGUI>(engine);
-    case EngineCommand::gameplay_new_world:
-    case EngineCommand::gameplay_load_world:
-        return std::make_unique<GameplayGUI>(engine);
-    case EngineCommand::editor_new_world:
-    case EngineCommand::editor_load_world:
-        return std::make_unique<EditorGUI>(engine);
+    case appCommand::main_menu:
+        return std::make_unique<MenuGUI>(app);
+    case appCommand::gameplay_new_world:
+    case appCommand::gameplay_load_world:
+        return std::make_unique<GameplayGUI>(app);
+    case appCommand::editor_new_world:
+    case appCommand::editor_load_world:
+        return std::make_unique<EditorGUI>(app);
     }
     throw std::runtime_error("Failed to create GUI.");
 }
 
-static GameMode getGameMode(const EngineCommand command) {
+static GameMode getGameMode(const appCommand command) {
     switch (command) {
-    case EngineCommand::main_menu:           return GameMode::menu;
-    case EngineCommand::gameplay_new_world:  return GameMode::survival;
-    case EngineCommand::gameplay_load_world: return GameMode::survival;
+    case appCommand::main_menu:           return GameMode::menu;
+    case appCommand::gameplay_new_world:  return GameMode::survival;
+    case appCommand::gameplay_load_world: return GameMode::survival;
     default:                                 return GameMode::editor;
     }
 }
 
-static std::unique_ptr<GameSession> createSession(const SessionRequest& request, Engine& engine) {
-    Assets& assets = engine.getAssets();
+static std::unique_ptr<GameSession> createSession(const SessionRequest& request, App& app) {
+    Assets& assets = app.getAssets();
     std::unique_ptr<World> world = createWorld(request, assets);
     if (!world)
         return nullptr;
-    const EngineCommand command = request.command;
-    const bool paused = command == EngineCommand::main_menu ? false : Settings::gameplay.pauseOnWorldOpen;
-    return std::make_unique<GameSession>(std::move(world), createGUI(command, engine), assets, paused, getGameMode(command));
+    const appCommand command = request.command;
+    const bool paused = command == appCommand::main_menu ? false : Settings::gameplay.pauseOnWorldOpen;
+    return std::make_unique<GameSession>(std::move(world), createGUI(command, app), assets, paused, getGameMode(command));
 }
 
-void Engine::run() {
+void App::run() {
     script_libs::registerScripts(*scriptsHandler);
     scriptsHandler->load();
     assets.load(mainWindow.getRenderer());
@@ -69,37 +69,37 @@ void Engine::run() {
     }
 }
 
-void Engine::changeSession(SessionRequest request) {
+void App::changeSession(SessionRequest request) {
     sessionRequest = std::move(request);
 }
 
-void Engine::loadWorldInGame(const std::string& folder) {
-    changeSession({.command = EngineCommand::gameplay_load_world, .worldFolder = folder });
+void App::loadWorldInGame(const std::string& folder) {
+    changeSession({.command = appCommand::gameplay_load_world, .worldFolder = folder });
 }
-void Engine::loadWorldInEditor(const std::string& folder) {
-    changeSession({ .command = EngineCommand::editor_load_world, .worldFolder = folder });
+void App::loadWorldInEditor(const std::string& folder) {
+    changeSession({ .command = appCommand::editor_load_world, .worldFolder = folder });
 }
-void Engine::createWorldInGame(WorldProperties properties) {
-    changeSession({ .command = EngineCommand::gameplay_new_world, .worldProperties = std::move(properties) });
+void App::createWorldInGame(WorldProperties properties) {
+    changeSession({ .command = appCommand::gameplay_new_world, .worldProperties = std::move(properties) });
 }
-void Engine::createWorldInEditor() {
+void App::createWorldInEditor() {
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
     WorldConfig config{ .mapSize = TileCoord(100, 100), .seed = 0, .wavesByTimer = true, };
     WorldProperties properties(config, floorPresets, overlayPresets);
-    changeSession({ .command = EngineCommand::editor_new_world, .worldProperties = properties });
+    changeSession({ .command = appCommand::editor_new_world, .worldProperties = properties });
 }
-void Engine::openMainMenu() {
+void App::openMainMenu() {
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
     WorldConfig config{ .mapSize = TileCoord(100, 100), .seed = 0, .wavesByTimer = true, };
     WorldProperties properties(config, floorPresets, overlayPresets);
-    changeSession({ .command = EngineCommand::main_menu, .worldProperties = properties });
+    changeSession({ .command = appCommand::main_menu, .worldProperties = properties });
 }
 
-GUI& Engine::getGUI() { return session->getGUI(); }
+GUI& App::getGUI() { return session->getGUI(); }
 
-void Engine::processSessionRequest() {
+void App::processSessionRequest() {
     if (!sessionRequest)
         return;
     std::unique_ptr<GameSession> newSession = createSession(*sessionRequest, *this);

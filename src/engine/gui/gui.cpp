@@ -1,6 +1,6 @@
 #include "gui.hpp"
 //
-#include "engine/engine.hpp"
+#include "app.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/render/atlas.hpp"
@@ -18,8 +18,8 @@ constexpr uint32_t WHITE = 0xFF'FF'FF'FF;
 constexpr uint64_t NS_PER_SECOND = 1'000'000'000U;
 constexpr PixelCoord DEBUD_PANEL_SIZE(220.f, 120.f);
 
-GUI::GUI(Engine& engine) : engine(engine),
-mainWindow(engine.getMainWindow()),
+GUI::GUI(App& app) : app(app),
+mainWindow(app.getMainWindow()),
 mainCanvas(mainWindow.getSize(), Settings::gui.scale),
 input(mainWindow.getInput()) { }
 
@@ -61,7 +61,7 @@ void GUI::callback() {
     acceptHotkeys();
     if (!showGUI)
         return;
-    T1_UIContext context(input, engine.getAssets().getAudio());
+    T1_UIContext context(input, app.getAssets().getAudio());
     mainCanvas.update(context, static_cast<int>(mainWindow.getRealFrameDelayMs()));
     input.enableTextInput(mainCanvas.isTextEditingActive());
     if (ownsMouse())

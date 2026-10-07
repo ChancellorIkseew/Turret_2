@@ -18,7 +18,7 @@ class FrAudio : public Container {
     Checkbox* toggleSound;
     Checkbox* muteInBakcgroung;
 public:
-    FrAudio(Engine& engine) : Container(Align::center, Orientation::vertical) {
+    FrAudio(App& app) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));
@@ -40,10 +40,10 @@ public:
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(app); });
     }
 
-    void applySettings(Engine& engine) {
+    void applySettings(App& app) {
         using T = decltype(Settings::audio.master);
         Settings::audio.master = validator::to<T>(master->getText()).value_or(50U);
         Settings::audio.world  = validator::to<T>(world ->getText()).value_or(100U);
@@ -51,11 +51,11 @@ public:
         Settings::audio.music  = validator::to<T>(music ->getText()).value_or(100U);
         Settings::audio.toggleSound      = toggleSound     ->getValue();
         Settings::audio.muteInBackground = muteInBakcgroung->getValue();
-        Settings::applySettings(engine);
+        Settings::applySettings(app);
         Settings::writeSettings();
     }
 };
 
-std::unique_ptr<Container> frontend::initAudio(Engine& engine) {
-    return std::make_unique<FrAudio>(engine);
+std::unique_ptr<Container> frontend::initAudio(App& app) {
+    return std::make_unique<FrAudio>(app);
 }

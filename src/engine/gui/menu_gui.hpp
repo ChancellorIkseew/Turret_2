@@ -5,11 +5,11 @@
 
 class MenuGUI : public GUI {
 public:
-    MenuGUI(Engine& engine) : GUI(engine) { init(engine); }
+    MenuGUI(App& app) : GUI(app) { init(app); }
 
-    void init(Engine& engine) final {
+    void init(App& app) final {
         mainCanvas.closeAll();
-        mainCanvas.addToOverlay(frontend::initMainMenu(engine));
+        mainCanvas.addToOverlay(frontend::initMainMenu(app));
         mainCanvas.setAllwaysWithOverlay(true);
     }
 

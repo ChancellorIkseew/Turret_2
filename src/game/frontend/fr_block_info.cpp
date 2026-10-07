@@ -2,7 +2,7 @@
 //
 #include <MINGUI/widgets/button.hpp>
 #include <MINGUI/widgets/icon.hpp>
-#include "engine/engine.hpp"
+#include "app.hpp"
 #include "engine/coords/transforms.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/settings/localization.hpp"
@@ -27,20 +27,20 @@ public:
 
 class FrBlockInfo: public Container {
 public:
-    FrBlockInfo(Engine& engine, const uint8_t blockPresetID) : Container(Align::center, Orientation::vertical) {
+    FrBlockInfo(App& app, const uint8_t blockPresetID) : Container(Align::center, Orientation::vertical) {
         setPadding(6.f);
         const BlockPresetID presetID = BlockPresetID(blockPresetID);
-        const BlockPreset preset = engine.getAssets().getPresets().getBlock(presetID);
+        const BlockPreset preset = app.getAssets().getPresets().getBlock(presetID);
 
         std::string blockName;
-        for (auto& [name, id] : engine.getAssets().getPresets().getBlocks()) {
+        for (auto& [name, id] : app.getAssets().getPresets().getBlocks()) {
             if (id == presetID) {
                 blockName = name;
                 break;
             }
         }
 
-        addNode(new Icon(Point(32, 32), new T1_UITexture(engine.getAssets().getAtlas().at(blockName))));
+        addNode(new Icon(Point(32, 32), new T1_UITexture(app.getAssets().getAtlas().at(blockName))));
         addNode(new Label(tr(blockName)))->setPalette(Palette{ .text = cl::BEIGE });
         addNode(new Label(tr("Size: {}x{}", preset.size, preset.size)));
         addNode(new Label(tr("Build time: {} ticks", preset.buildTime)));
@@ -54,13 +54,13 @@ public:
                 break;
             if (ing.amount < 1)
                 continue;
-            const ItemPreset& preset = engine.getAssets().getPresets().getItem(ing.itemID);
+            const ItemPreset& preset = app.getAssets().getPresets().getItem(ing.itemID);
             ingridients->addNode(new FrCostSlot(new T1_UITexture(preset.textureRect), ing.amount));
         }
 
         if (preset.archetype == BlockType::turret) {
-            const TurretPreset& turret = engine.getAssets().getPresets().getTurret(preset.turret);
-            const ShellPreset& shell = engine.getAssets().getPresets().getShell(turret.shell);
+            const TurretPreset& turret = app.getAssets().getPresets().getTurret(preset.turret);
+            const ShellPreset& shell = app.getAssets().getPresets().getShell(turret.shell);
             addNode(new Label(tr("Range: {:.2f} tiles", turret.range / t1::TILE_F)));
             addNode(new Label(tr("Direct damage: {}", shell.damage)));
             if (shell.explosion.damage > 0) {
@@ -79,6 +79,6 @@ public:
     }
 };
 
-std::unique_ptr<Container> frontend::initBlockInfo(Engine& engine, const uint8_t blockPresetID) {
-    return std::make_unique<FrBlockInfo>(engine, blockPresetID);
+std::unique_ptr<Container> frontend::initBlockInfo(App& app, const uint8_t blockPresetID) {
+    return std::make_unique<FrBlockInfo>(app, blockPresetID);
 }

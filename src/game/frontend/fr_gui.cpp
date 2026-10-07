@@ -4,7 +4,7 @@
 #include <MINGUI/widgets/checkbox.hpp>
 #include <MINGUI/widgets/form.hpp>
 #include <MINGUI/widgets/label.hpp>
-#include "engine/engine.hpp"
+#include "app.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
@@ -17,7 +17,7 @@ class FrGUI : public Container {
     Checkbox* customCursor;
     Checkbox* showConsole;
 public:
-    FrGUI(Engine& engine) : Container(Align::center, Orientation::vertical) {
+    FrGUI(App& app) : Container(Align::center, Orientation::vertical) {
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto clickable = main->addNode(new Layout(Orientation::vertical));
@@ -33,20 +33,20 @@ public:
         
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { applySettings(app); });
     }
 
-    void applySettings(Engine& engine) {
+    void applySettings(App& app) {
         using ScaleT = decltype(Settings::gui.scale);
         Settings::gui.scale = validator::to<ScaleT>(scale->getText()).value_or(1U);
         Settings::gui.customCursor = customCursor->getValue();
         Settings::gui.showConsole = showConsole->getValue();
-        engine.getGUI().setScale(Settings::gui.scale);
-        Settings::applySettings(engine);
+        app.getGUI().setScale(Settings::gui.scale);
+        Settings::applySettings(app);
         Settings::writeSettings();
     }
 };
 
-std::unique_ptr<Container> frontend::initGUI(Engine& engine) {
-    return std::make_unique<FrGUI>(engine);
+std::unique_ptr<Container> frontend::initGUI(App& app) {
+    return std::make_unique<FrGUI>(app);
 }

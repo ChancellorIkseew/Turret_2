@@ -2,10 +2,10 @@
 //
 #include <MINGUI/widgets/button.hpp>
 #include <MINGUI/widgets/label.hpp>
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
 #include "engine/settings/localization.hpp"
 #include "engine/util/time.hpp"
+#include "game/game_session.hpp"
 
 constexpr Point BTN_SIZE(200, 50);
 constexpr uint64_t DEFAULT_FPS_TPS = 60;
@@ -28,10 +28,10 @@ static std::unique_ptr<Layout> initStatistics(GameSession& session) {
     return main;
 }
 
-std::unique_ptr<Container> frontend::initGameOver(Engine& engine) {
+std::unique_ptr<Container> frontend::initGameOver(App& app) {
     auto main = std::make_unique<Container>(Align::center, Orientation::vertical);
     main->addNode(new Label(tr("Game over")));
-    main->addNode(initStatistics(engine.getSession()).release());
-    main->addNode(new Button(BTN_SIZE, tr("Exit to menu")))->addCallback([&] { engine.openMainMenu(); });
+    main->addNode(initStatistics(app.getSession()).release());
+    main->addNode(new Button(BTN_SIZE, tr("Exit to menu")))->addCallback([&] { app.openMainMenu(); });
     return main;
 }

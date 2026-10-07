@@ -1,6 +1,6 @@
 #include "game_session.hpp"
 //
-#include "engine/engine.hpp"
+#include "app.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/scripting/scripting.hpp"
 #include "engine/settings/settings.hpp"
@@ -34,20 +34,20 @@ void GameSession::prepare(const Presets& presets) {
     inventory.resources[presets.getItemID("item_iron").asUint()] = 999;
 }
 
-void GameSession::updateSimulation(const Presets& presets, Engine& engine) {
-    const uint64_t timeMs = engine.getMainWindow().getTimeMs();
+void GameSession::updateSimulation(const Presets& presets, App& app) {
+    const uint64_t timeMs = app.getMainWindow().getTimeMs();
     world::update(*world, camera, presets, timeMs, timeCount.getTickCount(), playerController, worldSounds, builtInScripts);
     timeCount.update();
-    builtInScripts.execute(engine, timeCount);
+    builtInScripts.execute(app, timeCount);
     if (world->getBlocks().getMeta().isCoreAttacked())
         lastCoreAttack = timeCount.getTickCount();
 }
 
-void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHandler& scriptsHandler) {
+void GameSession::update(App& app, const Presets& presets, const ScriptsHandler& scriptsHandler) {
     Events::reset(); // for editor // needs update
-    auto& mainWindow = engine.getMainWindow();
+    auto& mainWindow = app.getMainWindow();
     auto& renderer = mainWindow.getRenderer();
-    auto& shaders = engine.getAssets().getShaders();
+    auto& shaders = app.getAssets().getShaders();
     //
     mainWindow.pollEvents();
     gui->callback();
@@ -57,7 +57,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
             world->getBlocks().getMeta().getTurrets().getSoa(), presets);
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
-            updateSimulation(presets, engine);
+            updateSimulation(presets, app);
         }
     }
     musicQueue.update(0, gameMode);
@@ -65,7 +65,7 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     //
     mainWindow.clear();
     camera.update(mainWindow.getSize(), mainWindow.getRealFrameDelayNs());
-    world::draw(*world, renderer, worldDrawer, camera, engine.getAssets(), timeCount.getTickCount(), engine);
+    world::draw(*world, renderer, worldDrawer, camera, app.getAssets(), timeCount.getTickCount(), app);
     renderer.setView(1.f, PixelCoord(0.f, 0.f));
     if (Settings::gameplay.vingette) {
         renderer.setShaderProgram(*shaders.vignette);
@@ -75,31 +75,31 @@ void GameSession::update(Engine& engine, const Presets& presets, const ScriptsHa
     }
     renderer.setShaderProgram(*shaders.ui);
     mobs::drawEnemyMarkers(playerController.getPlayerTeamID(), world->getMobs().getSoa(), camera, renderer);
-    gui->draw(renderer, engine.getAssets().getAtlas());
+    gui->draw(renderer, app.getAssets().getAtlas());
     mainWindow.render();
-    worldSounds.play(engine.getAssets().getAudio(), camera, mainWindow.getTimeMs());
+    worldSounds.play(app.getAssets().getAudio(), camera, mainWindow.getTimeMs());
     //
-    if (mainWindow.hasLostFocus())   onLostFocus(engine);
-    if (mainWindow.hasGainedFocus()) onGainedFocus(engine);
+    if (mainWindow.hasLostFocus())   onLostFocus(app);
+    if (mainWindow.hasGainedFocus()) onGainedFocus(app);
 }
 
-void GameSession::setPaused(const bool flag, Engine& engine) {
+void GameSession::setPaused(const bool flag, App& app) {
     pausedManually = flag;
-    auto& audio = engine.getAssets().getAudio();
+    auto& audio = app.getAssets().getAudio();
     if (pausedManually) audio.pauseWorldSounds();
     else                audio.resumeWorldSounds();
 }
 
-void GameSession::onLostFocus(Engine& engine) { 
+void GameSession::onLostFocus(App& app) { 
     if (Settings::audio.muteInBackground) {
-        engine.getAssets().getAudio().setMasterVolume(0.f);
-        engine.getAssets().getAudio().updateVolume();
+        app.getAssets().getAudio().setMasterVolume(0.f);
+        app.getAssets().getAudio().updateVolume();
     }
 }
 
-void GameSession::onGainedFocus(Engine& engine) {
+void GameSession::onGainedFocus(App& app) {
     if (Settings::audio.muteInBackground) {
-        engine.getAssets().getAudio().setMasterVolume(static_cast<float>(Settings::audio.master) / 100.f);
-        engine.getAssets().getAudio().updateVolume();
+        app.getAssets().getAudio().setMasterVolume(static_cast<float>(Settings::audio.master) / 100.f);
+        app.getAssets().getAudio().updateVolume();
     }
 }

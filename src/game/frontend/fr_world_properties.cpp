@@ -5,7 +5,7 @@
 #include <MINGUI/widgets/form.hpp>
 #include <MINGUI/widgets/icon_button.hpp>
 #include <random>
-#include "engine/engine.hpp"
+#include "app.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
@@ -97,8 +97,8 @@ class FrWorldProperties : public Container {
     OtherWorldSettings* otherSettings = nullptr;
 public:
     ~FrWorldProperties() final = default;
-    FrWorldProperties(Engine& engine) : Container(Align::center, Orientation::vertical) {
-        const Atlas& atlas = engine.getAssets().getAtlas();
+    FrWorldProperties(App& app) : Container(Align::center, Orientation::vertical) {
+        const Atlas& atlas = app.getAssets().getAtlas();
         auto main = addNode(new Layout(Orientation::horizontal));
 
         auto labels = main->addNode(new Layout(Orientation::vertical));
@@ -123,7 +123,7 @@ public:
 
         auto lower = addNode(new Layout(Orientation::horizontal));
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
-        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { createWorld(engine); });
+        lower->addNode(new Button(BTN_SIZE, tr("Apply")))->addCallback([&] { createWorld(app); });
 
         regenSeed->addCallback([&] { generateSeed(); });
     }
@@ -134,17 +134,17 @@ private:
         seed->setText(std::format("{}", dist(randomizer)));
     }
 
-    void createWorld(Engine& engine) {
+    void createWorld(App& app) {
         WorldConfig config;
         otherSettings->apply(config);
         config.seed = validator::to<uint64_t>(seed->getText()).value_or(0U);
         config.mapSize = TileCoord(validator::to<int>(width ->getText()).value_or(100),
                                    validator::to<int>(height->getText()).value_or(100));
         WorldProperties properties(config, serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT), oProps->getPresets());
-        engine.createWorldInGame(properties);
+        app.createWorldInGame(properties);
     }
 };
 
-std::unique_ptr<Container> frontend::initWorldProperties(Engine& engine) {
-    return std::make_unique<FrWorldProperties>(engine);
+std::unique_ptr<Container> frontend::initWorldProperties(App& app) {
+    return std::make_unique<FrWorldProperties>(app);
 }

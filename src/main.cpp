@@ -1,5 +1,5 @@
-﻿#include "engine/debug/logger.hpp"
-#include "engine/engine.hpp"
+﻿#include "app.hpp"
+#include "engine/debug/logger.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/window/input/controls.hpp"
 
@@ -11,9 +11,9 @@ int main(int argc, char* argv[]) {
     try {
         Settings::readSettings();
         Controls::readBindings();
-        Engine engine("Turret_2.0.17 - pre-alpha", PixelCoord(720, 480));
-        Settings::applySettings(engine);
-        engine.run();
+        App app("Turret_2.0.17 - pre-alpha", PixelCoord(720, 480));
+        Settings::applySettings(app);
+        app.run();
     }
     catch (const std::exception& exception) {
         logger.error(exception.what());

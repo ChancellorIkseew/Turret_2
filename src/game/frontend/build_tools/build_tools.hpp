@@ -1,6 +1,6 @@
 #pragma once
-#include "engine/engine.hpp"
-#include "engine/game_session.hpp"
+#include "app.hpp"
+#include "game/game_session.hpp"
 
 enum class JEIContent : uint8_t { all, only_blocks };
 enum class TileComponent : uint8_t { floor, overlay, block };
@@ -28,9 +28,9 @@ public:
         optTileData = tileData;
     }
     //
-    virtual void update(Engine& engine) = 0;
-    virtual void drawDraft(Engine& engine, Renderer& renderer, const uint64_t timeMs) = 0;
+    virtual void update(App& app) = 0;
+    virtual void drawDraft(App& app, Renderer& renderer, const uint64_t timeMs) = 0;
 protected:
-    void drawOneBlock(Engine& engine, Renderer& renderer, const TileCoord tile, const TileData tileData,
+    void drawOneBlock(App& app, Renderer& renderer, const TileCoord tile, const TileData tileData,
         const uint64_t timeMs, const bool showRange) const;
 };

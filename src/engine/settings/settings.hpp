@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <string>
 
-class Engine;
+class App;
 
 class Settings {
 public:
@@ -36,5 +36,5 @@ public:
 public:
     static void writeSettings();
     static void readSettings();
-    static void applySettings(Engine& engine);
+    static void applySettings(App& app);
 };
