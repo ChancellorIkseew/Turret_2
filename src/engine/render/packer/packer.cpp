@@ -26,12 +26,12 @@ PixelCoord packer::arrangeRects(std::unordered_map<std::string, TextureRect>& at
     int square = 0, maxWidth = 0, maxHeight = 0;
     int i = 0;
     for (const auto& [name, rect] : atlas) {
-        stbrp_rect stbRect{ .id = i, .w = stbrp_coord(rect.w), .h = stbrp_coord(rect.h) };
-        if (stbRect.w + 1 > maxWidth)
-            maxWidth = stbRect.w + 1;
-        if (stbRect.h + 1 > maxHeight)
-            maxHeight = stbRect.h + 1;
-        square += (stbRect.w + 1) * (stbRect.h + 1);
+        stbrp_rect stbRect{ .id = i, .w = stbrp_coord(rect.w + 1.f), .h = stbrp_coord(rect.h + 1.f) };
+        if (stbRect.w > maxWidth)
+            maxWidth = stbRect.w;
+        if (stbRect.h > maxHeight)
+            maxHeight = stbRect.h;
+        square += stbRect.w * stbRect.h;
         rects[i] = stbRect;
         ++i;
     }
@@ -49,9 +49,9 @@ PixelCoord packer::arrangeRects(std::unordered_map<std::string, TextureRect>& at
             break;
         }
         if (size.x >= size.y)
-            size.y *= 2;
+            size.y *= 2.f;
         else
-            size.x *= 2;
+            size.x *= 2.f;
     }
     //
     i = 0;
