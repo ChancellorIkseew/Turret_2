@@ -1,5 +1,6 @@
 #include "block_map.hpp"
 //
+#include "block_types.hpp"
 #include "engine/assets/presets.hpp"
 #include "game/common/teams_pool.hpp"
 

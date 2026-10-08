@@ -1,6 +1,7 @@
 #include "gameplay_build_tools.hpp"
 //
 #include "engine/gui/gui.hpp"
+#include "game/blocks/block_types.hpp"
 #include "game/game_session.hpp"
 #include "game/world/world.hpp"
 

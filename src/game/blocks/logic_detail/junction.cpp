@@ -1,3 +1,5 @@
+#include "game/blocks/block_types.hpp"
+//
 #include "game/blocks/block_map.hpp"
 
 bool JunctionBlock::canAccept(ItemPresetID item, BlockRot srcRot) {

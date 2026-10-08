@@ -1,4 +1,4 @@
-#include "game/blocks/block.hpp"
+#include "game/blocks/block_types.hpp"
 //
 #include <cassert>
 #include "game/blocks/block_map.hpp"

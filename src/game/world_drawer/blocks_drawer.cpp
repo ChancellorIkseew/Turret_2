@@ -4,6 +4,7 @@
 #include "engine/render/renderer.hpp"
 #include "game/player/camera.hpp"
 #include "game/blocks/block_map.hpp"
+#include "game/blocks/block_types.hpp"
 
 void BlocksDrawer::drawShadows(const BlockMap& blocks, const Camera& camera, Renderer& renderer) {
     const TileCoord start = camera.getBuildingsStartTile();

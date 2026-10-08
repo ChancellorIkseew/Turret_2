@@ -420,6 +420,9 @@
     <ClInclude Include="src\engine\render\surface.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\blocks\block_types.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\render\packer\packer.cpp">

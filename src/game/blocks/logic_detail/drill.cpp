@@ -1,3 +1,5 @@
+#include "game/blocks/block_types.hpp"
+//
 #include "blocks_common.hpp"
 #include "engine/assets/presets.hpp"
 #include "game/world/world_map.hpp"

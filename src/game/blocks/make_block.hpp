@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "block.hpp"
+#include "block_types.hpp"
 #include "engine/assets/preset_defs.hpp"
 #include "engine/debug/logger.hpp"
 

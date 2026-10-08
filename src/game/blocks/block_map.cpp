@@ -1,6 +1,7 @@
 #include "block_map.hpp"
 //
 #include <cassert>
+#include "block_types.hpp"
 #include "engine/assets/presets.hpp"
 #include "game/blocks/schematic/schematic.hpp"
 #include "game/common/inventory.hpp"
