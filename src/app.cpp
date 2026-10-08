@@ -66,11 +66,21 @@ void App::run() {
         processSessionRequest();
         if (session)
             session->update(*this, assets.getPresets(), *scriptsHandler);
+        //
+        if (mainWindow.hasLostFocus() && Settings::audio.muteInBackground) {
+            assets.getAudio().setMasterVolume(0.f);
+            assets.getAudio().updateVolume();
+        }
+        if (mainWindow.hasGainedFocus()) {
+            assets.getAudio().setMasterVolume(static_cast<float>(Settings::audio.master) / 100.f);
+            assets.getAudio().updateVolume();
+        }
     }
 }
 
 void App::changeSession(SessionRequest request) {
     sessionRequest = std::move(request);
+    assets.getAudio().stopMusic();
 }
 
 void App::loadWorldInGame(const std::string& folder) {

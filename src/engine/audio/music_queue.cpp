@@ -2,11 +2,7 @@
 //
 #include "audio.hpp"
 
-MusicQueue::~MusicQueue() {
-    audio.stopMusic();
-}
-
-void MusicQueue::update(const uint32_t currentWave, const GameMode gameMode) {
+void MusicQueue::update(Audio& audio, const uint32_t currentWave, const GameMode gameMode) {
     const bool noMusicPlaying = !audio.isMusicPlaying();
 
     if (gameMode == GameMode::menu && noMusicPlaying) {

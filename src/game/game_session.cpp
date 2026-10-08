@@ -13,8 +13,8 @@
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets,
     const bool paused, const GameMode gameMode) :
     camera(world->getMap().getSize(), Settings::gameplay.cameraInertia), world(std::move(world)), gui(std::move(gui)),
-    worldDrawer(assets), pausedManually(paused), timeCount(0, this->world->getConfig().ticksPerWave, this->world->getConfig().wavesByTimer),
-    builtInScripts(assets, *this->world), musicQueue(assets.getAudio()), gameMode(gameMode) {
+    worldDrawer(assets), pausedManually(paused), timeCount(0, this->world->getConfig().ticksPerWave,
+    this->world->getConfig().wavesByTimer), builtInScripts(assets, *this->world), gameMode(gameMode) {
     prepare(assets.getPresets());
 }
 GameSession::~GameSession() = default;
@@ -60,7 +60,7 @@ void GameSession::update(App& app, const Presets& presets, const ScriptsHandler&
             updateSimulation(presets, app);
         }
     }
-    musicQueue.update(0, gameMode);
+    musicQueue.update(app.getAssets().getAudio(), timeCount.getWaveCount(), gameMode);
     scriptsHandler.execute();
     //
     mainWindow.clear();
@@ -78,9 +78,6 @@ void GameSession::update(App& app, const Presets& presets, const ScriptsHandler&
     gui->draw(renderer, app.getAssets().getAtlas());
     mainWindow.render();
     worldSounds.play(app.getAssets().getAudio(), camera, mainWindow.getTimeMs());
-    //
-    if (mainWindow.hasLostFocus())   onLostFocus(app);
-    if (mainWindow.hasGainedFocus()) onGainedFocus(app);
 }
 
 void GameSession::setPaused(const bool flag, App& app) {
@@ -88,18 +85,4 @@ void GameSession::setPaused(const bool flag, App& app) {
     auto& audio = app.getAssets().getAudio();
     if (pausedManually) audio.pauseWorldSounds();
     else                audio.resumeWorldSounds();
-}
-
-void GameSession::onLostFocus(App& app) { 
-    if (Settings::audio.muteInBackground) {
-        app.getAssets().getAudio().setMasterVolume(0.f);
-        app.getAssets().getAudio().updateVolume();
-    }
-}
-
-void GameSession::onGainedFocus(App& app) {
-    if (Settings::audio.muteInBackground) {
-        app.getAssets().getAudio().setMasterVolume(static_cast<float>(Settings::audio.master) / 100.f);
-        app.getAssets().getAudio().updateVolume();
-    }
 }

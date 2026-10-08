@@ -7,9 +7,7 @@ class Audio;
 
 class MusicQueue {
     uint64_t noMusicPlayingTicks = 0;
-    Audio& audio;
 public:
-    MusicQueue(Audio& audio) : audio(audio) {}
-    ~MusicQueue();
-    void update(const uint32_t currentWave, const GameMode gameMode);
+    MusicQueue() = default;
+    void update(Audio& audio, const uint32_t currentWave, const GameMode gameMode);
 };
