@@ -1,0 +1,11 @@
+#visual
+texture=impact_drill
+frame_ticks=0
+frame_height=64
+frame_order=0
+#logic
+archetype=impact_drill
+size=2
+build_time=180
+rotatable=false
+health=600

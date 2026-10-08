@@ -27,6 +27,7 @@ enum class BlockType {
     belt,
     bridge,
     drill,
+    impact_drill,
     factory,
     junction,
     router,

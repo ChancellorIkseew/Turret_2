@@ -7,6 +7,7 @@ rocket_turret=Rocket turret
 router=Router
 junction=Junction
 drill=Drill
+impact_drill=Impact drill
 iron_wall=Iron wall
 big_iron_wall=Big iron wall
 core=Core

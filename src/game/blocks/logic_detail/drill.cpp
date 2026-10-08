@@ -12,6 +12,17 @@ void DrillBlock::mine(TileCoord tile, const WorldMap& terrain, const Presets& pr
     inventory.count = std::min(inventory.count + mineSpeed, MAX_ITEMS);
 }
 
+void ImpactDrillBlock::mine(TileCoord tile, const WorldMap& terrain, const Presets& presets) {
+    constexpr int MAX_ITEMS = 10;
+    if (inventory.count >= MAX_ITEMS)
+        return;
+    inventory.item = presets.getItemID("item_silicat");
+    inventory.count = std::min(inventory.count + mineSpeed, MAX_ITEMS);
+}
+
 void DrillBlock::provide(TileCoord tile, const BlockMap& map) {
+    throwItem(tile, size, map, inventory, step);
+}
+void ImpactDrillBlock::provide(TileCoord tile, const BlockMap& map) {
     throwItem(tile, size, map, inventory, step);
 }

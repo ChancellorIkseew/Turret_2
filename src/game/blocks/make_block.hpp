@@ -17,6 +17,9 @@ inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset pres
     case BlockType::drill:
         block = std::make_unique<DrillBlock>();
         break;
+    case BlockType::impact_drill:
+        block = std::make_unique<ImpactDrillBlock>();
+        break;
     case BlockType::factory:
         block = std::make_unique<FactoryBlock>();
         break;

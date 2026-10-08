@@ -31,8 +31,18 @@ struct CoreBlock : Block {
 struct DrillBlock : Block {
     ItemStack inventory;
     int8_t mineSpeed = 1;
-    uint8_t step;
+    uint8_t step = 0;
     t1_derived BlockType getType() const noexcept final { return BlockType::drill; }
+public:
+    void mine(TileCoord tile, const WorldMap& terrain, const Presets& presets);
+    void provide(TileCoord tile, const BlockMap& map);
+};
+
+struct ImpactDrillBlock : Block {
+    ItemStack inventory;
+    int8_t mineSpeed = 6;
+    uint8_t step = 0;
+    t1_derived BlockType getType() const noexcept final { return BlockType::impact_drill; }
 public:
     void mine(TileCoord tile, const WorldMap& terrain, const Presets& presets);
     void provide(TileCoord tile, const BlockMap& map);
