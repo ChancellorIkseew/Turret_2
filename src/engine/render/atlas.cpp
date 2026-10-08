@@ -24,16 +24,22 @@ void Atlas::addTexture(const fs::path& path) {
         logger.error("Texture was not created. File: {} Error: {}", path.string(), SDL_GetError());
         return;
     }
-    atlas.emplace(name, SDL_Rect(0, 0, surface.raw()->w, surface.raw()->h));
+    atlas.emplace(name, TextureRect(0.f, 0.f, float(surface.raw()->w), float(surface.raw()->h)));
     temporarySurfaces.emplace(name, std::move(surface));
 }
 
 void Atlas::build(Renderer& renderer) {
     size = packer::arrangeRects(atlas);
-    Surface comonSurface(SDL_CreateSurface(size.x, size.y, SDL_PIXELFORMAT_RGBA8888));
+
+    Surface comonSurface(SDL_CreateSurface(int(size.x), int(size.y), SDL_PIXELFORMAT_RGBA8888));
     SDL_FillSurfaceRect(comonSurface.raw(), nullptr, TRANSPARENT);
     for (auto& [name, rect] : atlas) {
-        SDL_BlitSurface(temporarySurfaces.at(name).raw(), nullptr, comonSurface.raw(), &rect);
+        const SDL_Rect sdlRect{ .x = int(rect.x), .y = int(rect.y), .w = int(rect.w), .h = int(rect.h), };
+        SDL_BlitSurface(temporarySurfaces.at(name).raw(), nullptr, comonSurface.raw(), &sdlRect);
+        rect.x /= size.x;
+        rect.y /= size.y;
+        rect.w /= size.x;
+        rect.h /= size.y;
     }
     renderer.createAtlasTexture(comonSurface);
     temporarySurfaces.clear();
@@ -41,17 +47,10 @@ void Atlas::build(Renderer& renderer) {
 }
 
 TextureRect Atlas::at(const std::string& name) const noexcept {
-    if (!atlas.contains(name)) {
-        logger.error("Texture was not created yet or does not exist: \"{}\".", name);
-        return NULL_TEXTURE_RECT;
-    }
-    TextureRect fRect;
-    auto& iRect = atlas.at(name);
-    fRect.x = static_cast<float>(iRect.x) / size.x;
-    fRect.y = static_cast<float>(iRect.y) / size.y;
-    fRect.w = static_cast<float>(iRect.w) / size.x;
-    fRect.h = static_cast<float>(iRect.h) / size.y;
-    return fRect;
+    if (atlas.contains(name))
+        return atlas.at(name);
+    logger.error("Texture was not created yet or does not exist: \"{}\".", name);
+    return NULL_TEXTURE_RECT;
 }
 
 void Atlas::clear() {

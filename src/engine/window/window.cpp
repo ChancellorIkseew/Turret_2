@@ -5,7 +5,7 @@
 #include <thread>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
-#include "engine/render/atlas.hpp"
+#include "engine/render/surface.hpp"
 
 static std::filesystem::path ICON_PATH = io::folders::RES / "icon.png";
 static debug::Logger logger("main_window");

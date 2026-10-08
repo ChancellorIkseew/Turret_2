@@ -1,36 +1,17 @@
 #pragma once
-#include <SDL3/SDL_surface.h>
 #include <filesystem>
 #include <string>
 #include <unordered_map>
 #include "config.hpp"
 #include "engine/coords/pixel_coord.hpp"
+#include "surface.hpp"
 #include "texture_rect.hpp"
 
 class Renderer;
 
-class Surface {
-    SDL_Surface* surface = nullptr;
-public:
-    explicit Surface(SDL_Surface* surface) noexcept : surface(surface) {}
-    ~Surface() noexcept { SDL_DestroySurface(surface); }
-    Surface(Surface&& other) noexcept { surface = other.surface; other.surface = nullptr; }
-    Surface& operator=(Surface&& other) noexcept {
-        if (this != &other) {
-            SDL_DestroySurface(surface);
-            surface = other.surface;
-            other.surface = nullptr;
-        }
-        return *this;
-    }
-    SDL_Surface* raw() const noexcept { return surface; }
-private:
-    t1_disable_copy(Surface)
-};
-
 class Atlas {
-    SDL_Point size = SDL_Point{ 0, 0 };
-    std::unordered_map <std::string, SDL_Rect> atlas;
+    PixelCoord size;
+    std::unordered_map <std::string, TextureRect> atlas;
     std::unordered_map <std::string, Surface> temporarySurfaces;
 public:
     Atlas() = default;
@@ -40,8 +21,7 @@ public:
     void build(Renderer& renderer);
     void addTexture(const std::filesystem::path& path);
     TextureRect at(const std::string& name) const noexcept;
-    TextureRect getComonTextureRect() const noexcept { return TextureRect{ 0.f, 0.f, 1.f, 1.f }; }
-    PixelCoord getSize() const noexcept { return PixelCoord(size.x, size.y); }
+    PixelCoord getSize() const noexcept { return size; }
 private:
     t1_disable_copy_and_move(Atlas)
 };

@@ -3,7 +3,6 @@
 #include "app.hpp"
 #include "engine/io/folders.hpp"
 #include "engine/io/parser/tin_parser.hpp"
-#include "engine/render/atlas.hpp"
 #include "engine/render/text.hpp"
 #include "engine/settings/settings.hpp"
 #include "engine/util/platform/platform.hpp"
@@ -48,7 +47,7 @@ void GUI::draw(Renderer& renderer, const Atlas& atlas) {
         mainCanvas.resize(mainWindow.getSize());
 
     if (showAtlas)
-        renderer.draw(atlas.getComonTextureRect(), PixelCoord(0, 0), atlas.getSize());
+        renderer.draw(FULL_UV_RECT, PixelCoord(0, 0), atlas.getSize());
     if (showGUI) {
         T1_UIRenderer uiRenderer(renderer);
         mainCanvas.draw(uiRenderer);

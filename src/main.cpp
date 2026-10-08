@@ -20,6 +20,6 @@ int main(int argc, char* argv[]) {
         if (Settings::gui.showConsole)
             system("pause");
     }
-
+    
     return 0;
 }

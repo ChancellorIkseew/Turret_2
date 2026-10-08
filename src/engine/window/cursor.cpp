@@ -3,7 +3,7 @@
 #include <SDL3/SDL_mouse.h>
 #include "engine/debug/logger.hpp"
 #include "engine/io/folders.hpp"
-#include "engine/render/atlas.hpp"
+#include "engine/render/surface.hpp"
 
 static debug::Logger logger("cursor");
 

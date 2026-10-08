@@ -9,40 +9,39 @@
 constexpr int MAX_PACK_ATTEMPTS = 5;
 static debug::Logger logger("atlas_packer");
 
-static SDL_Point calculateSize(const int square, const int maxWidth, const int maxHeight) {
+static PixelCoord calculateSize(const int square, const int maxWidth, const int maxHeight) {
     int w = maxWidth, h = maxHeight;
     if (maxWidth >= maxHeight)
         h = std::max(square / maxWidth, maxHeight);
     else
         w = std::max(square / maxHeight, maxWidth);
-    w = std::bit_ceil(static_cast<uint32_t>(w));
-    h = std::bit_ceil(static_cast<uint32_t>(h));
-    logger.info("1st packing attempt size: {} {}", w, h);
-    return SDL_Point(w, h);
+    w = std::bit_ceil(uint32_t(w));
+    h = std::bit_ceil(uint32_t(h));
+    logger.info("1st packing attempt size: x{} y{}", w, h);
+    return PixelCoord(w, h);
 }
 
-SDL_Point packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas) {
+PixelCoord packer::arrangeRects(std::unordered_map<std::string, TextureRect>& atlas) {
     std::vector<stbrp_rect> rects(atlas.size());
     int square = 0, maxWidth = 0, maxHeight = 0;
     int i = 0;
     for (const auto& [name, rect] : atlas) {
-        rects[i].id = i;
-        rects[i].w = rect.w + 1;
-        rects[i].h = rect.h + 1;
-        if (rect.w + 1 > maxWidth)
-            maxWidth = rect.w + 1;
-        if (rect.h + 1 > maxHeight)
-            maxHeight = rect.h + 1;
-        square += (rect.w + 1) * (rect.h + 1);
+        stbrp_rect stbRect{ .id = i, .w = stbrp_coord(rect.w), .h = stbrp_coord(rect.h) };
+        if (stbRect.w + 1 > maxWidth)
+            maxWidth = stbRect.w + 1;
+        if (stbRect.h + 1 > maxHeight)
+            maxHeight = stbRect.h + 1;
+        square += (stbRect.w + 1) * (stbRect.h + 1);
+        rects[i] = stbRect;
         ++i;
     }
-    SDL_Point size = calculateSize(square, maxWidth, maxHeight);
+    PixelCoord size = calculateSize(square, maxWidth, maxHeight);
     //
     std::vector<stbrp_node> nodes(atlas.size());
     stbrp_context context;
     for (i = 1;; ++i) {
-        stbrp_init_target(&context, size.x, size.y, nodes.data(), static_cast<int>(nodes.size()));
-        int result = stbrp_pack_rects(&context, rects.data(), static_cast<int>(rects.size()));
+        stbrp_init_target(&context, int(size.x), int(size.y), nodes.data(), int(nodes.size()));
+        int result = stbrp_pack_rects(&context, rects.data(), int(rects.size()));
         if (result != 0)
             break;
         if (i >= MAX_PACK_ATTEMPTS) {
@@ -57,8 +56,8 @@ SDL_Point packer::arrangeRects(std::unordered_map<std::string, SDL_Rect>& atlas)
     //
     i = 0;
     for (auto& [name, rect] : atlas) {
-        rect.x = rects[i].x;
-        rect.y = rects[i].y;
+        rect.x = float(rects[i].x);
+        rect.y = float(rects[i].y);
         logger.debug("Texture placed: \"{}\" position: x{} y{}", name, rect.x, rect.y);
         ++i;
     }
