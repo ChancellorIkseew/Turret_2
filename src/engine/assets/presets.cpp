@@ -28,12 +28,11 @@ static BlockType getBlockType(const std::string name) {
 static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName,
     const ItemFindMap& itemIDByName, const std::string& name) {
     std::array<uint8_t, 16> frames;
-    size_t frameCount = reader.getArray<uint8_t>("frame_order", frames);
     BlockVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<uint8_t>("frame_ticks"),
         reader.get<float>("frame_height") / atlas.getSize().y,
-        static_cast<uint8_t>(frameCount),
+        reader.getArray<uint8_t>("frame_order", frames),
         frames
     };
     BlockPreset preset;
@@ -73,18 +72,16 @@ static auto createOrePreset(const PresetReader& reader, const Atlas& atlas, cons
 
 static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName) {
     std::array<uint8_t, 16> frameOrder;
-    size_t frameCount = reader.getArray<uint8_t>("frame_order", frameOrder);
     std::array<PixelCoord, 4> engines;
-    size_t enginesCount = reader.getOptArray<PixelCoord>("engines", engines);
     MobVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
         reader.get<uint8_t>("frame_ticks"),
         reader.get<float>("frame_height") / atlas.getSize().y,
-        static_cast<uint8_t>(frameCount),
+        reader.getArray<uint8_t>("frame_order", frameOrder),
         frameOrder,
-        static_cast<uint8_t>(enginesCount),
+        reader.getOptArray<PixelCoord>("engines", engines),
         engines
     };
     return MobPreset{
@@ -126,19 +123,16 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
 static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const ShellFindMap& shellIDByName,
     const ItemFindMap& itemIDByName) {
     std::array<PixelCoord, 4> barrels;
-    size_t barrelsCount = reader.getArray<PixelCoord>("barrels", barrels);
     std::array<PixelCoord, 4> ejectionPorts;
-    size_t ejectionPortsCount = reader.getOptArray<PixelCoord>("ejection_ports", ejectionPorts);
     std::array<PixelCoord, 4> sparkAreas;
-    size_t sparkAreasCount = reader.getOptArray<PixelCoord>("spark_areas", sparkAreas);
     TurretVisualPreset visual{
         reader.getTexture(atlas, "texture"),
         reader.get<PixelCoord>("origin"),
         reader.get<PixelCoord>("size"),
         reader.get<float>("shadow_offset"),
         reader.get<std::string>("shot_sound"),
-        static_cast<uint8_t>(ejectionPortsCount),
-        static_cast<uint8_t>(sparkAreasCount),
+        reader.getOptArray<PixelCoord>("ejection_ports", ejectionPorts),
+        reader.getOptArray<PixelCoord>("spark_areas", sparkAreas),
         reader.getOpt<PixelCoord>("spark_area_size"),
         ejectionPorts,
         sparkAreas
@@ -152,7 +146,7 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<AngleRad>("rotation_speed"),
         itemIDByName.at(reader.get<std::string>("ammo")),
         reader.get<uint8_t>("ammo_by_item"),
-        static_cast<uint8_t>(barrelsCount),
+        reader.getArray<PixelCoord>("barrels", barrels),
         barrels,
         reader.getID(shellIDByName, "shell"),
         visual

@@ -50,7 +50,7 @@ public:
     }
 
     template<typename T>
-    size_t getOptArray(const std::string& key, std::span<T> outArray) const {
+    uint8_t getOptArray(const std::string& key, std::span<T> outArray) const {
         std::vector<std::string> list = data.getList(key);
 
         if (list.empty())
@@ -65,12 +65,12 @@ public:
                 fail(std::format("Invalid format in list [{}] at index {}: '{}'", key, i, list[i]));
             outArray[i] = *val;
         }
-        return list.size();
+        return static_cast<uint8_t>(list.size());
     }
 
     template<typename T>
-    size_t getArray(const std::string& key, std::span<T> outArray) const {
-        const size_t arraySize = getOptArray(key, outArray);
+    uint8_t getArray(const std::string& key, std::span<T> outArray) const {
+        const uint8_t arraySize = getOptArray(key, outArray);
         if (arraySize < 1)
             fail("List is empty or missing: " + key);
         return arraySize;
