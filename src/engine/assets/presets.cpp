@@ -25,7 +25,7 @@ static BlockType getBlockType(const std::string name) {
     return BlockType::air;
 }
 
-static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName,
+static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretFindMap,
     const ItemFindMap& itemIDByName, const std::string& name) {
     std::array<uint8_t, 16> frames;
     BlockVisualPreset visual{
@@ -43,7 +43,7 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     preset.maxHealth = reader.get<Health>("health");
     preset.visual = visual;
     if (preset.archetype == BlockType::turret)
-        preset.turret = reader.getID(turretIDByName, "turret");
+        preset.turret = reader.getID(turretFindMap, "turret");
     
     tin::Data data = tin::read(io::folders::CONTENT / "recipes" / (name + ".tin"), tin::Log::only_error);
     int i = 0;
@@ -62,15 +62,15 @@ static auto createItemPreset(const PresetReader& reader, const Atlas& atlas) {
     };
 }
 
-static auto createOrePreset(const PresetReader& reader, const Atlas& atlas, const ItemFindMap& itemIDByName) {
+static auto createOrePreset(const PresetReader& reader, const Atlas& atlas, const ItemFindMap& itemFindMap) {
     return OrePreset{
-        reader.getID(itemIDByName, "item"),
+        reader.getID(itemFindMap, "item"),
         reader.get<std::string>("visible_name"),
         reader.getTexture(atlas, "texture")
     };
 }
 
-static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretIDByName) {
+static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretFindMap) {
     std::array<uint8_t, 16> frameOrder;
     std::array<PixelCoord, 4> engines;
     MobVisualPreset visual{
@@ -94,7 +94,7 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
         reader.get<uint8_t>("build_speed"),
         mob_ai::getMovingAI(reader.get<std::string>("moving_ai")),
         mob_ai::getShootingAI(reader.get<std::string>("shooting_ai")),
-        reader.getID(turretIDByName, "turret"),
+        reader.getID(turretFindMap, "turret"),
         visual
     };
 }
@@ -120,7 +120,7 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
     };
 }
 
-static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const ShellFindMap& shellIDByName,
+static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const ShellFindMap& shellFindMap,
     const ItemFindMap& itemIDByName) {
     std::array<PixelCoord, 4> barrels;
     std::array<PixelCoord, 4> ejectionPorts;
@@ -148,18 +148,18 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<uint8_t>("ammo_by_item"),
         reader.getArray<PixelCoord>("barrels", barrels),
         barrels,
-        reader.getID(shellIDByName, "shell"),
+        reader.getID(shellFindMap, "shell"),
         visual
     };
 }
 
 template<class PresetType, class Tag>
 static inline void addPreset(const std::string& name, PresetType&& preset,
-    std::array<PresetType, MAX_PRESETS>& store, FindMap<Tag>& find, preset_tag::StrongID<Tag>& nextID) {
+    std::array<PresetType, MAX_PRESETS>& store, FindMap<Tag>& findMap, preset_tag::StrongID<Tag>& nextID) {
     preset_tag::StrongID<Tag> id;
-    if (find.contains(name)) id = find[name];
-    else                     id = nextID++;
-    find.insert_or_assign(name, id);
+    if (findMap.contains(name)) id = findMap[name];
+    else                        id = nextID++;
+    findMap.insert_or_assign(name, id);
     store[id.asUint()] = std::move(preset);
 }
 
@@ -172,17 +172,17 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
         const PresetReader reader(data, name);
         try {
             if constexpr (std::is_same_v<PresetType, BlockPreset>)
-                addPreset(name, createBlockPreset(reader, atlas, turretIDByName, itemIDByName, name), blockStore, blockIDByName, nextBlockID);
+                addPreset(name, createBlockPreset(reader, atlas, turretFindMap, itemFindMap, name), blockStore, blockFindMap, nextBlockID);
             if constexpr (std::is_same_v<PresetType, ItemPreset>)
-                addPreset(name, createItemPreset(reader, atlas), itemStore, itemIDByName, nextItemID);
+                addPreset(name, createItemPreset(reader, atlas), itemStore, itemFindMap, nextItemID);
             if constexpr (std::is_same_v<PresetType, OrePreset>)
-                addPreset(name, createOrePreset(reader, atlas, itemIDByName), oreStore, oreIDByName, nextOreID);
+                addPreset(name, createOrePreset(reader, atlas, itemFindMap), oreStore, oreFindMap, nextOreID);
             if constexpr (std::is_same_v<PresetType, MobPreset>)
-                addPreset(name, createMobPreset(reader, atlas, turretIDByName), mobStore, mobIDByName, nextMobID);
+                addPreset(name, createMobPreset(reader, atlas, turretFindMap), mobStore, mobFindMap, nextMobID);
             if constexpr (std::is_same_v<PresetType, ShellPreset>)
-                addPreset(name, createShellPreset(reader, atlas), shellStore, shellIDByName, nextShellID);
+                addPreset(name, createShellPreset(reader, atlas), shellStore, shellFindMap, nextShellID);
             if constexpr (std::is_same_v<PresetType, TurretPreset>)
-                addPreset(name, createTurretPreset(reader, atlas, shellIDByName, itemIDByName), turretStore, turretIDByName, nextTurretID);
+                addPreset(name, createTurretPreset(reader, atlas, shellFindMap, itemFindMap), turretStore, turretFindMap, nextTurretID);
             logger.debug("Preset created: {}", name);
         }
         catch (const std::bad_optional_access&) {

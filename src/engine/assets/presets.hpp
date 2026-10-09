@@ -16,12 +16,12 @@ class Presets {
     std::array<ShellPreset, MAX_PRESETS>   shellStore;
     std::array<TurretPreset, MAX_PRESETS> turretStore;
 
-    std::unordered_map<std::string, BlockPresetID>  blockIDByName;
-    std::unordered_map<std::string, ItemPresetID>   itemIDByName;
-    std::unordered_map<std::string, MobPresetID>    mobIDByName;
-    std::unordered_map<std::string, OrePresetID>    oreIDByName;
-    std::unordered_map<std::string, ShellPresetID>  shellIDByName;
-    std::unordered_map<std::string, TurretPresetID> turretIDByName;
+    std::unordered_map<std::string, BlockPresetID>  blockFindMap;
+    std::unordered_map<std::string, ItemPresetID>   itemFindMap;
+    std::unordered_map<std::string, MobPresetID>    mobFindMap;
+    std::unordered_map<std::string, OrePresetID>    oreFindMap;
+    std::unordered_map<std::string, ShellPresetID>  shellFindMap;
+    std::unordered_map<std::string, TurretPresetID> turretFindMap;
 
     BlockPresetID  nextBlockID  = BlockPresetID(1); // air
     ItemPresetID   nextItemID   = ItemPresetID(1); // air(error)
@@ -32,19 +32,19 @@ class Presets {
 public:
     void load(const Atlas& atlas);
 
-    bool hasBlockID(const std::string& name) const { return blockIDByName.contains(name); }
-    bool hasItemID(const std::string& name) const { return itemIDByName.contains(name); }
-    bool hasMobID(const std::string& name) const { return mobIDByName.contains(name); }
-    bool hasOreID(const std::string& name) const { return oreIDByName.contains(name); }
-    bool hasShellID(const std::string& name) const { return shellIDByName.contains(name); }
-    bool hasTurretID(const std::string& name) const { return turretIDByName.contains(name); }
+    bool hasBlockID(const std::string& name) const { return blockFindMap.contains(name); }
+    bool hasItemID(const std::string& name) const { return itemFindMap.contains(name); }
+    bool hasMobID(const std::string& name) const { return mobFindMap.contains(name); }
+    bool hasOreID(const std::string& name) const { return oreFindMap.contains(name); }
+    bool hasShellID(const std::string& name) const { return shellFindMap.contains(name); }
+    bool hasTurretID(const std::string& name) const { return turretFindMap.contains(name); }
 
-    BlockPresetID getBlockID(const std::string& name) const { return blockIDByName.at(name); }
-    ItemPresetID getItemID(const std::string& name) const { return itemIDByName.at(name); }
-    MobPresetID getMobID(const std::string& name) const { return mobIDByName.at(name); }
-    OrePresetID getOreID(const std::string& name) const { return oreIDByName.at(name); }
-    ShellPresetID getShellID(const std::string& name) const { return shellIDByName.at(name); }
-    TurretPresetID getTurretID(const std::string& name) const { return turretIDByName.at(name); }
+    BlockPresetID getBlockID(const std::string& name) const { return blockFindMap.at(name); }
+    ItemPresetID getItemID(const std::string& name) const { return itemFindMap.at(name); }
+    MobPresetID getMobID(const std::string& name) const { return mobFindMap.at(name); }
+    OrePresetID getOreID(const std::string& name) const { return oreFindMap.at(name); }
+    ShellPresetID getShellID(const std::string& name) const { return shellFindMap.at(name); }
+    TurretPresetID getTurretID(const std::string& name) const { return turretFindMap.at(name); }
 
     const BlockPreset& getBlock(BlockPresetID id) const noexcept {
         return blockStore[id.asUint()];
@@ -64,9 +64,9 @@ public:
     const TurretPreset& getTurret(TurretPresetID id) const noexcept {
         return turretStore[id.asUint()];
     }
-    const auto& getOres()   const { return oreIDByName; }
-    const auto& getBlocks() const { return blockIDByName; }
-    const auto& getItems()  const { return itemIDByName; }
+    const auto& getOres()   const { return oreFindMap; }
+    const auto& getBlocks() const { return blockFindMap; }
+    const auto& getItems()  const { return itemFindMap; }
 private:
     template<class PresetType>
     void loadPresets(const std::string& folder, const Atlas& atlas);
