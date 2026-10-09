@@ -58,14 +58,12 @@ public:
             return 0;
 
         if (list.size() > outArray.size())
-            fail("Too many elements in [" + key + "]. Found: " +
-                std::to_string(list.size()) + ", Max: " + std::to_string(outArray.size()));
+            fail(std::format("Too many elements in [{}]. Found: {} Max: {}", key, list.size(), outArray.size()));
 
         for (size_t i = 0; i < list.size(); ++i) {
             auto val = validator::to<T>(list[i]);
             if (!val)
-                fail("Invalid format in list [" + key + "] at index " +
-                    std::to_string(i) + ": '" + list[i] + "'");
+                fail(std::format("Invalid format in list [{}] at index {}: '{}'", key, i, list[i]));
             outArray[i] = *val;
         }
         return list.size();
@@ -73,23 +71,9 @@ public:
 
     template<typename T>
     size_t getArray(const std::string& key, std::span<T> outArray) const {
-        std::vector<std::string> list = data.getList(key);
-
-        if (list.empty())
-            fail("List is empty or missing: " + key);
-
-        if (list.size() > outArray.size())
-            fail("Too many elements in [" + key + "]. Found: " +
-                std::to_string(list.size()) + ", Max: " + std::to_string(outArray.size()));
-
-        for (size_t i = 0; i < list.size(); ++i) {
-            auto val = validator::to<T>(list[i]);
-            if (!val)
-                fail("Invalid format in list [" + key + "] at index " +
-                    std::to_string(i) + ": '" + list[i] + "'");
-            outArray[i] = *val;
-        }
-        return list.size();
+        if (const size_t arraySize = getOptArray(key, outArray) > 0)
+            return arraySize;
+        fail("List is empty or missing: " + key);
     }
 private:
     [[noreturn]] void fail(const std::string& message) const {
