@@ -171,14 +171,12 @@ static inline void addPreset(const std::string& name, PresetType&& preset,
 
 template<class PresetType>
 void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
-    const auto path = io::folders::CONTENT / folder;
-    const auto contents = io::folders::getContents(path, io::folders::ContentsType::file);
-    for (const auto& file : contents) {
-        const auto data = tin::read(path / file, tin::Log::only_error);
-        bool failed = false;
-        const PresetReader reader(data, file, failed);
+    namespace fs = std::filesystem;
+    for (const auto& entry : fs::recursive_directory_iterator(io::folders::CONTENT / folder)) {
+        const tin::Data data = tin::read(entry.path(), tin::Log::only_error);
+        const std::string name = entry.path().stem().string();
+        const PresetReader reader(data, name);
         try {
-            const std::string name = io::folders::trimExtensions(file);
             if constexpr (std::is_same_v<PresetType, BlockPreset>)
                 addPreset(name, createBlockPreset(reader, atlas, turretIDByName, itemIDByName, name), blockStore, blockIDByName, nextBlockID);
             if constexpr (std::is_same_v<PresetType, ItemPreset>)
@@ -194,10 +192,10 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
             logger.debug("Preset created: {}", name);
         }
         catch (const std::bad_optional_access&) {
-            logger.error("Failed to create preset (missing data in file): {}", file);
+            logger.error("Failed to create preset (missing data in file): {}", name);
         }
         catch (const std::out_of_range&) {
-            logger.error("Failed to create preset (dependency ID not found): {}", file);
+            logger.error("Failed to create preset (dependency ID not found): {}", name);
         }
     }
 }

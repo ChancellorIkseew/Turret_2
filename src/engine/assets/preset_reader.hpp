@@ -12,11 +12,10 @@ using FindMap = std::unordered_map<std::string, preset_tag::StrongID<Tag>>;
 class PresetReader {
     const tin::Data& data;
     const std::string& fileName;
-    bool& failed;
     mutable debug::Logger logger;
 public:
-    PresetReader(const tin::Data& data, const std::string& fileName, bool& failed)
-        : data(data), fileName(fileName), failed(failed), logger("preset_reader") { }
+    PresetReader(const tin::Data& data, const std::string& fileName)
+        : data(data), fileName(fileName), logger("preset_reader") { }
 
     template<typename T>
     T getOpt(const std::string& key) const {
@@ -79,7 +78,6 @@ public:
 private:
     [[noreturn]] void fail(const std::string& message) const {
         logger.error("[{}] {}", fileName, message);
-        failed = true;
         throw std::bad_optional_access();
     }
 };

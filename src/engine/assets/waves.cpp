@@ -10,8 +10,7 @@ static debug::Logger logger("waves");
 void Waves::load() {
     jtin::Data data = jtin::read(io::folders::WAVES / "default.jtin");
     for (const auto& it : data) {
-        bool failed = false;
-        PresetReader reader(it, "default.jtin", failed);
+        PresetReader reader(it, "default.jtin");
         try {
             mobWaveData.emplace_back(
                 reader.get<std::string>("mob"),
