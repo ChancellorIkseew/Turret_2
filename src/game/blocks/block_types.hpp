@@ -77,9 +77,17 @@ private:
 };
 
 struct FactoryBlock : Block {
+    ItemStack copper;
+    ItemStack manganum;
+    ItemStack silicat;
+    ItemStack ceramite;
+    uint8_t step = 0;
+    FactoryBlock(const Presets& presets);
     t1_derived BlockType getType() const noexcept final { return BlockType::factory; }
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final;
+    t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
 public:
-    void produce(TileCoord tile, const WorldMap& terrain, const Presets& presets);
+    void produce();
     void provide(TileCoord tile, const BlockMap& map);
 };
 

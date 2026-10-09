@@ -4,7 +4,9 @@
 #include "engine/assets/preset_defs.hpp"
 #include "engine/debug/logger.hpp"
 
-inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset preset, BlockRot rotation) {
+class Presets;
+
+inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID presetID, BlockPreset preset, BlockRot rotation) {
     static debug::Logger bmLogger("bloc_make");
     std::unique_ptr<Block> block;
     switch (preset.archetype) {
@@ -21,7 +23,7 @@ inline std::unique_ptr<Block> makeBlock(BlockPresetID presetID, BlockPreset pres
         block = std::make_unique<ImpactDrillBlock>();
         break;
     case BlockType::factory:
-        block = std::make_unique<FactoryBlock>();
+        block = std::make_unique<FactoryBlock>(presets);
         break;
     case BlockType::junction:
         block = std::make_unique<JunctionBlock>();

@@ -81,7 +81,7 @@ Result BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t 
         blockInProgress->increeseProgress(step);
         if (!blockInProgress->isProgressFull(totalTime))
             return Result::build;
-        std::unique_ptr<Block> block = makeBlock(blockInProgress->presetID, preset, blockInProgress->rotation);
+        std::unique_ptr<Block> block = makeBlock(presets, blockInProgress->presetID, preset, blockInProgress->rotation);
         demolish(masterTile);
         place(masterTile, teamID, block);
         return Result::build_complite;
