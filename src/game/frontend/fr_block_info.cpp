@@ -30,11 +30,12 @@ class FrBlockInfo: public Container {
 public:
     FrBlockInfo(App& app, const uint8_t blockPresetID) : Container(Align::center, Orientation::vertical) {
         setPadding(6.f);
+        const Presets& presets = app.getAssets().getPresets();
         const BlockPresetID presetID = BlockPresetID(blockPresetID);
-        const BlockPreset preset = app.getAssets().getPresets().getBlock(presetID);
+        const BlockPreset preset = presets.getBlock(presetID);
 
         std::string blockName;
-        for (auto& [name, id] : app.getAssets().getPresets().getBlocks()) {
+        for (auto& [name, id] : presets.getBlocks()) {
             if (id == presetID) {
                 blockName = name;
                 break;
@@ -55,13 +56,13 @@ public:
                 break;
             if (ing.amount < 1)
                 continue;
-            const ItemPreset& preset = app.getAssets().getPresets().getItem(ing.itemID);
+            const ItemPreset& preset = presets.getItem(ing.itemID);
             ingridients->addNode(new FrCostSlot(new T1_UITexture(preset.textureRect), ing.amount));
         }
 
         if (preset.archetype == BlockType::turret) {
-            const TurretPreset& turret = app.getAssets().getPresets().getTurret(preset.turret);
-            const ShellPreset& shell = app.getAssets().getPresets().getShell(turret.shell);
+            const TurretPreset& turret = presets.getTurret(preset.turret);
+            const ShellPreset& shell = presets.getShell(turret.shell);
             addNode(new Label(tr("Range: {:.2f} tiles", turret.range / t1::TILE_F)));
             addNode(new Label(tr("Direct damage: {}", shell.damage)));
             if (shell.explosion.damage > 0) {
@@ -70,7 +71,7 @@ public:
             }
             addNode(new Label(tr("Reload: {} ticks", turret.reload)));
             addNode(new Label(tr("Ammo:")));
-            const TextureRect ammo = app.getAssets().getPresets().getItem(turret.ammo).textureRect;
+            const TextureRect ammo = presets.getItem(turret.ammo).textureRect;
             addNode(new Icon(ICON_SIZE, new T1_UITexture(ammo)));
         }
 
