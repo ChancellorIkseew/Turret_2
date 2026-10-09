@@ -49,9 +49,9 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     tin::Data data = tin::read(io::folders::CONTENT / "recipes" / (name + ".tin"), tin::Log::only_error);
     int i = 0;
     for (const auto& [key, value] : data) {
-        uint8_t id = itemIDByName.at(key).asUint();
-        int16_t amount = validator::to<int16_t>(value).value();
-        preset.recipe[i] = Ingredient(ItemPresetID(id), amount);
+        const ItemPresetID itemID = itemIDByName.at(key);
+        const int16_t amount = validator::to<int16_t>(value).value();
+        preset.recipe[i] = Ingredient(itemID, amount);
         ++i;
     }
     return preset;
@@ -123,7 +123,8 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
     };
 }
 
-static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const ShellFindMap& shellIDByName) {
+static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, const ShellFindMap& shellIDByName,
+    const ItemFindMap& itemIDByName) {
     std::array<PixelCoord, 4> barrels;
     size_t barrelsCount = reader.getArray<PixelCoord>("barrels", barrels);
     std::array<PixelCoord, 4> ejectionPorts;
@@ -149,6 +150,7 @@ static auto createTurretPreset(const PresetReader& reader, const Atlas& atlas, c
         reader.get<float>("recoil"),
         reader.get<AngleRad>("spread_deg") * RAD_TO_DEGREE,
         reader.get<AngleRad>("rotation_speed"),
+        itemIDByName.at(reader.get<std::string>("ammo")),
         reader.get<uint8_t>("ammo_by_item"),
         static_cast<uint8_t>(barrelsCount),
         barrels,
@@ -188,7 +190,7 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
             if constexpr (std::is_same_v<PresetType, ShellPreset>)
                 addPreset(name, createShellPreset(reader, atlas), shellStore, shellIDByName, nextShellID);
             if constexpr (std::is_same_v<PresetType, TurretPreset>)
-                addPreset(name, createTurretPreset(reader, atlas, shellIDByName), turretStore, turretIDByName, nextTurretID);
+                addPreset(name, createTurretPreset(reader, atlas, shellIDByName, itemIDByName), turretStore, turretIDByName, nextTurretID);
             logger.debug("Preset created: {}", name);
         }
         catch (const std::bad_optional_access&) {

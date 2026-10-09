@@ -13,4 +13,5 @@ rotation_speed=0.04
 shooting_ai=basic
 shell=autocannon_shell
 barrels=8|10,-8|10
+ammo=item_iron
 ammo_by_item=12

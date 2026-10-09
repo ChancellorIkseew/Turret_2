@@ -77,6 +77,7 @@ Direct damage: {}=Урон от попадания: {}
 Explosion damage: {}=Урон от взрыва: {}
 Explosion radius: {:.2f} tiles=Радиус взрыва: {:.2f} плиток
 Reload: {} ticks=Перезарядка: {} тиков
+Ammo:=Боеприпасы:
 
 #block_names
 cannon_turret=Турель-тяжёлая автопушка

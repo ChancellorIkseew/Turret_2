@@ -1,5 +1,7 @@
 #pragma once
 #include "block.hpp"
+//
+#include "engine/assets/presets.hpp"
 #define t1_derived
 
 struct InProgress : Block {
@@ -96,11 +98,12 @@ struct TurretBlock : Block {
     BlockRot defaultRotation;
     ItemStack ammo;
     //
-    TurretBlock(TurretPresetID turretPreset, BlockRot rotation) :
+    TurretBlock(ItemPresetID ammoItem, TurretPresetID turretPreset, BlockRot rotation) :
         turretPreset(turretPreset), defaultRotation(rotation) {
+        ammo.item = ammoItem;
     }
     t1_derived BlockType getType() const noexcept final { return BlockType::turret; }
-    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return item == ItemPresetID(3) && ammo.count < 10; };
+    t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return item == ammo.item && ammo.count < 10; };
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final { ++ammo.count; };
     void useAmmo() { --ammo.count; }
 };

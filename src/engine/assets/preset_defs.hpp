@@ -51,6 +51,7 @@ struct TurretPreset {
     float recoil;
     AngleRad spreadRad;
     AngleRad rotationSpeed;
+    ItemPresetID ammo;
     uint8_t ammoByItem;
     uint8_t barrelsCount;
     std::array<PixelCoord, 4> barrels;

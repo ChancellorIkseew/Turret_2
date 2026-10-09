@@ -7,6 +7,8 @@
 #include "engine/gui/t1_ui_renderer.hpp"
 #include "engine/settings/localization.hpp"
 
+constexpr Point ICON_SIZE = Point(16, 16);
+
 class FrCostSlot : public Node {
     std::string count;
     std::unique_ptr<TextureBridge> item;
@@ -18,7 +20,6 @@ public:
     void callback(UIContext& context) final {/*empty*/ }
     void draw(RenderBridge& renderBridge) final {
         constexpr Point GLYPH_SIZE = Point(8, 16);
-        constexpr Point ICON_SIZE = Point(16, 16);
         constexpr Point OFFSET = Point(16, 0);
         renderBridge.drawSprite(Sprite(getPosition(), ICON_SIZE, item.get()));
         renderBridge.drawText(Text(getPosition() + OFFSET, GLYPH_SIZE, count, 0xFF'FF'FF'FF));
@@ -68,6 +69,9 @@ public:
                 addNode(new Label(tr("Explosion radius: {:.2f} tiles", shell.explosion.radius / t1::TILE_F)));
             }
             addNode(new Label(tr("Reload: {} ticks", turret.reload)));
+            addNode(new Label(tr("Ammo:")));
+            const TextureRect ammo = app.getAssets().getPresets().getItem(turret.ammo).textureRect;
+            addNode(new Icon(ICON_SIZE, new T1_UITexture(ammo)));
         }
 
         addNode(new Button(Point(260, 30), tr("Back")))->addCallback([&] { close(); });

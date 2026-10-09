@@ -15,4 +15,5 @@ rotation_speed=0.02
 shooting_ai=basic
 shell=rail_bolt
 barrels=0|32
+ammo=item_iron
 ammo_by_item=1
