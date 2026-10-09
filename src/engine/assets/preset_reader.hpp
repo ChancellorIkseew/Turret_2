@@ -71,9 +71,10 @@ public:
 
     template<typename T>
     size_t getArray(const std::string& key, std::span<T> outArray) const {
-        if (const size_t arraySize = getOptArray(key, outArray) > 0)
-            return arraySize;
-        fail("List is empty or missing: " + key);
+        const size_t arraySize = getOptArray(key, outArray);
+        if (arraySize < 1)
+            fail("List is empty or missing: " + key);
+        return arraySize;
     }
 private:
     [[noreturn]] void fail(const std::string& message) const {
