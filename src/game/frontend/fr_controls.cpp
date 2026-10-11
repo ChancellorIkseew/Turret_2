@@ -7,12 +7,12 @@
 #include "engine/window/input/controls.hpp"
 #include "engine/window/input/input.hpp"
 
-constexpr uint32_t INPUT_RELOAD = 160U;
+constexpr int64_t INPUT_RELOAD = 160U;
 constexpr Point BTN_SIZE(100, 20);
 
 class FrControls : public Container {
     App& app;
-    uint64_t inputReload = 0;
+    int64_t inputReload = 0;
     std::string bindName;
     Selector* bindings = nullptr;
 public:
