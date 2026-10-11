@@ -57,6 +57,9 @@ Audio::~Audio() {
     freePool(worldTrackPool);
     freePool(uiTrackPool);
     freePool(musicTrackPool);
+    for (auto& state : loopTrackPool) {
+        MIX_DestroyTrack(state.track);
+    }
     MIX_DestroyMixer(mixer);
     MIX_Quit();
 }
