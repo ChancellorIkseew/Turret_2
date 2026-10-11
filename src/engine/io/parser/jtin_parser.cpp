@@ -9,7 +9,7 @@ std::string jtin::writeToString(const Data& data) {
     std::string text;
     for (const tin::Data& block : data) {
         text += "{\n";
-        tin::write(text, block);
+        text += tin::writeToString(block);
         text += "}\n";
     }
     return text;
