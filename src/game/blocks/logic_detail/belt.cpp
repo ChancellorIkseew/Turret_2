@@ -68,7 +68,7 @@ bool BeltBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
 }
 
 void BeltBlock::accept(ItemPresetID item, BlockRot srcRot) {
-    assert(len + 1 >= CAPACITY);
+    assert(len < CAPACITY);
     //
     itemID[len] = item;
     itemX[len] = 0.f;

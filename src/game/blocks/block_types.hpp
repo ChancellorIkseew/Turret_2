@@ -51,9 +51,9 @@ public:
 };
 
 struct BeltBlock : Block {
-    ItemPresetID itemID[3]; // Item IDs
-    float itemY[3]; //
-    float itemX[3];
+    ItemPresetID itemID[3] = { 0, 0, 0 }; // Item IDs
+    float itemY[3] = { 0.f, 0.f, 0.f };
+    float itemX[3] = { 0.f, 0.f, 0.f };
     float minItem = ITEM_SPACE; //last item progress
 
     int8_t len = 0; // itemCount
@@ -124,7 +124,7 @@ struct JunctionBlock : Block {
 
 struct RouterBlock : Block {
     ItemStack inventory;
-    uint8_t step;
+    uint8_t step = 0;
     //
     t1_derived BlockType getType() const noexcept final { return BlockType::router; }
     //
