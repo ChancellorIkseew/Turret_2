@@ -1,7 +1,6 @@
 #include "tin_parser.hpp"
 //
 #include "engine/debug/logger.hpp"
-#include "engine/io/io.hpp"
 #include "engine/util/string_util.hpp"
 
 static debug::Logger logger("tin_parser");
@@ -31,15 +30,15 @@ tin::Data tin::readFromString(std::string_view text) {
     return data;
 }
 
-void tin::write(const fs::path& path, const Data& data, const Log log) {
+void tin::write(const fs::path& path, const Data& data, const io::Log log) {
     const std::string text = writeToString(data);
-    io::writeFile(path, text);
+    io::writeFile(path, text, log);
 }
 
-tin::Data tin::read(const fs::path& path, const Log log) {
-    const std::string text = io::readFile(path, static_cast<io::Log>(Log::only_error));
+tin::Data tin::read(const fs::path& path, const io::Log log) {
+    const std::string text = io::readFile(path, log);
     const Data data = readFromString(text);
-    if (log == Log::error_and_success)
+    if (log == io::Log::error_and_success)
         logger.info("Parsed file: {}", path.string());
     return data;
 }

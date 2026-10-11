@@ -6,7 +6,6 @@ namespace jtin {
     std::string writeToString(const Data& data);
     Data readFromString(std::string_view text);
     namespace fs = std::filesystem;
-    enum class Log : uint8_t { only_error, error_and_success };
-    void write(const fs::path& path, const Data& data, const Log log = Log::error_and_success);
-    Data read(const fs::path& path, const Log log = Log::error_and_success);
+    void write(const fs::path& path, const Data& data, const io::Log log = io::Log::error_and_success);
+    Data read(const fs::path& path, const io::Log log = io::Log::error_and_success);
 }

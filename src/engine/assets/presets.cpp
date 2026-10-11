@@ -45,7 +45,7 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     if (preset.archetype == BlockType::turret)
         preset.turret = reader.getID(turretFindMap, "turret");
     
-    tin::Data data = tin::read(io::folders::CONTENT / "recipes" / (name + ".tin"), tin::Log::only_error);
+    tin::Data data = tin::read(io::folders::CONTENT / "recipes" / (name + ".tin"), io::Log::only_error);
     int i = 0;
     for (const auto& [key, value] : data) {
         const ItemPresetID itemID = itemIDByName.at(key);
@@ -167,7 +167,7 @@ template<class PresetType>
 void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
     namespace fs = std::filesystem;
     for (const auto& entry : fs::recursive_directory_iterator(io::folders::CONTENT / folder)) {
-        const tin::Data data = tin::read(entry.path(), tin::Log::only_error);
+        const tin::Data data = tin::read(entry.path(), io::Log::only_error);
         const std::string name = entry.path().stem().string();
         const PresetReader reader(data, name);
         try {

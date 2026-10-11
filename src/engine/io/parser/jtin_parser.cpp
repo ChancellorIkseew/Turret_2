@@ -1,7 +1,6 @@
 #include "jtin_parser.hpp"
 //
 #include "engine/debug/logger.hpp"
-#include "engine/io/io.hpp"
 
 static debug::Logger logger("jtin_parser");
 
@@ -32,15 +31,15 @@ jtin::Data jtin::readFromString(std::string_view text) {
     return data;
 }
 
-void jtin::write(const fs::path& path, const jtin::Data& data, const Log log) {
+void jtin::write(const fs::path& path, const jtin::Data& data, const io::Log log) {
     std::string text = writeToString(data);
-    io::writeFile(path, text);
+    io::writeFile(path, text, log);
 }
 
-jtin::Data jtin::read(const fs::path& path, const Log log) {
-    const std::string text = io::readFile(path, static_cast<io::Log>(Log::only_error));
+jtin::Data jtin::read(const fs::path& path, const io::Log log) {
+    const std::string text = io::readFile(path, log);
     const Data data = readFromString(text);
-    if (log == Log::error_and_success)
+    if (log == io::Log::error_and_success)
         logger.info("Parsed file: {}", path.string());
     return data;
 }
