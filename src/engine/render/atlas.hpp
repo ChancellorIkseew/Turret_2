@@ -15,7 +15,6 @@ class Atlas {
     std::unordered_map <std::string, Surface> temporarySurfaces;
 public:
     Atlas() = default;
-    ~Atlas() { clear(); }
     //
     void clear();
     void build(Renderer& renderer);
