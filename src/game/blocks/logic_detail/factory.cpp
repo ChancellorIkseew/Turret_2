@@ -13,9 +13,9 @@ FactoryBlock::FactoryBlock(const Presets& presets) {
 
 bool FactoryBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
 	constexpr uint8_t MAX_STACK = 20;
-	return (item == copper.item && copper.count <= MAX_STACK) ||
-	(item == manganum.item && manganum.count <= MAX_STACK) ||
-	(item == silicat.item && silicat.count <= MAX_STACK);
+	return (item == copper.item && copper.count < MAX_STACK) ||
+	(item == manganum.item && manganum.count < MAX_STACK) ||
+	(item == silicat.item && silicat.count < MAX_STACK);
 }
 
 void FactoryBlock::accept(ItemPresetID item, BlockRot srcRot) {
@@ -25,7 +25,8 @@ void FactoryBlock::accept(ItemPresetID item, BlockRot srcRot) {
 }
 
 void FactoryBlock::produce() {
-	if (copper.count < 1 || manganum.count < 1 || silicat.count < 1)
+	constexpr uint8_t MAX_STACK = 20;
+	if (copper.count < 1 || manganum.count < 1 || silicat.count < 1 || ceramite.count >= MAX_STACK)
 		return;
 	--copper.count;
 	--manganum.count;
