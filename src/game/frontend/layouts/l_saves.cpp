@@ -18,7 +18,8 @@ void FrSaves::update() {
 }
 
 void FrSaves::deleteWorld() {
-    io::folders::deleteFolder(io::folders::SAVES / targetFolder);
+    if (targetFolder != "")
+        io::folders::deleteFolder(io::folders::SAVES / targetFolder);
     update();
 }
 
