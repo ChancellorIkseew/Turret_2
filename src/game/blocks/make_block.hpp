@@ -17,10 +17,10 @@ inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID pr
         block = std::make_unique<CoreBlock>();
         break;
     case BlockType::drill:
-        block = std::make_unique<DrillBlock>();
+        block = std::make_unique<DrillBlock>(presets.getBlock(presetID).productionTime);
         break;
     case BlockType::impact_drill:
-        block = std::make_unique<ImpactDrillBlock>();
+        block = std::make_unique<ImpactDrillBlock>(presets.getBlock(presetID).productionTime);
         break;
     case BlockType::factory:
         block = std::make_unique<FactoryBlock>(presets.getBlock(presetID));

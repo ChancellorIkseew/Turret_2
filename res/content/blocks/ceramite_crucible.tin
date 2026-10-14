@@ -12,3 +12,4 @@ health=600
 recipe=item_copper|160,item_iron|240,item_manganum|80,item_silicat|120
 output_item=item_ceramite|2
 input_items=item_copper|1,item_manganum|1,item_silicat|1
+production_time=60

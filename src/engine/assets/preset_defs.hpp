@@ -109,6 +109,7 @@ struct BlockPreset {
     InplaceVector<Ingredient, 6> recipe;
     //
     TurretPresetID turret;
+    int16_t productionTime;
     Ingredient outputItem;
     InplaceVector<Ingredient, 4> inputItems;
 };

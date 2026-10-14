@@ -71,6 +71,8 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
         preset.inputItems = loadIngridients<preset.inputItems.capacity()>(reader, itemFindMap, "input_items");
         preset.outputItem = *parseIng(reader.get<std::string>("output_item"), itemFindMap);
     }
+    if (preset.archetype == BlockType::factory || preset.archetype == BlockType::drill)
+        preset.productionTime = reader.get<int16_t>("production_time");
     return preset;
 }
 

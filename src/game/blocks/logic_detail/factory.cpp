@@ -11,6 +11,7 @@ FactoryBlock::FactoryBlock(const BlockPreset& preset) {
 		inputs.push_back(ItemStack(it.itemID, 0));
 	}
 	output = ItemStack(preset.outputItem.itemID, 0);
+	productionTime = preset.productionTime;
 }
 
 bool FactoryBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
@@ -33,6 +34,9 @@ void FactoryBlock::accept(ItemPresetID item, BlockRot srcRot) {
 void FactoryBlock::produce(const Presets& presets) {
 	if (output.count >= MAX_STACK)
 		return;
+	restProductionTime = std::min(--restProductionTime, int16_t(0));
+	if (restProductionTime > 0)
+		return;
 	const auto& recipe = presets.getBlock(Block::presetID).inputItems;
 	for (size_t i = 0; i < recipe.size(); ++i) {
 		if (inputs[i].count < recipe[i].amount)
@@ -42,6 +46,7 @@ void FactoryBlock::produce(const Presets& presets) {
 		inputs[i].count -= recipe[i].amount;
 	}
 	output.count += presets.getBlock(Block::presetID).outputItem.amount;
+	restProductionTime = productionTime;
 }
 
 void FactoryBlock::provide(TileCoord tile, const BlockMap& map) {

@@ -5,8 +5,6 @@
 #include "game/common/teams_pool.hpp"
 
 void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams, const uint64_t tickCount) {
-    const bool tickForUpdate = (tickCount % 60) == 0;
-
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
             BlockTile& blockTile = at(x, y);
@@ -16,18 +14,15 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
                 static_cast<BeltBlock*>(blockTile.block.get())->update(tile, *this);
                 break;
             case BlockType::drill:
-                if (tickForUpdate)
-                    static_cast<DrillBlock*>(blockTile.block.get())->mine(tile, terrain, presets);
+                static_cast<DrillBlock*>(blockTile.block.get())->mine(tile, terrain, presets);
                 static_cast<DrillBlock*>(blockTile.block.get())->provide(tile, *this);
                 break;
             case BlockType::impact_drill:
-                if (tickForUpdate)
-                    static_cast<ImpactDrillBlock*>(blockTile.block.get())->mine(tile, terrain, presets);
+                static_cast<ImpactDrillBlock*>(blockTile.block.get())->mine(tile, terrain, presets);
                 static_cast<ImpactDrillBlock*>(blockTile.block.get())->provide(tile, *this);
                 break;
             case BlockType::factory:
-                if (tickForUpdate)
-                    static_cast<FactoryBlock*>(blockTile.block.get())->produce(presets);
+                static_cast<FactoryBlock*>(blockTile.block.get())->produce(presets);
                 static_cast<FactoryBlock*>(blockTile.block.get())->provide(tile, *this);
                 break;
             case BlockType::junction:
