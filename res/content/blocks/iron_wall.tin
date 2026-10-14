@@ -9,3 +9,4 @@ size=1
 build_time=25
 rotatable=false
 health=350
+recipe=item_iron|6

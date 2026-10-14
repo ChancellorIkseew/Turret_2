@@ -9,4 +9,5 @@ size=1
 build_time=50
 rotatable=true
 health=200
+recipe=item_copper|40,item_iron|10
 turret=laser_turret

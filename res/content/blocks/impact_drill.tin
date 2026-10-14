@@ -9,3 +9,4 @@ size=2
 build_time=180
 rotatable=false
 health=600
+recipe=item_copper|30,item_iron|24,item_manganum|6

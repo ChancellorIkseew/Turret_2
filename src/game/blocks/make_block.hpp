@@ -23,7 +23,7 @@ inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID pr
         block = std::make_unique<ImpactDrillBlock>();
         break;
     case BlockType::factory:
-        block = std::make_unique<FactoryBlock>(presets);
+        block = std::make_unique<FactoryBlock>(presets.getBlock(presetID));
         break;
     case BlockType::junction:
         block = std::make_unique<JunctionBlock>();

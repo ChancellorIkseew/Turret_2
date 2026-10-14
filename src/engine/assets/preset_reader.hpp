@@ -25,6 +25,12 @@ public:
         return *res;
     }
 
+    template<typename T, class U>
+    T getOpt(const std::string& key, const U& defaultValue) const {
+        std::optional<T> res = data.get<T>(key);
+        return res ? *res : static_cast<T>(defaultValue);
+    }
+
     template<typename T>
     T get(const std::string& key) const {
         std::optional<T> res = data.get<T>(key);
@@ -45,7 +51,7 @@ public:
     preset_tag::StrongID<Tag> getID(const FindMap<Tag>& idMap, const std::string& key) const {
         std::string targetName = get<std::string>(key);
         if (!idMap.contains(targetName))
-            fail( "Dependency not found: " + targetName);
+            fail("Dependency not found: " + targetName);
         return idMap.at(targetName);
     }
 
@@ -75,6 +81,8 @@ public:
             fail("List is empty or missing: " + key);
         return arraySize;
     }
+
+    std::vector<std::string> getList(const std::string& key) const { return data.getList(key); }
 private:
     [[noreturn]] void fail(const std::string& message) const {
         logger.error("[{}] {}", fileName, message);

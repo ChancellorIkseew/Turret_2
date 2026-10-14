@@ -4,36 +4,46 @@
 #include "engine/assets/presets.hpp"
 #include "game/world/world_map.hpp"
 
-FactoryBlock::FactoryBlock(const Presets& presets) {
-	copper.item = presets.getItemID("item_copper");
-	manganum.item = presets.getItemID("item_manganum");
-	silicat.item = presets.getItemID("item_silicat");
-	ceramite.item = presets.getItemID("item_ceramite");
+constexpr uint8_t MAX_STACK = 20;
+
+FactoryBlock::FactoryBlock(const BlockPreset& preset) {
+	for (const auto it : preset.inputItems) {
+		inputs.push_back(ItemStack(it.itemID, 0));
+	}
+	output = ItemStack(preset.outputItem.itemID, 0);
 }
 
 bool FactoryBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
-	constexpr uint8_t MAX_STACK = 20;
-	return (item == copper.item && copper.count < MAX_STACK) ||
-	(item == manganum.item && manganum.count < MAX_STACK) ||
-	(item == silicat.item && silicat.count < MAX_STACK);
+	for (const auto it : inputs) {
+		if (item == it.item && it.count < MAX_STACK)
+			return true;
+	}
+	return false;
 }
 
 void FactoryBlock::accept(ItemPresetID item, BlockRot srcRot) {
-	if (item == copper.item) ++copper.count;
-	if (item == manganum.item) ++manganum.count;
-	if (item == silicat.item) ++silicat.count;
+	for (auto& it : inputs) {
+		if (item == it.item) {
+			++it.count;
+			break;
+		}
+	}
 }
 
-void FactoryBlock::produce() {
-	constexpr uint8_t MAX_STACK = 20;
-	if (copper.count < 1 || manganum.count < 1 || silicat.count < 1 || ceramite.count >= MAX_STACK)
+void FactoryBlock::produce(const Presets& presets) {
+	if (output.count >= MAX_STACK)
 		return;
-	--copper.count;
-	--manganum.count;
-	--silicat.count;
-	ceramite.count += 2;
+	const auto& recipe = presets.getBlock(Block::presetID).inputItems;
+	for (size_t i = 0; i < recipe.size(); ++i) {
+		if (inputs[i].count < recipe[i].amount)
+			return;
+	}
+	for (size_t i = 0; i < recipe.size(); ++i) {
+		inputs[i].count -= recipe[i].amount;
+	}
+	output.count += presets.getBlock(Block::presetID).outputItem.amount;
 }
 
 void FactoryBlock::provide(TileCoord tile, const BlockMap& map) {
-	throwItem(tile, size, map, ceramite, step);
+	throwItem(tile, size, map, output, step);
 }

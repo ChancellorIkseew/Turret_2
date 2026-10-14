@@ -9,3 +9,4 @@ size=3
 build_time=900
 rotatable=false
 health=800
+recipe=item_copper|800,item_iron|400

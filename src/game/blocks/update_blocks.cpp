@@ -27,7 +27,7 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
                 break;
             case BlockType::factory:
                 if (tickForUpdate)
-                    static_cast<FactoryBlock*>(blockTile.block.get())->produce();
+                    static_cast<FactoryBlock*>(blockTile.block.get())->produce(presets);
                 static_cast<FactoryBlock*>(blockTile.block.get())->provide(tile, *this);
                 break;
             case BlockType::junction:

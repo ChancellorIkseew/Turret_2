@@ -79,17 +79,15 @@ private:
 };
 
 struct FactoryBlock : Block {
-    ItemStack copper;
-    ItemStack manganum;
-    ItemStack silicat;
-    ItemStack ceramite;
+    InplaceVector<ItemStack, 4> inputs;
+    ItemStack output;
     uint8_t step = 0;
-    FactoryBlock(const Presets& presets);
+    FactoryBlock(const BlockPreset& presets);
     t1_derived BlockType getType() const noexcept final { return BlockType::factory; }
     t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final;
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
 public:
-    void produce();
+    void produce(const Presets& presets);
     void provide(TileCoord tile, const BlockMap& map);
 };
 

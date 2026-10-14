@@ -9,4 +9,5 @@ size=2
 build_time=180
 rotatable=true
 health=900
+recipe=item_copper|40,item_iron|120
 turret=cannon_turret

@@ -9,3 +9,4 @@ size=1
 build_time=15
 rotatable=true
 health=10
+recipe=item_copper|1

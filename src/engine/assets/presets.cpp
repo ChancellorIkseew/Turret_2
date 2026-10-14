@@ -25,8 +25,30 @@ static BlockType getBlockType(const std::string name) {
     return BlockType::air;
 }
 
+static std::optional<Ingredient> parseIng(const std::string& text, const FindMap<preset_tag::ItemTag>& itemFindMap) {
+    const size_t bar = text.find('|');
+    if (bar == std::string::npos)
+        return std::nullopt;
+    const std::string name = text.substr(0, bar);
+    const auto count = validator::to<decltype(Ingredient::amount)>(text.substr(bar + 1));
+    if (!count || *count < 1 || !itemFindMap.contains(name))
+        return std::nullopt;
+    return Ingredient(itemFindMap.at(name), *count);
+}
+
+template<size_t CAPACITY>
+static auto loadIngridients(const PresetReader& reader, const FindMap<preset_tag::ItemTag>& itemFindMap, const std::string& key) {
+    InplaceVector<Ingredient, CAPACITY> recipe;
+    for (auto& strItemStack : reader.getList(key)) {
+         recipe.push_back(*parseIng(strItemStack, itemFindMap));
+    }
+    if (recipe.empty())
+        throw std::bad_optional_access();
+    return recipe;
+}
+
 static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretFindMap,
-    const ItemFindMap& itemIDByName, const std::string& name) {
+    const ItemFindMap& itemFindMap, const std::string& name) {
     std::array<uint8_t, 16> frames;
     BlockVisualPreset visual{
         reader.getTexture(atlas, "texture"),
@@ -42,16 +64,12 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     preset.rotatable = reader.get<bool>("rotatable");
     preset.maxHealth = reader.get<Health>("health");
     preset.visual = visual;
+    preset.recipe = loadIngridients<preset.recipe.capacity()>(reader, itemFindMap, "recipe");
     if (preset.archetype == BlockType::turret)
         preset.turret = reader.getID(turretFindMap, "turret");
-    
-    tin::Data data = tin::read(io::folders::CONTENT / "recipes" / (name + ".tin"), io::Log::only_error);
-    int i = 0;
-    for (const auto& [key, value] : data) {
-        const ItemPresetID itemID = itemIDByName.at(key);
-        const int16_t amount = validator::to<int16_t>(value).value();
-        preset.recipe[i] = Ingredient(itemID, amount);
-        ++i;
+    if (preset.archetype == BlockType::factory) {
+        preset.inputItems = loadIngridients<preset.inputItems.capacity()>(reader, itemFindMap, "input_items");
+        preset.outputItem = *parseIng(reader.get<std::string>("output_item"), itemFindMap);
     }
     return preset;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include "engine/coords/pixel_coord.hpp"
+#include "engine/custom_stl/inplace_vector.hpp"
 #include "engine/render/texture_rect.hpp"
 #include "game/blocks/block.hpp"
 #include "game/common/mob_ai.hpp"
@@ -105,8 +106,9 @@ struct BlockPreset {
     BlockType archetype;
     Health maxHealth;
     BlockVisualPreset visual;
-    union {
-        TurretPresetID turret;
-    };
-    std::array<Ingredient, 6> recipe;
+    InplaceVector<Ingredient, 6> recipe;
+    //
+    TurretPresetID turret;
+    Ingredient outputItem;
+    InplaceVector<Ingredient, 4> inputItems;
 };

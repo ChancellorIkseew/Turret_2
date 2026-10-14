@@ -58,6 +58,7 @@
     <ClInclude Include="src\engine\coords\math.hpp" />
     <ClInclude Include="src\engine\coords\tile_coord.hpp" />
     <ClInclude Include="src\engine\coords\transforms.hpp" />
+    <ClInclude Include="src\engine\custom_stl\inplace_vector.hpp" />
     <ClInclude Include="src\engine\debug\logger.hpp" />
     <ClInclude Include="src\engine\gui\editor_gui.hpp" />
     <ClInclude Include="src\engine\gui\gameplay_gui.hpp" />

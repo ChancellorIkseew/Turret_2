@@ -9,4 +9,5 @@ size=1
 build_time=60
 rotatable=true
 health=200
+recipe=item_copper|10,item_iron|20,item_manganum|10,item_silicat|5
 turret=rocket_turret
