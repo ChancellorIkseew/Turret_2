@@ -25,7 +25,7 @@ class OProps : public Layout {
     Layout* frequency = nullptr;
     Layout* deposite  = nullptr;
 public:
-    OProps(const Atlas& atlas) : Layout(Orientation::horizontal),
+    OProps(const Presets& presets) : Layout(Orientation::horizontal),
         overlayPresets(serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT)) {
         icons     = addNode(new Layout(Orientation::vertical));
         frequency = addNode(new Layout(Orientation::vertical));
@@ -38,8 +38,8 @@ public:
         icons    ->addNode(new Icon(Point(16, 10), nullptr));
 
         for (const auto& [id, f, d] : overlayPresets) {
-            std::string itemName = util::swapPrefix(id, "item_");
-            icons->addNode(new Icon(ICON_SIZE, new T1_UITexture(atlas.at(itemName))));
+            const TextureRect rect = presets.getItem(presets.getOre(presets.getOreID(id)).item).textureRect;
+            icons->addNode(new Icon(ICON_SIZE, new T1_UITexture(rect)));
             frequency->addNode(new Form(f, new Int32Validator(0, 10000)));
             deposite->addNode(new Form(d, new Int32Validator(0, 100)));
         }
@@ -117,7 +117,7 @@ public:
         width  = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
         height = forms->addNode(new Form(100, new Int32Validator(20, 5000)));
 
-        oProps = main->addNode(new OProps(atlas));
+        oProps = main->addNode(new OProps(app.getAssets().getPresets()));
 
         otherSettings = addNode(new OtherWorldSettings());
 

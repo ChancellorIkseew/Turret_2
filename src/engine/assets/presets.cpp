@@ -85,7 +85,6 @@ static auto createItemPreset(const PresetReader& reader, const Atlas& atlas) {
 static auto createOrePreset(const PresetReader& reader, const Atlas& atlas, const ItemFindMap& itemFindMap) {
     return OrePreset{
         reader.getID(itemFindMap, "item"),
-        reader.get<std::string>("visible_name"),
         reader.getTexture(atlas, "texture")
     };
 }

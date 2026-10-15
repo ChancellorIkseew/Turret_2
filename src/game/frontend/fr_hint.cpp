@@ -8,6 +8,15 @@
 #include "game/game_session.hpp"
 #include "game/world/world.hpp"
 
+template<class Map, class ID>
+const std::string& getNameByID(const Map& findMap, ID id) {
+    for (const auto& [name, mappedID] : findMap) {
+        if (mappedID == id) return name;
+    }
+    static const std::string empty;
+    return empty;
+}
+
 constexpr Point ICON_SIZE(16, 16);
 
 class FrHint : public Container {
@@ -35,7 +44,7 @@ public:
         std::string trimedName;
         if (index != 0) {
             const OrePreset& orePreset = assets.getPresets().getOre(OrePresetID(index));
-            trimedName = assets.getPresets().getOre(OrePresetID(index)).visibleName;
+            trimedName = util::removePrefix(getNameByID(assets.getPresets().getOres(), OrePresetID(index)), "ore_");
             const TextureRect textureRect = assets.getPresets().getItem(orePreset.item).textureRect;
             icon->setTexture(new T1_UITexture(textureRect));
         }
