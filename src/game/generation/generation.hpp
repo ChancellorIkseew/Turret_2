@@ -5,7 +5,7 @@
 #include <vector>
 #include "game/world/world_config.hpp"
 
-class Assets;
+class Presets;
 class World;
 
 struct FloorGenPreset {
@@ -39,5 +39,5 @@ struct WorldProperties {
 };
 
 namespace gen {
-    std::unique_ptr<World> generateWorld(const WorldProperties& properties, const Assets& indexes);
+    std::unique_ptr<World> generateWorld(const WorldProperties& properties, const Presets& presets);
 }

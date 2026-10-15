@@ -18,10 +18,10 @@ App::App(const std::string& windowTitle, const PixelCoord windowSize) :
     mainWindow(windowTitle, windowSize), scriptsHandler(std::make_unique<ScriptsHandler>()) { }
 App::~App() = default;
 
-static std::unique_ptr<World> createWorld(const SessionRequest& request, const Assets& assets) {
+static std::unique_ptr<World> createWorld(const SessionRequest& request, const Presets& presets) {
     if (request.command == appCommand::gameplay_load_world || request.command == appCommand::editor_load_world)
         return serializer::loadWorld(request.worldFolder);
-    return gen::generateWorld(request.worldProperties, assets);
+    return gen::generateWorld(request.worldProperties, presets);
 }
 
 static std::unique_ptr<GUI> createGUI(const appCommand command, App& app) {
@@ -49,7 +49,7 @@ static GameMode getGameMode(const appCommand command) {
 
 static std::unique_ptr<GameSession> createSession(const SessionRequest& request, App& app) {
     Assets& assets = app.getAssets();
-    std::unique_ptr<World> world = createWorld(request, assets);
+    std::unique_ptr<World> world = createWorld(request, assets.getPresets());
     if (!world)
         return nullptr;
     const appCommand command = request.command;

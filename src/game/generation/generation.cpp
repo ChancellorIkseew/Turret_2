@@ -1,7 +1,7 @@
 #include "generation.hpp"
 //
 #include <algorithm>
-#include "engine/assets/assets.hpp"
+#include "engine/assets/presets.hpp"
 #include "engine/debug/logger.hpp"
 #include "game/world/world.hpp"
 #include "perlin_noise.hpp"
@@ -53,10 +53,10 @@ static auto prepareOreGenPresets(const OreGenPresets& oreGenPresets, const Prese
     return result;
 }
 
-static WorldMap generateMap(const WorldProperties& properties, const Assets& assets) {
+static WorldMap generateMap(const WorldProperties& properties, const Presets& presets) {
     const auto mapSize = properties.worldConfig.mapSize;
-    const auto floorGenPresets = prepareFloorGenPresets(properties.floorGenPresets, assets.getPresets());
-    const auto oreGenPresets = prepareOreGenPresets(properties.oreGenPresets, assets.getPresets());
+    const auto floorGenPresets = prepareFloorGenPresets(properties.floorGenPresets, presets);
+    const auto oreGenPresets = prepareOreGenPresets(properties.oreGenPresets, presets);
     //
     const PerlinNoise2D mainNoise(properties.worldConfig.seed);
     const PerlinNoise2D supportNoise(properties.worldConfig.seed + 100U);
@@ -82,7 +82,7 @@ static WorldMap generateMap(const WorldProperties& properties, const Assets& ass
     return WorldMap(mapSize, floor, ore);
 }
 
-std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Assets& assets) {
-    auto map = generateMap(properties, assets);
+std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Presets& presets) {
+    auto map = generateMap(properties, presets);
     return std::make_unique<World>(map, properties.worldConfig);
 }
