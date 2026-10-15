@@ -20,22 +20,22 @@ static inline bool fromMaxToMin(const PreparedFloor a, const PreparedFloor b) no
     return a.height > b.height;
 }
 
-static uint8_t calculateTileType(const float height, const std::vector<PreparedFloor>& vals) noexcept {
+static FloorPresetID calculateTileType(const float height, const std::vector<PreparedFloor>& vals) noexcept {
     for (const auto/*not ref*/ [floorID, minHeight] : vals) {
         if (height >= minHeight)
-            return floorID;
+            return FloorPresetID(floorID);
     }
-    return 0U;
+    return FloorPresetID(0);
 }
 
-static auto prepareFloorGenPresets(const FloorGenPresets& floorGenPresets, const Indexes& indexes) {
+static auto prepareFloorGenPresets(const FloorGenPresets& floorGenPresets, const Presets& presets) {
     std::vector<PreparedFloor> result;
     for (const auto& [name, height] : floorGenPresets) {
-        if (!indexes.getFloor().contains(name)) {
+        if (!presets.getFloors().contains(name)) {
             logger.warning("Content is not registred: \"{}\".", name);
             continue;
         }
-        result.emplace_back(indexes.getFloor().at(name), height);
+        result.emplace_back(presets.getFloors().at(name).asUint(), height);
     }
     std::sort(result.begin(), result.end(), fromMaxToMin);
     return result;
@@ -55,7 +55,7 @@ static auto prepareOreGenPresets(const OreGenPresets& oreGenPresets, const Prese
 
 static WorldMap generateMap(const WorldProperties& properties, const Assets& assets) {
     const auto mapSize = properties.worldConfig.mapSize;
-    const auto floorGenPresets = prepareFloorGenPresets(properties.floorGenPresets, assets.getIndexes());
+    const auto floorGenPresets = prepareFloorGenPresets(properties.floorGenPresets, assets.getPresets());
     const auto oreGenPresets = prepareOreGenPresets(properties.oreGenPresets, assets.getPresets());
     //
     const PerlinNoise2D mainNoise(properties.worldConfig.seed);
@@ -63,8 +63,8 @@ static WorldMap generateMap(const WorldProperties& properties, const Assets& ass
     const SquirellNoise2D squirellNoise(properties.worldConfig.seed);
     const SpotGenerator2D spotGenerator(properties.worldConfig.seed);
     //
-    std::vector<uint8_t>   floor(mapSize.x * mapSize.y);
-    std::vector<OrePresetID> ore(mapSize.x * mapSize.y);
+    std::vector<FloorPresetID> floor(mapSize.x * mapSize.y);
+    std::vector<OrePresetID>   ore(mapSize.x * mapSize.y);
     //
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {

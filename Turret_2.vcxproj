@@ -44,7 +44,6 @@
     <ClInclude Include="src\app.hpp" />
     <ClInclude Include="src\config.hpp" />
     <ClInclude Include="src\engine\assets\assets.hpp" />
-    <ClInclude Include="src\engine\assets\indexes.hpp" />
     <ClInclude Include="src\engine\assets\preset_defs.hpp" />
     <ClInclude Include="src\engine\assets\presets.hpp" />
     <ClInclude Include="src\engine\assets\preset_id.hpp" />
@@ -173,7 +172,6 @@
     <ClCompile Include="libs\include\MINGUI\src\ui_node.cpp" />
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="src\engine\assets\assets.cpp" />
-    <ClCompile Include="src\engine\assets\indexes.cpp" />
     <ClCompile Include="src\engine\assets\presets.cpp" />
     <ClCompile Include="src\engine\assets\waves.cpp" />
     <ClCompile Include="src\engine\audio\audio.cpp" />

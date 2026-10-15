@@ -12,6 +12,10 @@ struct ItemPreset {
     TextureRect textureRect;
 };
 
+struct FloorPreset {
+    TextureRect textureRect;
+};
+
 struct OrePreset {
     ItemPresetID item;
     TextureRect textureRect;

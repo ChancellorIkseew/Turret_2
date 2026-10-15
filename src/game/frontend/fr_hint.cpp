@@ -49,10 +49,10 @@ public:
             icon->setTexture(new T1_UITexture(textureRect));
         }
         else {
-            const uint8_t floorIndex = map.at(targetTile).floor;
-            const std::string& floorName = assets.getIndexes().getFloorByIndex(floorIndex);
-            trimedName = util::removePrefix(floorName, "floor_");
-            icon->setTexture(new T1_UITexture(assets.getAtlas().at(floorName)));
+            const FloorPreset& floorPreset = assets.getPresets().getFloor(FloorPresetID(index));
+            trimedName = util::removePrefix(getNameByID(assets.getPresets().getOres(), OrePresetID(index)), "ore_");
+            const TextureRect textureRect = floorPreset.textureRect;
+            icon->setTexture(new T1_UITexture(textureRect));
         }
         label->setText(tr(trimedName));
         position->setText(std::format("X:{} Y:{}", targetTile.x, targetTile.y));

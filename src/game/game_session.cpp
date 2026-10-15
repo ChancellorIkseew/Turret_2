@@ -13,7 +13,7 @@
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets,
     const bool paused, const GameMode gameMode) :
     camera(world->getMap().getSize(), Settings::gameplay.cameraInertia), world(std::move(world)), gui(std::move(gui)),
-    worldDrawer(assets), pausedManually(paused), timeCount(0, this->world->getConfig().ticksPerWave,
+    worldDrawer(assets.getPresets()), pausedManually(paused), timeCount(0, this->world->getConfig().ticksPerWave,
     this->world->getConfig().wavesByTimer), builtInScripts(assets, *this->world), gameMode(gameMode) {
     prepare(assets.getPresets());
 }

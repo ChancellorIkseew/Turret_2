@@ -7,7 +7,7 @@ namespace preset_tag {
     template<class Tag>
     struct StrongID {
         PresetID presetID;
-        PresetID asUint() const { return presetID; }
+        constexpr PresetID asUint() const noexcept { return presetID; }
         auto operator<=>(const StrongID&) const = default;
         auto operator++(int) {
             StrongID old = *this;
@@ -17,6 +17,7 @@ namespace preset_tag {
     };
 
     struct BlockTag {};
+    struct FloorTag {};
     struct ItemTag {};
     struct MobTag {};
     struct OreTag {};
@@ -25,6 +26,7 @@ namespace preset_tag {
 }
 
 using BlockPresetID  = preset_tag::StrongID<preset_tag::BlockTag>;
+using FloorPresetID  = preset_tag::StrongID<preset_tag::FloorTag>;
 using ItemPresetID   = preset_tag::StrongID<preset_tag::ItemTag>;
 using MobPresetID    = preset_tag::StrongID<preset_tag::MobTag>;
 using OrePresetID    = preset_tag::StrongID<preset_tag::OreTag>;

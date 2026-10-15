@@ -76,6 +76,12 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     return preset;
 }
 
+static auto createFloorPreset(const PresetReader& reader, const Atlas& atlas) {
+    return FloorPreset{
+        reader.getTexture(atlas, "texture"),
+    };
+}
+
 static auto createItemPreset(const PresetReader& reader, const Atlas& atlas) {
     return ItemPreset{
         reader.getTexture(atlas, "texture"),
@@ -192,6 +198,8 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
         try {
             if constexpr (std::is_same_v<PresetType, BlockPreset>)
                 addPreset(name, createBlockPreset(reader, atlas, turretFindMap, itemFindMap, name), blockStore, blockFindMap, nextBlockID);
+            if constexpr (std::is_same_v<PresetType, FloorPreset>)
+                addPreset(name, createFloorPreset(reader, atlas), floorStore, floorFindMap, nextFloorID);
             if constexpr (std::is_same_v<PresetType, ItemPreset>)
                 addPreset(name, createItemPreset(reader, atlas), itemStore, itemFindMap, nextItemID);
             if constexpr (std::is_same_v<PresetType, OrePreset>)
@@ -215,6 +223,7 @@ void Presets::loadPresets(const std::string& folder, const Atlas& atlas) {
 
 void Presets::load(const Atlas& atlas) {
     loadPresets<ItemPreset>("items", atlas);
+    loadPresets<FloorPreset>("floors", atlas);
     loadPresets<OrePreset>("ores", atlas);
     loadPresets<ShellPreset>("shells", atlas);
     loadPresets<TurretPreset>("turrets", atlas);

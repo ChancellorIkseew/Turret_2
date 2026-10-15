@@ -43,11 +43,11 @@ public:
 
         const Input& input = app.getMainWindow().getInput();
         if (buildTools->getContentLevel() == JEIContent::all) {
-            for (const auto& [floorName, id] : app.getAssets().getIndexes().getFloor()) {
-                addButton(floorName, id, TileComponent::floor, input, grid);
+            for (const auto& [floorName, id] : app.getAssets().getPresets().getFloors()) {
+                addButton(floorName, id.asUint(), TileComponent::floor, input, grid);
             }
             for (const auto& [oreName, id] : app.getAssets().getPresets().getOres()) {
-                addButton(oreName, id.asUint(), TileComponent::overlay, input, grid);
+                addButton(oreName, id.asUint(), TileComponent::ore, input, grid);
             }
         }
         for (const auto& [blockName, id] : app.getAssets().getPresets().getBlocks()) {

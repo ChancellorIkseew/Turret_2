@@ -159,9 +159,6 @@
     <ClInclude Include="src\engine\assets\presets.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\assets\indexes.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\assets\preset_reader.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -570,9 +567,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\assets\presets.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\engine\assets\indexes.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\io\parser\jtin_parser.cpp">

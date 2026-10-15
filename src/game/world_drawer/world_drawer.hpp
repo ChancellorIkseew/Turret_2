@@ -12,7 +12,7 @@ class WorldDrawer {
     MapDrawer mapDrawer;
     BlocksDrawer blocksDrawer;
 public:
-    WorldDrawer(const Assets& assets) : mapDrawer(assets) { }
+    WorldDrawer(const Presets& presets) : mapDrawer(presets) { }
     //
     void drawMap(const Camera& camera, Renderer& renderer, const WorldMap& map) {
         mapDrawer.draw(camera, renderer, map);

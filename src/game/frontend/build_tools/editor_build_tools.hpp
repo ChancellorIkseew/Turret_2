@@ -40,8 +40,8 @@ private:
     void build(GameSession& session, const TileCoord tile, const TileData tileData) const {
         WorldMap& map = session.getWorld().getMap();
         switch (tileData.component) {
-        case TileComponent::floor:   map.placeFloor(tile, tileData.id);                break;
-        case TileComponent::overlay: map.placeOverlay(tile, OrePresetID(tileData.id)); break;
+        case TileComponent::floor: map.placeFloor(tile, FloorPresetID(tileData.id)); break;
+        case TileComponent::ore:   map.placeOre(tile, OrePresetID(tileData.id));     break;
         case TileComponent::block: {
                 const TeamID teamID = session.getPlayerController().getPlayerTeamID();
                 session.getBuiltInScripts().placeBlock(BlockPresetID(tileData.id), tile, teamID, rotation);
@@ -54,7 +54,7 @@ private:
         if (blocks.isFilled(tile))
             return blocks.demolish(tile);
         if (map.tileExists(tile))
-            return map.placeOverlay(tile, OrePresetID(0));
+            return map.placeOre(tile, OrePresetID(0));
     }
 
     void usePipette(WorldMap& map, BlockMap& blocks, const TileCoord tile) {
@@ -67,9 +67,9 @@ private:
         }
         if (map.tileExists(tile)) {
             if (map.at(tile).ore != OrePresetID(0))
-                optTileData = TileData(TileComponent::overlay, map.at(tile).ore.asUint());
+                optTileData = TileData(TileComponent::ore, map.at(tile).ore.asUint());
             else
-                optTileData = TileData(TileComponent::floor, map.at(tile).floor);
+                optTileData = TileData(TileComponent::floor, map.at(tile).floor.asUint());
         }
     }
 };

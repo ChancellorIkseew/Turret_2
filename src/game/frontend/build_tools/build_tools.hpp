@@ -3,7 +3,7 @@
 #include "game/game_session.hpp"
 
 enum class JEIContent : uint8_t { all, only_blocks };
-enum class TileComponent : uint8_t { floor, overlay, block };
+enum class TileComponent : uint8_t { floor, ore, block };
 
 struct TileData {
     TileComponent component = TileComponent::floor;

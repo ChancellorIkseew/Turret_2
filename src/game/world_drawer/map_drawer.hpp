@@ -6,8 +6,8 @@
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/render/texture_rect.hpp"
 
-class Assets;
 class Camera;
+class Presets;
 class Renderer;
 class WorldMap;
 
@@ -17,8 +17,8 @@ class MapDrawer {
     std::map<uint8_t, TextureRect> floorTextures;
     std::map<uint8_t, TextureRect> oreTextures;
 public:
-    MapDrawer(const Assets& assets) { updateTextures(assets); }
-    void updateTextures(const Assets& assets);
+    MapDrawer(const Presets& presets) { updateTextures(presets); }
+    void updateTextures(const Presets& assets);
     void cacheFloor(const WorldMap& map);
     void draw(const Camera& camera, Renderer& renderer, const WorldMap& map);
 private:

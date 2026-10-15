@@ -19,8 +19,8 @@ WorldMap serializer::loadMap(const std::filesystem::path& path) {
     archive::Reader reader(blob);
     //
     TileCoord mapSize;
-    std::vector<uint8_t>     floor;
-    std::vector<OrePresetID> ore;
+    std::vector<FloorPresetID> floor;
+    std::vector<OrePresetID>   ore;
     //
     reader.get(mapSize);
     reader.get(floor, mapSize.x * mapSize.y);

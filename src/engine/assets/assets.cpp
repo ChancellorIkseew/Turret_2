@@ -29,7 +29,6 @@ static void loadSounds(Audio& audio) {
 void Assets::load(Renderer& renderer) {
     loadTextures(atlas, renderer);
     loadSounds(audio);
-    indexes.load();
     presets.load(atlas);
     waves.load();
 

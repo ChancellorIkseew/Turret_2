@@ -22,18 +22,17 @@ void BuildTools::drawOneBlock(App& app, Renderer& renderer, const TileCoord tile
         return;
     }
     //
-    if (tileData.component == TileComponent::overlay) {
+    if (tileData.component == TileComponent::ore) {
         const OrePreset& preset = app.getAssets().getPresets().getOre(OrePresetID(tileData.id));
         renderer.draw(preset.textureRect, position, t1::TILE_PC, PixelCoord(0.f, 0.f), 0.f);
         return;
     }
     //
     if (tileData.component == TileComponent::floor) {
-        const std::string& textureName = app.getAssets().getIndexes().getFloorByIndex(tileData.id);
-        const TextureRect textureRect = app.getAssets().getAtlas().at(textureName);
+        const FloorPreset& preset = app.getAssets().getPresets().getFloor(FloorPresetID(tileData.id));
         constexpr PixelCoord BLENDING_AREA(4.f, 4.f);
         constexpr PixelCoord FLOOR_SIZE = t1::TILE_PC + BLENDING_AREA * 2.f;
-        renderer.draw(textureRect, position - BLENDING_AREA, FLOOR_SIZE, PixelCoord(0.f, 0.f), 0.f);
+        renderer.draw(preset.textureRect, position - BLENDING_AREA, FLOOR_SIZE, PixelCoord(0.f, 0.f), 0.f);
         return;
     }
 }

@@ -7,10 +7,10 @@
 static debug::Logger logger("scripts_lib_world");
 
 static void placeFloor(int x, int y, uint8_t floorID) {
-    script_libs::world->getMap().placeFloor(TileCoord(x, y), floorID);
+    script_libs::world->getMap().placeFloor(TileCoord(x, y), FloorPresetID(floorID));
 }
 static void placeOre(int x, int y, uint8_t oreID) {
-    script_libs::world->getMap().placeOverlay(TileCoord(x, y), OrePresetID(oreID));
+    script_libs::world->getMap().placeOre(TileCoord(x, y), OrePresetID(oreID));
 }
 
 static int getWidth() {

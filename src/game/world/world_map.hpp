@@ -5,19 +5,19 @@
 #include "engine/coords/tile_coord.hpp"
 
 struct MapTile {
-    uint8_t floor = 0;
+    FloorPresetID floor = FloorPresetID(0);
     OrePresetID ore = OrePresetID(0);
 };
 
 class WorldMap {
-    std::vector<uint8_t> floor;
+    std::vector<FloorPresetID> floor;
     std::vector<OrePresetID> ore;
     const TileCoord mapSize;
 public:
-    WorldMap(const TileCoord mapSize, std::vector<uint8_t>& floor, std::vector<OrePresetID>& ore);
+    WorldMap(const TileCoord mapSize, std::vector<FloorPresetID>& floor, std::vector<OrePresetID>& ore);
     //
-    void placeFloor(const TileCoord tile, const uint8_t floorID);
-    void placeOverlay(const TileCoord tile, const OrePresetID orePresetID);
+    void placeFloor(const TileCoord tile, const FloorPresetID floorPresetID);
+    void placeOre(const TileCoord tile, const OrePresetID orePresetID);
     //
     constexpr bool tileExists(const int tileX, const int tileY) const {
         return tileX >= 0 && tileX < mapSize.x &&

@@ -10,6 +10,7 @@ constexpr size_t MAX_PRESETS = 64;
 
 class Presets {
     std::array<BlockPreset, MAX_PRESETS>   blockStore;
+    std::array<FloorPreset, MAX_PRESETS>   floorStore;
     std::array<ItemPreset, MAX_PRESETS>     itemStore;
     std::array<MobPreset, MAX_PRESETS>       mobStore;
     std::array<OrePreset, MAX_PRESETS>       oreStore;
@@ -17,6 +18,7 @@ class Presets {
     std::array<TurretPreset, MAX_PRESETS> turretStore;
 
     std::unordered_map<std::string, BlockPresetID>  blockFindMap;
+    std::unordered_map<std::string, FloorPresetID>  floorFindMap;
     std::unordered_map<std::string, ItemPresetID>   itemFindMap;
     std::unordered_map<std::string, MobPresetID>    mobFindMap;
     std::unordered_map<std::string, OrePresetID>    oreFindMap;
@@ -24,6 +26,7 @@ class Presets {
     std::unordered_map<std::string, TurretPresetID> turretFindMap;
 
     BlockPresetID  nextBlockID  = BlockPresetID(1); // air
+    FloorPresetID  nextFloorID  = FloorPresetID(1); // air
     ItemPresetID   nextItemID   = ItemPresetID(1); // air(error)
     MobPresetID    nextMobID    = MobPresetID(0);
     OrePresetID    nextOreID    = OrePresetID(1); // air
@@ -33,6 +36,7 @@ public:
     void load(const Atlas& atlas);
 
     bool hasBlockID(const std::string& name) const { return blockFindMap.contains(name); }
+    bool hasFloorID(const std::string& name) const { return floorFindMap.contains(name); }
     bool hasItemID(const std::string& name) const { return itemFindMap.contains(name); }
     bool hasMobID(const std::string& name) const { return mobFindMap.contains(name); }
     bool hasOreID(const std::string& name) const { return oreFindMap.contains(name); }
@@ -40,6 +44,7 @@ public:
     bool hasTurretID(const std::string& name) const { return turretFindMap.contains(name); }
 
     BlockPresetID getBlockID(const std::string& name) const { return blockFindMap.at(name); }
+    FloorPresetID getFloorID(const std::string& name) const { return floorFindMap.at(name); }
     ItemPresetID getItemID(const std::string& name) const { return itemFindMap.at(name); }
     MobPresetID getMobID(const std::string& name) const { return mobFindMap.at(name); }
     OrePresetID getOreID(const std::string& name) const { return oreFindMap.at(name); }
@@ -48,6 +53,9 @@ public:
 
     const BlockPreset& getBlock(BlockPresetID id) const noexcept {
         return blockStore[id.asUint()];
+    }
+    const FloorPreset& getFloor(FloorPresetID id) const noexcept {
+        return floorStore[id.asUint()];
     }
     const ItemPreset& getItem(ItemPresetID id) const noexcept {
         return itemStore[id.asUint()];
@@ -64,6 +72,7 @@ public:
     const TurretPreset& getTurret(TurretPresetID id) const noexcept {
         return turretStore[id.asUint()];
     }
+    const auto& getFloors() const { return floorFindMap; }
     const auto& getOres()   const { return oreFindMap; }
     const auto& getBlocks() const { return blockFindMap; }
     const auto& getItems()  const { return itemFindMap; }
