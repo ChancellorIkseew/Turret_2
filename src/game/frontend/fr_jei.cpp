@@ -42,15 +42,16 @@ public:
         grid->setPalette(NULL_PALETTE);
 
         const Input& input = app.getMainWindow().getInput();
+        const Presets& presets = app.getAssets().getPresets();
         if (buildTools->getContentLevel() == JEIContent::all) {
-            for (const auto& [floorName, id] : app.getAssets().getPresets().getFloors()) {
+            for (const auto& [floorName, id] : presets.getFloors()) {
                 addButton(floorName, id.asUint(), TileComponent::floor, input, grid);
             }
-            for (const auto& [oreName, id] : app.getAssets().getPresets().getOres()) {
+            for (const auto& [oreName, id] : presets.getOres()) {
                 addButton(oreName, id.asUint(), TileComponent::ore, input, grid);
             }
         }
-        for (const auto& [blockName, id] : app.getAssets().getPresets().getBlocks()) {
+        for (const auto& [blockName, id] : presets.getBlocks()) {
             addButton(blockName, id.asUint(), TileComponent::block, input, grid);
         }
     }
