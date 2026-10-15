@@ -1,4 +1,4 @@
-overlay_coal=50|3
-overlay_copper=50|5
-overlay_iron=50|7
-overlay_manganum=30|3
+ore_coal=50|3
+ore_copper=50|5
+ore_iron=50|7
+ore_manganum=30|3

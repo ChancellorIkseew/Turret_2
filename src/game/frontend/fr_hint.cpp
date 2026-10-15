@@ -35,7 +35,7 @@ public:
         const PixelCoord mousePosition = app.getMainWindow().getInput().getMouseCoord();
         const Camera& camera = app.getSession().getCamera();
         const WorldMap& map = app.getSession().getWorld().getMap();
-        const auto& assets = app.getAssets();
+        const auto& presets = app.getAssets().getPresets();
 
         const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
         if (!map.tileExists(targetTile))
@@ -43,16 +43,14 @@ public:
         const uint8_t index = map.at(targetTile).ore.asUint();
         std::string trimedName;
         if (index != 0) {
-            const OrePreset& orePreset = assets.getPresets().getOre(OrePresetID(index));
-            trimedName = util::removePrefix(getNameByID(assets.getPresets().getOres(), OrePresetID(index)), "ore_");
-            const TextureRect textureRect = assets.getPresets().getItem(orePreset.item).textureRect;
-            icon->setTexture(new T1_UITexture(textureRect));
+            const OrePreset& orePreset = presets.getOre(OrePresetID(index));
+            trimedName = util::removePrefix(getNameByID(presets.getOres(), OrePresetID(index)), "ore_");
+            icon->setTexture(new T1_UITexture(presets.getItem(orePreset.item).textureRect));
         }
         else {
-            const FloorPreset& floorPreset = assets.getPresets().getFloor(FloorPresetID(index));
-            trimedName = util::removePrefix(getNameByID(assets.getPresets().getOres(), OrePresetID(index)), "ore_");
-            const TextureRect textureRect = floorPreset.textureRect;
-            icon->setTexture(new T1_UITexture(textureRect));
+            const FloorPreset& floorPreset = presets.getFloor(FloorPresetID(index));
+            trimedName = util::removePrefix(getNameByID(presets.getFloors(), FloorPresetID(index)), "floor_");
+            icon->setTexture(new T1_UITexture(floorPreset.textureRect));
         }
         label->setText(tr(trimedName));
         position->setText(std::format("X:{} Y:{}", targetTile.x, targetTile.y));
