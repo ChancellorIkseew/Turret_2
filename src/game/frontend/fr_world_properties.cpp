@@ -20,13 +20,13 @@ constexpr Point BTN_SIZE(120, 30);
 constexpr Point ICON_SIZE(16, 16);
 
 class OProps : public Layout {
-    OverlayPresets overlayPresets;
+    OreGenPresets oreGenPresets;
     Layout* icons     = nullptr;
     Layout* frequency = nullptr;
     Layout* deposite  = nullptr;
 public:
     OProps(const Presets& presets) : Layout(Orientation::horizontal),
-        overlayPresets(serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT)) {
+        oreGenPresets(serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT)) {
         icons     = addNode(new Layout(Orientation::vertical));
         frequency = addNode(new Layout(Orientation::vertical));
         deposite  = addNode(new Layout(Orientation::vertical));
@@ -37,7 +37,7 @@ public:
         deposite ->addNode(new Label(tr("Deposite")));
         icons    ->addNode(new Icon(Point(16, 10), nullptr));
 
-        for (const auto& [id, f, d] : overlayPresets) {
+        for (const auto& [id, f, d] : oreGenPresets) {
             const TextureRect rect = presets.getItem(presets.getOre(presets.getOreID(id)).item).textureRect;
             icons->addNode(new Icon(ICON_SIZE, new T1_UITexture(rect)));
             frequency->addNode(new Form(f, new Int32Validator(0, 10000)));
@@ -45,18 +45,18 @@ public:
         }
     }
     //
-    const OverlayPresets getPresets() {
+    const OreGenPresets getPresets() {
         for (int i = 1; i < frequency->getContents().size(); ++i) {
-            using T = decltype(overlayPresets[i - 1].frequency);
+            using T = decltype(oreGenPresets[i - 1].frequency);
             const Form* form = static_cast<const Form*>(frequency->getContents()[i].get());
-            overlayPresets[i - 1].frequency = validator::to<T>(form->getText()).value_or(0U);
+            oreGenPresets[i - 1].frequency = validator::to<T>(form->getText()).value_or(0U);
         }
         for (int i = 1; i < deposite->getContents().size(); ++i) {
-            using T = decltype(overlayPresets[i - 1].deposite);
+            using T = decltype(oreGenPresets[i - 1].deposite);
             const Form* form = static_cast<const Form*>(deposite->getContents()[i].get());
-            overlayPresets[i - 1].deposite = validator::to<T>(form->getText()).value_or(0U);
+            oreGenPresets[i - 1].deposite = validator::to<T>(form->getText()).value_or(0U);
         }
-        return overlayPresets;
+        return oreGenPresets;
     }
 };
 

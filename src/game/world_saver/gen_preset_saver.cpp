@@ -2,7 +2,7 @@
 //
 #include "engine/io/parser/tin_parser.hpp"
 
-void serializer::saveFloorPreset(const FloorPresets& floorPresets, const std::filesystem::path& path) {
+void serializer::saveFloorPreset(const FloorGenPresets& floorPresets, const std::filesystem::path& path) {
     tin::Data data;
     for (const auto& [name, height] : floorPresets) {
         data.emplace(name, std::to_string(height));
@@ -10,16 +10,16 @@ void serializer::saveFloorPreset(const FloorPresets& floorPresets, const std::fi
     tin::write(path / "floor.tin", data);
 }
 
-FloorPresets serializer::loadFloorPreset(const std::filesystem::path& path) {
+FloorGenPresets serializer::loadFloorPreset(const std::filesystem::path& path) {
     tin::Data data = tin::read(path / "floor.tin");
-    FloorPresets floorPresets;
+    FloorGenPresets floorPresets;
     for (const auto& [name, height] : data) {
         floorPresets.emplace_back(name, validator::to<float>(height).value_or(1.0f));
     }
     return floorPresets;
 }
 
-void serializer::saveOverlayPreset(const OverlayPresets& overlayPresets, const std::filesystem::path& path) {
+void serializer::saveOverlayPreset(const OreGenPresets& overlayPresets, const std::filesystem::path& path) {
     tin::Data data;
     for (const auto& [name, frequency, deposite] : overlayPresets) {
         data.emplace(name, std::to_string(frequency) + '|' + std::to_string(deposite));
@@ -27,9 +27,9 @@ void serializer::saveOverlayPreset(const OverlayPresets& overlayPresets, const s
     tin::write(path / "overlay.tin", data);
 }
 
-OverlayPresets serializer::loadOverlayPreset(const std::filesystem::path& path) {
+OreGenPresets serializer::loadOverlayPreset(const std::filesystem::path& path) {
     const tin::Data data = tin::read(path / "overlay.tin");
-    OverlayPresets overlayPresets;
+    OreGenPresets overlayPresets;
     for (const auto& [name, strEntry] : data) {
         TileCoord tcEntry = validator::to<TileCoord>(strEntry).value_or(TileCoord(0, 0));
         overlayPresets.emplace_back(name, tcEntry.x, tcEntry.y);

@@ -12,16 +12,16 @@ void serializer::save(const WorldProperties& properties, const std::filesystem::
     data.emplace("map_size", std::to_string(properties.worldConfig.mapSize.x) + '|' + std::to_string(properties.worldConfig.mapSize.y));
     data.emplace("seed", std::to_string(properties.worldConfig.seed));
     tin::write(path / "world_properties.tin", data);
-    saveFloorPreset(properties.floorPresets, path);
-    saveOverlayPreset(properties.overlayPresets, path);
+    saveFloorPreset(properties.floorGenPresets, path);
+    saveOverlayPreset(properties.oreGenPresets, path);
 }
 
 WorldProperties serializer::load(const std::filesystem::path& path) {
     const tin::Data data = tin::read(path / "world_properties.tin");
     TileCoord mapSize = data.get<TileCoord>("map_size").value_or(TileCoord(0, 0));
     uint64_t seed = data.get<uint64_t>("seed").value_or(0U);
-    FloorPresets floor = loadFloorPreset(path);
-    OverlayPresets overlay = loadOverlayPreset(path);
+    FloorGenPresets floor = loadFloorPreset(path);
+    OreGenPresets overlay = loadOverlayPreset(path);
     WorldConfig config{ .mapSize = mapSize, .seed = seed };
     return WorldProperties(config, floor, overlay);
 }

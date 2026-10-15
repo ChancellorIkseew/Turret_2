@@ -28,9 +28,9 @@ static uint8_t calculateTileType(const float height, const std::vector<PreparedF
     return 0U;
 }
 
-static auto prepareFloorPresets(const FloorPresets& floorPresets, const Indexes& indexes) {
+static auto prepareFloorGenPresets(const FloorGenPresets& floorGenPresets, const Indexes& indexes) {
     std::vector<PreparedFloor> result;
-    for (const auto& [name, height] : floorPresets) {
+    for (const auto& [name, height] : floorGenPresets) {
         if (!indexes.getFloor().contains(name)) {
             logger.warning("Content is not registred: \"{}\".", name);
             continue;
@@ -41,9 +41,9 @@ static auto prepareFloorPresets(const FloorPresets& floorPresets, const Indexes&
     return result;
 }
 
-static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Presets& presets) {
+static auto prepareOreGenPresets(const OreGenPresets& oreGenPresets, const Presets& presets) {
     std::vector<PreparedOverlay> result;
-    for (const auto& [name, frequency, deposit] : overlayPresets) {
+    for (const auto& [name, frequency, deposit] : oreGenPresets) {
         if (!presets.getOres().contains(name)) {
             logger.warning("Content is not registred: \"{}\".", name);
             continue;
@@ -55,8 +55,8 @@ static auto prepareOverlayPresets(const OverlayPresets& overlayPresets, const Pr
 
 static WorldMap generateMap(const WorldProperties& properties, const Assets& assets) {
     const auto mapSize = properties.worldConfig.mapSize;
-    const auto floorPresets = prepareFloorPresets(properties.floorPresets, assets.getIndexes());
-    const auto overlayPresets = prepareOverlayPresets(properties.overlayPresets, assets.getPresets());
+    const auto floorGenPresets = prepareFloorGenPresets(properties.floorGenPresets, assets.getIndexes());
+    const auto oreGenPresets = prepareOreGenPresets(properties.oreGenPresets, assets.getPresets());
     //
     const PerlinNoise2D mainNoise(properties.worldConfig.seed);
     const PerlinNoise2D supportNoise(properties.worldConfig.seed + 100U);
@@ -70,9 +70,9 @@ static WorldMap generateMap(const WorldProperties& properties, const Assets& ass
         for (int y = 0; y < mapSize.y; ++y) {
             const float m = mainNoise.createTile(x, y + 1, MAIN_NOISE_SCALE);
             const float s = supportNoise.createTile(x, y + 1, SUPPORT_NOISE_SCALE);
-            floor[x + y * mapSize.x] = calculateTileType(m * 0.85f + s * 0.25f, floorPresets);
+            floor[x + y * mapSize.x] = calculateTileType(m * 0.85f + s * 0.25f, floorGenPresets);
 
-            for (const auto& [id, frequency, deposit] : overlayPresets) {
+            for (const auto& [id, frequency, deposit] : oreGenPresets) {
                 const uint32_t seedOffset = id * SEED_OFFSET;
                 if (squirellNoise.createTile(x, y, frequency, seedOffset))
                     spotGenerator.generateSpot(ore, TileCoord(x, y), OrePresetID(id), deposit, mapSize);

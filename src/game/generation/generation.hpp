@@ -8,33 +8,33 @@
 class Assets;
 class World;
 
-struct FloorPreset {
+struct FloorGenPreset {
     std::string type;
     float height = 1.0f;
-    FloorPreset(const std::string& type, const float height) :
+    FloorGenPreset(const std::string& type, const float height) :
         type(type), height(height) { }
 };
 
-struct OverlayPreset {
+struct OreGenPreset {
     std::string type;
     int frequency = 0, deposite = 0;
-    OverlayPreset(const std::string& type, const int frequency, const int deposite) :
+    OreGenPreset(const std::string& type, const int frequency, const int deposite) :
         type(type), frequency(frequency), deposite(deposite) { }
 };
 
-using FloorPresets = std::vector<FloorPreset>;
-using OverlayPresets = std::vector<OverlayPreset>;
+using FloorGenPresets = std::vector<FloorGenPreset>;
+using OreGenPresets = std::vector<OreGenPreset>;
 
 struct WorldProperties {
     WorldProperties() = default;
     WorldProperties(const WorldConfig& worldConfig,
-        const FloorPresets& floorPresets,
-        const OverlayPresets& overlayPresets) :
+        const FloorGenPresets& floorGenPresets,
+        const OreGenPresets& oreGenPresets) :
         worldConfig(worldConfig),
-        floorPresets(floorPresets),
-        overlayPresets(overlayPresets) { }
-    FloorPresets floorPresets;
-    OverlayPresets overlayPresets;
+        floorGenPresets(floorGenPresets),
+        oreGenPresets(oreGenPresets) { }
+    FloorGenPresets floorGenPresets;
+    OreGenPresets oreGenPresets;
     WorldConfig worldConfig;
 };
 
