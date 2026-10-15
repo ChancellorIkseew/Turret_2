@@ -11,9 +11,9 @@ void BuildTools::drawOneBlock(App& app, Renderer& renderer, const TileCoord tile
         const float modifier = std::sin(timeMs / 500.f) * 64.f;
         alpha = uint8_t(modifier) + 191; // 255 - 64
     }
+    const Presets& presets = app.getAssets().getPresets();
     //
     if (tileData.component == TileComponent::block) {
-        const Presets& presets = app.getAssets().getPresets();
         const int size = presets.getBlock(BlockPresetID(tileData.id)).size;
         const World& world = app.getSession().getWorld();
         const bool canBuild = world.getBlocks().canPlace(tile, size) && world.getSchematic().canPlace(tile, size);
@@ -23,13 +23,13 @@ void BuildTools::drawOneBlock(App& app, Renderer& renderer, const TileCoord tile
     }
     //
     if (tileData.component == TileComponent::ore) {
-        const OrePreset& preset = app.getAssets().getPresets().getOre(OrePresetID(tileData.id));
+        const OrePreset& preset = presets.getOre(OrePresetID(tileData.id));
         renderer.draw(preset.textureRect, position, t1::TILE_PC, PixelCoord(0.f, 0.f), 0.f);
         return;
     }
     //
     if (tileData.component == TileComponent::floor) {
-        const FloorPreset& preset = app.getAssets().getPresets().getFloor(FloorPresetID(tileData.id));
+        const FloorPreset& preset = presets.getFloor(FloorPresetID(tileData.id));
         constexpr PixelCoord BLENDING_AREA(4.f, 4.f);
         constexpr PixelCoord FLOOR_SIZE = t1::TILE_PC + BLENDING_AREA * 2.f;
         renderer.draw(preset.textureRect, position - BLENDING_AREA, FLOOR_SIZE, PixelCoord(0.f, 0.f), 0.f);
