@@ -40,16 +40,16 @@ public:
         const TileCoord targetTile = t1::tile(camera.fromScreenToMap(mousePosition));
         if (!map.tileExists(targetTile))
             return;
-        const uint8_t index = map.at(targetTile).ore.asUint();
         std::string trimedName;
-        if (index != 0) {
-            const OrePreset& orePreset = presets.getOre(OrePresetID(index));
-            trimedName = util::removePrefix(getNameByID(presets.getOres(), OrePresetID(index)), "ore_");
+        const MapTile& tile = map.at(targetTile);
+        if (tile.ore != OrePresetID(0)) {
+            const OrePreset& orePreset = presets.getOre(tile.ore);
+            trimedName = util::removePrefix(getNameByID(presets.getOres(), tile.ore), "ore_");
             icon->setTexture(new T1_UITexture(presets.getItem(orePreset.item).textureRect));
         }
-        else {
-            const FloorPreset& floorPreset = presets.getFloor(FloorPresetID(index));
-            trimedName = util::removePrefix(getNameByID(presets.getFloors(), FloorPresetID(index)), "floor_");
+        else if (tile.floor != FloorPresetID(0)) {
+            const FloorPreset& floorPreset = presets.getFloor(tile.floor);
+            trimedName = util::removePrefix(getNameByID(presets.getFloors(), tile.floor), "floor_");
             icon->setTexture(new T1_UITexture(floorPreset.textureRect));
         }
         label->setText(tr(trimedName));
