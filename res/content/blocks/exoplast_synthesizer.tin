@@ -1,0 +1,15 @@
+#visual
+texture=exoplast_synthesizer
+frame_ticks=0
+frame_height=64
+frame_order=0
+#logic
+archetype=factory
+size=2
+build_time=120
+rotatable=false
+health=500
+recipe=item_copper|120,item_iron|80,item_manganum|20
+output_item=item_exoplast|1
+input_items=item_coal|1,item_copper|1
+production_time=30
