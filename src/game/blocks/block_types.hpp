@@ -47,7 +47,7 @@ struct ImpactDrillBlock : Block {
     int16_t productionTime = 0;
     int16_t restProductionTime = 0;
     uint8_t step = 0;
-    ImpactDrillBlock(int16_t reloadproductionTime) : productionTime(reloadproductionTime) {}
+    ImpactDrillBlock(int16_t productionTime) : productionTime(productionTime) {}
     t1_derived BlockType getType() const noexcept final { return BlockType::impact_drill; }
 public:
     void mine(TileCoord tile, const WorldMap& terrain, const Presets& presets);
