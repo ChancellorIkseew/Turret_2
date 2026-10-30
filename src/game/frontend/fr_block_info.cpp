@@ -26,6 +26,20 @@ public:
     }
 };
 
+static Layout* makeItemsList(std::span<const Ingredient> recipe, const Presets& presets) {
+    auto list = new Layout(Orientation::horizontal);
+    list->setPalette(NULL_PALETTE);
+    for (const auto ing : recipe) {
+        if (ing.itemID.asUint() == 0)
+            break;
+        if (ing.amount < 1)
+            continue;
+        const ItemPreset& preset = presets.getItem(ing.itemID);
+        list->addNode(new FrCostSlot(new T1_UITexture(preset.textureRect), ing.amount));
+    }
+    return list;
+}
+
 class FrBlockInfo: public Container {
 public:
     FrBlockInfo(App& app, const uint8_t blockPresetID) : Container(Align::center, Orientation::vertical) {
@@ -48,17 +62,7 @@ public:
         addNode(new Label(tr("Build time: {} ticks", preset.buildTime)));
         addNode(new Label(tr("Durability: {}", preset.maxHealth)));
         addNode(new Label(tr("Cost:")));
-
-        auto ingridients = addNode(new Layout(Orientation::horizontal));
-        ingridients->setPalette(NULL_PALETTE);
-        for (const auto ing : preset.recipe) {
-            if (ing.itemID.asUint() == 0)
-                break;
-            if (ing.amount < 1)
-                continue;
-            const ItemPreset& preset = presets.getItem(ing.itemID);
-            ingridients->addNode(new FrCostSlot(new T1_UITexture(preset.textureRect), ing.amount));
-        }
+        addNode(makeItemsList(std::span<const Ingredient>(preset.recipe), presets));
 
         if (preset.archetype == BlockType::turret) {
             const TurretPreset& turret = presets.getTurret(preset.turret);
@@ -73,6 +77,14 @@ public:
             addNode(new Label(tr("Ammo:")));
             const TextureRect ammo = presets.getItem(turret.ammo).textureRect;
             addNode(new Icon(ICON_SIZE, new T1_UITexture(ammo)));
+        }
+
+        if (preset.archetype == BlockType::factory) {
+            addNode(new Label(tr("Input:")));
+            addNode(makeItemsList(std::span<const Ingredient>(preset.inputItems), presets));
+            addNode(new Label(tr("Output:")));
+            const TextureRect itemTextureRect = presets.getItem(preset.outputItem.itemID).textureRect;
+            addNode(new FrCostSlot(new T1_UITexture(itemTextureRect), preset.outputItem.amount));
         }
 
         addNode(new Button(Point(260, 30), tr("Back")))->addCallback([&] { close(); });
