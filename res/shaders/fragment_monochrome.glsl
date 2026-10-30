@@ -8,7 +8,7 @@ layout (location = 0) out vec4 fragColor;
 layout (binding = 0) uniform sampler2D gameTexture;
 
 void main() {
-    if (texture(gameTexture, inTexCoord) == 0)
+    if (texture(gameTexture, inTexCoord).a == 0.0)
         discard;
     fragColor = inColor;
 }
