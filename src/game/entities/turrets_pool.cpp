@@ -10,7 +10,6 @@ void TurretsPool::reserve(const size_t capacity) {
     soa.restReloadTime.reserve(capacity);
     soa.currentBarrel.reserve(capacity);
     soa.currentRecoil.reserve(capacity);
-    soa.turretFrame.reserve(capacity);
     soa.ammo.reserve(capacity);
 }
 
@@ -32,7 +31,6 @@ void TurretsPool::addTurret(
     soa.restReloadTime.push_back(restReloadTime);
     soa.currentBarrel.push_back(0);
     soa.currentRecoil.push_back(0.f);
-    soa.turretFrame.push_back(0);
     soa.ammo.push_back(0);
     ++soa.turretCount;
 }
@@ -50,7 +48,6 @@ void TurretsPool::removeTurret(const size_t targetIndex) {
         soa.restReloadTime[targetIndex] = std::move(soa.restReloadTime[last]);
         soa.currentBarrel[targetIndex] = std::move(soa.currentBarrel[last]);
         soa.currentRecoil[targetIndex] = std::move(soa.currentRecoil[last]);
-        soa.turretFrame[targetIndex] = std::move(soa.turretFrame[last]);
         soa.ammo[targetIndex] = std::move(soa.ammo[last]);
     }
 
@@ -63,6 +60,5 @@ void TurretsPool::removeTurret(const size_t targetIndex) {
     soa.restReloadTime.pop_back();
     soa.currentBarrel.pop_back();
     soa.currentRecoil.pop_back();
-    soa.turretFrame.pop_back();
     soa.ammo.pop_back();
 }

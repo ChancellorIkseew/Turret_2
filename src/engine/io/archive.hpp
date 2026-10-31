@@ -24,7 +24,7 @@ namespace archive {
     }
 
     template<class T>
-    inline void get(std::string_view& blob, std::vector<T>& vec, size_t count) {
+    inline void get(std::string_view& blob, std::vector<T>& vec, const size_t count) {
         static_assert(std::is_trivially_copyable_v<T>);
         if (count == 0)
             return;
@@ -56,7 +56,7 @@ namespace archive {
 
         ///@brief Throws std::runtime_error.
         template<class T>
-        void get(std::vector<T>& dest, size_t count) {
+        void get(std::vector<T>& dest, const size_t count) {
             if (data.size() < sizeof(T) * count)
                 throw std::runtime_error("Unexpected end of data.");
             archive::get(data, dest, count);
