@@ -3,9 +3,9 @@
 #include "game/blocks/block_map.hpp"
 
 void InProgress::onPlace(BlocksMeta& meta, TileCoord tile, TeamID teamID, BlockRot rotation) {
-    meta.removeBlockInProgress(tile);
+    meta.addBlockInProgress(tile);
 }
 
 void InProgress::onDemolish(BlocksMeta& meta, TileCoord tile) {
-    meta.addBlockInProgress(tile);
+    meta.removeBlockInProgress(tile);
 }

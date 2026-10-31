@@ -3,7 +3,7 @@
 #include "engine/io/io.hpp"
 #include "game/entities/turrets_pool.hpp"
 
-void saveShells(const TurretSoA& soa, const std::filesystem::path& path) {
+void saveTurrets(const TurretSoA& soa, const std::filesystem::path& path) {
     std::string blob;
     archive::add(blob, soa.turretCount);
     archive::add(blob, soa.masterTile);
@@ -20,7 +20,7 @@ void saveShells(const TurretSoA& soa, const std::filesystem::path& path) {
     io::writeFile(path / "turrets.dat", packedData);
 }
 
-TurretSoA loadShells(const std::filesystem::path& path) {
+TurretSoA loadTurrets(const std::filesystem::path& path) {
     const std::string packedData = io::readFile(path / "turrets.dat");
     const std::string blob = archive::unpack(packedData);
     archive::Reader reader(blob);

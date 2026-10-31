@@ -3,7 +3,7 @@
 #include "engine/io/io.hpp"
 #include "game/entities/mobs_pool.hpp"
 
-void saveShells(const MobSoA& soa, const std::filesystem::path& path) {
+void saveMobs(const MobSoA& soa, const std::filesystem::path& path) {
     std::string blob;
     archive::add(blob, soa.mobCount);
     archive::add(blob, soa.hitboxRadius);
@@ -13,6 +13,7 @@ void saveShells(const MobSoA& soa, const std::filesystem::path& path) {
     archive::add(blob, soa.angle);
     archive::add(blob, soa.health);
     archive::add(blob, soa.shieldHealth);
+    archive::add(blob, soa.preset);
     archive::add(blob, soa.turretPreset);
     archive::add(blob, soa.teamID);
     archive::add(blob, soa.motionData);
@@ -27,7 +28,7 @@ void saveShells(const MobSoA& soa, const std::filesystem::path& path) {
     io::writeFile(path / "mobs.dat", packedData);
 }
 
-MobSoA loadShells(const std::filesystem::path& path) {
+MobSoA loadMobs(const std::filesystem::path& path) {
     const std::string packedData = io::readFile(path / "mobs.dat");
     const std::string blob = archive::unpack(packedData);
     archive::Reader reader(blob);
@@ -40,6 +41,7 @@ MobSoA loadShells(const std::filesystem::path& path) {
     reader.get(soa.angle,             soa.mobCount);
     reader.get(soa.health,            soa.mobCount);
     reader.get(soa.shieldHealth,      soa.mobCount);
+    reader.get(soa.preset,            soa.mobCount);
     reader.get(soa.turretPreset,      soa.mobCount);
     reader.get(soa.teamID,            soa.mobCount);
     reader.get(soa.motionData,        soa.mobCount);
@@ -49,6 +51,6 @@ MobSoA loadShells(const std::filesystem::path& path) {
     reader.get(soa.turretAngle,       soa.mobCount);
     reader.get(soa.currentRecoil,     soa.mobCount);
     reader.get(soa.chassisTick,       soa.mobCount);
-    reader.get(soa.ammo);
+    reader.get(soa.ammo,              soa.mobCount);
     return soa;
 }
