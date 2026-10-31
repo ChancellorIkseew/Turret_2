@@ -7,6 +7,7 @@
 #include "engine/io/parser/tin_parser.hpp"
 #include "engine/util/platform/platform.hpp"
 #include "engine/window/window.hpp"
+#include "game/game_session.hpp"
 #include "localization.hpp"
 
 Settings::_Audio Settings::audio;
@@ -82,16 +83,20 @@ void Settings::applySettings(App& app) {
     app.getAssets().getAudio().setUIVolume(static_cast<float>(audio.ui) / 100.f);
     app.getAssets().getAudio().setMusicVolume(static_cast<float>(audio.music) / 100.f);
     app.getAssets().getAudio().updateVolume();
-    // "muteInBackground" implemented in game_session.cpp
+    // "audio.muteInBackground" implemented in app.cpp
     //
     app.getMainWindow().setFPS(display.fps);
     app.getMainWindow().getRenderer().setVSyncMode(VSyncMode(display.vSyncMode));
     app.getMainWindow().setFullscreen(display.fullscreen);
-    // "cameraInertia" imlemented in game_session.cpp and fr_graphics.cpp
-    // "pauseOnWorldOpen" implemented in app.cpp
-    // "showDebugInfo" implemented local in .cpp files
+    //
+    // "gameplay.vingette" implemented in game_session.cpp
+    if (app.hasSession()) app.getSession().getCamera().toggleInertia(gameplay.cameraInertia);
+    // "gameplay.pauseInBackground" implemented in app.cpp
+    // "gameplay.pauseOnWorldOpen" implemented in app.cpp
+    // "gameplay.showDebugInfo" implemented local in .cpp files
+    //
     Localization::load(tin::read(io::folders::LANG / (gui.lang + ".tin")).release());
-    // "guiScale" implemented in gui.cpp and fr_gui.cpp
+    if (app.hasSession()) app.getGUI().setScale(gui.scale);
     app.getMainWindow().getCursor().setType(gui.customCursor ? CursorType::arrow : CursorType::OS_default);
     util::platform::Console::setVisible(Settings::gui.showConsole);
 }

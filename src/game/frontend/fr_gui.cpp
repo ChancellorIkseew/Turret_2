@@ -5,7 +5,6 @@
 #include <MINGUI/widgets/form.hpp>
 #include <MINGUI/widgets/label.hpp>
 #include "app.hpp"
-#include "engine/gui/gui.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
 
@@ -41,7 +40,6 @@ public:
         Settings::gui.scale = validator::to<ScaleT>(scale->getText()).value_or(1U);
         Settings::gui.customCursor = customCursor->getValue();
         Settings::gui.showConsole = showConsole->getValue();
-        app.getGUI().setScale(Settings::gui.scale);
         Settings::applySettings(app);
         Settings::writeSettings();
     }

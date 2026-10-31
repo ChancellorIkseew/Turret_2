@@ -43,7 +43,7 @@ static GameMode getGameMode(const appCommand command) {
     case appCommand::main_menu:           return GameMode::menu;
     case appCommand::gameplay_new_world:  return GameMode::survival;
     case appCommand::gameplay_load_world: return GameMode::survival;
-    default:                                 return GameMode::editor;
+    default:                              return GameMode::editor;
     }
 }
 

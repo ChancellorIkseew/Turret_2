@@ -8,7 +8,6 @@
 #include "app.hpp"
 #include "engine/io/parser/validator.hpp"
 #include "engine/settings/settings.hpp"
-#include "game/game_session.hpp"
 
 constexpr Point BTN_SIZE(120, 30);
 constexpr Point S_BTN_SIZE(150, 20);
@@ -63,7 +62,6 @@ public:
         Settings::display.fullscreen = fullscreen->getValue();
         Settings::gameplay.cameraInertia = inertia->getValue();
         Settings::gameplay.vingette = vingette->getValue();
-        app.getSession().getCamera().toggleInertia(Settings::gameplay.cameraInertia);
         if (vSync->isTarget(off))
             Settings::display.vSyncMode = VSyncMode::immediate;
         if (vSync->isTarget(synchronized))

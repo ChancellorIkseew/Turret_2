@@ -33,6 +33,7 @@ public:
     void openMainMenu();
     //
     void closeGame() { mainWindow.close(); }
+    bool hasSession() const noexcept { return session != nullptr; }
     GameSession& getSession() { return *session; }
     //
     const MainWindow& getMainWindow() const { return mainWindow; }
