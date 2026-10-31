@@ -6,7 +6,6 @@ has_trail=false
 #logic
 speed=4.0
 damage=1
-life_time=70
 explosion_damage=0
 explosion_radius=5.0
 shards_count=5

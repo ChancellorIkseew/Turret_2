@@ -139,7 +139,6 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
     return ShellPreset{
         reader.get<float>("speed"),
         reader.get<Health>("damage"),
-        reader.get<TickCount>("life_time"),
         explosion,
         visual
     };

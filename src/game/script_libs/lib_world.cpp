@@ -34,7 +34,7 @@ static void spawnMob(const std::string& presetName, int x, int y, TeamID teamID)
     script_libs::builtInScripts->spawnMob(presetID, { x, y }, teamID);
 }
 
-static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TeamID teamID) {
+static void spawnShell(const std::string& presetName, int x, int y, AngleRad angle, TickCount lifeTime, TeamID teamID) {
     if (!script_libs::assets->getPresets().hasShellID(presetName)) {
         logger.warning("Preset does not exist. Preset: {}", presetName);
         return;
@@ -47,8 +47,7 @@ static void spawnShell(const std::string& presetName, int x, int y, AngleRad ang
     const ShellPresetID presetID = presets.getShellID(presetName);
     const ShellPreset& preset = presets.getShell(presetID);
     const PixelCoord velocity = PixelCoord(sinf(angle), cosf(angle)) * preset.speed;
-    script_libs::world->getShells().addShell(presetID, PixelCoord(x, y), velocity, angle, preset.damage,
-        preset.maxLifeTime, teamID);
+    script_libs::world->getShells().addShell(presetID, PixelCoord(x, y), velocity, angle, preset.damage, lifeTime, teamID);
 }
 
 void script_libs::registerWorld(const ScriptsHandler& scriptsHandler) {
@@ -57,5 +56,6 @@ void script_libs::registerWorld(const ScriptsHandler& scriptsHandler) {
     scriptsHandler.registerFunction("void world_placeFloor(int x, int y, uint8 floorID)", asFunctionPtr(placeFloor));
     scriptsHandler.registerFunction("void world_placeOre(int x, int y, uint8 oreID)", asFunctionPtr(placeOre));
     scriptsHandler.registerFunction("void world_spawnMob(string preset, int x, int y, uint8 teamID)", asFunctionPtr(spawnMob));
-    scriptsHandler.registerFunction("void world_spawnShell(string preset, int x, int y, float angle, uint8 teamID)", asFunctionPtr(spawnShell));
+    scriptsHandler.registerFunction("void world_spawnShell(string preset, int x, int y, float angle, uint16 lifeTime, uint8 teamID)",
+        asFunctionPtr(spawnShell));
 }

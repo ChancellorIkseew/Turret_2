@@ -130,7 +130,8 @@ static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPoo
         if (!soa.velocity.empty())
             velocity += soa.velocity[i] * 0.8f;
 
-        shells.addShell(turret.shell, position, velocity, angle, shell.damage, shell.maxLifeTime, soa.teamID[i]);
+        const TickCount lifeTime = static_cast<TickCount>(turret.range / shell.speed);
+        shells.addShell(turret.shell, position, velocity, angle, shell.damage, lifeTime, soa.teamID[i]);
         if (camera.contains(position)) {
             position.x -= shell.visual.origin.y * sin;
             position.y -= shell.visual.origin.y * cos;

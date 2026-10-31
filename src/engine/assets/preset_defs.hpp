@@ -31,7 +31,6 @@ struct ShellVisualPreset {
 struct ShellPreset {
     float speed;
     Health damage;
-    TickCount maxLifeTime;
     Explosion explosion;
     ShellVisualPreset visual;
 };
