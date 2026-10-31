@@ -78,6 +78,9 @@ Explosion damage: {}=Урон от взрыва: {}
 Explosion radius: {:.2f} tiles=Радиус взрыва: {:.2f} плиток
 Reload: {} ticks=Перезарядка: {} тиков
 Ammo:=Боеприпасы:
+#factory
+Input:=Вход:
+Output:=Выход:
 
 #block_names
 cannon_turret=Турель-тяжёлая автопушка
