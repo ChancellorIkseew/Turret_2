@@ -127,7 +127,7 @@ public:
     //
     enum class BuildResult { build_complite, build, demolish_complite, demolish };
     //
-    void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block);
+    void place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block, BlockRot rotation = BlockRot::none);
     void demolish(TileCoord tile);
     BuildResult build(const TileCoord tile, const TeamID teamID, const int16_t buildSpeed, const Presets& presets,
         Inventory& inventory, const int16_t costMul);

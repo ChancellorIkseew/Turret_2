@@ -61,10 +61,7 @@ struct BeltBlock : Block {
     float minItem = ITEM_SPACE; //last item progress
 
     int8_t len = 0; // itemCount
-    int8_t mid = 0; //current central item
-    int8_t lastInserted = 0;
     BlockRot rotation = left;
-    bool aligned = true;
 
     static constexpr float ITEM_SPACE = 0.33f;
     static constexpr int8_t CAPACITY = 3;
@@ -88,7 +85,7 @@ struct FactoryBlock : Block {
     int16_t productionTime = 0;
     int16_t restProductionTime = 0;
     uint8_t step = 0;
-    FactoryBlock(const BlockPreset& presets);
+    FactoryBlock(const BlockPreset& preset);
     t1_derived BlockType getType() const noexcept final { return BlockType::factory; }
     t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final;
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
@@ -99,11 +96,10 @@ public:
 
 struct TurretBlock : Block {
     TurretPresetID turretPreset;
-    BlockRot defaultRotation;
     ItemStack ammo;
     //
-    TurretBlock(ItemPresetID ammoItem, TurretPresetID turretPreset, BlockRot rotation) :
-        turretPreset(turretPreset), defaultRotation(rotation) {
+    TurretBlock(ItemPresetID ammoItem, TurretPresetID turretPreset) :
+        turretPreset(turretPreset) {
         ammo.item = ammoItem;
     }
     t1_derived BlockType getType() const noexcept final { return BlockType::turret; }

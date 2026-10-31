@@ -99,10 +99,6 @@ void BuiltInScripts::spawnMob(const MobPresetID presetID, const PixelCoord posit
 }
 
 void BuiltInScripts::placeBlock(const BlockPresetID presetID, const TileCoord tile, const TeamID teamID, const BlockRot rotation) {
-    auto& blocks = world.getBlocks();
-    const auto& preset = assets.getPresets().getBlock(presetID);
-    if(!blocks.canPlace(tile, preset.size))
-        return;
-    std::unique_ptr<Block> block = makeBlock(assets.getPresets(), presetID, preset, rotation);
-    blocks.place(tile, teamID, block);
+    std::unique_ptr<Block> block = makeBlock(assets.getPresets(), presetID, rotation);
+    world.getBlocks().place(tile, teamID, block, rotation);
 }

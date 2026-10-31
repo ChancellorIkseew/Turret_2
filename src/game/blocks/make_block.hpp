@@ -6,8 +6,9 @@
 
 class Presets;
 
-inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID presetID, BlockPreset preset, BlockRot rotation) {
+inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID presetID, BlockRot rotation) {
     static debug::Logger bmLogger("bloc_make");
+    const BlockPreset preset = presets.getBlock(presetID);
     std::unique_ptr<Block> block;
     switch (preset.archetype) {
     case BlockType::belt:
@@ -17,13 +18,13 @@ inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID pr
         block = std::make_unique<CoreBlock>();
         break;
     case BlockType::drill:
-        block = std::make_unique<DrillBlock>(presets.getBlock(presetID).productionTime);
+        block = std::make_unique<DrillBlock>(preset.productionTime);
         break;
     case BlockType::impact_drill:
-        block = std::make_unique<ImpactDrillBlock>(presets.getBlock(presetID).productionTime);
+        block = std::make_unique<ImpactDrillBlock>(preset.productionTime);
         break;
     case BlockType::factory:
-        block = std::make_unique<FactoryBlock>(presets.getBlock(presetID));
+        block = std::make_unique<FactoryBlock>(preset);
         break;
     case BlockType::junction:
         block = std::make_unique<JunctionBlock>();
@@ -32,7 +33,7 @@ inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID pr
         block = std::make_unique<RouterBlock>();
         break;
     case BlockType::turret:
-        block = std::make_unique<TurretBlock>(presets.getTurret(preset.turret).ammo, preset.turret, rotation);
+        block = std::make_unique<TurretBlock>(presets.getTurret(preset.turret).ammo, preset.turret);
         break;
     default:
         bmLogger.error("Could not handle block type");

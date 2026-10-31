@@ -18,14 +18,14 @@ bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
     return at(tile).type == BlockType::air;
 }
 
-void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block) {
+void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block, BlockRot rotation) {
     if (!canPlace(tile, block->size))
         return;
 
     if (block->getType() == BlockType::turret) {
         TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
         TurretPresetID preset = turretBlock->turretPreset;
-        const AngleRad angleRad = static_cast<float>(turretBlock->defaultRotation) * t1::TAU;
+        const AngleRad angleRad = static_cast<float>(rotation) * t1::TAU;
         const PixelCoord origin = t1::HALF_TILE_PC * static_cast<float>(block->size);
         meta.getTurrets().addTurret(preset, tile, t1::pixel(tile) + origin, t1::PI - angleRad, teamID, ShootingData(), 0);
     }
@@ -81,9 +81,9 @@ Result BlockMap::build(const TileCoord tile, const TeamID teamID, const int16_t 
         blockInProgress->increeseProgress(step);
         if (!blockInProgress->isProgressFull(totalTime))
             return Result::build;
-        std::unique_ptr<Block> block = makeBlock(presets, blockInProgress->presetID, preset, blockInProgress->rotation);
+        std::unique_ptr<Block> block = makeBlock(presets, blockInProgress->presetID, blockInProgress->rotation);
         demolish(masterTile);
-        place(masterTile, teamID, block);
+        place(masterTile, teamID, block, blockInProgress->rotation);
         return Result::build_complite;
     }
     else /* BPAction::demolish */ {
@@ -119,7 +119,7 @@ void BlockMap::applyBlueprint(const Blueprint& blueprint, const TeamID teamID, c
         block->textureRect = preset.visual.textureRect;
     }
     block->health = 1;
-    place(blueprint.tile, teamID, block);
+    place(blueprint.tile, teamID, block, blueprint.rotation);
 }
 
 std::optional<InProgressAim> BlockMap::getClosestInProgress(const PixelCoord mobPosition) {
