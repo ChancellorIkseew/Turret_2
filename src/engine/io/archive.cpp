@@ -26,7 +26,7 @@ std::string archive::pack(std::string_view source) {
 
 std::string archive::unpack(std::string_view packed) {
     if (packed.size() < sizeof(uint64_t)) throw std::runtime_error("Corrupted data");
-    //    
+    //
     uint64_t originalSize = 0;
     std::memcpy(&originalSize, packed.data(), sizeof(uint64_t));
     packed.remove_prefix(sizeof(uint64_t));
