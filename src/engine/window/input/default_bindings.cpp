@@ -2,6 +2,7 @@
 //
 #include "SDL3/SDL_scancode.h"
 #include "SDL3/SDL_mouse.h"
+#include "bindnames.hpp"
 
 std::unordered_map<std::string, Binding> Controls::bindings = {
     {LMB, Binding(SDL_BUTTON_LEFT, InputType::mouse, false)},

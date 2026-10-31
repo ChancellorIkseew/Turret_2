@@ -1,7 +1,7 @@
 #include "camera.hpp"
 //
 #include <algorithm>
-#include "engine/window/input/input.hpp"
+#include "engine/window/input/bindnames.hpp"
 
 constexpr float MIN_MAP_SCALE = 0.25f, MAX_MAP_SCALE = 5.0f;
 constexpr float SCALE_FACTOR = 1.2f;

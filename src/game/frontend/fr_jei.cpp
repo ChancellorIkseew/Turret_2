@@ -6,6 +6,7 @@
 #include "build_tools/build_tools.hpp"
 #include "engine/gui/gui.hpp"
 #include "engine/gui/t1_ui_renderer.hpp"
+#include "engine/window/input/bindnames.hpp"
 
 constexpr Point BTN_SIZE(32, 32);
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "gui.hpp"
 //
-#include "engine/window/input/input.hpp"
+#include "engine/window/input/bindnames.hpp"
 #include "game/frontend/build_tools/editor_build_tools.hpp"
 #include "game/frontend/frontend.hpp"
 

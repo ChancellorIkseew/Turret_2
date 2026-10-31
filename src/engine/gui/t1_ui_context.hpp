@@ -2,7 +2,7 @@
 #include "MINGUI/core/ui_context_bridge.hpp"
 #include "MINGUI/widgets/clickable.hpp"
 #include "engine/audio/audio.hpp"
-#include "engine/window/input/input.hpp"
+#include "engine/window/input/bindnames.hpp"
 
 class T1_UIContext : public mingui::UIContextBridge {
     Audio& audio;

@@ -1,6 +1,7 @@
 #pragma once
 #include "build_tools.hpp"
 //
+#include "engine/window/input/bindnames.hpp"
 #include "game/world/world.hpp"
 
 class EditorBuildTools : public BuildTools {
