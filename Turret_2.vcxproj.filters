@@ -773,5 +773,11 @@
     <ClCompile Include="src\game\blocks\logic_detail\factory.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\blocks\logic_detail\turret.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\blocks\logic_detail\in_progress.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

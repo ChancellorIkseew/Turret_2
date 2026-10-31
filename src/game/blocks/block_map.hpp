@@ -25,7 +25,7 @@ public:
     void setCoreAttacked(const bool flag) { coreAttacked = flag; }
     auto& getTurrets() { return turrets; }
     //
-    void markForRemove(TileCoord tile) {
+    void markTurretForRemove(TileCoord tile) {
         auto& soa = turrets.getSoa();
         for (size_t i = 0; i < soa.turretCount; ++i) {
             if (tile == soa.masterTile[i])

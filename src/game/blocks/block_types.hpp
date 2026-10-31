@@ -11,6 +11,8 @@ struct InProgress : Block {
     //
     t1_derived BlockType getType() const noexcept final { return BlockType::in_progress; }
     t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
+    t1_derived virtual void onPlace(BlocksMeta& meta, TileCoord tile, TeamID teamID, BlockRot rotation);
+    t1_derived virtual void onDemolish(BlocksMeta& meta, TileCoord tile);
     void drawProgress(Renderer& renderer, const Presets& presets, TileCoord tile) const;
     //
     void increeseProgress(const int16_t step) noexcept { progress += (action == BPAction::build) ? step : -step; }
@@ -27,6 +29,8 @@ struct CoreBlock : Block {
     //
     t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return true; };
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final;
+    t1_derived virtual void onPlace(BlocksMeta& meta, TileCoord tile, TeamID teamID, BlockRot rotation);
+    t1_derived virtual void onDemolish(BlocksMeta& meta, TileCoord tile);
     void syncTeam(Team* blockTeam) { team = blockTeam; }
 };
 
@@ -105,6 +109,8 @@ struct TurretBlock : Block {
     t1_derived BlockType getType() const noexcept final { return BlockType::turret; }
     t1_derived bool canAccept(ItemPresetID item, BlockRot srcRot) final { return item == ammo.item && ammo.count < 10; };
     t1_derived void accept(ItemPresetID item, BlockRot srcRot) final { ++ammo.count; };
+    t1_derived virtual void onPlace(BlocksMeta& meta, TileCoord tile, TeamID teamID, BlockRot rotation);
+    t1_derived virtual void onDemolish(BlocksMeta& meta, TileCoord tile);
     void useAmmo() { --ammo.count; }
 };
 

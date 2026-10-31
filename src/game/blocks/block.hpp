@@ -6,6 +6,7 @@
 
 class BlocksDrawer;
 class BlockMap;
+class BlocksMeta;
 class Presets;
 class Renderer;
 class Team;
@@ -55,6 +56,8 @@ struct Block {
     virtual void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile);
     virtual bool canAccept(ItemPresetID item, BlockRot srcRot) { return false; }
     virtual void accept(ItemPresetID item, BlockRot srcRot) {}
+    virtual void onPlace(BlocksMeta& meta, TileCoord tile, TeamID teamID, BlockRot rotation) {}
+    virtual void onDemolish(BlocksMeta& meta, TileCoord tile) {}
 };
 
 struct LinkBlock : Block {

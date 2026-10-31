@@ -21,19 +21,6 @@ bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
 void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& block, BlockRot rotation) {
     if (!canPlace(tile, block->size))
         return;
-
-    if (block->getType() == BlockType::turret) {
-        TurretBlock* turretBlock = static_cast<TurretBlock*>(block.get());
-        TurretPresetID preset = turretBlock->turretPreset;
-        const AngleRad angleRad = static_cast<float>(rotation) * t1::TAU;
-        const PixelCoord origin = t1::HALF_TILE_PC * static_cast<float>(block->size);
-        meta.getTurrets().addTurret(preset, tile, t1::pixel(tile) + origin, t1::PI - angleRad, teamID, ShootingData(), 0);
-    }
-    if (block->getType() == BlockType::core)
-        meta.addCore(tile);
-    if (block->getType() == BlockType::in_progress)
-        meta.addBlockInProgress(tile);
-
     TileCoord masterTile = tile;
     for (const TileCoord offset : t1::getTileOffsets(block->size)) {
         const TileCoord target = masterTile + offset;
@@ -41,25 +28,19 @@ void BlockMap::place(TileCoord tile, TeamID teamID, std::unique_ptr<Block>& bloc
         at(target).type = BlockType::link;
         at(target).block = std::make_unique<LinkBlock>(masterTile, block.get());
     }
+    block->onPlace(meta, tile, teamID, rotation);
     at(masterTile).place(teamID, block);
 }
 
 void BlockMap::demolish(TileCoord tile) {
     if (at(tile).type == BlockType::air)
         return;
-
     const TileCoord masterTile = getMaster(tile);
-    if (at(masterTile).type == BlockType::turret)
-        meta.markForRemove(masterTile);
-    if (at(masterTile).type == BlockType::core)
-        meta.removeCore(masterTile);
-    if (at(masterTile).type == BlockType::in_progress)
-        meta.removeBlockInProgress(masterTile);
-
     const int size = at(masterTile).block->size;
     for (const TileCoord offset : t1::getTileOffsets(size)) {
         at(masterTile + offset).demolish();
     }
+    at(masterTile).block->onDemolish(meta, masterTile);
     at(masterTile).demolish();
 }
 

@@ -215,7 +215,9 @@
     <ClCompile Include="src\game\blocks\logic_detail\drill.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\factory.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\junction.cpp" />
+    <ClCompile Include="src\game\blocks\logic_detail\in_progress.cpp" />
     <ClCompile Include="src\game\blocks\logic_detail\router.cpp" />
+    <ClCompile Include="src\game\blocks\logic_detail\turret.cpp" />
     <ClCompile Include="src\game\blocks\schematic\schematic.cpp" />
     <ClCompile Include="src\game\blocks\update_blocks.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
