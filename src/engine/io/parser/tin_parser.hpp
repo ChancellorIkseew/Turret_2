@@ -32,7 +32,10 @@ namespace tin {
             else
                 outValue = validator::to<T>(data.at(key)).value_or(static_cast<T>(alternative));
         }
-
+        template<class T>
+        void getOrThrow(const std::string& key, T& outValue) const {
+            outValue = validator::to<T>(data.at(key)).value();
+        }
         template<class T>
         std::optional<T> get(const std::string& key) const {
             if (!data.contains(key)) return std::nullopt;
