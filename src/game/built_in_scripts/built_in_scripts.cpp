@@ -40,10 +40,9 @@ void BuiltInScripts::execute(App& app, const TimeCount& timeCount) {
 void BuiltInScripts::targetEnemies() {
     const auto& cores = world.getBlocks().getMeta().getCores();
     auto& soa = world.getMobs().getSoa();
-    const TeamID enemyTeam = 1; // refactor get team
     if (cores.empty()) {
         for (size_t i = 0; i < soa.mobCount; ++i) {
-            if (soa.teamID[i] == enemyTeam)
+            if (soa.teamID[i] == enemyTeamID)
                 soa.motionData[i].target = soa.position[i];
         }
     }
@@ -52,7 +51,7 @@ void BuiltInScripts::targetEnemies() {
         const PixelCoord halfCoreSize = t1::HALF_TILE_PC * static_cast<float>(world.getBlocks().at(coreTile).block->size);
         const PixelCoord coreCenter = t1::pixel(coreTile) + halfCoreSize;
         for (size_t i = 0; i < soa.mobCount; ++i) {
-            if (soa.teamID[i] == enemyTeam)
+            if (soa.teamID[i] == enemyTeamID)
                 soa.motionData[i].target = coreCenter;
         }
     }
@@ -64,12 +63,11 @@ void BuiltInScripts::respawnShuttle() {
         return; // players core does not exist
     auto& soa = world.getMobs().getSoa();
     MobPresetID shuttle = assets.getPresets().getMobID("shuttle");
-    const TeamID playerTeam = 0; // refactor get team
     for (size_t i = 0; i < soa.mobCount; ++i) {
-        if (soa.teamID[i] == playerTeam && soa.preset[i] == shuttle)
+        if (soa.teamID[i] == playerTeamID && soa.preset[i] == shuttle)
             return; // shuttle is allive
     }
-    spawnMob(shuttle, t1::tileCenter(cores[0]), playerTeam);
+    spawnMob(shuttle, t1::tileCenter(cores[0]), playerTeamID);
 }
 
 void BuiltInScripts::spawnWave(const uint32_t waveNumber, const uint32_t mobCountMul) {
@@ -78,13 +76,12 @@ void BuiltInScripts::spawnWave(const uint32_t waveNumber, const uint32_t mobCoun
     //
     const auto& presets = assets.getPresets();
     const Wave wave = assets.getWaves().getWave(waveNumber);
-    const TeamID enemyTeam = 1; // refactor get team
 
     for (size_t i = 0; i < wave.mob.size(); ++i) {
         const MobPresetID presetID = presets.getMobID(wave.mob[i]);
         const uint32_t amount = wave.amount[i] * mobCountMul;
         for (uint32_t j = 0; j < amount; ++j) {
-            spawnMob(presetID, position, enemyTeam);
+            spawnMob(presetID, position, enemyTeamID);
         }
     }
 }

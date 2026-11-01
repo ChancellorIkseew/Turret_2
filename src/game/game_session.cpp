@@ -20,16 +20,16 @@ GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui,
 GameSession::~GameSession() = default;
 
 void GameSession::prepare(const Presets& presets) {
-    Team* playerTeam = world->getTeams().addTeam();
-    Team* enemyTeam  = world->getTeams().addTeam();
-    playerController.setPlayerTeamID(playerTeam->getID());
-    TeamID playerTeamID = playerTeam->getID();
+    TeamID playerTeamID = world->getTeams().addTeam();
+    TeamID enemyTeamID  = world->getTeams().addTeam();
+    playerController.setPlayerTeamID(playerTeamID);
+    builtInScripts.initTeamIDs(playerTeamID, enemyTeamID);
     // temporary for alpha-test
     const TileCoord corePosition = world->getMap().getSize() / 2;
     builtInScripts.placeBlock(presets.getBlockID("core"), corePosition, playerTeamID, BlockRot::up);
     camera.teleport(t1::tileCenter(corePosition));
     //
-    Inventory& inventory = playerTeam->getInventory();
+    Inventory& inventory = world->getTeams().getTeamByID(playerTeamID)->getInventory();
     inventory.resources[presets.getItemID("item_copper").asUint()] = 999;
     inventory.resources[presets.getItemID("item_iron").asUint()] = 999;
 }

@@ -9,9 +9,9 @@ class TeamsPool {
 public:
     TeamsPool() = default;
     ///@brief Game can not create more, then 256 teams in one session.
-    Team* addTeam() {
-        teams.try_emplace(nextID, std::make_unique<Team>(nextID));
-        return teams.at(nextID++).get();
+    TeamID addTeam() {
+        teams.try_emplace(nextID, std::make_unique<Team>());
+        return nextID++;
     }
     Team* getTeamByID(const TeamID ID) { return teams.at(ID).get(); }
     bool containsID(const TeamID ID) const { return teams.contains(ID); }

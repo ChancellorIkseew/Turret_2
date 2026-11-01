@@ -12,8 +12,10 @@ class World;
 class BuiltInScripts {
     const Assets& assets;
     World& world;
+    TeamID playerTeamID = 0, enemyTeamID = 0;
 public:
     BuiltInScripts(const Assets& assets, World& world) : assets(assets), world(world) { }
+    void initTeamIDs(const TeamID player, const TeamID enemy) { playerTeamID = player; enemyTeamID = enemy; }
 
     void execute(App& app, const TimeCount& timeCount);
     void spawnWave(const uint32_t waveNumber, const uint32_t mobCountMul);
