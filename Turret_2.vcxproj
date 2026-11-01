@@ -153,6 +153,7 @@
     <ClInclude Include="src\game\world_saver\gen_preset_saver.hpp" />
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
     <ClInclude Include="src\game\world_saver\mobs_saver.hpp" />
+    <ClInclude Include="src\game\world_saver\schematic_saver.hpp" />
     <ClInclude Include="src\game\world_saver\world_config_saver.hpp" />
     <ClInclude Include="src\game\world_saver\shells_saver.hpp" />
     <ClInclude Include="src\game\world_saver\turrets_saver.hpp" />

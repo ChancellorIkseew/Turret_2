@@ -5,6 +5,7 @@
 #include "game/world/world.hpp"
 #include "map_saver.hpp"
 #include "mobs_saver.hpp"
+#include "schematic_saver.hpp"
 #include "shells_saver.hpp"
 #include "world_config_saver.hpp"
 
@@ -24,6 +25,7 @@ void serializer::saveWorld(const World& world, const std::string& folder) {
         serializer::saveMap(world.getMap(), path);
         saveMobs(world.getMobs().getSoa(), path);
         saveShells(world.getShells().getSoa(), path);
+        saveSchematic(world.getSchematic(), path);
         //world.getBlocks();
         //world.getTeams();
         logger.info("World successfully saved.");
@@ -47,6 +49,7 @@ std::unique_ptr<World> serializer::loadWorld(const std::string& folder) {
         auto world = std::make_unique<World>(map, loadConfig(path));
         world->getMobs().getSoa() = loadMobs(path);
         world->getShells().getSoa() = loadShells(path);
+        loadSchematic(world->getSchematic(), path);
         //world->getBlocks();
         //world->getTeams();
         logger.info(" successfully load.");
