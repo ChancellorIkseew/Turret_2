@@ -8,10 +8,10 @@ static TeamID getTeamID() {
     return script_libs::playerController->getPlayerTeamID();
 }
 static TeamID getEnemyTeamID() {
-    Team* enemyTeam = script_libs::world->getTeams().getTeamByName(U"enemy");
-    if (!enemyTeam)
-        script_libs::logAndThrow("Coud not get enemy team ID. Enemy team was nullptr.");
-    return enemyTeam->getID();
+    const TeamID enemyTeamID = script_libs::playerController->getPlayerTeamID() + 1;
+    if (!script_libs::world->getTeams().containsID(enemyTeamID))
+        script_libs::logAndThrow("Coud not get enemy team ID. Enemy team does not exist.");
+    return enemyTeamID;
 }
 
 void script_libs::registerPlayer(const ScriptsHandler& scriptsHandler) {

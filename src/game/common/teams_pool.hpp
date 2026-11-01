@@ -9,20 +9,12 @@ class TeamsPool {
 public:
     TeamsPool() = default;
     ///@brief Game can not create more, then 256 teams in one session.
-    Team* addTeam(const std::u32string& name) {
-        teams.try_emplace(nextID, std::make_unique<Team>(name, nextID));
+    Team* addTeam() {
+        teams.try_emplace(nextID, std::make_unique<Team>(nextID));
         return teams.at(nextID++).get();
     }
     Team* getTeamByID(const TeamID ID) { return teams.at(ID).get(); }
     bool containsID(const TeamID ID) const { return teams.contains(ID); }
-    ///@brief nullptr if team does not exist
-    Team* getTeamByName(const std::u32string& name) {
-        for (const auto& [id, team] : teams) {
-            if (name == team->getName())
-                return team.get();
-        }
-        return nullptr;
-    }
     //
     auto cbegin() const noexcept { return teams.cbegin(); }
     auto begin()  const noexcept { return teams.begin(); }

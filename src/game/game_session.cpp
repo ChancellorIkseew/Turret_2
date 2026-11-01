@@ -20,8 +20,8 @@ GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui,
 GameSession::~GameSession() = default;
 
 void GameSession::prepare(const Presets& presets) {
-    Team* playerTeam = world->getTeams().addTeam(U"player");
-    Team* enemyTeam  = world->getTeams().addTeam(U"enemy");
+    Team* playerTeam = world->getTeams().addTeam();
+    Team* enemyTeam  = world->getTeams().addTeam();
     playerController.setPlayerTeamID(playerTeam->getID());
     TeamID playerTeamID = playerTeam->getID();
     // temporary for alpha-test
