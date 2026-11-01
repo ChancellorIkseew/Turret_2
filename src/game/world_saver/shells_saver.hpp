@@ -3,7 +3,7 @@
 #include "engine/io/io.hpp"
 #include "game/entities/shells_pool.hpp"
 
-void saveShells(const ShellSoA& soa, const std::filesystem::path& path) {
+inline void saveShells(const ShellSoA& soa, const std::filesystem::path& path) {
     std::string blob;
     archive::add(blob, soa.shellCount);
     archive::add(blob, soa.position);
@@ -17,7 +17,7 @@ void saveShells(const ShellSoA& soa, const std::filesystem::path& path) {
     io::writeFile(path / "shells.dat", packedData);
 }
 
-ShellSoA loadShells(const std::filesystem::path& path) {
+inline ShellSoA loadShells(const std::filesystem::path& path) {
     const std::string packedData = io::readFile(path / "shells.dat");
     const std::string blob = archive::unpack(packedData);
     archive::Reader reader(blob);

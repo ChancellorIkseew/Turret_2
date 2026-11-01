@@ -3,7 +3,7 @@
 #include "engine/io/io.hpp"
 #include "game/entities/mobs_pool.hpp"
 
-void saveMobs(const MobSoA& soa, const std::filesystem::path& path) {
+inline void saveMobs(const MobSoA& soa, const std::filesystem::path& path) {
     std::string blob;
     archive::add(blob, soa.mobCount);
     archive::add(blob, soa.hitboxRadius);
@@ -28,7 +28,7 @@ void saveMobs(const MobSoA& soa, const std::filesystem::path& path) {
     io::writeFile(path / "mobs.dat", packedData);
 }
 
-MobSoA loadMobs(const std::filesystem::path& path) {
+inline MobSoA loadMobs(const std::filesystem::path& path) {
     const std::string packedData = io::readFile(path / "mobs.dat");
     const std::string blob = archive::unpack(packedData);
     archive::Reader reader(blob);

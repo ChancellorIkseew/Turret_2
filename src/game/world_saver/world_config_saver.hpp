@@ -4,7 +4,7 @@
 
 #define key_val(value) #value, value
 
-void saveConfig(const WorldConfig& c, const std::filesystem::path& path) {
+inline void saveConfig(const WorldConfig& c, const std::filesystem::path& path) {
     tin::Data data;
     data.emplace(key_val(c.mapSize.x));
     data.emplace(key_val(c.mapSize.y));
@@ -16,7 +16,7 @@ void saveConfig(const WorldConfig& c, const std::filesystem::path& path) {
     tin::write(path / "config.tin", data);
 }
 
-WorldConfig loadConfig(const std::filesystem::path& path) {
+inline WorldConfig loadConfig(const std::filesystem::path& path) {
     WorldConfig c;
     tin::Data data = tin::read(path / "config.tin");
     data.getOrThrow(key_val(c.mapSize.x));
