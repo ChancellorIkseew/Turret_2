@@ -7,6 +7,7 @@
 #include "mobs_saver.hpp"
 #include "schematic_saver.hpp"
 #include "shells_saver.hpp"
+#include "teams_saver.hpp"
 #include "world_config_saver.hpp"
 
 static debug::Logger logger("serializer");
@@ -27,7 +28,7 @@ void serializer::saveWorld(const World& world, const std::string& folder) {
         saveShells(world.getShells().getSoa(), path);
         saveSchematic(world.getSchematic(), path);
         //world.getBlocks();
-        //world.getTeams();
+        saveTeams(world.getTeams(), path);
         logger.info("World successfully saved.");
     }
     catch (const std::exception& exception) {
@@ -51,7 +52,7 @@ std::unique_ptr<World> serializer::loadWorld(const std::string& folder) {
         world->getShells().getSoa() = loadShells(path);
         loadSchematic(world->getSchematic(), path);
         //world->getBlocks();
-        //world->getTeams();
+        loadTeams(world->getTeams(), path);
         logger.info(" successfully load.");
         return world;
     }

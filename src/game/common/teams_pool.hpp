@@ -1,17 +1,16 @@
 #pragma once
 #include <memory>
 #include <unordered_map>
+#include "game/common/physics_base.hpp"
 #include "team.hpp"
 
 class TeamsPool {
     std::unordered_map<TeamID, std::unique_ptr<Team>> teams;
-    TeamID nextID = 0;
 public:
     TeamsPool() = default;
     ///@brief Game can not create more, then 256 teams in one session.
-    TeamID addTeam() {
-        teams.try_emplace(nextID, std::make_unique<Team>());
-        return nextID++;
+    void addTeam(TeamID id) {
+        teams.try_emplace(id, std::make_unique<Team>());
     }
     Team* getTeamByID(const TeamID ID) { return teams.at(ID).get(); }
     bool containsID(const TeamID ID) const { return teams.contains(ID); }
