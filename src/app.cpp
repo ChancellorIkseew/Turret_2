@@ -19,32 +19,21 @@ App::App(const std::string& windowTitle, const PixelCoord windowSize) :
 App::~App() = default;
 
 static std::unique_ptr<World> createWorld(const SessionRequest& request, const Presets& presets) {
-    if (request.command == appCommand::gameplay_load_world || request.command == appCommand::editor_load_world)
+    if (request.worldSource == WorldSource::load)
         return serializer::loadWorld(request.worldFolder, presets);
     return gen::generateWorld(request.worldProperties, presets);
 }
 
-static std::unique_ptr<GUI> createGUI(const appCommand command, App& app) {
-    switch (command) {
-    case appCommand::main_menu:
+static std::unique_ptr<GUI> createGUI(const GameMode gameMode, App& app) {
+    switch (gameMode) {
+    case GameMode::menu:
         return std::make_unique<MenuGUI>(app);
-    case appCommand::gameplay_new_world:
-    case appCommand::gameplay_load_world:
+    case GameMode::survival:
         return std::make_unique<GameplayGUI>(app);
-    case appCommand::editor_new_world:
-    case appCommand::editor_load_world:
+    case GameMode::editor:
         return std::make_unique<EditorGUI>(app);
     }
     throw std::runtime_error("Failed to create GUI.");
-}
-
-static GameMode getGameMode(const appCommand command) {
-    switch (command) {
-    case appCommand::main_menu:           return GameMode::menu;
-    case appCommand::gameplay_new_world:  return GameMode::survival;
-    case appCommand::gameplay_load_world: return GameMode::survival;
-    default:                              return GameMode::editor;
-    }
 }
 
 static std::unique_ptr<GameSession> createSession(const SessionRequest& request, App& app) {
@@ -52,9 +41,9 @@ static std::unique_ptr<GameSession> createSession(const SessionRequest& request,
     std::unique_ptr<World> world = createWorld(request, assets.getPresets());
     if (!world)
         return nullptr;
-    const appCommand command = request.command;
-    const bool paused = command == appCommand::main_menu ? false : Settings::gameplay.pauseOnWorldOpen;
-    return std::make_unique<GameSession>(std::move(world), createGUI(command, app), assets, paused, getGameMode(command));
+    const GameMode gameMode = request.gameMode;
+    const bool paused = (gameMode != GameMode::menu && Settings::gameplay.pauseOnWorldOpen);
+    return std::make_unique<GameSession>(std::move(world), createGUI(gameMode, app), assets, paused, gameMode, request.worldSource);
 }
 
 void App::run() {
@@ -84,27 +73,27 @@ void App::changeSession(SessionRequest request) {
 }
 
 void App::loadWorldInGame(const std::string& folder) {
-    changeSession({.command = appCommand::gameplay_load_world, .worldFolder = folder });
+    changeSession({ .gameMode = GameMode::survival, .worldSource = WorldSource::load, .worldFolder = folder });
 }
 void App::loadWorldInEditor(const std::string& folder) {
-    changeSession({ .command = appCommand::editor_load_world, .worldFolder = folder });
+    changeSession({ .gameMode = GameMode::editor, .worldSource = WorldSource::load, .worldFolder = folder });
 }
 void App::createWorldInGame(WorldProperties properties) {
-    changeSession({ .command = appCommand::gameplay_new_world, .worldProperties = std::move(properties) });
+    changeSession({ .gameMode = GameMode::survival, .worldSource = WorldSource::generate, .worldProperties = std::move(properties) });
 }
 void App::createWorldInEditor() {
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
     WorldConfig config{ .mapSize = TileCoord(100, 100), .seed = 0, .wavesByTimer = true, };
     WorldProperties properties(config, floorPresets, overlayPresets);
-    changeSession({ .command = appCommand::editor_new_world, .worldProperties = properties });
+    changeSession({ .gameMode = GameMode::editor, .worldSource = WorldSource::generate, .worldProperties = properties });
 }
 void App::openMainMenu() {
     const auto floorPresets = serializer::loadFloorPreset(io::folders::GENERATION_DEFAULT);
     const auto overlayPresets = serializer::loadOverlayPreset(io::folders::GENERATION_DEFAULT);
     WorldConfig config{ .mapSize = TileCoord(100, 100), .seed = 0, .wavesByTimer = true, };
     WorldProperties properties(config, floorPresets, overlayPresets);
-    changeSession({ .command = appCommand::main_menu, .worldProperties = properties });
+    changeSession({ .gameMode = GameMode::menu, .worldSource = WorldSource::generate, .worldProperties = properties });
 }
 
 GUI& App::getGUI() { return session->getGUI(); }

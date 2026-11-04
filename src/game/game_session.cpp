@@ -11,25 +11,25 @@
 
 // Constuctor and destructor in cpp are needed for forward declaraton "GUI" and "World" classes in hpp.
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets,
-    const bool paused, const GameMode gameMode) :
+    const bool paused, const GameMode gameMode, const WorldSource worldSource) :
     camera(world->getMap().getSize(), Settings::gameplay.cameraInertia), world(std::move(world)), gui(std::move(gui)),
     worldDrawer(assets.getPresets()), pausedManually(paused), timeCount(0, this->world->getConfig().ticksPerWave,
     this->world->getConfig().wavesByTimer), builtInScripts(assets, *this->world), gameMode(gameMode) {
-    prepare(assets.getPresets());
+    prepare(assets.getPresets(), worldSource);
 }
 GameSession::~GameSession() = default;
 
-void GameSession::prepare(const Presets& presets) {
+void GameSession::prepare(const Presets& presets, const WorldSource worldSource) {
     TeamID playerTeamID = 0, enemyTeamID = 1;
-    world->getTeams().addTeam(playerTeamID);
-    world->getTeams().addTeam(enemyTeamID);
     playerController.setPlayerTeamID(playerTeamID);
     builtInScripts.initTeamIDs(playerTeamID, enemyTeamID);
-    // temporary for alpha-test
+    if (worldSource == WorldSource::load)
+        return;
+    world->getTeams().addTeam(playerTeamID);
+    world->getTeams().addTeam(enemyTeamID);
     const TileCoord corePosition = world->getMap().getSize() / 2;
     builtInScripts.placeBlock(presets.getBlockID("core"), corePosition, playerTeamID, BlockRot::up);
     camera.teleport(t1::tileCenter(corePosition));
-    //
     Inventory& inventory = world->getTeams().getTeamByID(playerTeamID)->getInventory();
     inventory.resources[presets.getItemID("item_copper").asUint()] = 999;
     inventory.resources[presets.getItemID("item_iron").asUint()] = 999;

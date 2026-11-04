@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
-#include "engine_command.hpp"
+#include "game/game_state.hpp"
 
 class Audio;
 

@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "engine_command.hpp"
 #include "engine/assets/assets.hpp"
 #include "engine/window/window.hpp"
+#include "game/game_state.hpp"
 #include "game/generation/generation.hpp"
 
 class GameSession;
@@ -10,7 +10,8 @@ class GUI;
 class ScriptsHandler;
 
 struct SessionRequest {
-    appCommand command{ appCommand::main_menu };
+    GameMode gameMode = GameMode::menu;
+    WorldSource worldSource = WorldSource::generate;
     std::string worldFolder;
     WorldProperties worldProperties;
 };
