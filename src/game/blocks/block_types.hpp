@@ -10,6 +10,7 @@ struct InProgress : Block {
     int16_t progress = 0;
     //
     t1_derived BlockType getType() const noexcept final { return BlockType::in_progress; }
+    t1_derived BlockRot getRotation() const noexcept final { return rotation; }
     t1_derived void draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord tile) final;
     t1_derived virtual void onPlace(BlocksMeta& meta, TileCoord tile, TeamID teamID, BlockRot rotation);
     t1_derived virtual void onDemolish(BlocksMeta& meta, TileCoord tile);

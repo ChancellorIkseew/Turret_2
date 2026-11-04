@@ -23,6 +23,7 @@ public:
     //
     bool isCoreAttacked() const { return coreAttacked; }
     void setCoreAttacked(const bool flag) { coreAttacked = flag; }
+    const auto& getTurrets() const { return turrets; }
     auto& getTurrets() { return turrets; }
     //
     void markTurretForRemove(TileCoord tile) {
@@ -117,6 +118,7 @@ public:
     BlockTile& at(TileCoord tile) noexcept { return at(tile.x, tile.y); }
     TileCoord getSize() const noexcept { return mapSize; }
     auto& getRaw() noexcept { return blocks; }
+    const auto& getMeta() const noexcept { return meta; }
     auto& getMeta() noexcept { return meta; }
     //
     bool contains(TileCoord tile) const noexcept { return t1::contains(TileCoord(0, 0), mapSize - TileCoord(1, 1), tile); }

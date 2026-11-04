@@ -20,7 +20,7 @@ App::~App() = default;
 
 static std::unique_ptr<World> createWorld(const SessionRequest& request, const Presets& presets) {
     if (request.command == appCommand::gameplay_load_world || request.command == appCommand::editor_load_world)
-        return serializer::loadWorld(request.worldFolder);
+        return serializer::loadWorld(request.worldFolder, presets);
     return gen::generateWorld(request.worldProperties, presets);
 }
 

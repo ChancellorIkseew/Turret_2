@@ -150,6 +150,7 @@
     <ClInclude Include="src\game\world_drawer\map_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\particles_drawer.hpp" />
     <ClInclude Include="src\game\world_drawer\world_drawer.hpp" />
+    <ClInclude Include="src\game\world_saver\blocks_saver.hpp" />
     <ClInclude Include="src\game\world_saver\gen_preset_saver.hpp" />
     <ClInclude Include="src\game\world_saver\map_saver.hpp" />
     <ClInclude Include="src\game\world_saver\mobs_saver.hpp" />
