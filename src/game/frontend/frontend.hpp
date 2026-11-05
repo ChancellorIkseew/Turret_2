@@ -1,5 +1,6 @@
 #pragma once
 #include <MINGUI/widgets/container.hpp>
+#include <functional>
 #include <memory>
 #include "engine/io/parser/form_validator.hpp"
 #include "engine/settings/localization.hpp"
@@ -23,6 +24,7 @@ namespace frontend {
     std::unique_ptr<Container> initJEI(App& app, std::shared_ptr<BuildTools> buildTools);
     std::unique_ptr<Container> initBlockInfo(App& app, const uint8_t blockPresetID);
     std::unique_ptr<Container> initMessageBox(App& app, const std::string& message);
+    std::unique_ptr<Container> initConfirmDialog(App& app, const std::string& message, std::function<void()> onConfirm);
     std::unique_ptr<Container> initHint(App& app);
     std::unique_ptr<Container> initLanguages(App& app);
     std::unique_ptr<Container> initGameplay(App& app);

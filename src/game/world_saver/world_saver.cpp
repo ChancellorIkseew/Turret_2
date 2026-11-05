@@ -15,7 +15,7 @@
 
 static debug::Logger logger("serializer");
 
-void serializer::saveWorld(const World& world, const std::string& folder) {
+bool serializer::saveWorld(const World& world, const std::string& folder) {
     try {
         if (!io::folders::isPathValid(folder))
             throw std::runtime_error("Invalid folder name: " + folder);
@@ -38,7 +38,9 @@ void serializer::saveWorld(const World& world, const std::string& folder) {
     }
     catch (const std::exception& exception) {
         logger.error("Failed to save world. {}", exception.what());
+        return false;
     }
+    return true;
 }
 
 std::unique_ptr<World> serializer::loadWorld(const std::string& folder, const Presets& presets) {

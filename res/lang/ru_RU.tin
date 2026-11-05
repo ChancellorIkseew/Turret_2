@@ -48,6 +48,16 @@ Wave {}=Волна {}
 waves defeated=отражено волн
 world=игровой мир
 
+#messages
+Enter a world name for a new save or choose existing world to rewrite.=Введите название мира для нового сохранения или выберите существующий мир для перезаписи.
+World saved to {}=Мир сохранён в {}
+Failed to save world.=Не удалось сохранить мир.
+Failed to load world.=Не удалось загрузить мир.
+Select a world to delete.=Выберите мир для удаления.
+Delete world '{}'?= Удалить мир '{}'?
+Yes=Да
+No=Нет
+
 block cost multiplier=множитель стоимости блоков
 enemy count multiplier=множитель численности врагов
 wave spacing (seconds)=интервал волн (в секундах)

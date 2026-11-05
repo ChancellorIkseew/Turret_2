@@ -32,6 +32,7 @@ public:
     void createWorldInGame(WorldProperties properties);
     void createWorldInEditor();
     void openMainMenu();
+    bool saveWorld(const std::string& folder);
     //
     void closeGame() { mainWindow.close(); }
     bool hasSession() const noexcept { return session != nullptr; }

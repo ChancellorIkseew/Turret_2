@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <string>
 #include "MINGUI/widgets/selector.hpp"
 
@@ -9,13 +10,12 @@ using namespace mingui;
 class FrSaves final : public Selector {
     std::string targetFolder;
 public:
+    std::function<void(const std::string&)> onSelect;
+
     FrSaves() : Selector(Orientation::vertical) {
-        update();
+        refresh();
     }
 
-    void deleteWorld();
-    void saveWorld(App& app, const std::string& folder);
-    void loadWorld(App& app) const;
-private:
-    void update();
+    const std::string& getTargetFolder() const { return targetFolder; }
+    void refresh();
 };

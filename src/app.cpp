@@ -105,5 +105,11 @@ void App::processSessionRequest() {
     sessionRequest.reset();
     if (newSession)
         session.reset(newSession.release());
+    else
+        getGUI().addToOverlay(frontend::initMessageBox(*this, tr("Failed to load world.")));
     script_libs::initNewGame(*this);
+}
+
+bool App::saveWorld(const std::string& folder) {
+    return hasSession() && serializer::saveWorld(session->getWorld(), folder);
 }
