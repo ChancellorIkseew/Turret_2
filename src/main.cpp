@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     try {
         Settings::readSettings();
         Controls::readBindings();
-        App app("Turret_2.0.17 - pre-alpha", PixelCoord(720, 480));
+        App app("Turret_2.0.19 - pre-alpha", PixelCoord(720, 480));
         Settings::applySettings(app);
         app.run();
     }
