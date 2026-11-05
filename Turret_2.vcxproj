@@ -247,6 +247,7 @@
     <ClCompile Include="src\game\frontend\fr_jei.cpp" />
     <ClCompile Include="src\game\frontend\fr_languages.cpp" />
     <ClCompile Include="src\game\frontend\fr_hint.cpp" />
+    <ClCompile Include="src\game\frontend\fr_message_box.cpp" />
     <ClCompile Include="src\game\frontend\layouts\l_saves.cpp" />
     <ClCompile Include="src\game\frontend\fr_main_menu.cpp" />
     <ClCompile Include="src\game\frontend\fr_menu.cpp" />

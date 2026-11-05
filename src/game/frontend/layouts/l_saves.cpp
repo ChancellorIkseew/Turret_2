@@ -2,8 +2,10 @@
 //
 #include "MINGUI/widgets/button.hpp"
 #include "app.hpp"
+#include "engine/gui/gui.hpp"
 #include "engine/io/folders.hpp"
 #include "game/game_session.hpp"
+#include "game/frontend/frontend.hpp"
 #include "game/world_saver/world_saver.hpp"
 
 constexpr Point BTN_SIZE(120, 30);
@@ -24,10 +26,14 @@ void FrSaves::deleteWorld() {
 }
 
 void FrSaves::saveWorld(App& app, const std::string& folder) {
-    if (!io::folders::isPathValid(folder))
+    // folder parameter prev was used to create new folder
+    if (!io::folders::isPathValid(targetFolder))
         return;
-    serializer::saveWorld(app.getSession().getWorld(), folder);
+    serializer::saveWorld(app.getSession().getWorld(), targetFolder);
     update();
+    const fs::path absolutePath = fs::absolute(io::folders::SAVES / targetFolder);
+    const std::string message = tr("World saved to {}", absolutePath.string());
+    app.getGUI().addToOverlay(frontend::initMessageBox(app, message));
 }
 
 void FrSaves::loadWorld(App& app) const {
