@@ -55,6 +55,7 @@ void Input::reset(SDL_Window* sdlWindow) {
     textEntered = "";
     lastKeyPressed.reset();
     for (auto& [bindName, binding] : Controls::getBindings()) {
+        binding.justTriggeredOrRepeated = false;
         binding.justTriggered = false;
         binding.released = false;
     }
@@ -85,5 +86,6 @@ void Input::consumeMouseClicks() {
         if (binding.justTriggered)
             binding.active = false;
         binding.justTriggered = false;
+        binding.justTriggeredOrRepeated = false; // mouse buttons do not have repaet, but just for safety.
     }
 }
