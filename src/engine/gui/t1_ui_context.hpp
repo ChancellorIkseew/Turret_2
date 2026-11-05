@@ -12,10 +12,10 @@ public:
         UIContextBridge::mousePosition = mingui::Point(input.getMouseCoord());
         UIContextBridge::mouseClicked = input.jactive(LMB);
 
-        UIContextBridge::textInput.delete_     = input.jactive(Delete);
-        UIContextBridge::textInput.backspace_  = input.jactive(Backspace);
-        UIContextBridge::textInput.arrowLeft_  = input.jactive(Arrow_left);
-        UIContextBridge::textInput.arrowRight_ = input.jactive(Arrow_right);
+        UIContextBridge::textInput.delete_     = input.jactiveOrRepeated(Delete);
+        UIContextBridge::textInput.backspace_  = input.jactiveOrRepeated(Backspace);
+        UIContextBridge::textInput.arrowLeft_  = input.jactiveOrRepeated(Arrow_left);
+        UIContextBridge::textInput.arrowRight_ = input.jactiveOrRepeated(Arrow_right);
 
         UIContextBridge::textInput.textEntered = input.getTextEntered();
     }

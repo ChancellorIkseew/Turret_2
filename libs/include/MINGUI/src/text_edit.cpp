@@ -6,10 +6,8 @@
 
 MINGUI
 
-void TextEdit::update(const int frameDelayMs) {
+void TextEdit::update() {
     editingActive = false;
-    if (inputTimer > 0)
-        inputTimer -= frameDelayMs;
 }
 
 void TextEdit::moveCarriageToCursor(const UIContext& context, const std::string& text,
@@ -28,28 +26,22 @@ static auto getCharIter(const std::string& text, const size_t charIndex) {
 };
 
 static void editForm(const UIContext& context, std::string& text, const Point size,
-    const std::unique_ptr<Validator>& validator, size_t& carPos, int& inputTimer, const float glyphWidth) {
+    const std::unique_ptr<Validator>& validator, size_t& carPos, const float glyphWidth) {
     constexpr int INPUT_RELOAD = 120;
     const TextInput input = context.getTextInput();
     const size_t textLength = static_cast<size_t>(utf8::distance(text.cbegin(), text.cend()));
 
-    if (input.arrowLeft_ && carPos > 0 && inputTimer <= 0) {
-        inputTimer = INPUT_RELOAD;
+    if (input.arrowLeft_ && carPos > 0)
         --carPos;
-    }
-    if (input.arrowRight_ && carPos < textLength && inputTimer <= 0) {
-        inputTimer = INPUT_RELOAD;
+    if (input.arrowRight_ && carPos < textLength)
         ++carPos;
-    }
-    if (input.backspace_ && carPos > 0 && inputTimer <= 0) {
-        inputTimer = INPUT_RELOAD;
+    if (input.backspace_ && carPos > 0) {
         auto itEnd = getCharIter(text, carPos);
         --carPos;
         auto itStart = getCharIter(text, carPos);
         text.erase(itStart, itEnd);
     }
-    if (input.delete_ && carPos < textLength && inputTimer <= 0) {
-        inputTimer = INPUT_RELOAD;
+    if (input.delete_ && carPos < textLength) {
         auto itStart = getCharIter(text, carPos);
         auto itEnd = getCharIter(text, carPos + 1);
         text.erase(itStart, itEnd);
@@ -89,5 +81,5 @@ void TextEdit::edit(const UIContext& context, std::string& text, const Point nod
     editingActive = true;
     if (context.getMouseClicked())
         moveCarriageToCursor(context, text, nodePosition, glyphWidth);
-    editForm(context, text, nodeSize, validator, carPos, inputTimer, glyphWidth);
+    editForm(context, text, nodeSize, validator, carPos, glyphWidth);
 }

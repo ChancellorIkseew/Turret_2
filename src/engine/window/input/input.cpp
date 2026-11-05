@@ -23,15 +23,19 @@ void Input::update(const SDL_Event& event) {
     InputType inputType = InputType::keyboard;
     int code = -1;
     bool pressed = false;
-    
+    bool repeated = false;
+
     if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
         code = event.key.scancode;
         pressed = event.key.down;
-    } else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+        repeated = event.key.repeat;
+    }
+    else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
         code = event.button.button;
         pressed = event.button.down;
         inputType = InputType::mouse;
-    } else {
+    }
+    else {
         return;
     }
 
@@ -42,6 +46,7 @@ void Input::update(const SDL_Event& event) {
         binding.justTriggered = !binding.active && pressed;
         binding.released = binding.active && !pressed;
         binding.active = pressed;
+        binding.justTriggeredOrRepeated = pressed || repeated;
     }
 }
 
@@ -68,6 +73,9 @@ bool Input::jactive(cString bindName) const {
 }
 bool Input::released(cString bindName) const {
     return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).released;
+}
+bool Input::jactiveOrRepeated(cString bindName) const {
+    return Controls::getBindings().contains(bindName) && Controls::getBindings().at(bindName).justTriggeredOrRepeated;
 }
 
 void Input::consumeMouseClicks() {

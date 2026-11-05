@@ -9,12 +9,11 @@ struct Validator;
 class UIContext;
 
 class TextEdit {
-    int inputTimer = 0;
     bool editingActive = false;
     size_t carPos = 0;
 public:
     TextEdit() = default;
-    void update(const int frameDelayMs);
+    void update();
     //
     void moveCarriageToCursor(const UIContext& context, const std::string& text,
         const Point nodePosition, const float glyphWidth);

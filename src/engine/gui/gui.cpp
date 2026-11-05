@@ -62,7 +62,7 @@ void GUI::callback() {
     if (!showGUI)
         return;
     T1_UIContext context(input, app.getAssets().getAudio());
-    mainCanvas.update(context, static_cast<int>(mainWindow.getRealFrameDelayMs()));
+    mainCanvas.update(context);
     input.enableTextInput(mainCanvas.isTextEditingActive());
     if (ownsMouse())
         input.consumeMouseClicks();

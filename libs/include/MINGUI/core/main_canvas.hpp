@@ -23,7 +23,7 @@ public:
     void addToOverlay(std::unique_ptr<Container> container);
     void closeAll() noexcept;
     //
-    void update(UIContextBridge& contextBridge, const int frameDelayMs);
+    void update(UIContextBridge& contextBridge);
     void draw(RenderBridge& renderBridge);
     void setPaletteRecursive(const Palette& palette);
     //

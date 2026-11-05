@@ -21,6 +21,7 @@ struct Binding {
     mutable bool active = false;
     mutable bool justTriggered = false;
     mutable bool released = false;
+    mutable bool justTriggeredOrRepeated = false;
 
     constexpr Binding(const int code, const InputType inputType, const bool changable = true) :
         code(code), inputType(inputType), changable(changable) { }

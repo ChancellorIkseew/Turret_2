@@ -23,6 +23,8 @@ public:
     bool jactive(cString bindName) const;
     ///@brief Check any press/click ended.
     bool released(cString bindName) const;
+    ///@brief Check key activity with OS timings.
+    bool jactiveOrRepeated(cString bindName) const;
 
     ///@brief Coordinate in window.
     PixelCoord getMouseCoord() const { return mouseCoord; }
