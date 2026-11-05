@@ -141,7 +141,7 @@
     <ClInclude Include="src\game\systems\turrets_system.hpp" />
     <ClInclude Include="src\game\systems\turret_components.hpp" />
     <ClInclude Include="src\game\systems\world_system.hpp" />
-    <ClInclude Include="src\game\time_count.hpp" />
+    <ClInclude Include="src\game\world\time_count.hpp" />
     <ClInclude Include="src\game\world\world.hpp" />
     <ClInclude Include="src\game\world\world_config.hpp" />
     <ClInclude Include="src\game\world\world_map.hpp" />
@@ -156,6 +156,7 @@
     <ClInclude Include="src\game\world_saver\mobs_saver.hpp" />
     <ClInclude Include="src\game\world_saver\schematic_saver.hpp" />
     <ClInclude Include="src\game\world_saver\teams_saver.hpp" />
+    <ClInclude Include="src\game\world_saver\time_count_saver.hpp" />
     <ClInclude Include="src\game\world_saver\world_config_saver.hpp" />
     <ClInclude Include="src\game\world_saver\shells_saver.hpp" />
     <ClInclude Include="src\game\world_saver\turrets_saver.hpp" />

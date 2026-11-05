@@ -42,7 +42,7 @@ public:
         bar->setMargin(24.f);
 
         auto startWave = bar->addNode(new IconButton(Point(38, 38), 2.0f, new T1_UITexture(atlas.at("start_wave_btn"))));
-        startWave->addCallback([&] { app.getSession().startNewWave(); });
+        startWave->addCallback([&] { app.getSession().getWorld().getTimeCount().startWave(); });
         startWave->setPalette(Palette{ .idle = cl::RED, .hover = 0x84'54'54'FF });
 
         playback = bar->addNode(new Selector(Orientation::horizontal));
@@ -64,7 +64,7 @@ public:
 private:
     void callback(UIContext& context) final {
         Container::callback(context);
-        const TimeCount& timeCount = app.getSession().getTimeCount();
+        const TimeCount& timeCount = app.getSession().getWorld().getTimeCount();
         wave->setText(tr("Wave {}", timeCount.getWaveCount()));
         enemiesRemaining->setText(tr("Enemies remaining {}", countEnemies(app.getSession())));
         if (app.getSession().getWorld().getConfig().wavesByTimer) {

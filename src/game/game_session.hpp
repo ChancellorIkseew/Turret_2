@@ -7,7 +7,6 @@
 #include "game/player/player_controller.hpp"
 #include "game/world_drawer/world_drawer.hpp"
 #include "game_state.hpp"
-#include "time_count.hpp"
 
 class App;
 class GUI;
@@ -24,7 +23,6 @@ class GameSession {
     SoundQueue worldSounds;
     BuiltInScripts builtInScripts;
 
-    TimeCount timeCount;
     std::optional<uint64_t> lastCoreAttack;
     int tickSpeed = 1;
     bool pausedManually;
@@ -46,8 +44,6 @@ public:
     bool isPausedManually() const { return pausedManually; }
     GameMode getGameMode() const { return gameMode; }
     int getTickSpeed() const { return tickSpeed; }
-    const TimeCount& getTimeCount() const { return timeCount; }
-    void startNewWave() { timeCount.startWave(); }
     BuiltInScripts& getBuiltInScripts() { return builtInScripts; }
 private:
     void prepare(const Presets& presets, const WorldSource worldSource);

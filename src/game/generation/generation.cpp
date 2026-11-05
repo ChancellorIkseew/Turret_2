@@ -84,5 +84,5 @@ static WorldMap generateMap(const WorldProperties& properties, const Presets& pr
 
 std::unique_ptr<World> gen::generateWorld(const WorldProperties& properties, const Presets& presets) {
     auto map = generateMap(properties, presets);
-    return std::make_unique<World>(map, properties.worldConfig);
+    return std::make_unique<World>(map, properties.worldConfig, TimeCount(0, properties.worldConfig.ticksPerWave, 0));
 }

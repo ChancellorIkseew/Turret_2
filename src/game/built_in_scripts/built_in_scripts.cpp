@@ -22,7 +22,8 @@ static PixelCoord randomMapBorderCoord(std::mt19937_64& gen, const TileCoord map
     }
 }
 
-void BuiltInScripts::execute(App& app, const TimeCount& timeCount) {
+void BuiltInScripts::execute(App& app) {
+    const TimeCount& timeCount = world.getTimeCount();
     if (app.getSession().getGameMode() == GameMode::survival) {
         if (timeCount.isWaveJustChanged()) {
             const WorldConfig& worldConfig = world.getConfig();

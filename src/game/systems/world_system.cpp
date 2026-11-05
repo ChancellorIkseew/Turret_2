@@ -21,7 +21,7 @@ void drawInfoOnCursor(Renderer& renderer, const Camera& camera, const Presets& p
 void drawUnitSelected(Renderer& renderer, const MobSoA& mobs, const TurretSoA& turrets,
     const Presets& presets, const PlayerController::Unit selected);
 
-void world::update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs, const uint64_t tickCount,
+void world::update(World& world, const Camera& camera, const Presets& presets, const uint64_t timeMs,
     const PlayerController& playerController, SoundQueue& worldSounds, BuiltInScripts& scripts) {
     //
     auto& blocks = world.getBlocks();
@@ -32,6 +32,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     auto& particles = world.getParticles();
     auto mobTurrets = fromMobs(mobs.getSoa());
     auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
+    const uint64_t tickCount = world.getTimeCount().getTickCount();
     //
     world.getBuildBems().clear();
     chunks.update(mobs.getSoa());
@@ -50,6 +51,7 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets);
     blocks.getMeta().cleanUp();
+    world.getTimeCount().update(world.getConfig().ticksPerWave, world.getConfig().wavesByTimer);
 }
 
 void world::draw(World& world, Renderer& renderer, WorldDrawer& drawer, const Camera& camera, const Assets& assets,

@@ -6,12 +6,13 @@
 #include "engine/settings/localization.hpp"
 #include "engine/util/time.hpp"
 #include "game/game_session.hpp"
+#include "game/world/world.hpp"
 
 constexpr Point BTN_SIZE(200, 50);
 constexpr uint64_t DEFAULT_FPS_TPS = 60;
 
 static std::unique_ptr<Layout> initStatistics(GameSession& session) {
-    const TimeCount& timeCount = session.getTimeCount();
+    const TimeCount& timeCount = session.getWorld().getTimeCount();
     const uint64_t secondsPlayed = timeCount.getTickCount() / DEFAULT_FPS_TPS;
     const int wavesDefeated = std::max(0, static_cast<int>(timeCount.getWaveCount()) - 1);
     //

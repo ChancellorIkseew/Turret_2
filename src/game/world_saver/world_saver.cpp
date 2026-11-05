@@ -9,6 +9,7 @@
 #include "schematic_saver.hpp"
 #include "shells_saver.hpp"
 #include "teams_saver.hpp"
+#include "time_count_saver.hpp"
 #include "turrets_saver.hpp"
 #include "world_config_saver.hpp"
 
@@ -25,6 +26,7 @@ void serializer::saveWorld(const World& world, const std::string& folder) {
             throw std::runtime_error("Could not find or create folder " + path.string());
         //
         saveConfig(world.getConfig(), path);
+        saveTimeCount(world.getTimeCount(), path);
         serializer::saveMap(world.getMap(), path);
         saveBlocks(world.getBlocks(), path);
         saveMobs(world.getMobs().getSoa(), path);
@@ -50,7 +52,7 @@ std::unique_ptr<World> serializer::loadWorld(const std::string& folder, const Pr
             throw std::runtime_error("Could not find folder " + path.string());
         //
         WorldMap map = serializer::loadMap(path);
-        auto world = std::make_unique<World>(map, loadConfig(path));
+        auto world = std::make_unique<World>(map, loadConfig(path), loadTimeCount(path));
         // CRITICAL: load blocks BEFORE turrets.
         // place() during block loading creates temporary turret SoA entries
         // → loadTurrets() overwrites the entire SoA with saved data.

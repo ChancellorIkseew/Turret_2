@@ -13,8 +13,7 @@
 GameSession::GameSession(std::unique_ptr<World> world, std::unique_ptr<GUI> gui, Assets& assets,
     const bool paused, const GameMode gameMode, const WorldSource worldSource) :
     camera(world->getMap().getSize(), Settings::gameplay.cameraInertia), world(std::move(world)), gui(std::move(gui)),
-    worldDrawer(assets.getPresets()), pausedManually(paused), timeCount(0, this->world->getConfig().ticksPerWave,
-    this->world->getConfig().wavesByTimer), builtInScripts(assets, *this->world), gameMode(gameMode) {
+    worldDrawer(assets.getPresets()), pausedManually(paused), builtInScripts(assets, *this->world), gameMode(gameMode) {
     prepare(assets.getPresets(), worldSource);
 }
 GameSession::~GameSession() = default;
@@ -37,11 +36,10 @@ void GameSession::prepare(const Presets& presets, const WorldSource worldSource)
 
 void GameSession::updateSimulation(const Presets& presets, App& app) {
     const uint64_t timeMs = app.getMainWindow().getTimeMs();
-    world::update(*world, camera, presets, timeMs, timeCount.getTickCount(), playerController, worldSounds, builtInScripts);
-    timeCount.update();
-    builtInScripts.execute(app, timeCount);
+    world::update(*world, camera, presets, timeMs, playerController, worldSounds, builtInScripts);
+    builtInScripts.execute(app);
     if (world->getBlocks().getMeta().isCoreAttacked())
-        lastCoreAttack = timeCount.getTickCount();
+        lastCoreAttack = world->getTimeCount().getTickCount();
 }
 
 void GameSession::update(App& app, const Presets& presets, const ScriptsHandler& scriptsHandler) {
@@ -49,6 +47,7 @@ void GameSession::update(App& app, const Presets& presets, const ScriptsHandler&
     auto& mainWindow = app.getMainWindow();
     auto& renderer = mainWindow.getRenderer();
     auto& shaders = app.getAssets().getShaders();
+    const auto& timeCount = world->getTimeCount();
     //
     mainWindow.pollEvents();
     gui->callback();

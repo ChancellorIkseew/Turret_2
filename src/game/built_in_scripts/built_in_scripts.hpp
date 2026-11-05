@@ -6,7 +6,6 @@
 
 class App;
 class Assets;
-class TimeCount;
 class World;
 
 class BuiltInScripts {
@@ -17,7 +16,7 @@ public:
     BuiltInScripts(const Assets& assets, World& world) : assets(assets), world(world) { }
     void initTeamIDs(const TeamID player, const TeamID enemy) { playerTeamID = player; enemyTeamID = enemy; }
 
-    void execute(App& app, const TimeCount& timeCount);
+    void execute(App& app);
     void spawnWave(const uint32_t waveNumber, const uint32_t mobCountMul);
     void targetEnemies();
     void respawnShuttle();
