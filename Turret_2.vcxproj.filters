@@ -270,9 +270,6 @@
     <ClInclude Include="src\game\world_drawer\blocks_drawer.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\common\id_manager.hpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\common\mob_ai.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

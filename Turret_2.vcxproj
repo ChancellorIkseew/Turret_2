@@ -106,7 +106,6 @@
     <ClInclude Include="src\game\blocks\offset_table.hpp" />
     <ClInclude Include="src\game\blocks\schematic\schematic.hpp" />
     <ClInclude Include="src\game\built_in_scripts\built_in_scripts.hpp" />
-    <ClInclude Include="src\game\common\id_manager.hpp" />
     <ClInclude Include="src\game\common\inventory.hpp" />
     <ClInclude Include="src\game\common\mob_ai.hpp" />
     <ClInclude Include="src\game\common\physics_base.hpp" />

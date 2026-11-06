@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "game/common/id_manager.hpp"
 #include "game/common/physics_base.hpp"
 #include "block.hpp"
 
@@ -66,7 +65,7 @@ public:
     }
 };
 
-constexpr TeamID INVALID_TEAM_ID = IDManager<TeamID>::INVALID_ID;
+constexpr TeamID INVALID_TEAM_ID = std::numeric_limits<TeamID>::max();
 
 struct BlockTile {
     TeamID teamID = INVALID_TEAM_ID;
