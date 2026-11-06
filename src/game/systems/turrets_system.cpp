@@ -32,7 +32,7 @@ static inline void rotateTurrets(TurretComponents& soa, const Presets& presets, 
     if (soa.velocity.empty()) {
         for (size_t i = 0; i < mobCount; ++i) {
             const AngleRad rotationSpeed = presets.getTurret(soa.preset[i]).rotationSpeed;
-            if (soa.shootingData[i].isShooting || soa.shootingData[i].aiType == ShootingAI::player_controlled)
+            if (soa.shootingData[i].hasTarget || soa.shootingData[i].aiType == ShootingAI::player_controlled)
                 rotateTurret(soa.turretAngle[i], rotationSpeed, soa.shootingData[i].target - soa.position[i]);
         }
         return;
@@ -40,7 +40,7 @@ static inline void rotateTurrets(TurretComponents& soa, const Presets& presets, 
     // else
     for (size_t i = 0; i < mobCount; ++i) {
         const AngleRad rotationSpeed = presets.getTurret(soa.preset[i]).rotationSpeed;
-        if (soa.shootingData[i].isShooting)
+        if (soa.shootingData[i].hasTarget)
             rotateTurret(soa.turretAngle[i], rotationSpeed, soa.shootingData[i].target - soa.position[i]);
         else if (soa.velocity[i] != NO_MOTION)
             rotateTurret(soa.turretAngle[i], rotationSpeed, soa.velocity[i]);
@@ -107,7 +107,7 @@ static inline void makeSparks(TurretComponents& soa, ParticlesPool& particles, c
 static inline void shoot(TurretComponents& soa, ShellsPool& shells, ParticlesPool& particles,
     const Presets& presets, const size_t mobCount, SoundQueue& sounds, const Camera& camera, const uint64_t timeMs) {
     for (size_t i = 0; i < mobCount; ++i) {
-        if (soa.restReloadTime[i] > 0 || soa.ammo[i] < 1 || !soa.shootingData[i].isShooting)
+        if (soa.restReloadTime[i] > 0 || soa.ammo[i] < 1 || !soa.shootingData[i].hasTarget)
             continue;
         --soa.ammo[i];
         const TurretPreset& turret = presets.getTurret(soa.preset[i]);

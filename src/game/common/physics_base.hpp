@@ -25,15 +25,6 @@ namespace cl {
     constexpr uint32_t SHADOW   = 0x00'00'00'40;
 }
 
-struct Aim {
-    float squareDistance;
-    PixelCoord position;
-    //
-    static constexpr bool closest(const Aim first, const Aim second) noexcept {
-        return first.squareDistance < second.squareDistance;
-    }
-};
-
 struct Explosion {
     Health damage;
     float radius;

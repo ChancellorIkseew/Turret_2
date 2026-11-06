@@ -26,7 +26,7 @@ struct MotionData {
 
 struct ShootingData {
     ShootingAI aiType = ShootingAI::basic;
-    bool isShooting = false;
+    bool hasTarget = false;
     PixelCoord target;
 };
 

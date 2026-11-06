@@ -1,6 +1,5 @@
 #include "ai_system.hpp"
 //
-#include <ranges>
 #include "engine/assets/presets.hpp"
 #include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
@@ -11,28 +10,36 @@
 
 static inline void updatePlayerControlled(TurretComponents& soa, const Presets& presets,
     const size_t index, const PlayerController& playerController) {
-    soa.shootingData[index].isShooting = playerController.isShooting();
+    soa.shootingData[index].hasTarget = playerController.isShooting();
     soa.shootingData[index].target = playerController.getAimCoord();
 }
 
-static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const BlockMap& blocks, const Presets& presets, const size_t index) {
+static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const BlockMap& blocks,
+    const Presets& presets, const size_t index) {
+    const float shellSpeed = presets.getShell(presets.getTurret(soa.preset[index]).shell).speed;
     const float range = presets.getTurret(soa.preset[index]).range;
     const float sqRange = t1::pow2f(range);
     const PixelCoord position = soa.position[index];
     const TeamID teamID = soa.teamID[index];
-    soa.shootingData[index].isShooting = false;
+    soa.shootingData[index].hasTarget = false;
 
-    // aim to mob
-    static std::vector<Aim> aims;
+    // find closest mob
+    float bestMobSqDist = sqRange;
+    std::optional<size_t> bestMobIndex;
     for (size_t i = 0; i < mobs.mobCount; ++i) {
         if (teamID == mobs.teamID[i])
             continue;
         const float sqDistance = t1::squareDistance(position, mobs.position[i]);
-        if (sqDistance < sqRange)
-            aims.emplace_back(sqDistance, mobs.position[i]);
+        if (sqDistance < bestMobSqDist) {
+            bestMobSqDist = sqDistance;
+            bestMobIndex = i;
+        }
     }
 
-    //aim to block
+    // find closest block
+    float bestBlockSqDist = sqRange;
+    PixelCoord bestBlockPos;
+    bool hasBlockTarget = false;
     const int tileRange = t1::tile(range);
     const TileCoord tilePosition = t1::tile(position);
     const TileCoord mapSize = blocks.getSize();
@@ -43,22 +50,29 @@ static inline void updateBasic(TurretComponents& soa, const MobSoA& mobs, const 
     for (int x = startX; x < endX; ++x) {
         for (int y = startY; y < endY; ++y) {
             const BlockTile& blockTile = blocks.at(x, y);
-            if (blockTile.type == BlockType::air)
-                continue;
-            if (blockTile.teamID == teamID)
+            if (blockTile.type == BlockType::air || blockTile.teamID == teamID)
                 continue;
             const PixelCoord blockCenter = t1::tileCenter({ x, y });
             const float sqDistance = t1::squareDistance(position, blockCenter);
-            if (sqDistance < sqRange)
-                aims.emplace_back(sqDistance, blockCenter);
+            if (sqDistance < bestBlockSqDist) {
+                bestBlockSqDist = sqDistance;
+                bestBlockPos = blockCenter;
+                hasBlockTarget = true;
+            }
         }
     }
 
-    if (!aims.empty()) {
-        const auto aim = std::ranges::min_element(aims, Aim::closest);
-        soa.shootingData[index].isShooting = true;
-        soa.shootingData[index].target = aim->position;
-        aims.clear();
+    // choose target + apply lead
+    const bool hasMobTarget = bestMobIndex.has_value();
+    if (hasMobTarget && (!hasBlockTarget || bestMobSqDist <= bestBlockSqDist)) {
+        const PixelCoord actualVelocity = mobs.position[*bestMobIndex] - mobs.preveousePosition[*bestMobIndex];
+        const float timeToHit = std::sqrt(bestMobSqDist) / shellSpeed;
+        soa.shootingData[index].hasTarget = true;
+        soa.shootingData[index].target = mobs.position[*bestMobIndex] + actualVelocity * timeToHit;
+    }
+    else if (hasBlockTarget) {
+        soa.shootingData[index].hasTarget = true;
+        soa.shootingData[index].target = bestBlockPos;
     }
 }
 
