@@ -35,23 +35,11 @@ struct Blueprint {
 class Schematic {
     static constexpr size_t MAX_ELEMENTS = 512;
     std::vector<Blueprint> blueprints;
-    //
-    constexpr auto findByTile(const TileCoord tile) noexcept {
-        return std::find(blueprints.begin(), blueprints.end(), tile);
-    }
 public:
     void tryAdd(const TileCoord tile, const uint8_t size, const BlockPresetID presetID,
         const BlockRot rotation, const BPAction action) {
         if (canPlace(tile, size))
             blueprints.emplace_back(tile, size, presetID, rotation, action);
-    }
-
-    void removeIfExists(const TileCoord tile) noexcept {
-        auto it = findByTile(tile);
-        if (it == blueprints.end())
-            return;
-        std::swap(*it, blueprints.back());
-        blueprints.pop_back();
     }
     
     Blueprint* getClosest(const PixelCoord target) noexcept {
@@ -87,6 +75,7 @@ public:
         return true;
     }
 
+    void removeIfExists(const TileCoord tile) noexcept;
     void removeByArea(const TileCoord start, const TileCoord end, const BPAction action) noexcept;
     void drawCancelArea(Renderer& renderer, const TileCoord start, const TileCoord end);
 

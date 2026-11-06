@@ -1,5 +1,6 @@
 #include "schematic.hpp"
 //
+#include <algorithm>
 #include <functional>
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"
@@ -69,6 +70,14 @@ void Schematic::drawGhosts(Renderer& renderer, const Presets& presets, const uin
         else
             drawBlockFrame(renderer, blueprint.tile, blueprint.size, cl::RED);
     }
+}
+
+void Schematic::removeIfExists(const TileCoord tile) noexcept {
+    auto it = std::find(blueprints.begin(), blueprints.end(), tile);
+    if (it == blueprints.end())
+        return;
+    std::swap(*it, blueprints.back());
+    blueprints.pop_back();
 }
 
 void Schematic::removeByArea(const TileCoord start, const TileCoord end, const BPAction action) noexcept {
