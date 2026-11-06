@@ -1,8 +1,8 @@
 #pragma once
 #include "engine/assets/preset_id.hpp"
+#include "engine/assets/typedefs.hpp"
 #include "engine/coords/tile_coord.hpp"
 #include "engine/render/texture_rect.hpp"
-#include "game/common/physics_base.hpp"
 
 class BlocksDrawer;
 class BlockMap;
@@ -18,23 +18,6 @@ struct ItemStack {
 };
 
 enum class BPAction : uint8_t { build, demolish };
-
-// order of types does mater
-enum class BlockType {
-    air,
-    in_progress,
-    wall,
-    link,
-    belt,
-    bridge,
-    drill,
-    impact_drill,
-    factory,
-    junction,
-    router,
-    turret,
-    core
-};
 
 enum BlockRot : int8_t {
     up    = 0,

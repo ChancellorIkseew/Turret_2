@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "block_types.hpp"
 #include "engine/assets/presets.hpp"
 #include "engine/coords/transforms.hpp"

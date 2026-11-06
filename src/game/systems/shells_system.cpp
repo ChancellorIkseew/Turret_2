@@ -5,6 +5,7 @@
 #include "engine/audio/sound_queue.hpp"
 #include "engine/render/renderer.hpp"
 #include "engine/util/fast_rand.hpp"
+#include "game/common/hitbox.hpp"
 #include "game/player/camera.hpp"
 #include "game/world/world.hpp"
 
@@ -83,9 +84,9 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         if (soa.restLifeTime[i] > 0 && soa.restDamage[i] > 0)
             continue;
         const ShellPreset& preset = presets.getShell(soa.preset[i]);
-        const Health damage = preset.explosion.damage;
+        const Health damage = preset.explosionDamage;
         if (damage > 0) {
-            const float sqRadius = t1::pow2f(preset.explosion.radius);
+            const float sqRadius = t1::pow2f(preset.explosionRadius);
             const TeamID teamID = soa.teamID[i];
             const PixelCoord position = soa.position[i];
 
@@ -100,7 +101,7 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
             }
 
             //to block
-            const int tileRange = t1::tile(preset.explosion.radius);
+            const int tileRange = t1::tile(preset.explosionRadius);
             const TileCoord tilePosition = t1::tile(position);
             const TileCoord mapSize = blocks.getSize();
             const int startX = std::max(0, tilePosition.x - tileRange);
@@ -130,7 +131,7 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
         if (preset.visual.size.y > 6.f)
             sounds.pushSound("shell_explosion", soa.position[i]);
         constexpr float SPEED = 0.8f;
-        const float radius = preset.explosion.radius;
+        const float radius = preset.explosionRadius;
         const PixelCoord size(radius, radius);
         const TickCount lifeTime = static_cast<TickCount>(radius / SPEED);
         for (int j = 0; j < 8; ++j) {
@@ -141,7 +142,7 @@ static void finalizeShells(ShellsPool& shellsPool, ParticlesPool& particlesPool,
             particlesPool.addParticle(soa.position[i], size, angle, 0.f, SPEED, 0.f, cl::ORANGE & ALPHA, 0, lifeTime, PType::light);
         }
 
-        const int shardsCount = preset.explosion.shardsCount;
+        const int shardsCount = preset.shardsCount;
         const PixelCoord shardSize(1.0f, preset.visual.size.y);
         for (int j = 0; j < shardsCount; ++j) {
             const float angle = util::randAngleRad(static_cast<uint32_t>(j * (tickCount % 255)));

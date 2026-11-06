@@ -1,5 +1,6 @@
 #include "presets.hpp"
 //
+#include "engine/coords/math.hpp"
 #include "engine/io/folders.hpp"
 #include "preset_reader.hpp"
 
@@ -23,6 +24,21 @@ static BlockType getBlockType(const std::string name) {
     if (name == "turret")  return BlockType::turret;
     if (name == "core")    return BlockType::core;
     return BlockType::air;
+}
+
+static MovingAI getMovingAI(const std::string& name) {
+    if (name == "none") return MovingAI::none;
+    if (name == "basic") return MovingAI::basic;
+    if (name == "builder") return MovingAI::builder;
+    if (name == "player_controlled") return MovingAI::player_controlled;
+    return MovingAI::none;
+}
+
+static ShootingAI getShootingAI(const std::string& name) {
+    if (name == "none") return ShootingAI::none;
+    if (name == "basic") return ShootingAI::basic;
+    if (name == "player_controlled") return ShootingAI::player_controlled;
+    return ShootingAI::none;
 }
 
 static std::optional<Ingredient> parseIng(const std::string& text, const FindMap<preset_tag::ItemTag>& itemFindMap) {
@@ -117,8 +133,8 @@ static auto createMobPreset(const PresetReader& reader, const Atlas& atlas, cons
         reader.get<Health>("shield_health"),
         reader.get<bool>("flying"),
         reader.get<uint8_t>("build_speed"),
-        mob_ai::getMovingAI(reader.get<std::string>("moving_ai")),
-        mob_ai::getShootingAI(reader.get<std::string>("shooting_ai")),
+        getMovingAI(reader.get<std::string>("moving_ai")),
+        getShootingAI(reader.get<std::string>("shooting_ai")),
         reader.getID(turretFindMap, "turret"),
         visual
     };
@@ -131,15 +147,12 @@ static auto createShellPreset(const PresetReader& reader, const Atlas& atlas) {
         reader.get<PixelCoord>("size"),
         reader.get<bool>("has_trail")
     };
-    Explosion explosion{
-        reader.get<Health>("explosion_damage"),
-        reader.get<float>("explosion_radius"),
-        reader.get<int8_t>("shards_count")
-    };
     return ShellPreset{
         reader.get<float>("speed"),
         reader.get<Health>("damage"),
-        explosion,
+        reader.get<Health>("explosion_damage"),
+        reader.get<float>("explosion_radius"),
+        reader.get<int8_t>("shards_count"),
         visual
     };
 }

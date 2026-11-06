@@ -1,5 +1,6 @@
 #include "block_map.hpp"
 //
+#include <algorithm>
 #include <cassert>
 #include "block_types.hpp"
 #include "engine/assets/presets.hpp"
@@ -7,6 +8,44 @@
 #include "game/common/inventory.hpp"
 #include "make_block.hpp"
 #include "offset_table.hpp"
+
+void BlocksMeta::markTurretForRemove(TileCoord tile) {
+    auto& soa = turrets.getSoa();
+    for (size_t i = 0; i < soa.turretCount; ++i) {
+        if (tile == soa.masterTile[i])
+            return markedForRemove.push_back(i);
+    }
+}
+void BlocksMeta::cleanUp() {
+    if (markedForRemove.empty())
+        return;
+    std::ranges::sort(markedForRemove, std::greater<size_t>());
+    auto [first, last] = std::ranges::unique(markedForRemove);
+    markedForRemove.erase(first, last);
+    for (size_t targetIndex : markedForRemove) {
+        turrets.removeTurret(targetIndex);
+    }
+    markedForRemove.clear();
+}
+
+void BlocksMeta::removeCore(const TileCoord tile) {
+    auto it = std::ranges::find(cores, tile);
+    if (it != cores.end())
+        cores.erase(it);
+}
+
+void BlocksMeta::addBlockInProgress(const TileCoord tile) {
+    auto it = std::ranges::find(blocksInProgress, tile);
+    if (it == blocksInProgress.end())
+        blocksInProgress.push_back(tile);
+}
+void BlocksMeta::removeBlockInProgress(const TileCoord tile) {
+    auto it = std::ranges::find(blocksInProgress, tile);
+    if (it != blocksInProgress.end())
+        blocksInProgress.erase(it);
+}
+
+//----
 
 bool BlockMap::canPlace(const TileCoord tile, const int size) const noexcept {
     if (tile.x < 0 || tile.y < 0 || tile.x + size > mapSize.x || tile.y + size > mapSize.y)

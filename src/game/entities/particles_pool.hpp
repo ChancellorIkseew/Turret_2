@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
+#include "engine/assets/typedefs.hpp"
 #include "engine/coords/pixel_coord.hpp"
-#include "game/common/physics_base.hpp"
 
 enum class PType : uint8_t { light, smoke, shard, spark, casing };
 

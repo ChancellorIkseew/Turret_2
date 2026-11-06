@@ -49,6 +49,7 @@
     <ClInclude Include="src\engine\assets\preset_id.hpp" />
     <ClInclude Include="src\engine\assets\preset_reader.hpp" />
     <ClInclude Include="src\engine\assets\shaders.hpp" />
+    <ClInclude Include="src\engine\assets\typedefs.hpp" />
     <ClInclude Include="src\engine\assets\waves.hpp" />
     <ClInclude Include="src\engine\audio\audio.hpp" />
     <ClInclude Include="src\engine\audio\music_queue.hpp" />
@@ -108,7 +109,7 @@
     <ClInclude Include="src\game\built_in_scripts\built_in_scripts.hpp" />
     <ClInclude Include="src\game\common\inventory.hpp" />
     <ClInclude Include="src\game\common\mob_ai.hpp" />
-    <ClInclude Include="src\game\common\physics_base.hpp" />
+    <ClInclude Include="src\game\common\hitbox.hpp" />
     <ClInclude Include="src\game\common\team.hpp" />
     <ClInclude Include="src\game\common\teams_pool.hpp" />
     <ClInclude Include="src\game\entities\build_beams.hpp" />
@@ -227,7 +228,6 @@
     <ClCompile Include="src\game\blocks\update_blocks.cpp" />
     <ClCompile Include="src\game\built_in_scripts\built_in_scripts.cpp" />
     <ClCompile Include="src\game\common\inventory.cpp" />
-    <ClCompile Include="src\game\common\mob_ai.cpp" />
     <ClCompile Include="src\game\entities\build_beams.cpp" />
     <ClCompile Include="src\game\entities\chunk_grid.cpp" />
     <ClCompile Include="src\game\entities\mobs_pool.cpp" />

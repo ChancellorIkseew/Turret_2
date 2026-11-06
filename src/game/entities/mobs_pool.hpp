@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
-#include "engine/assets/preset_defs.hpp"
+#include "engine/assets/preset_id.hpp"
+#include "game/common/mob_ai.hpp"
 
 struct MobSoA {
     std::vector<float> hitboxRadius;

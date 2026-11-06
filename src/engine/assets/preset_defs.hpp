@@ -1,12 +1,11 @@
 #pragma once
 #include <array>
+#include <string>
 #include "engine/coords/pixel_coord.hpp"
 #include "engine/custom_stl/inplace_vector.hpp"
 #include "engine/render/texture_rect.hpp"
-#include "game/blocks/block.hpp"
-#include "game/common/mob_ai.hpp"
-#include "game/common/physics_base.hpp"
 #include "preset_id.hpp"
+#include "typedefs.hpp"
 
 struct ItemPreset {
     TextureRect textureRect;
@@ -31,7 +30,9 @@ struct ShellVisualPreset {
 struct ShellPreset {
     float speed;
     Health damage;
-    Explosion explosion;
+    Health explosionDamage;
+    float explosionRadius;
+    int8_t shardsCount;
     ShellVisualPreset visual;
 };
 

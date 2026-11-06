@@ -1,6 +1,7 @@
 #include "chunk_grid.hpp"
 //
 #include <span>
+#include "game/common/hitbox.hpp"
 #include "mobs_pool.hpp"
 
 static inline void updatePopulatedChunks(std::vector<Chunk>& populatedChunks,

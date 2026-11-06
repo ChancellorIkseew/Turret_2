@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
+#include <optional>
 #include <vector>
-#include "game/common/physics_base.hpp"
 #include "block.hpp"
-
+#include "engine/coords/math.hpp"
 #include "engine/coords/transforms.hpp"
 #include "game/entities/turrets_pool.hpp"
 
@@ -25,44 +25,16 @@ public:
     const auto& getTurrets() const { return turrets; }
     auto& getTurrets() { return turrets; }
     //
-    void markTurretForRemove(TileCoord tile) {
-        auto& soa = turrets.getSoa();
-        for (size_t i = 0; i < soa.turretCount; ++i) {
-            if (tile == soa.masterTile[i])
-                return markedForRemove.push_back(i);
-        }
-    }
-    void cleanUp() {
-        if (markedForRemove.empty())
-            return;
-        std::ranges::sort(markedForRemove, std::greater<size_t>());
-        auto [first, last] = std::ranges::unique(markedForRemove);
-        markedForRemove.erase(first, last);
-        for (size_t targetIndex : markedForRemove) {
-            turrets.removeTurret(targetIndex);
-        }
-        markedForRemove.clear();
-    }
+    void markTurretForRemove(TileCoord tile);
+    void cleanUp();
 
     const auto& getCores() { return cores; }
     void addCore(const TileCoord tile) { cores.push_back(tile); }
-    void removeCore(const TileCoord tile) {
-        auto it = std::ranges::find(cores, tile);
-        if (it != cores.end())
-            cores.erase(it);
-    }
+    void removeCore(const TileCoord tile);
 
     const auto& getBlocksInProgress() { return blocksInProgress; }
-    void addBlockInProgress(const TileCoord tile) {
-        auto it = std::ranges::find(blocksInProgress, tile);
-        if (it == blocksInProgress.end())
-            blocksInProgress.push_back(tile);
-    }
-    void removeBlockInProgress(const TileCoord tile) {
-        auto it = std::ranges::find(blocksInProgress, tile);
-        if (it != blocksInProgress.end())
-            blocksInProgress.erase(it);
-    }
+    void addBlockInProgress(const TileCoord tile);
+    void removeBlockInProgress(const TileCoord tile);
 };
 
 constexpr TeamID INVALID_TEAM_ID = std::numeric_limits<TeamID>::max();

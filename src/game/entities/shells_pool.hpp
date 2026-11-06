@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
-#include "engine/assets/preset_defs.hpp"
+#include "engine/assets/preset_id.hpp"
+#include "engine/assets/typedefs.hpp"
+#include "engine/coords/pixel_coord.hpp"
 
 struct ShellSoA {
     std::vector<PixelCoord> position;

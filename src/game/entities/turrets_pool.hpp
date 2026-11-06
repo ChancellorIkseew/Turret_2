@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
-#include "engine/assets/preset_defs.hpp"
+#include "engine/assets/preset_id.hpp"
+#include "engine/coords/tile_coord.hpp"
+#include "game/common/mob_ai.hpp"
 
 class Presets;
 

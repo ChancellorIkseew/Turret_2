@@ -69,9 +69,9 @@ public:
             const ShellPreset& shell = presets.getShell(turret.shell);
             addNode(new Label(tr("Range: {:.2f} tiles", turret.range / t1::TILE_F)));
             addNode(new Label(tr("Direct damage: {}", shell.damage)));
-            if (shell.explosion.damage > 0) {
-                addNode(new Label(tr("Explosion damage: {}", shell.explosion.damage)));
-                addNode(new Label(tr("Explosion radius: {:.2f} tiles", shell.explosion.radius / t1::TILE_F)));
+            if (shell.explosionDamage > 0) {
+                addNode(new Label(tr("Explosion damage: {}", shell.explosionDamage)));
+                addNode(new Label(tr("Explosion radius: {:.2f} tiles", shell.explosionRadius / t1::TILE_F)));
             }
             addNode(new Label(tr("Reload: {} ticks", turret.reload)));
             addNode(new Label(tr("Ammo:")));

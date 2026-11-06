@@ -1,5 +1,6 @@
 #include "inventory.hpp"
 //
+#include <limits>
 #include "engine/assets/preset_defs.hpp"
 
 int16_t Inventory::getMaxBuildStep(const BlockPreset& preset, const int16_t costMul) const {

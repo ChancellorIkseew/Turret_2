@@ -2,7 +2,6 @@
 #include "engine/assets/preset_defs.hpp"
 #include "engine/coords/pixel_coord.hpp"
 #include "game/blocks/block.hpp"
-#include "game/common/physics_base.hpp"
 
 class App;
 class Assets;

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <unordered_map>
-#include "game/common/physics_base.hpp"
+#include "engine/assets/typedefs.hpp"
 #include "team.hpp"
 
 class TeamsPool {

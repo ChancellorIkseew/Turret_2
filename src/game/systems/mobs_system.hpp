@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "game/common/physics_base.hpp"
+#include "engine/assets/typedefs.hpp"
 
 struct MobSoA;
 class BlockMap;

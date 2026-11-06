@@ -3,6 +3,7 @@
 #include "engine/assets/presets.hpp"
 #include "engine/render/renderer.hpp"
 #include "game/blocks/block_map.hpp"
+#include "game/common/hitbox.hpp"
 #include "game/entities/chunk_grid.hpp"
 #include "game/entities/mobs_pool.hpp"
 #include "game/entities/particles_pool.hpp"
