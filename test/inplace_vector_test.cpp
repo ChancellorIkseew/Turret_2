@@ -41,7 +41,7 @@ TEST_CASE("InplaceVector pop_back", "[inplace_vector]") {
     REQUIRE(v[0] == 10);
     v.pop_back();
     REQUIRE(v.empty());
-    v.pop_back(); // pop from empty — no-op
+    v.pop_back(); // pop from empty - no-op
     REQUIRE(v.empty());
 }
 
