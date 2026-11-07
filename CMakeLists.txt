@@ -7,6 +7,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 #--------------------------------------
 set(CMAKE_INSTALL_RPATH "$ORIGIN")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+#--------------------------------------
+option(BUILD_TESTS "Build unit tests" OFF)
 #-----find_sources---------------------
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "src/*.c" "src/*.cpp" "libs/include/MINGUI/src/*.cpp") #temporary
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
@@ -29,4 +31,9 @@ elseif(UNIX AND NOT APPLE)
         "${LIBS_DIR}/libSDL3_mixer.so.0"
         "${LIBS_DIR}/libangelscript.so.2.37.0")
     #target_link_libraries(${PROJECT_NAME} PRIVATE pthread atomic) # Linux std::thread, std::atomic
+endif()
+#------tests----------------------------
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(test)
 endif()
