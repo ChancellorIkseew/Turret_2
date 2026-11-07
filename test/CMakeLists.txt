@@ -1,6 +1,6 @@
 # test/CMakeLists.txt — Catch2 amalgamated (no FetchContent needed)
 
-add_executable(Turret_2_tests
+add_executable(turret_tests
     hitbox_test.cpp
     validator_test.cpp
     inplace_vector_test.cpp
@@ -14,5 +14,4 @@ target_include_directories(turret_tests PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/../libs/include"
 )
 
-include(CTest)
 add_test(NAME turret_tests COMMAND turret_tests)

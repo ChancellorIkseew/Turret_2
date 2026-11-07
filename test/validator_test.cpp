@@ -1,6 +1,6 @@
 // validator_test.cpp — tests for validator::to<T> string conversion
-#include <catch2/catch_amalgamated.hpp>
 #include <limits>
+#include "catch2/catch_amalgamated.hpp"
 #include "engine/io/parser/validator.hpp"
 
 TEST_CASE("validator::to parses unsigned integers", "[validator]") {

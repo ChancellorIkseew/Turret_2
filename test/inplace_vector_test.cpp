@@ -1,5 +1,5 @@
 // inplace_vector_test.cpp — tests for custom InplaceVector (replace with std::inplace_vector in C++26)
-#include <catch2/catch_amalgamated.hpp>
+#include "catch2/catch_amalgamated.hpp"
 #include "engine/custom_stl/inplace_vector.hpp"
 
 struct TestItem {

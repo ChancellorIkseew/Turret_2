@@ -1,7 +1,6 @@
 // hitbox_test.cpp — tests for RectHitbox and CircleHitbox
-#include <catch2/catch_amalgamated.hpp>
+#include "catch2/catch_amalgamated.hpp"
 #include "game/common/hitbox.hpp"
-#include "engine/coords/pixel_coord.hpp"
 
 TEST_CASE("RectHitbox contains point", "[hitbox]") {
     RectHitbox hitbox(PixelCoord(10.f, 10.f), PixelCoord(20.f, 20.f));
@@ -48,8 +47,8 @@ TEST_CASE("RectHitbox overlap returns intersection size", "[hitbox]") {
     SECTION("partial overlap") {
         RectHitbox hitbox2(PixelCoord(15.f, 15.f), PixelCoord(25.f, 25.f));
         PixelCoord result = hitbox1.overlap(hitbox2);
-        REQUIRE(result.x == Approx(5.f).margin(0.001f));
-        REQUIRE(result.y == Approx(5.f).margin(0.001f));
+        REQUIRE(result.x == Catch::Approx(5.f).margin(0.001f));
+        REQUIRE(result.y == Catch::Approx(5.f).margin(0.001f));
     }
     SECTION("no overlap returns negative") {
         RectHitbox hitbox3(PixelCoord(5.f, 5.f), PixelCoord(9.f, 9.f));
@@ -60,14 +59,14 @@ TEST_CASE("RectHitbox overlap returns intersection size", "[hitbox]") {
     SECTION("fully contained") {
         RectHitbox hitbox4(PixelCoord(12.f, 12.f), PixelCoord(18.f, 18.f));
         PixelCoord result = hitbox1.overlap(hitbox4);
-        REQUIRE(result.x == Approx(6.f).margin(0.001f));
-        REQUIRE(result.y == Approx(6.f).margin(0.001f));
+        REQUIRE(result.x == Catch::Approx(6.f).margin(0.001f));
+        REQUIRE(result.y == Catch::Approx(6.f).margin(0.001f));
     }
     SECTION("point on corner") {
         RectHitbox point(PixelCoord(10.f, 10.f), PixelCoord(10.f, 10.f));
         PixelCoord result = hitbox1.overlap(point);
-        REQUIRE(result.x == Approx(0.f).margin(0.001f));
-        REQUIRE(result.y == Approx(0.f).margin(0.001f));
+        REQUIRE(result.x == Catch::Approx(0.f).margin(0.001f));
+        REQUIRE(result.y == Catch::Approx(0.f).margin(0.001f));
     }
 }
 
