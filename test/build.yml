@@ -1,0 +1,50 @@
+name: Turret_2_CI
+
+on:
+  push:
+    branches: [ "main", "update-tests" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Build Tools (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build
+
+      - name: Configure CMake (game only)
+        run: >
+          cmake -S . -B build 
+          -DCMAKE_BUILD_TYPE=Debug
+          ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
+          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}"
+
+      - name: Build game
+        run: cmake --build build --config Debug
+
+      - name: Configure CMake (with tests)
+        run: >
+          cmake -S . -B build-tests
+          -DCMAKE_BUILD_TYPE=Debug
+          -DBUILD_TESTS=ON
+          ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
+          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}"
+
+      - name: Build tests
+        run: cmake --build build-tests --config Debug
+
+      - name: Run tests
+        run: ctest --test-dir build-tests --output-on-failure --build-config Debug

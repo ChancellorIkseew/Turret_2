@@ -1,5 +1,5 @@
 // validator_test.cpp — tests for validator::to<T> string conversion
-#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_amalgamated.hpp>
 #include <limits>
 #include "engine/io/parser/validator.hpp"
 
