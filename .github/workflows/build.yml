@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    name: Build on ${{ matrix.os }}
+  build-and-test:
+    name: Build & Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -25,26 +25,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential cmake ninja-build
 
-      - name: Configure CMake (game only)
+      - name: Configure CMake
         run: >
-          cmake -S . -B build 
-          -DCMAKE_BUILD_TYPE=Debug
-          ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
-          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}"
-
-      - name: Build game
-        run: cmake --build build --config Debug
-
-      - name: Configure CMake (with tests)
-        run: >
-          cmake -S . -B build-tests
+          cmake -S . -B build
           -DCMAKE_BUILD_TYPE=Debug
           -DBUILD_TESTS=ON
           ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
-          -DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}"
+          #-DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}" #toggle when need
 
-      - name: Build tests
-        run: cmake --build build-tests --config Debug
+      - name: Build
+        run: cmake --build build --config Debug
 
       - name: Run tests
-        run: ctest --test-dir build-tests --output-on-failure --build-config Debug
+        run: ctest --test-dir build --output-on-failure --build-config Debug
