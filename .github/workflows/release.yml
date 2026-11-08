@@ -17,41 +17,47 @@ jobs:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Dependencies (Linux)
+      - name: Set up MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build g++-14
+
+      - name: Configure CMake
+        run: cmake --preset release ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
 
       - name: Build
-        run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14' || '' }}
-          cmake --build build --config Release
+        run: cmake --build --preset release
 
       - name: Package
         shell: bash
         run: |
           mkdir dist
-          [ "${{ runner.os }}" == "Windows" ] && cp build/Release/*.exe dist/ || cp build/Turret_2 dist/
-          
-          # copy libs and res
           if [ "${{ runner.os }}" == "Windows" ]; then
-            cp build/Release/Turret_2.exe dist/
-            [ -d "libs/MSVC_dll" ] && cp libs/MSVC_dll/*.dll dist/ || true
+            cp build/release/Turret_2.exe dist/
+            cp libs/MSVC_dll/*.dll dist/
           else
-            cp build/Turret_2 dist/
-            [ -d "libs/GCC_so" ] && cp libs/GCC_so/*.so* dist/ || true
+            cp build/release/Turret_2 dist/
+            cp libs/GCC_so/*.so* dist/
           fi
-          [ -d "libs/licenses" ] && cp -r licenses dist/ || true
-          [ -d "res" ] && cp -r res dist/ || true
+          cp -r libs/licenses dist/
+          cp -r res dist/
 
+          cd dist
           if [ "${{ runner.os }}" == "Windows" ]; then
-            7z a Turret_2_win.zip ./dist/*
+            7z a ../Turret_2_win.zip .
           else
-            tar -czvf Turret_2_linux.tar.gz -C dist .
+            tar -czf ../Turret_2_linux.tar.gz .
           fi
 
-      - name: Release
+      - name: Upload artifacts
         uses: softprops/action-gh-release@v2
         with:
           files: Turret_2_*

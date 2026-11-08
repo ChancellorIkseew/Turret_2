@@ -27,7 +27,6 @@ static auto getCharIter(const std::string& text, const size_t charIndex) {
 
 static void editForm(const UIContext& context, std::string& text, const Point size,
     const std::unique_ptr<Validator>& validator, size_t& carPos, const float glyphWidth) {
-    constexpr int INPUT_RELOAD = 120;
     const TextInput input = context.getTextInput();
     const size_t textLength = static_cast<size_t>(utf8::distance(text.cbegin(), text.cend()));
 
