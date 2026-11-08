@@ -1,5 +1,6 @@
 {
   "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 20, "patch": 0 },
   "configurePresets": [
     {
       "name": "debug",
@@ -15,7 +16,7 @@
     },
     {
       "name": "release",
-      "inherits": "debug",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
     },
@@ -24,6 +25,24 @@
       "inherits": "release",
       "binaryDir": "${sourceDir}/build/release-tests",
       "cacheVariables": { "BUILD_TESTS": "ON" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "debug-with-tests", "configurePreset": "debug-with-tests" },
+    { "name": "release", "configurePreset": "release" },
+    { "name": "release-with-tests", "configurePreset": "release-with-tests" }
+  ],
+  "testPresets": [
+    {
+      "name": "debug-with-tests",
+      "configurePreset": "debug-with-tests",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "release-with-tests",
+      "configurePreset": "release-with-tests",
+      "output": { "outputOnFailure": true }
     }
   ]
 }
