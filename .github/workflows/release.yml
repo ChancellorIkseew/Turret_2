@@ -17,16 +17,20 @@ jobs:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Dependencies (Linux)
+      - name: Install Build Tools (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build
+
+      - name: Configure CMake
+        run: cmake --preset release
 
       - name: Build
-        run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14' || '' }}
-          cmake --build build --config Release
+        run: cmake --build build/release
 
       - name: Package
         shell: bash

@@ -2,7 +2,7 @@ name: Turret_2_CI
 
 on:
   push:
-    branches: [ "main", "update-tests" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -26,15 +26,10 @@ jobs:
           sudo apt-get install -y build-essential cmake ninja-build
 
       - name: Configure CMake
-        run: >
-          cmake -S . -B build
-          -DCMAKE_BUILD_TYPE=Debug
-          -DBUILD_TESTS=ON
-          ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
-          #-DCMAKE_CXX_FLAGS="${{ runner.os == 'Windows' && '/W3' || '-Wall' }}" #toggle when need
+        run: cmake --preset debug-with-tests ${{ runner.os == 'Linux' && '-DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_C_COMPILER=gcc-14' || '' }}
 
       - name: Build
-        run: cmake --build build --config Debug
+        run: cmake --build build/debug-tests
 
       - name: Run tests
-        run: ctest --test-dir build --output-on-failure --build-config Debug
+        run: ctest --test-dir build/debug-tests --output-on-failure
