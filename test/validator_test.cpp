@@ -1,5 +1,6 @@
 // validator_test.cpp — tests for validator::to<T> string conversion
-#include <limits>
+#include <cfloat>
+#include <cstdint>
 #include "catch2/catch_amalgamated.hpp"
 #include "engine/io/parser/validator.hpp"
 
