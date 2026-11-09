@@ -75,6 +75,8 @@ TEST_CASE("validator::to parses float", "[validator]") {
     REQUIRE(validator::to<float>("0").value() == 0.f);
     REQUIRE(validator::to<float>("1.5").value() == 1.5f);
     REQUIRE(validator::to<float>("-3.14").value() == -3.14f);
+    REQUIRE(validator::to<float>("10000000000000000000000000000000000000000000000000000000000000000000000000000000000").value() == FLT_MAX);
+    REQUIRE(validator::to<float>("-1000000000000000000000000000000000000000000000000000000000000000000000000000000000").value() == FLT_MIN);
     REQUIRE_FALSE(validator::to<float>("abc").has_value());
 }
 

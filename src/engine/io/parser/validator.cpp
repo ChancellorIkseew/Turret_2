@@ -13,16 +13,14 @@ std::optional<T> validator::stringToNumber(std::string_view str) {
     if (str.empty())
         return std::nullopt;
     T value{};
-    auto [ptr, errorCode] = std::from_chars(str.data(), str.data() + str.size(), value);
+    const auto [ptr, errorCode] = std::from_chars(str.data(), str.data() + str.size(), value);
     if (errorCode == std::errc::invalid_argument || ptr != str.data() + str.size())
         return std::nullopt;
     if (errorCode == std::errc::result_out_of_range) {
-        if constexpr (std::is_floating_point_v<T>) //float
-            return std::numeric_limits<T>::max();
-        if constexpr (std::is_unsigned_v<T>) //uintX_t
-            return std::numeric_limits<T>::max();
-        if (str[0] == '-') //intX_t
-            return std::numeric_limits<T>::min();
+        if constexpr (std::is_signed_v<T>) {
+            if (str[0] == '-')
+                return std::numeric_limits<T>::min();
+        }
         return std::numeric_limits<T>::max();
     }
     return value;
