@@ -26,7 +26,7 @@ public:
 private:
     void loadWorld(App& app) {
         if (saves->getTargetFolder().empty()) {
-            app.getGUI().addToOverlay(frontend::initMessageBox(app, tr("Select a world to load")));
+            app.getGUI().addToOverlay(frontend::initMessageBox(tr("Select a world to load")));
             return;
         }
         app.loadWorldInGame(saves->getTargetFolder());
@@ -34,7 +34,7 @@ private:
 
     void deleteWorldFolder(App& app, std::string /*not ref*/ folder) {
         io::folders::deleteFolder(io::folders::SAVES / folder);
-        app.getGUI().addToOverlay(frontend::initMessageBox(app, tr("World deleted")));
+        app.getGUI().addToOverlay(frontend::initMessageBox(tr("World deleted")));
         saves->refresh();
         markDirty();
     }
@@ -42,10 +42,10 @@ private:
     void deleteWorld(App& app) {
         const std::string folder = saves->getTargetFolder();
         if (folder.empty()) {
-            app.getGUI().addToOverlay(frontend::initMessageBox(app, tr("Select a world to delete.")));
+            app.getGUI().addToOverlay(frontend::initMessageBox(tr("Select a world to delete.")));
             return;
         }
-        app.getGUI().addToOverlay(frontend::initConfirmDialog(app, tr("Delete world '{}'?", folder),
+        app.getGUI().addToOverlay(frontend::initConfirmDialog(tr("Delete world '{}'?", folder),
             [&, folder] { deleteWorldFolder(app, folder);}));
     }
 };

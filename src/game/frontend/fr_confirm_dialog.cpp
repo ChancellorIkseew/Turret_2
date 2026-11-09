@@ -4,7 +4,7 @@
 
 constexpr Point BTN_SIZE(120, 30);
 
-std::unique_ptr<Container> frontend::initConfirmDialog(App& app, const std::string& message, std::function<void()> onConfirm) {
+std::unique_ptr<Container> frontend::initConfirmDialog(const std::string& message, std::function<void()> onConfirm) {
     auto box = std::make_unique<Container>(Align::center, Orientation::vertical);
     box->addNode(new Label(message));
     auto buttons = box->addNode(new Layout(Orientation::horizontal));

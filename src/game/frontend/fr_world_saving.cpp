@@ -26,7 +26,7 @@ private:
     void saveWorld(App& app) {
         const std::string folder = worldName->getText();
         if (folder.empty()) {
-            app.getGUI().addToOverlay(frontend::initMessageBox(app,
+            app.getGUI().addToOverlay(frontend::initMessageBox(
                 tr("Enter a world name for a new save or choose existing world to rewrite.")));
             return;
         }
@@ -35,7 +35,7 @@ private:
         const std::string message = success
             ? tr("World saved to {}", std::filesystem::absolute(io::folders::SAVES / folder).string())
             : tr("Failed to save world.");
-        app.getGUI().addToOverlay(frontend::initMessageBox(app, message));
+        app.getGUI().addToOverlay(frontend::initMessageBox(message));
         markDirty();
     }
 };

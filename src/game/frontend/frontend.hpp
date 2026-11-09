@@ -11,6 +11,9 @@ class App;
 using namespace mingui;
 
 namespace frontend {
+    std::unique_ptr<Container> initMessageBox(const std::string& message);
+    std::unique_ptr<Container> initConfirmDialog(const std::string& message, std::function<void()> onConfirm);
+    //
     std::unique_ptr<Container> initMainMenu(App& app);
     std::unique_ptr<Container> initMenu(App& app);
     std::unique_ptr<Container> initControls(App& app);
@@ -23,8 +26,6 @@ namespace frontend {
     std::unique_ptr<Container> initInventory(App& app);
     std::unique_ptr<Container> initJEI(App& app, std::shared_ptr<BuildTools> buildTools);
     std::unique_ptr<Container> initBlockInfo(App& app, const uint8_t blockPresetID);
-    std::unique_ptr<Container> initMessageBox(App& app, const std::string& message);
-    std::unique_ptr<Container> initConfirmDialog(App& app, const std::string& message, std::function<void()> onConfirm);
     std::unique_ptr<Container> initHint(App& app);
     std::unique_ptr<Container> initLanguages(App& app);
     std::unique_ptr<Container> initGameplay(App& app);

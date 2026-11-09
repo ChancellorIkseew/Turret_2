@@ -69,7 +69,6 @@ void App::run() {
 
 void App::changeSession(SessionRequest request) {
     sessionRequest = std::move(request);
-    assets.getAudio().stopMusic();
 }
 
 void App::loadWorldInGame(const std::string& folder) {
@@ -103,11 +102,13 @@ void App::processSessionRequest() {
         return;
     std::unique_ptr<GameSession> newSession = createSession(*sessionRequest, *this);
     sessionRequest.reset();
-    if (newSession)
+    if (newSession) {
+        assets.getAudio().stopMusic();
         session.reset(newSession.release());
+        script_libs::initNewGame(*this);
+    }
     else
-        getGUI().addToOverlay(frontend::initMessageBox(*this, tr("Failed to load world.")));
-    script_libs::initNewGame(*this);
+        getGUI().addToOverlay(frontend::initMessageBox(tr("Failed to load world.")));
 }
 
 bool App::saveWorld(const std::string& folder) {
