@@ -1,0 +1,12 @@
+#visual
+texture=ceramite_wall
+frame_ticks=0
+frame_height=32
+frame_order=0
+#logic
+archetype=wall
+size=1
+build_time=30
+rotatable=false
+health=500
+recipe=item_ceramite|6
