@@ -52,14 +52,14 @@ void GameSession::update(App& app, const Presets& presets, const ScriptsHandler&
     mainWindow.pollEvents();
     gui->callback();
     const bool paused = pausedManually || gui->overlapsWorld() || (Settings::gameplay.pauseInBackground && !mainWindow.isFocused());
-    if (!gui->overlapsWorld())
-        playerController.update(mainWindow.getInput(), camera, paused, world->getMobs().getSoa(),
-            world->getBlocks().getMeta().getTurrets().getSoa(), presets);
     if (!paused) {
         for (int i = 0; i < tickSpeed; ++i) {
             updateSimulation(presets, app);
         }
     }
+    if (!gui->overlapsWorld())
+        playerController.update(mainWindow.getInput(), camera, paused, world->getMobs().getSoa(),
+            world->getBlocks().getMeta().getTurrets().getSoa(), presets);
     musicQueue.update(app.getAssets().getAudio(), timeCount.getWaveCount(), gameMode);
     scriptsHandler.execute();
     //
