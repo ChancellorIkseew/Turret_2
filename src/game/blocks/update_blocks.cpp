@@ -4,7 +4,7 @@
 #include "engine/assets/presets.hpp"
 #include "game/common/teams_pool.hpp"
 
-void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams, const uint64_t tickCount) {
+void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams) {
     for (int x = 0; x < mapSize.x; ++x) {
         for (int y = 0; y < mapSize.y; ++y) {
             BlockTile& blockTile = at(x, y);
@@ -40,7 +40,7 @@ void BlockMap::updateBlocks(const WorldMap& terrain, const Presets& presets, Tea
 
     auto& turrets = meta.getTurrets().getSoa();
     for (size_t i = 0; i < turrets.turretCount; ++i) {
-        if (turrets.ammo[i] > 0 || at(turrets.masterTile[i]).type != BlockType::turret) // mb temporary 
+        if (turrets.ammo[i] > 0)
             continue;
         TurretBlock* block = static_cast<TurretBlock*>(at(turrets.masterTile[i]).block.get());
         if (block->ammo.count > 0) {

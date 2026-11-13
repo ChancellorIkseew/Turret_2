@@ -30,6 +30,7 @@ public:
     //
     void reserve(const size_t capacity);
     void removeTurret(const size_t targetIndex);
+    void removeByMasterTile(const TileCoord tile);
     void addTurret(
         const TurretPresetID preset,
         const TileCoord masterTile,

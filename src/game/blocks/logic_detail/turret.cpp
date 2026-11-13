@@ -9,5 +9,5 @@ void TurretBlock::onPlace(BlocksMeta& meta, TileCoord tile, TeamID teamID, Block
 }
 
 void TurretBlock::onDemolish(BlocksMeta& meta, TileCoord tile) {
-	meta.markTurretForRemove(tile);
+	meta.getTurrets().removeByMasterTile(tile);
 }

@@ -30,27 +30,26 @@ void world::update(World& world, const Camera& camera, const Presets& presets, c
     auto& shells = world.getShells();
     auto& schematic = world.getSchematic();
     auto& particles = world.getParticles();
-    auto mobTurrets = fromMobs(mobs.getSoa());
-    auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
     const uint64_t tickCount = world.getTimeCount().getTickCount();
     //
     world.getBuildBems().clear();
     chunks.update(mobs.getSoa());
-    blocks.updateBlocks(world.getMap(), presets, world.getTeams(), tickCount);
+    blocks.updateBlocks(world.getMap(), presets, world.getTeams());
     shells::processShells(world, presets, worldSounds, camera, tickCount);
     mobs::processMobs(mobs.getSoa(), chunks, blocks, presets, particles, camera);
     ai::updateMovingAI(mobs.getSoa(), presets, playerController, schematic, blocks);
+    // Create turrets spans.
+    auto mobTurrets = fromMobs(mobs.getSoa());
+    auto blockTurrets = fromBlocks(blocks.getMeta().getTurrets().getSoa());
     ai::updateShootingAI(blockTurrets, mobs.getSoa(), blocks, presets, playerController);
     ai::updateShootingAI(mobTurrets, mobs.getSoa(), blocks, presets, playerController);
     turrets::processTurrets(blockTurrets, shells, particles, presets, worldSounds, camera, timeMs);
     turrets::processTurrets(mobTurrets, shells, particles, presets, worldSounds, camera, timeMs);
+    // Now it is safe to invalidate turrets spans.
     particles::updateParticles(particles);
-    // Build when spans are used and can be spoiled.
     construction::buildBlueprints(world, mobs.getSoa(), presets, worldSounds);
-    // Clean up only after all processing.
     shells::cleanupShells(shells, presets);
     mobs::cleanupMobs(mobs, presets);
-    blocks.getMeta().cleanUp();
     world.getTimeCount().update(world.getConfig().ticksPerWave, world.getConfig().wavesByTimer);
 }
 

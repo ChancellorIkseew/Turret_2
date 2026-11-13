@@ -24,9 +24,6 @@ public:
     void setCoreAttacked(const bool flag) { coreAttacked = flag; }
     const auto& getTurrets() const { return turrets; }
     auto& getTurrets() { return turrets; }
-    //
-    void markTurretForRemove(TileCoord tile);
-    void cleanUp();
 
     const auto& getCores() { return cores; }
     void addCore(const TileCoord tile) { cores.push_back(tile); }
@@ -113,7 +110,7 @@ public:
         return tile;
     }
     //
-    void updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams, const uint64_t tickCount);
+    void updateBlocks(const WorldMap& terrain, const Presets& presets, TeamsPool& teams);
 private:
     t1_disable_copy_and_move(BlockMap)
 };

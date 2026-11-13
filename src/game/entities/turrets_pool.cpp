@@ -62,3 +62,12 @@ void TurretsPool::removeTurret(const size_t targetIndex) {
     soa.currentRecoil.pop_back();
     soa.ammo.pop_back();
 }
+
+void TurretsPool::removeByMasterTile(const TileCoord tile) {
+    for (size_t i = 0; i < soa.turretCount; ++i) {
+        if (soa.masterTile[i] == tile) {
+            removeTurret(i);
+            break;
+        }
+    }
+}

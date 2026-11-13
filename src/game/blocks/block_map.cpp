@@ -9,25 +9,6 @@
 #include "make_block.hpp"
 #include "offset_table.hpp"
 
-void BlocksMeta::markTurretForRemove(TileCoord tile) {
-    auto& soa = turrets.getSoa();
-    for (size_t i = 0; i < soa.turretCount; ++i) {
-        if (tile == soa.masterTile[i])
-            return markedForRemove.push_back(i);
-    }
-}
-void BlocksMeta::cleanUp() {
-    if (markedForRemove.empty())
-        return;
-    std::ranges::sort(markedForRemove, std::greater<size_t>());
-    auto [first, last] = std::ranges::unique(markedForRemove);
-    markedForRemove.erase(first, last);
-    for (size_t targetIndex : markedForRemove) {
-        turrets.removeTurret(targetIndex);
-    }
-    markedForRemove.clear();
-}
-
 void BlocksMeta::removeCore(const TileCoord tile) {
     auto it = std::ranges::find(cores, tile);
     if (it != cores.end())
