@@ -1,8 +1,5 @@
 #visual
 texture=junction
-frame_ticks=0
-frame_height=32
-frame_order=0
 #logic
 archetype=intersection
 size=1

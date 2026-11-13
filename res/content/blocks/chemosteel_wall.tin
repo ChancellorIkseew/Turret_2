@@ -1,0 +1,9 @@
+#visual
+texture=chemosteel_wall
+#logic
+archetype=wall
+size=1
+build_time=40
+rotatable=false
+health=800
+recipe=item_chemosteel|6

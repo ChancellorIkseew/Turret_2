@@ -1,8 +1,5 @@
 #visual
 texture=big_ceramite_wall
-frame_ticks=0
-frame_height=64
-frame_order=0
 #logic
 archetype=wall
 size=2

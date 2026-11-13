@@ -1,8 +1,5 @@
 #visual
 texture=exoplast_synthesizer
-frame_ticks=0
-frame_height=64
-frame_order=0
 #logic
 archetype=factory
 size=2

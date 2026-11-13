@@ -1,0 +1,12 @@
+#visual
+texture=chemosteel_sulge
+#logic
+archetype=factory
+size=3
+build_time=400
+rotatable=false
+health=1600
+recipe=item_copper|400,item_iron|480,item_ceramite|400,item_silicat|300
+output_item=item_chemosteel|2
+input_items=item_coal|2,item_ceramite|1,item_iron|2
+production_time=60

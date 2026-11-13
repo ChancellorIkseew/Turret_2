@@ -91,10 +91,6 @@ struct MobPreset {
 
 struct BlockVisualPreset {
     TextureRect textureRect;
-    uint8_t frameTicks;
-    float frameHeight;
-    uint8_t frameCount;
-    std::array<uint8_t, 16> frameOrder;
 };
 
 struct Ingredient {

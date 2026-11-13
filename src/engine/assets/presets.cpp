@@ -65,13 +65,8 @@ static auto loadIngridients(const PresetReader& reader, const FindMap<preset_tag
 
 static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, const TurretFindMap& turretFindMap,
     const ItemFindMap& itemFindMap, const std::string& name) {
-    std::array<uint8_t, 16> frames;
     BlockVisualPreset visual{
         reader.getTexture(atlas, "texture"),
-        reader.get<uint8_t>("frame_ticks"),
-        reader.get<float>("frame_height") / atlas.getSize().y,
-        reader.getArray<uint8_t>("frame_order", frames),
-        frames
     };
     BlockPreset preset;
     preset.archetype = getBlockType(reader.get<std::string>("archetype"));
