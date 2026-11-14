@@ -93,6 +93,7 @@ Input:=Вход:
 Output:=Выход:
 
 #block_names
+artillery_turret=Артиллерийская турель
 cannon_turret=Турель-тяжёлая автопушка
 gatling_turret=Турель-автопушка
 laser_turret=Лазерная турель

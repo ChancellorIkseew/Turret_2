@@ -1,0 +1,10 @@
+#visual
+texture=turret_base
+#logic
+archetype=turret
+size=1
+build_time=60
+rotatable=true
+health=250
+turret=artillery_turret
+recipe=item_iron|50,item_copper|20
