@@ -23,6 +23,7 @@ public:
 
     void draw(RenderBridge& renderBridge) final;
     void callback(UIContext& context) final;
+    void setValidator(Validator* validator) { this->validator.reset(validator); }
     void setGlyphSize(const Point size) { glyphSize = size; }
     void setText(const std::string& text);
     const std::string& getText() const { return text; }

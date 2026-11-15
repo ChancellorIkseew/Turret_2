@@ -72,3 +72,9 @@ struct ANSIValidator : mingui::Validator {
     void validateText(std::string& text) const final;
     void validateValue(std::string& text) const final;
 };
+struct FilenameValidator : mingui::Validator {
+    FilenameValidator() = default;
+    bool isValid(const char32_t symbol) const final;
+    void validateText(std::string& text) const final;
+    void validateValue(std::string& text) const final;
+};

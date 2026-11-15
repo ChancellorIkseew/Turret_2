@@ -16,6 +16,10 @@ static inline constexpr bool isNotFloat(const char32_t symbol) {
 static inline constexpr bool isNotANSI(const char32_t symbol) {
     return symbol < 0 || symbol > 255;
 }
+static inline constexpr bool isNotEnglishLetter(const char32_t symbol) {
+    return (symbol < 'A' || symbol > 'Z') && (symbol < 'a' || symbol > 'z') &&
+           (symbol < '0' || symbol > '9') && symbol != '_';
+}
 
 static void validateUnsignedIntegral(std::string& text) {
     std::erase_if(text, isNotUnsignedIntegral);
@@ -93,4 +97,12 @@ void ANSIValidator::validateText(std::string& text) const {
 }
 void ANSIValidator::validateValue(std::string& text) const {
     std::erase_if(text, isNotANSI);
+}
+
+bool FilenameValidator::isValid(const char32_t symbol) const { return !isNotEnglishLetter(symbol); }
+void FilenameValidator::validateText(std::string& text) const {
+    std::erase_if(text, isNotEnglishLetter);
+}
+void FilenameValidator::validateValue(std::string& text) const {
+    std::erase_if(text, isNotEnglishLetter);
 }

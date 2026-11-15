@@ -20,6 +20,7 @@ public:
         lower->addNode(new Button(BTN_SIZE, tr("Back")))->addCallback([&] { close(); });
         lower->addNode(new Button(BTN_SIZE, tr("Save")))->addCallback([&] { saveWorld(app); });
         worldName = lower->addNode(new Form());
+        worldName->setValidator(new FilenameValidator());
         saves->onSelect = [&](const std::string& name) { worldName->setText(name); };
     }
 private:
