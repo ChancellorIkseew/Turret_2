@@ -2,23 +2,14 @@
 //
 #include <cassert>
 #include "game/blocks/block_map.hpp"
-//#include "engine/debug/logger.hpp"
-
-//static debug::Logger logger("t1_test");
-
-inline constexpr TileCoord DIR_VECS[] = {
-    { 0, -1 }, // up
-    { 1, 0 },  // right
-    { 0, 1 },  // down
-    { -1, 0 }  // left
-};
-
-static constexpr float approach(float current, float target, float step) noexcept {
-    if (current < target) return std::min(current + step, target);
-    else                  return std::max(current - step, target);
-}
 
 static inline Block* findNext(TileCoord tile, const BlockMap& map, BlockRot rotation) noexcept {
+    constexpr TileCoord DIR_VECS[] = {
+    TileCoord(0, -1), // up
+    TileCoord(1, 0),  // right
+    TileCoord(0, 1),  // down
+    TileCoord(-1, 0)  // left
+    };
     const TileCoord target = tile + DIR_VECS[rotation];
     if (!map.contains(target) || map.at(target).type <= BlockType::wall)
         return nullptr;
@@ -39,17 +30,22 @@ void BeltBlock::update(TileCoord tile, const BlockMap& map) {
     bool needsRemove = false;
 
     for (int i = 0; i < len; ++i) {
+        if (itemX[i] > 0.005f || itemX[i] < -0.005f) {
+            const float step = (itemX[i] > 0.f) ? -0.02f : +0.02f;
+            itemX[i] += step; 
+            continue;
+        }
         if (itemY[i] >= 1.0f) {
             needsRemove = true;
             continue;
         } 
         if (i > 0 && itemY[i] + ITEM_SPACE >= itemY[i - 1])
             continue;
-        itemY[i] += 0.01f;
+        itemY[i] += 0.01f; // items speed
     }
 
     if (len > 0)
-        minItem = itemY[len - 1];  
+        minItem = itemY[len - 1];
     else
         minItem = ITEM_SPACE;
 
@@ -63,26 +59,31 @@ bool BeltBlock::canAccept(ItemPresetID item, BlockRot srcRot) {
     if (len >= CAPACITY) return false;
     if (srcRot == rotation) return minItem >= ITEM_SPACE;
     const int8_t diff = std::abs(srcRot - rotation);
-    if (diff % 2 == 1) return minItem > 0.7f;
+    if (diff % 2 == 1) return minItem < 0.34f || minItem > 0.66f;
     return false;
 }
 
 void BeltBlock::accept(ItemPresetID item, BlockRot srcRot) {
     assert(len < CAPACITY);
     //
-    itemID[len] = item;
-    itemX[len] = 0.f;
-    itemY[len] = 0.f;
-    ++len;
-    minItem = 0.f;
-    /*
     if (srcRot == rotation) {
+        itemID[len] = item;
         itemX[len] = 0.f;
         itemY[len] = 0.f;
+        ++len;
+        return;
+    }
+    
+    if (srcRot == (rotation + 1) % 4) {
+        itemID[len] = item;
+        itemX[len] = -1.f;
+        itemY[len] = 0.5f;
+        ++len;
     }
     else {
-        itemX[len] = +-0.5;
-        itemY[len] = 0.5;
+        itemID[len] = item;
+        itemX[len] = +1.f;
+        itemY[len] = 0.5f;
+        ++len;
     }
-    ++len;*/
 }
