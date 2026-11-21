@@ -31,6 +31,7 @@
 // Future preset verification: presets reorder to match manifest BEFORE world data loads.
 // Saved presetIDs match directly — no remap needed in this saver.
 
+#include "engine/assets/presets.hpp"
 #include "engine/io/archive.hpp"
 #include "engine/io/io.hpp"
 #include "game/blocks/block_map.hpp"

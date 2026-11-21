@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "block_types.hpp"
-#include "engine/assets/preset_defs.hpp"
+#include "engine/assets/presets.hpp"
 #include "engine/debug/logger.hpp"
 
 class Presets;
