@@ -24,11 +24,10 @@ void InProgress::drawProgress(Renderer& renderer, const Presets& presets, TileCo
     const int16_t buildTime = presets.getBlock(presetID).buildTime;
     const float ratio = std::clamp(static_cast<float>(progress) / static_cast<float>(buildTime), 0.f, 1.f);
     const uint32_t fillAmount = static_cast<uint32_t>(255.f * ratio);
-    const BlockRot dstRotation = rotation != BlockRot::none ? rotation : BlockRot::up;
     //
     const uint32_t baseColor = action == BPAction::build ? cl::BEIGE_TR : cl::RED_TR;
     const uint32_t color = baseColor | fillAmount;
-    Schematic::drawBlock(presets, renderer, tile, presetID, dstRotation, color, false);
+    Schematic::drawBlock(presets, renderer, tile, presetID, rotation, color, false);
 }
 
 static constexpr float dirX[] = { 0.0f, 1.0f, 0.0f, -1.0f }; // Up, Right, Down, Left
