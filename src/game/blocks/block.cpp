@@ -47,15 +47,28 @@ void BeltBlock::draw(BlocksDrawer& blockDrawer, Renderer& renderer, TileCoord ti
     float py = dx;
 
     PixelCoord center = t1::tileCenter(tile);
+    constexpr PixelCoord HALF_ITEM_SIZE(8.f, 8.f);
 
-    for (int i = 0; i < len; i++) {
-        float shiftForward = (itemY[i] - 0.5f) * t1::TILE_F;
-        float shiftSide    = (itemX[i] * 0.5f) * t1::TILE_F;
-        PixelCoord itemPos {
-            center.x + (dx * shiftForward) + (px * shiftSide),
-            center.y + (dy * shiftForward) + (py * shiftSide)
-        };
-        constexpr PixelCoord HALF_ITEM_SIZE(8.f, 8.f);
-        blockDrawer.addItem(itemID[i], itemPos - HALF_ITEM_SIZE);
+    if (rotation == BlockRot::left|| rotation == BlockRot::up) {
+        for (int i = 0; i < len; i++) {
+            float shiftForward = (itemY[i] - 0.5f) * t1::TILE_F;
+            float shiftSide = (itemX[i] * 0.5f) * t1::TILE_F;
+            PixelCoord itemPos{
+                center.x + (dx * shiftForward) + (px * shiftSide),
+                center.y + (dy * shiftForward) + (py * shiftSide)
+            };
+            blockDrawer.addItem(itemID[i], itemPos - HALF_ITEM_SIZE);
+        }
+    }
+    else {
+        for (int i = len - 1; i >= 0; i--) {
+            float shiftForward = (itemY[i] - 0.5f) * t1::TILE_F;
+            float shiftSide = (itemX[i] * 0.5f) * t1::TILE_F;
+            PixelCoord itemPos{
+                center.x + (dx * shiftForward) + (px * shiftSide),
+                center.y + (dy * shiftForward) + (py * shiftSide)
+            };
+            blockDrawer.addItem(itemID[i], itemPos - HALF_ITEM_SIZE);
+        }
     }
 }
