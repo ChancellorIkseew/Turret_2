@@ -84,6 +84,8 @@ static auto createBlockPreset(const PresetReader& reader, const Atlas& atlas, co
     }
     if (preset.archetype == BlockType::factory || preset.archetype == BlockType::drill || preset.archetype == BlockType::impact_drill)
         preset.productionTime = reader.get<int16_t>("production_time");
+    if (preset.archetype == BlockType::belt)
+        preset.speed = reader.get<float>("speed");
     return preset;
 }
 

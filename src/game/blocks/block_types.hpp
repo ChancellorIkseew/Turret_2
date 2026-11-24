@@ -64,6 +64,7 @@ struct BeltBlock : Block {
     float itemY[3] = { 0.f, 0.f, 0.f };
     float itemX[3] = { 0.f, 0.f, 0.f };
     float minItem = ITEM_SPACE; //last item progress
+    float speed = 0.01f;
 
     int8_t len = 0; // itemCount
     BlockRot rotation = left;
@@ -71,7 +72,7 @@ struct BeltBlock : Block {
     static constexpr float ITEM_SPACE = 0.33f;
     static constexpr int8_t CAPACITY = 3;
     //
-    BeltBlock(BlockRot rotation) : rotation(rotation) {}
+    BeltBlock(BlockRot rotation, float speed) : rotation(rotation), speed(speed) {}
     t1_derived BlockType getType() const noexcept final { return BlockType::belt; }
     t1_derived BlockRot getRotation() const noexcept final { return rotation; }
     //

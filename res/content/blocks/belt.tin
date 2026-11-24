@@ -7,3 +7,4 @@ build_time=15
 rotatable=true
 health=10
 recipe=item_copper|1
+speed=0.01

@@ -30,18 +30,19 @@ void BeltBlock::update(TileCoord tile, const BlockMap& map) {
     bool needsRemove = false;
 
     for (int i = 0; i < len; ++i) {
-        if (itemX[i] > 0.005f || itemX[i] < -0.005f) {
-            const float step = (itemX[i] > 0.f) ? -0.02f : +0.02f;
+        if (itemX[i] > speed || itemX[i] < -speed) {
+            const float step = (itemX[i] > 0.f) ? -speed * 2.f : +speed * 2.f;
             itemX[i] += step; 
             continue;
         }
+        itemX[i] = 0.f;
         if (itemY[i] >= 1.0f) {
             needsRemove = true;
             continue;
         } 
         if (i > 0 && itemY[i] + ITEM_SPACE >= itemY[i - 1])
             continue;
-        itemY[i] += 0.01f; // items speed
+        itemY[i] += speed;
     }
 
     if (len > 0)

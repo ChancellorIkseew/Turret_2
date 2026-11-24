@@ -107,6 +107,7 @@ struct BlockPreset {
     BlockVisualPreset visual;
     InplaceVector<Ingredient, 6> recipe;
     //
+    float speed;
     TurretPresetID turret;
     int16_t productionTime;
     Ingredient outputItem;

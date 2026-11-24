@@ -12,7 +12,7 @@ inline std::unique_ptr<Block> makeBlock(const Presets& presets, BlockPresetID pr
     std::unique_ptr<Block> block;
     switch (preset.archetype) {
     case BlockType::belt:
-        block = std::make_unique<BeltBlock>(rotation);
+        block = std::make_unique<BeltBlock>(rotation, preset.speed);
         break;
     case BlockType::core:
         block = std::make_unique<CoreBlock>();
