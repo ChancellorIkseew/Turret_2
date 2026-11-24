@@ -1,0 +1,10 @@
+#visual
+texture=accelerated_belt
+#logic
+archetype=belt
+size=1
+build_time=20
+rotatable=true
+health=40
+recipe=item_copper|2,item_chemosteel|1
+speed=0.04
